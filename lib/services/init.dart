@@ -17,7 +17,8 @@ import 'chat.dart';
 import 'identity.dart';
 
 // Initialize all the stores
-Future<void> initializeStore(BuildContext context, {String nextRoute = '/home'}) async {
+Future<void> initializeStore(BuildContext context,
+    {String nextRoute = '/home'}) async {
   final store = StoreProvider.of<AppState>(context);
   bool ownIds = await updateOwnIdentitiesStore(store, context);
   if (ownIds) {
@@ -32,14 +33,14 @@ Future<void> initializeStore(BuildContext context, {String nextRoute = '/home'})
 }
 
 void initializeTimers(Store<AppState> store) {
-  Timer.periodic(Duration(seconds: 10),
-      (Timer t) => updateLocationsStore(store) );
-  Timer.periodic(Duration(seconds: 5),
-          (Timer t) => updateIdentitiesStore(store) );
+  Timer.periodic(
+      Duration(seconds: 10), (Timer t) => updateLocationsStore(store));
+  Timer.periodic(
+      Duration(seconds: 5), (Timer t) => updateIdentitiesStore(store));
 }
 
 Future<Location> updateLocationsStore(Store<AppState> store) {
-  getFriendsAccounts().then((List<Location>locations){
+  getFriendsAccounts().then((List<Location> locations) {
     store.dispatch(UpdateLocationsAction(locations));
   });
 }
@@ -58,15 +59,15 @@ Future<bool> updateOwnIdentitiesStore(store, BuildContext context) async {
 }
 
 // Update subscribed chat lobbies store
-Future<void> updateChatLobbiesStore(store){
-  getSubscribedChatLobbies().then((chatsList){
+Future<void> updateChatLobbiesStore(store) {
+  getSubscribedChatLobbies().then((chatsList) {
     store.dispatch(UpdateSubscribedChatsAction(chatsList));
   });
 }
 
 // Update unsubscribed chat lobbies store
-void updateUnsubsChatLobbiesStore(store){
-  getUnsubscribedChatLobbies().then((unSubsChatsList){
+void updateUnsubsChatLobbiesStore(store) {
+  getUnsubscribedChatLobbies().then((unSubsChatsList) {
     store.dispatch(UpdateUnSubscribedChatsAction(unSubsChatsList));
   });
 }
@@ -78,11 +79,12 @@ Future<void> updateIdentitiesStore(store) async {
   store.dispatch(UpdateFriendsSignedIdentitiesAction(tupleIds.item1));
   store.dispatch(UpdateFriendsIdentitiesAction(tupleIds.item2));
   store.dispatch(UpdateNotContactIdsAction(tupleIds.item3));
-  Map<String,Identity> allIds = Map.fromIterable(
-    [tupleIds.item1, tupleIds.item2, tupleIds.item3].expand((x) => x).toList(),
-    key: (id) => id.mId ,
-    value: (id) => id
-  );
+  Map<String, Identity> allIds = Map.fromIterable(
+      [tupleIds.item1, tupleIds.item2, tupleIds.item3]
+          .expand((x) => x)
+          .toList(),
+      key: (id) => id.mId,
+      value: (id) => id);
   store.dispatch(UpdateAllIdsAction(allIds));
 }
 

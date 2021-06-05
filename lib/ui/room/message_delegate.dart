@@ -10,63 +10,67 @@ class MessageDelegate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Visibility(
-        visible: data != null,
-        child: GestureDetector(
-          child: FractionallySizedBox(
-            alignment: !data.incoming ? Alignment.centerRight : Alignment.centerLeft,
-            widthFactor: 0.7,
-            child: Card(
-              color: !data.incoming ? Colors.white : Colors.white70,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Visibility(
-                    visible: bubbleTitle?.isNotEmpty ?? false,
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child:
-                        Padding(
-                            padding: const EdgeInsets.only(left: 8.0, top: 6.0),
-                            child: Text(
-                              bubbleTitle == null ? "" : bubbleTitle,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),
-                            )
-                        )
-                    ),
-                  ),
-                  Stack(
+    return Visibility(
+      visible: data != null,
+      child: GestureDetector(
+        child: FractionallySizedBox(
+          alignment:
+              !data.incoming ? Alignment.centerRight : Alignment.centerLeft,
+          widthFactor: 0.7,
+          child: Card(
+            color: !data.incoming ? Colors.white : Colors.white70,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Visibility(
+                  visible: bubbleTitle?.isNotEmpty ?? false,
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 6.0),
+                          child: Text(
+                            bubbleTitle == null ? "" : bubbleTitle,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))),
+                ),
+                Stack(
 //          alignment: WrapAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
-                        child: Html(
-                            data: data.msg + "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
+                      child: Html(
+                          data: data.msg +
+                              "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
+                          ),
+                    ),
+                    //real additionalInfo
+                    Positioned(
+                      child: Text(
+                        DateTime.fromMillisecondsSinceEpoch(
+                                    (data.recvTime ?? data.recvTime) * 1000)
+                                .hour
+                                .toStringAsFixed(0) +
+                            ":" +
+                            DateTime.fromMillisecondsSinceEpoch(
+                                    (data.sendTime ?? data.recvTime) * 1000)
+                                .minute
+                                .toString()
+                                .padLeft(2, '0'),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 11.0,
                         ),
                       ),
-                      //real additionalInfo
-                      Positioned(
-                        child: Text(
-                          DateTime.fromMillisecondsSinceEpoch( (data.recvTime ?? data.recvTime) * 1000).hour.toStringAsFixed(0)
-                              + ":" +
-                              DateTime.fromMillisecondsSinceEpoch((data.sendTime ?? data.recvTime) * 1000).minute.toString().padLeft(2, '0'),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 11.0,
-                          ),
-                        ),
-                        right: 8.0,
-                        bottom: 4.0,
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                      right: 8.0,
+                      bottom: 4.0,
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
+        ),
 //      child: Padding(
 //        padding: EdgeInsets.symmetric(vertical: 8.0),
 //        child:
@@ -116,7 +120,7 @@ class MessageDelegate extends StatelessWidget {
 //          ),
 //        ),
 //      ),
-        ),
-      );
+      ),
+    );
   }
 }

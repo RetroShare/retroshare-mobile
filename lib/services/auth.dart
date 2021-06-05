@@ -6,9 +6,13 @@ import 'package:http/http.dart' as http;
 
 import 'package:retroshare/model/auth.dart';
 
+import 'account.dart';
+
 Future<bool> isAuthTokenValid() async {
-  final response = await http
-      .get('http://localhost:9092/RsJsonApi/getAuthorizedTokens', headers: {
+  final String path =
+      '$RETROSHARE_SERVICE_PREFIX/RsJsonApi/getAuthorizedTokens';
+  print(path);
+  final response = await http.get(path, headers: {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
@@ -20,28 +24,30 @@ Future<bool> isAuthTokenValid() async {
 }
 
 Future<bool> checkExistingAuthTokens(String locationId, String password) async {
-  final response = await http
-      .get('http://localhost:9092/RsJsonApi/getAuthorizedTokens', headers: {
-    HttpHeaders.authorizationHeader:
-        'Basic ' + base64.encode(utf8.encode('$locationId:$password'))
-  });
+  final response = await http.get(
+      '$RETROSHARE_SERVICE_PREFIX/RsJsonApi/getAuthorizedTokens',
+      headers: {
+        HttpHeaders.authorizationHeader:
+            'Basic ' + base64.encode(utf8.encode('$locationId:$password'))
+      });
 
   if (response.statusCode == 200) {
-    for (LinkedHashMap<String, dynamic> token in json.decode(response.body)['retval']) {
-      if (token['key'] + ":" + token['value'] == authToken.toString()) return true;
+    for (LinkedHashMap<String, dynamic> token
+        in json.decode(response.body)['retval']) {
+      if (token['key'] + ":" + token['value'] == authToken.toString())
+        return true;
     }
     authorizeNewToken(locationId, password);
     return true;
   } else if (response.statusCode == 401) {
     return false;
-  }
-  else
+  } else
     throw Exception('Failed to load response');
 }
 
 void authorizeNewToken(String locationId, String password) async {
   final response = await http.post(
-      'http://localhost:9092/RsJsonApi/authorizeToken',
+      '$RETROSHARE_SERVICE_PREFIX/RsJsonApi/authorizeToken',
       body: json.encode({'token': '$authToken'}),
       headers: {
         HttpHeaders.authorizationHeader:

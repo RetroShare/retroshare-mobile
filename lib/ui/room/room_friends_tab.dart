@@ -43,23 +43,25 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      StoreConnector<AppState, List<Identity>>(
+    return StoreConnector<AppState, List<Identity>>(
         converter: (store) => (widget.chat.chatId == null ||
-          store.state.lobbyParticipants == null ||
-          store.state.lobbyParticipants[widget.chat.chatId] == null )
-          ? [] : store.state.lobbyParticipants[widget.chat.chatId],
+                store.state.lobbyParticipants == null ||
+                store.state.lobbyParticipants[widget.chat.chatId] == null)
+            ? []
+            : store.state.lobbyParticipants[widget.chat.chatId],
         builder: (context, _lobbyParticipantsList) {
           return ListView.builder(
             padding: const EdgeInsets.all(16.0),
-            itemCount:
-              _lobbyParticipantsList == null ? 0 : _lobbyParticipantsList.length,
+            itemCount: _lobbyParticipantsList == null
+                ? 0
+                : _lobbyParticipantsList.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTapDown: _storePosition,
                 // Todo: DRY
                 child: PersonDelegate(
-                  data: PersonDelegateData.IdentityData(_lobbyParticipantsList[index], context),
+                  data: PersonDelegateData.IdentityData(
+                      _lobbyParticipantsList[index], context),
                   onLongPress: (Offset tapPosition) {
                     showCustomMenu(
                         "Add to contacts",
@@ -67,10 +69,9 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                           Icons.add,
                           color: Colors.black,
                         ),
-                            () => _addToContacts(_lobbyParticipantsList[index].mId),
+                        () => _addToContacts(_lobbyParticipantsList[index].mId),
                         tapPosition,
-                        context
-                    );
+                        context);
                   },
                   onPressed: () {
                     Navigator.pushNamed(
@@ -78,8 +79,8 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                       '/room',
                       arguments: {
                         'isRoom': false,
-                        'chatData': getChat(
-                            context, _lobbyParticipantsList[index]),
+                        'chatData':
+                            getChat(context, _lobbyParticipantsList[index]),
                       },
                     );
                   },
@@ -87,7 +88,6 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
               );
             },
           );
-        }
-      );
+        });
   }
 }

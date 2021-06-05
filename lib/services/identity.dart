@@ -18,9 +18,10 @@ Future<List<Identity>> getOwnIdentities() async {
 
   if (respSigned.statusCode == 200) {
     ownSignedIdsList = List();
-    json.decode(respSigned.body)['ids']..toSet().forEach((id) {
-      if (id != null) ownSignedIdsList.add(Identity(id, true));
-    });
+    json.decode(respSigned.body)['ids']
+      ..toSet().forEach((id) {
+        if (id != null) ownSignedIdsList.add(Identity(id, true));
+      });
   }
 
   List<Identity> ownPseudonymousIdsList = List<Identity>();
@@ -31,13 +32,14 @@ Future<List<Identity>> getOwnIdentities() async {
   });
 
   if (respPseudonymous.statusCode == 200) {
-    json.decode(respPseudonymous.body)['ids']..toSet().forEach((id) {
-      if (id != null) ownPseudonymousIdsList.add(Identity(id, false));
-    });
+    json.decode(respPseudonymous.body)['ids']
+      ..toSet().forEach((id) {
+        if (id != null) ownPseudonymousIdsList.add(Identity(id, false));
+      });
   }
 
   List<Identity> ownIdsList = ownSignedIdsList + ownPseudonymousIdsList;
-  for(var x = 0; x < ownIdsList.length; x ++){
+  for (var x = 0; x < ownIdsList.length; x++) {
     var resp = await getIdDetails(ownIdsList[x].mId);
     if (resp.item1) ownIdsList[x] = resp.item2;
   }
@@ -71,15 +73,15 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
 Future<Identity> createIdentity(Identity identity, int avatarSize) async {
   var b = json.encode({
     'name': identity.name,
-    'avatar':
-      { 'mSize' : avatarSize,
-        'mData': {'base64': identity.avatar}
-      }
+    'avatar': {
+      'mSize': avatarSize,
+      'mData': {'base64': identity.avatar}
+    }
   });
-  final response =
-      await http.post('http://127.0.0.1:9092/rsIdentity/createIdentity',
-          body: b,
-          headers: {
+  final response = await http.post(
+      'http://127.0.0.1:9092/rsIdentity/createIdentity',
+      body: b,
+      headers: {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
@@ -143,7 +145,8 @@ dynamic getAllIdentities() async {
     if (response2.statusCode == 200) {
       var idsInfo = json.decode(response2.body)['idsInfo'];
       for (var i = 0; i < idsInfo.length; i++) {
-        if (idsInfo[i]['mIsAContact'] && idsInfo[i]['mMeta']['mSubscribeFlags'] != 7) {
+        if (idsInfo[i]['mIsAContact'] &&
+            idsInfo[i]['mMeta']['mSubscribeFlags'] != 7) {
           bool success = true;
           Identity id;
           do {
@@ -155,28 +158,26 @@ dynamic getAllIdentities() async {
           // This is because sometimes, the returning Id of [getIdDetails], that is a
           // result of call 'torsIdentity/getIdDetails', return identity details, from the cache
           // So sometimes the avatar are not updated, instead of in rsIdentity/getIdentitiesInfo, where they are
-          if(id.avatar == "" && idsInfo[i]['mImage']['mData']['base64'] != "")
+          if (id.avatar == "" && idsInfo[i]['mImage']['mData']['base64'] != "")
             id.avatar = idsInfo[i]['mImage']['mData']['base64'];
           id.isContact = true;
           contactIds.add(id);
           if (id.signed) signedContactIds.add(id);
-        } else
-          if (idsInfo[i]['mMeta']['mSubscribeFlags'] == 7) {
-            ownIds.add(Identity(
-                idsInfo[i]['mMeta']['mGroupId'],
-                idsInfo[i]['mPgpId'] != '0000000000000000',
-                idsInfo[i]['mMeta']['mGroupName'],
-                '',
-                false));
-          } else {
-            notContactIds.add(Identity(
-                idsInfo[i]['mMeta']['mGroupId'],
-                idsInfo[i]['mPgpId'] != '0000000000000000',
-                idsInfo[i]['mMeta']['mGroupName'],
-                '',
-                false));
-          }
-
+        } else if (idsInfo[i]['mMeta']['mSubscribeFlags'] == 7) {
+          ownIds.add(Identity(
+              idsInfo[i]['mMeta']['mGroupId'],
+              idsInfo[i]['mPgpId'] != '0000000000000000',
+              idsInfo[i]['mMeta']['mGroupName'],
+              '',
+              false));
+        } else {
+          notContactIds.add(Identity(
+              idsInfo[i]['mMeta']['mGroupId'],
+              idsInfo[i]['mPgpId'] != '0000000000000000',
+              idsInfo[i]['mMeta']['mGroupName'],
+              '',
+              false));
+        }
       }
 
       notContactIds.sort((id1, id2) {
@@ -189,7 +190,6 @@ dynamic getAllIdentities() async {
   } else
     throw Exception('Failed to load response');
 }
-
 
 Future<bool> setContact(String id, bool makeContact) async {
   final response = await http.post(
@@ -208,8 +208,9 @@ Future<bool> setContact(String id, bool makeContact) async {
 }
 
 /// Request unknown identity to near peers
-Future<bool> requestIdentity(String id,) async {
-  ReqRequestIdentity req = ReqRequestIdentity()
-  ..id = id;
+Future<bool> requestIdentity(
+  String id,
+) async {
+  ReqRequestIdentity req = ReqRequestIdentity()..id = id;
   openapi.rsIdentityRequestIdentity(reqRequestIdentity: req);
 }

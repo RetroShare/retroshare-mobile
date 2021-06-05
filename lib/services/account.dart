@@ -11,9 +11,15 @@ import 'package:retroshare/model/account.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/location.dart';
 
+const RETROSHARE_HOST = "127.0.0.1";
+const RETROSHARE_PORT = 9092;
+const RETROSHARE_SERVICE_PREFIX = "http://$RETROSHARE_HOST:$RETROSHARE_PORT";
+
+String getRetroshareServicePrefix() => RETROSHARE_SERVICE_PREFIX;
+
 dynamic checkLoggedIn() async {
   final response =
-      await http.get('http://localhost:9092/rsLoginHelper/isLoggedIn');
+      await http.get('http://127.0.0.1:9092/rsLoginHelper/isLoggedIn');
 
   if (response.statusCode == 200)
     return json.decode(response.body)['retval'];
@@ -21,9 +27,21 @@ dynamic checkLoggedIn() async {
     throw Exception('Failed to load response');
 }
 
+Future<bool> isRetroshareRunning() async {
+  final String reqUrl = getRetroshareServicePrefix();
+  try {
+    final response = await http.get(reqUrl);
+    print(response.statusCode);
+    return response != null && response.statusCode is int;
+  } catch (err) {
+    print(err);
+    return false;
+  }
+}
+
 Future<bool> getLocations() async {
   final response =
-      await http.get('http://localhost:9092/rsLoginHelper/getLocations');
+      await http.get('$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/getLocations');
 
   if (response.statusCode == 200) {
     accountsList = new List();
@@ -50,7 +68,7 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
   };
 
   final response = await http.post(
-      'http://localhost:9092/rsLoginHelper/attemptLogin',
+      '$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/attemptLogin',
       body: json.encode(accountDetails));
 
   if (response.statusCode == 200) {
@@ -64,16 +82,16 @@ dynamic requestAccountCreation(
     BuildContext context, String username, String password,
     [String nodeName = 'Mobile']) async {
   final accountDetails = {
-      "location": {
-        "mLocationName": nodeName,
-        "mPgpName": username,
-      },
-      "password": password,
-      'makeHidden': false,
-      'makeAutoTor': false
-    };
+    "location": {
+      "mLocationName": nodeName,
+      "mPgpName": username,
+    },
+    "password": password,
+    'makeHidden': false,
+    'makeAutoTor': false
+  };
   final response = await http.post(
-      'http://localhost:9092/rsLoginHelper/createLocation',
+      '$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
 
   if (response.statusCode == 200 && json.decode(response.body)['retval']) {
@@ -89,7 +107,7 @@ dynamic requestAccountCreation(
 
 Future<String> getOwnCert() async {
   final response = await http
-      .get('http://localhost:9092/rsPeers/GetRetroshareInvite', headers: {
+      .get('$RETROSHARE_SERVICE_PREFIX/rsPeers/GetRetroshareInvite', headers: {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
@@ -103,7 +121,7 @@ Future<String> getOwnCert() async {
 
 Future<bool> addCert(String cert) async {
   final response = await http.post(
-    'http://localhost:9092/rsPeers/acceptInvite',
+    '$RETROSHARE_SERVICE_PREFIX/rsPeers/acceptInvite',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
@@ -120,7 +138,7 @@ Future<bool> addCert(String cert) async {
 
 Future<List<Location>> getFriendsAccounts() async {
   final response = await http.get(
-    'http://localhost:9092/rsPeers/getFriendList',
+    '$RETROSHARE_SERVICE_PREFIX/rsPeers/getFriendList',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
@@ -141,7 +159,7 @@ Future<List<Location>> getFriendsAccounts() async {
 
 Future<Location> getLocationsDetails(String peerId) async {
   final response = await http.post(
-    'http://localhost:9092/rsPeers/getPeerDetails',
+    '$RETROSHARE_SERVICE_PREFIX/rsPeers/getPeerDetails',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
