@@ -63,11 +63,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!success) return;
 
     Tuple2<bool, Account> accountCreate;
+
     Navigator.pushNamed(context, '/', arguments: {
       'statusText': "Creating account...\nThis could take minutes",
       'isLoading': true,
       'spinner': true
     });
+
     if (nodeNameController.text == '')
       accountCreate = await requestAccountCreation(
           context, usernameController.text, passwordController.text);
@@ -77,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           usernameController.text,
           passwordController.text,
           nodeNameController.text);
+
     //await createLocation(usernameController.text, passwordController.text);
 
     if (accountCreate != null && accountCreate.item1) {

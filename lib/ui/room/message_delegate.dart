@@ -71,6 +71,7 @@ class MessageDelegate extends StatelessWidget {
             ),
           ),
         ),
+
 //      child: Padding(
 //        padding: EdgeInsets.symmetric(vertical: 8.0),
 //        child:

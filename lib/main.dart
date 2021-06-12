@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
+
 import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
 import 'package:redux/redux.dart';
@@ -9,6 +11,7 @@ import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/routes.dart';
 import 'package:retroshare/redux/store.dart';
 import 'package:retroshare/redux/model/app_state.dart';
+
 import 'package:retroshare/services/account.dart';
 
 import 'model/app_life_cycle_state.dart';
@@ -67,6 +70,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
   startRetroshare();
+
   final rsStore = await retroshareStore();
   openapi = DefaultApi();
 

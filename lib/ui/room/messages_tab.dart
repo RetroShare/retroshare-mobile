@@ -137,6 +137,7 @@ class _MessagesTabState extends State<MessagesTab> {
                         (widget.isRoom
                             ? ChatIdType.number3_
                             : ChatIdType.number2_));
+
                     msgController.clear();
                   },
                 ),

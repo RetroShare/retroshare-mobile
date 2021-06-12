@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+
 import 'package:retroshare/model/account.dart';
 
 import 'package:retroshare/model/auth.dart';
@@ -17,6 +18,7 @@ Future<bool> isAuthTokenValid() async {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
+
   if (response.statusCode == 200) {
     return true;
   } else
@@ -53,7 +55,9 @@ void authorizeNewToken(String locationId, String password) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$locationId:$password'))
       });
+
   print("hello ${response.body}");
+
   if (response.statusCode == 200) {
     return;
   } else

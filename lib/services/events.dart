@@ -18,6 +18,7 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
     // Deserialize the message
     var json = event.data != null ? jsonDecode(event.data) : null;
     ChatMessage chatMessage;
+
     if (json['event'] != null) {
       chatMessage = ChatMessage.fromJson(json['event']['mChatMessage']);
     }
@@ -28,6 +29,7 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
 /// Register generic Event
 ///
 /// Where [eventType] is the enum that specifies the code.
+
 Future<StreamSubscription<Event>> registerEvent(
     RsEventType eventType, Function listenCb,
     {Function onError}) async {

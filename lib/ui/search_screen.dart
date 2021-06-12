@@ -435,6 +435,7 @@ class _SearchScreenState extends State<SearchScreen>
 //      visible: (filteredAllIds?.isNotEmpty ?? false || filteredContactsIds.isNotEmpty ),
       visible: (filteredAllIds != null && filteredAllIds.isNotEmpty) ||
           (filteredContactsIds != null && filteredContactsIds.isNotEmpty),
+
       child: CustomScrollView(
         slivers: <Widget>[
           sliverPersistentHeader('Contacts', context),

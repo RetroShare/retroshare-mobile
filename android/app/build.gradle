@@ -148,4 +148,3 @@ dependencies {
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation fileTree(dir: qtAndroidDir +'/jar/', include: ['*.jar'])
 }
-

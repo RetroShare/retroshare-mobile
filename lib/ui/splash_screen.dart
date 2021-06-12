@@ -15,6 +15,7 @@ class SplashScreen extends StatefulWidget {
       this.statusText = "",
       this.spinner = false})
       : super(key: key);
+
   final isLoading;
   String statusText;
   bool spinner;
@@ -30,6 +31,7 @@ class _SplashState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     if (!widget.isLoading) {
       _statusText = "Loading...";
       checkBackendState(context);
@@ -84,7 +86,6 @@ class _SplashState extends State<SplashScreen> {
   }
 
   void checkBackendState(BuildContext context) async {
-    bool connectedToBackend = true;
     bool isLoggedIn;
     try {
       await Future.delayed(Duration(seconds: 2));

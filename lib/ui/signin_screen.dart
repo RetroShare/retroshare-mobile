@@ -48,6 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
       bool isAuthTokenValid =
           await initializeAuth(currentAccount.locationName, password);
       print(isAuthTokenValid);
+
       if (isAuthTokenValid) {
         loggedinAccount = currentAccount;
         initializeStore(context);

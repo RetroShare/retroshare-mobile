@@ -20,6 +20,7 @@ Future<List<Identity>> getOwnIdentities() async {
 
   if (respSigned.statusCode == 200) {
     ownSignedIdsList = List();
+
     json.decode(respSigned.body)['ids']
       ..toSet().forEach((id) {
         if (id != null) ownSignedIdsList.add(Identity(id, true));
@@ -91,6 +92,7 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
             makeAuthHeader(authToken.username, authToken.password)
       });
   print(response.body);
+
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval'])
       return Identity(json.decode(response.body)['id'], identity.signed,
@@ -126,7 +128,9 @@ dynamic getAllIdentities() async {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
+
   print(response.body);
+
   if (response.statusCode == 200) {
     List<String> ids = List();
     json.decode(response.body)['ids'].forEach((id) {
@@ -163,6 +167,7 @@ dynamic getAllIdentities() async {
           // This is because sometimes, the returning Id of [getIdDetails], that is a
           // result of call 'torsIdentity/getIdDetails', return identity details, from the cache
           // So sometimes the avatar are not updated, instead of in rsIdentity/getIdentitiesInfo, where they are
+
           if (id.avatar == "" && idsInfo[i]['mImage']['mData']['base64'] != "")
             id.avatar = idsInfo[i]['mImage']['mData']['base64'];
           id.isContact = true;
@@ -213,9 +218,11 @@ Future<bool> setContact(String id, bool makeContact) async {
 }
 
 /// Request unknown identity to near peers
+
 Future<bool> requestIdentity(
   String id,
 ) async {
   ReqRequestIdentity req = ReqRequestIdentity()..id = id;
+
   openapi.rsIdentityRequestIdentity(reqRequestIdentity: req);
 }

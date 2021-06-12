@@ -21,6 +21,7 @@ dynamic checkLoggedIn() async {
   final response =
       await http.get('http://localhost:9092/rsLoginHelper/isLoggedIn');
   print(response.body);
+
   if (response.statusCode == 200)
     return json.decode(response.body)['retval'];
   else
@@ -209,7 +210,7 @@ Future<List<Location>> getFriendsAccounts() async {
           'Basic ' + base64.encode(utf8.encode('$authToken'))
     },
   );
-  print(response.body);
+
   if (response.statusCode == 200) {
     var sslIds = json.decode(response.body)['sslIds'];
     List<Location> locations = List();

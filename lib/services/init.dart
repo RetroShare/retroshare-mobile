@@ -17,6 +17,7 @@ import 'chat.dart';
 import 'identity.dart';
 
 // Initialize all the stores
+
 Future<void> initializeStore(BuildContext context,
     {String nextRoute = '/home'}) async {
   final store = StoreProvider.of<AppState>(context);
@@ -59,6 +60,7 @@ Future<bool> updateOwnIdentitiesStore(store, BuildContext context) async {
 }
 
 // Update subscribed chat lobbies store
+
 Future<void> updateChatLobbiesStore(store) {
   getSubscribedChatLobbies().then((chatsList) {
     store.dispatch(UpdateSubscribedChatsAction(chatsList));
@@ -66,6 +68,7 @@ Future<void> updateChatLobbiesStore(store) {
 }
 
 // Update unsubscribed chat lobbies store
+
 void updateUnsubsChatLobbiesStore(store) {
   getUnsubscribedChatLobbies().then((unSubsChatsList) {
     store.dispatch(UpdateUnSubscribedChatsAction(unSubsChatsList));
@@ -79,12 +82,14 @@ Future<void> updateIdentitiesStore(store) async {
   store.dispatch(UpdateFriendsSignedIdentitiesAction(tupleIds.item1));
   store.dispatch(UpdateFriendsIdentitiesAction(tupleIds.item2));
   store.dispatch(UpdateNotContactIdsAction(tupleIds.item3));
+
   Map<String, Identity> allIds = Map.fromIterable(
       [tupleIds.item1, tupleIds.item2, tupleIds.item3]
           .expand((x) => x)
           .toList(),
       key: (id) => id.mId,
       value: (id) => id);
+
   store.dispatch(UpdateAllIdsAction(allIds));
 }
 

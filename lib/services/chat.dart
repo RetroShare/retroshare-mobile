@@ -17,6 +17,7 @@ import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
 import 'account.dart';
+
 import 'init.dart';
 
 // Not used
@@ -138,12 +139,14 @@ Future<bool> createChatLobby(
   if (inviteList.isNotEmpty)
     req.invitedFriends =
         List.from(inviteList.map((location) => location.rsPeerId));
+
   // Lobby flags
   // Public = 4
   // Public + signed = 20
   // Private = 0
   // Private + signed = 16
   int privacyType = 0;
+
   if (public && anonymous)
     privacyType = 4;
   else if (public && !anonymous)
@@ -194,6 +197,7 @@ Future<void> unsubscribeChatLobby(
 ///		2 TYPE_PRIVATE_DISTANT,    // private chat with distant peer, gxs_id is valid
 ///		3 TYPE_LOBBY,              // chat lobby id, lobby_id is valid
 ///		4 TYPE_BROADCAST           // message to/from all connected peers
+
 Future<ResSendChat> sendMessage(
     BuildContext context, String chatId, String msgTxt,
     [ChatIdType type = ChatIdType.number2_]) async {
@@ -271,6 +275,7 @@ Future<List<Identity>> _getLobbyParticipants(String lobbyId) async {
 Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
   List<VisibleChatLobbyRecord> unsubscribedChatLobby = List();
   var chatLobbies = await openapi.rsMsgsGetListOfNearbyChatLobbies();
+
   for (VisibleChatLobbyRecord chat in chatLobbies.publicLobbies) {
     bool autosubs = await getLobbyAutoSubscribe(chat.lobbyId.xstr64);
     if (!autosubs) {
@@ -282,6 +287,7 @@ Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
 
 /// [TODO] write this as redux Middleware
 /// This function initate a distant chat if not exists and store it.
+
 Future<void> _initiateDistantChat(Chat chat, store) async {
   String to = chat.interlocutorId;
   String from = chat.ownIdToUse;
@@ -304,6 +310,7 @@ Future<void> _initiateDistantChat(Chat chat, store) async {
 ///  #define RS_DISTANT_CHAT_STATUS_TUNNEL_DN   		0x0001
 ///  #define RS_DISTANT_CHAT_STATUS_CAN_TALK			0x0002
 ///  #define RS_DISTANT_CHAT_STATUS_REMOTELY_CLOSED 	0x0003
+
 Future<DistantChatPeerInfo> _getDistantChatStatus(
     String pid, ChatMessage aaa) async {
   var req = ReqGetDistantChatStatus();
@@ -322,6 +329,7 @@ Future<DistantChatPeerInfo> _getDistantChatStatus(
 /// already initiated.
 ///
 /// return: [Chat] object
+
 Chat getChat(
   BuildContext context,
   to, {
@@ -356,6 +364,7 @@ Chat getChat(
     // Ugly way to initialize lobby participants
     store.dispatch(
         UpdateLobbyParticipantsAction(to.chatId, new List<Identity>()));
+
     store.dispatch(AddChatMessageAction(null, to.chatId));
   }
   return chat;
