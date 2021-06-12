@@ -19,8 +19,8 @@ String getRetroshareServicePrefix() => RETROSHARE_SERVICE_PREFIX;
 
 dynamic checkLoggedIn() async {
   final response =
-      await http.get('http://127.0.0.1:9092/rsLoginHelper/isLoggedIn');
-
+      await http.get('http://localhost:9092/rsLoginHelper/isLoggedIn');
+  print(response.body);
   if (response.statusCode == 200)
     return json.decode(response.body)['retval'];
   else
@@ -28,10 +28,10 @@ dynamic checkLoggedIn() async {
 }
 
 Future<bool> isRetroshareRunning() async {
-  final String reqUrl = getRetroshareServicePrefix();
+  final String reqUrl = "http://localhost:9092";
   try {
     final response = await http.get(reqUrl);
-    print(response.statusCode);
+    print(response.body);
     return response != null && response.statusCode is int;
   } catch (err) {
     print(err);
@@ -78,28 +78,92 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
   }
 }
 
+String makeAuthHeader(String username, String password) =>
+    'Basic ' + base64Encode(utf8.encode('$username:$password'));
+
+Future<Map<String, dynamic>> rsApiCall(
+  String path, {
+  Map<String, dynamic> params,
+  String basicAuth,
+}) async {
+  final String reqUrl = getRetroshareServicePrefix() + path;
+  await isRetroshareRunning();
+  try {
+    final response = await http.post(
+      reqUrl,
+      body: jsonEncode(params ?? {}),
+      // headers: <String, String>{'Authorization': basicAuth}
+    );
+    print(response.body);
+    if (response == null) throw Exception("Request failed: " + reqUrl);
+
+    return response.statusCode == 200
+        ? jsonDecode(utf8.decode(response.bodyBytes))
+        : throw Exception("error");
+  } catch (err) {
+    throw err;
+  }
+}
+
+Future<Map> createLocation(String locationName, String password,
+    {String api_user}) async {
+  final mPath = "/rsLoginHelper/createLocationV2";
+  final mParams = {
+    "locationName": locationName,
+    "pgpName": locationName,
+    "password": password,
+    "apiUser": "retroshare",
+    /* TODO(G10h4ck): The new token scheme permit arbitrarly more secure
+       * options to avoid sending PGP password at each request. */
+    "apiPass": password
+  };
+  final response = await rsApiCall(mPath, params: mParams);
+
+  if (!(response is Map))
+    throw FormatException("response is not a Map");
+  else if (response["retval"]["errorNumber"] != 0)
+    throw Exception("Failure creating location: " + jsonEncode(response));
+  else if (!(response["locationId"] is String))
+    throw FormatException("location is not a String");
+
+  Map<String, String> location = {
+    "mLocationName": locationName,
+    "mLocationId": response["locationId"]
+  };
+  return location;
+}
+
 dynamic requestAccountCreation(
     BuildContext context, String username, String password,
     [String nodeName = 'Mobile']) async {
-  final accountDetails = {
-    "location": {
-      "mLocationName": nodeName,
-      "mPgpName": username,
-    },
+  final mParams = {
+    "locationName": username,
+    "pgpName": username,
     "password": password,
-    'makeHidden': false,
-    'makeAutoTor': false
+    "apiUser": username,
+    /* TODO(G10h4ck): The new token scheme permit arbitrarly more secure
+       * options to avoid sending PGP password at each request. */
+    "apiPass": password
   };
   final response = await http.post(
-      '$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/createLocation',
-      body: json.encode(accountDetails));
+      '$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/createLocationV2',
+      body: json.encode(mParams));
 
-  if (response.statusCode == 200 && json.decode(response.body)['retval']) {
-    dynamic resp = json.decode(response.body)['location'];
+  if (response.statusCode == 200) {
+    final resp = jsonDecode(utf8.decode(response.bodyBytes));
+    print(resp);
+    if (!(resp is Map))
+      throw FormatException("response is not a Map");
+    else if (resp["retval"]["errorNumber"] != 0)
+      throw Exception("Failure creating location: " + jsonEncode(response));
+    else if (!(resp["locationId"] is String))
+      throw FormatException("location is not a String");
+
     Account account = Account(resp['mLocationId'], resp['mPgpId'],
-        resp['mLocationName'], resp['mPgpName']);
+        mParams['LocationName'], mParams['PgpName']);
 
-    return Tuple2<bool, Account>(json.decode(response.body)['retval'], account);
+    return Tuple2<bool, Account>(
+        resp["retval"]["errorNumber"] != 0 ? false : true, account);
   } else {
     throw Exception('Failed to load response');
   }
@@ -137,6 +201,7 @@ Future<bool> addCert(String cert) async {
 }
 
 Future<List<Location>> getFriendsAccounts() async {
+  await isRetroshareRunning();
   final response = await http.get(
     '$RETROSHARE_SERVICE_PREFIX/rsPeers/getFriendList',
     headers: {
@@ -144,7 +209,7 @@ Future<List<Location>> getFriendsAccounts() async {
           'Basic ' + base64.encode(utf8.encode('$authToken'))
     },
   );
-
+  print(response.body);
   if (response.statusCode == 200) {
     var sslIds = json.decode(response.body)['sslIds'];
     List<Location> locations = List();

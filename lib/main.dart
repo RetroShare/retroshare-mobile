@@ -66,7 +66,7 @@ Future<void> restartRetroshare() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
-
+  startRetroshare();
   final rsStore = await retroshareStore();
   openapi = DefaultApi();
 
@@ -87,7 +87,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void initState() {
     // Used for notifications to open specific Navigator path
     configureSelectNotificationSubject(context);
-    startRetroshare();
     // Used to check when the app is on background
     WidgetsBinding.instance.addObserver(new LifecycleEventHandler());
   }

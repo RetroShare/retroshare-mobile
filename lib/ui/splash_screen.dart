@@ -86,21 +86,17 @@ class _SplashState extends State<SplashScreen> {
   void checkBackendState(BuildContext context) async {
     bool connectedToBackend = true;
     bool isLoggedIn;
-    print("hello1");
-    do {
-      try {
-        isLoggedIn =
-            //await isRetroshareRunning();
-            checkLoggedIn();
-        connectedToBackend = true;
-      } catch (e) {
-        if (connectedToBackend == true) _setStatusText("Can't connect...");
-        connectedToBackend = false;
-      }
-    } while (!connectedToBackend);
+    try {
+      await Future.delayed(Duration(seconds: 2));
+      isLoggedIn = await isRetroshareRunning();
+    } catch (err) {
+      print(err);
+    }
     print(isLoggedIn);
-    print('hello2');
+    await checkLoggedIn();
+    await Future.delayed(Duration(seconds: 2));
     bool isTokenValid = await isAuthTokenValid();
+
     if (isLoggedIn && isTokenValid && loggedinAccount != null) {
       _setStatusText("Logging in...");
       initializeStore(

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:retroshare/main.dart';
 
 AppLifecycleState actuaApplState;
 
@@ -10,7 +11,7 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
   LifecycleEventHandler({
     this.resumeCallBack,
     this.suspendingCallBack,
-  }){
+  }) {
     actuaApplState = AppLifecycleState.resumed;
   }
 
@@ -29,9 +30,9 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
       case AppLifecycleState.detached:
         if (suspendingCallBack != null) {
           await suspendingCallBack();
+          await stopRetroshare();
         }
         break;
     }
   }
 }
-

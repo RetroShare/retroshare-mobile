@@ -7,6 +7,8 @@ import 'package:tuple/tuple.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/model/auth.dart';
 
+import 'account.dart';
+
 Future<List<Identity>> getOwnIdentities() async {
   List<Identity> ownSignedIdsList = List<Identity>();
 
@@ -76,16 +78,19 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
     'avatar': {
       'mSize': avatarSize,
       'mData': {'base64': identity.avatar}
-    }
+    },
+    "pseudonimous": true,
+    'pgpPassword': authToken.password
   });
+  print(authToken.password);
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/createIdentity',
       body: b,
       headers: {
         HttpHeaders.authorizationHeader:
-            'Basic ' + base64.encode(utf8.encode('$authToken'))
+            makeAuthHeader(authToken.username, authToken.password)
       });
-
+  print(response.body);
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval'])
       return Identity(json.decode(response.body)['id'], identity.signed,
@@ -121,7 +126,7 @@ dynamic getAllIdentities() async {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
-
+  print(response.body);
   if (response.statusCode == 200) {
     List<String> ids = List();
     json.decode(response.body)['ids'].forEach((id) {

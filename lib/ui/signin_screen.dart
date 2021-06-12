@@ -46,7 +46,8 @@ class _SignInScreenState extends State<SignInScreen> {
     // Login success 0, already logged in 1
     if (resp == 0 || resp == 1) {
       bool isAuthTokenValid =
-          await initializeAuth(currentAccount.locationId, password);
+          await initializeAuth(currentAccount.locationName, password);
+      print(isAuthTokenValid);
       if (isAuthTokenValid) {
         loggedinAccount = currentAccount;
         initializeStore(context);

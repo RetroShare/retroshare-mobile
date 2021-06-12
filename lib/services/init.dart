@@ -90,5 +90,6 @@ Future<void> updateIdentitiesStore(store) async {
 
 Future<bool> initializeAuth(String locationId, String password) async {
   authToken = AuthToken(locationId, password);
+
   return await checkExistingAuthTokens(locationId, password);
 }
