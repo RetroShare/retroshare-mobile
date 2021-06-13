@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'package:retroshare/main.dart';
+import '../services/account.dart';
 
 AppLifecycleState actuaApplState;
 

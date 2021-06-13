@@ -33,6 +33,7 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
 Future<StreamSubscription<Event>> registerEvent(
     RsEventType eventType, Function listenCb,
     {Function onError}) async {
+      await global();
   if (rsEventsSubscriptions != null && rsEventsSubscriptions[eventType] != null)
     return null;
 

@@ -11,9 +11,9 @@ import 'package:retroshare/model/auth.dart';
 import 'account.dart';
 
 Future<bool> isAuthTokenValid() async {
+  await global();
   final String path =
       '$RETROSHARE_SERVICE_PREFIX/rsJsonApi/getAuthorizedTokens';
-  print(path);
   final response = await http.get(path, headers: {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
@@ -26,13 +26,14 @@ Future<bool> isAuthTokenValid() async {
 }
 
 Future<bool> checkExistingAuthTokens(String locationId, String password) async {
+  await global();
   final response = await http.get(
       '$RETROSHARE_SERVICE_PREFIX/rsJsonApi/getAuthorizedTokens',
       headers: {
         HttpHeaders.authorizationHeader:
             makeAuthHeader(locationId, authToken.password)
       });
-
+  print("checkExistingAuthTokens :${response.body}");
   if (response.statusCode == 200) {
     for (LinkedHashMap<String, dynamic> token
         in json.decode(response.body)['retval']) {
@@ -48,6 +49,7 @@ Future<bool> checkExistingAuthTokens(String locationId, String password) async {
 }
 
 void authorizeNewToken(String locationId, String password) async {
+  await global();
   final response = await http.post(
       '$RETROSHARE_SERVICE_PREFIX/rsJsonApi/authorizeUser',
       body: json.encode({'token': '$authToken'}),

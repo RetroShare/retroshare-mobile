@@ -11,7 +11,7 @@ import 'account.dart';
 
 Future<List<Identity>> getOwnIdentities() async {
   List<Identity> ownSignedIdsList = List<Identity>();
-
+  await global();
   final respSigned = await http
       .get('http://127.0.0.1:9092/rsIdentity/getOwnSignedIds', headers: {
     HttpHeaders.authorizationHeader:
@@ -50,6 +50,7 @@ Future<List<Identity>> getOwnIdentities() async {
 }
 
 Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
+  await global();
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/getIdDetails',
       body: json.encode({'id': id}),
@@ -74,6 +75,7 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
 }
 
 Future<Identity> createIdentity(Identity identity, int avatarSize) async {
+  await global();
   var b = json.encode({
     'name': identity.name,
     'avatar': {
@@ -83,7 +85,6 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
     "pseudonimous": true,
     'pgpPassword': authToken.password
   });
-  print(authToken.password);
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/createIdentity',
       body: b,
@@ -91,7 +92,6 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
         HttpHeaders.authorizationHeader:
             makeAuthHeader(authToken.username, authToken.password)
       });
-  print(response.body);
 
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval'])
@@ -104,6 +104,7 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
 }
 
 Future<bool> deleteIdentity(Identity identity) async {
+  await global();
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/deleteIdentity',
       body: json.encode({'id': identity.mId}),
@@ -123,6 +124,7 @@ Future<bool> deleteIdentity(Identity identity) async {
 
 // Identities that are not contacts do not have loaded avatars
 dynamic getAllIdentities() async {
+  await global();
   final response = await http
       .get('http://127.0.0.1:9092/rsIdentity/getIdentitiesSummaries', headers: {
     HttpHeaders.authorizationHeader:
@@ -202,6 +204,7 @@ dynamic getAllIdentities() async {
 }
 
 Future<bool> setContact(String id, bool makeContact) async {
+  await global();
   final response = await http.post(
     'http://127.0.0.1:9092/rsIdentity/setAsRegularContact',
     headers: {

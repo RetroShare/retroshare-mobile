@@ -49,6 +49,7 @@ import 'init.dart';
 //}
 
 Future<List<Chat>> getSubscribedChatLobbies() async {
+  await global();
   final response = await http.get(
     '$RETROSHARE_SERVICE_PREFIX/rsMsgs/getChatLobbyList',
     headers: {
@@ -74,6 +75,7 @@ Future<List<Chat>> getSubscribedChatLobbies() async {
 }
 
 Future<Chat> getChatLobbyInfo(String lobbyId) async {
+  await global();
   final response =
       await http.post('http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
           headers: {
@@ -108,6 +110,7 @@ Future<Chat> getChatLobbyInfo(String lobbyId) async {
 }
 
 Future<bool> joinChatLobby(String chatId, String idToUse) async {
+  await global();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/joinVisibleChatLobby',
     headers: {
@@ -132,6 +135,7 @@ Future<bool> createChatLobby(
     {List<Location> inviteList: const <Location>[],
     bool public: true,
     bool anonymous: true}) async {
+  await global();
   var req = ReqCreateChatLobby()
     ..lobbyName = lobbyName
     ..lobbyTopic = lobbyTopic
@@ -185,6 +189,7 @@ Future<bool> getLobbyAutoSubscribe(
 Future<void> unsubscribeChatLobby(
   String lobbyId,
 ) async {
+  await global();
   var req = ReqUnsubscribeChatLobby()
     ..lobbyId = new ChatLobbyId()
     ..lobbyId.xstr64 = lobbyId;
@@ -201,6 +206,7 @@ Future<void> unsubscribeChatLobby(
 Future<ResSendChat> sendMessage(
     BuildContext context, String chatId, String msgTxt,
     [ChatIdType type = ChatIdType.number2_]) async {
+  await global();
   var reqSendChat = ReqSendChat() // openapi request object
     ..msg = msgTxt
     ..id = new ChatId()
@@ -241,6 +247,7 @@ void getParticipants(String lobbyId, context) {
 }
 
 Future<List<Identity>> _getLobbyParticipants(String lobbyId) async {
+  await global();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
     headers: {
@@ -273,6 +280,7 @@ Future<List<Identity>> _getLobbyParticipants(String lobbyId) async {
 }
 
 Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
+  await global();
   List<VisibleChatLobbyRecord> unsubscribedChatLobby = List();
   var chatLobbies = await openapi.rsMsgsGetListOfNearbyChatLobbies();
 
@@ -289,6 +297,7 @@ Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
 /// This function initate a distant chat if not exists and store it.
 
 Future<void> _initiateDistantChat(Chat chat, store) async {
+  await global();
   String to = chat.interlocutorId;
   String from = chat.ownIdToUse;
   var req = ReqInitiateDistantChatConnexion();
@@ -313,6 +322,7 @@ Future<void> _initiateDistantChat(Chat chat, store) async {
 
 Future<DistantChatPeerInfo> _getDistantChatStatus(
     String pid, ChatMessage aaa) async {
+  await global();
   var req = ReqGetDistantChatStatus();
   req.pid = pid;
   var resp =

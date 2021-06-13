@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -16,6 +17,63 @@ const RETROSHARE_PORT = 9092;
 const RETROSHARE_SERVICE_PREFIX = "http://$RETROSHARE_HOST:$RETROSHARE_PORT";
 
 String getRetroshareServicePrefix() => RETROSHARE_SERVICE_PREFIX;
+
+const rsPlatform = const MethodChannel("cc.retroshare.retroshare/retroshare");
+
+Future<bool> startRetroshare() async {
+  int attempts = 20;
+  for (; attempts >= 0; attempts--) {
+    print("Starting Retroshare Service. Attempts countdown $attempts");
+    try {
+      bool isUp = await isRetroshareRunning();
+      print(isUp);
+      if (isUp) return true;
+
+      await rsPlatform.invokeMethod('start');
+
+      if (attempts == 0) {
+        return false;
+      }
+      await Future.delayed(Duration(seconds: 2));
+    } catch (err) {
+      print(err);
+      await Future.delayed(Duration(seconds: 2));
+    }
+  }
+}
+
+Future<void> stopRetroshare() async {
+  try {
+    await rsPlatform.invokeMethod('stop');
+
+    await Future.delayed(Duration(milliseconds: 3000));
+    bool isUp = await isRetroshareRunning();
+    if (isUp) throw Exception("The service did not stop after a while");
+  } catch (err) {
+    throw Exception("The service could not be stopped");
+  }
+}
+
+Future<void> restartRetroshare() async {
+  try {
+    await rsPlatform.invokeMethod('restart');
+
+    await Future.delayed(Duration(milliseconds: 300));
+    bool isUp = await isRetroshareRunning();
+    if (!isUp) throw Exception("The service did not restart after a while");
+  } catch (err) {
+    throw Exception("The service could not be restarted");
+  }
+}
+
+Future<void> global() async {
+  bool isRunning = await isRetroshareRunning();
+  try {
+    if (!isRunning) await startRetroshare();
+  } catch (err) {
+    throw Exception("The service could not be restarted");
+  }
+}
 
 dynamic checkLoggedIn() async {
   final response =
@@ -41,6 +99,7 @@ Future<bool> isRetroshareRunning() async {
 }
 
 Future<bool> getLocations() async {
+  await global();
   final response =
       await http.get('$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/getLocations');
 
@@ -63,6 +122,7 @@ Future<bool> getLocations() async {
 }
 
 dynamic requestLogIn(Account selectedAccount, String password) async {
+  await global();
   var accountDetails = {
     'account': selectedAccount.locationId,
     'password': password
@@ -108,6 +168,7 @@ Future<Map<String, dynamic>> rsApiCall(
 
 Future<Map> createLocation(String locationName, String password,
     {String api_user}) async {
+  await global();
   final mPath = "/rsLoginHelper/createLocationV2";
   final mParams = {
     "locationName": locationName,
@@ -137,6 +198,7 @@ Future<Map> createLocation(String locationName, String password,
 dynamic requestAccountCreation(
     BuildContext context, String username, String password,
     [String nodeName = 'Mobile']) async {
+  await global();
   final mParams = {
     "locationName": username,
     "pgpName": username,
@@ -146,13 +208,12 @@ dynamic requestAccountCreation(
        * options to avoid sending PGP password at each request. */
     "apiPass": password
   };
+
   final response = await http.post(
       '$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/createLocationV2',
       body: json.encode(mParams));
-
   if (response.statusCode == 200) {
-    final resp = jsonDecode(utf8.decode(response.bodyBytes));
-    print(resp);
+    final resp = await json.decode(response.body);
     if (!(resp is Map))
       throw FormatException("response is not a Map");
     else if (resp["retval"]["errorNumber"] != 0)
@@ -160,9 +221,8 @@ dynamic requestAccountCreation(
     else if (!(resp["locationId"] is String))
       throw FormatException("location is not a String");
 
-    Account account = Account(resp['mLocationId'], resp['mPgpId'],
-        mParams['LocationName'], mParams['PgpName']);
-
+    Account account = Account(resp['locationId'], resp['pgpId'],
+        mParams['locationName'], mParams['pgpName']);
     return Tuple2<bool, Account>(
         resp["retval"]["errorNumber"] != 0 ? false : true, account);
   } else {
@@ -171,6 +231,7 @@ dynamic requestAccountCreation(
 }
 
 Future<String> getOwnCert() async {
+  await global();
   final response = await http
       .get('$RETROSHARE_SERVICE_PREFIX/rsPeers/GetRetroshareInvite', headers: {
     HttpHeaders.authorizationHeader:
@@ -185,6 +246,7 @@ Future<String> getOwnCert() async {
 }
 
 Future<bool> addCert(String cert) async {
+  await global();
   final response = await http.post(
     '$RETROSHARE_SERVICE_PREFIX/rsPeers/acceptInvite',
     headers: {
@@ -202,7 +264,7 @@ Future<bool> addCert(String cert) async {
 }
 
 Future<List<Location>> getFriendsAccounts() async {
-  await isRetroshareRunning();
+  await global();
   final response = await http.get(
     '$RETROSHARE_SERVICE_PREFIX/rsPeers/getFriendList',
     headers: {
@@ -224,6 +286,7 @@ Future<List<Location>> getFriendsAccounts() async {
 }
 
 Future<Location> getLocationsDetails(String peerId) async {
+  await global();
   final response = await http.post(
     '$RETROSHARE_SERVICE_PREFIX/rsPeers/getPeerDetails',
     headers: {
