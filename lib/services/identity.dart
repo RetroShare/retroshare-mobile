@@ -222,7 +222,7 @@ Future<bool> setContact(String id, bool makeContact) async {
 
 /// Request unknown identity to near peers
 
-Future<bool> requestIdentity(
+Future<void> requestIdentity(
   String id,
 ) async {
   ReqRequestIdentity req = ReqRequestIdentity()..id = id;
