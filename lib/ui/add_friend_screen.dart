@@ -30,47 +30,48 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
     _getCert();
   }
 
+  String str(String a, String b) {
+    return a + ':' + b;
+  }
+
   _getCert() async {
     ownCert = (await getOwnCert()).replaceAll("\n", "");
     ownCertController.text = ownCert;
   }
 
-  _showCertDialog(){
-    return 
-      showDialog(
+  _showCertDialog() {
+    return showDialog(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Your RetroShare invite"),
-            content:
-              Column(
-                children: <Widget>[
-                  Button(
-                    name: 'Copy to clipboard',
-                    buttonIcon: Icons.content_copy,
-                    onPressed: () async {
-                      await Clipboard.setData(ClipboardData(text: ownCertController.text));
-                      await showInviteCopyNotification();
-                    },
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                        child: TextField(
-                          readOnly: true,
-                          controller: ownCertController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                              border: InputBorder.none),
-                          style: Theme.of(context).textTheme.body2,
-                        ),
+            content: Column(
+              children: <Widget>[
+                Button(
+                  name: 'Copy to clipboard',
+                  buttonIcon: Icons.content_copy,
+                  onPressed: () async {
+                    await Clipboard.setData(
+                        ClipboardData(text: ownCertController.text));
+                    await showInviteCopyNotification();
+                  },
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: TextField(
+                      readOnly: true,
+                      controller: ownCertController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(border: InputBorder.none),
+                      style: Theme.of(context).textTheme.body2,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
           );
-        }
-    );
+        });
   }
 
   @override
@@ -130,20 +131,16 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     "About me:",
-                                    style: TextStyle(
-                                      fontSize: 20.0
-                                    ),
+                                    style: TextStyle(fontSize: 20.0),
                                   ),
                                 ),
                               ),
                               PersonDelegate(
                                 data: PersonDelegateData(
-                                name: loggedinAccount.pgpName +
-                                  ':' +
-                                    loggedinAccount.locationName,
-                                  message: loggedinAccount.pgpId +
-                                      ':' +
-                                      loggedinAccount.locationId,
+                                  name: str(loggedinAccount.pgpName,
+                                      loggedinAccount.locationName),
+                                  message: str(loggedinAccount.pgpId,
+                                      loggedinAccount.locationId),
                                   isOnline: true,
                                   isMessage: true,
                                 ),
@@ -154,26 +151,24 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     "1. Share your RetroShare invite",
-                                    style: TextStyle(
-                                        fontSize: 20.0
-                                    ),
+                                    style: TextStyle(fontSize: 20.0),
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 15.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     Container(
-                                      decoration:  BoxDecoration(
+                                      decoration: BoxDecoration(
                                         border: Border.all(
-                                            width: 2,
-                                            color: Colors.black87
-                                        ),
+                                            width: 2, color: Colors.black87),
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0) //         <--- border radius here
-                                        ),
+                                            Radius.circular(
+                                                5.0) //         <--- border radius here
+                                            ),
                                       ),
                                       child: IconButton(
                                         icon: Icon(
@@ -187,14 +182,13 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                       ),
                                     ),
                                     Container(
-                                      decoration:  BoxDecoration(
+                                      decoration: BoxDecoration(
                                         border: Border.all(
-                                            width: 2,
-                                            color: Colors.black87
-                                        ),
+                                            width: 2, color: Colors.black87),
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0) //         <--- border radius here
-                                        ),
+                                            Radius.circular(
+                                                5.0) //         <--- border radius here
+                                            ),
                                       ),
                                       child: IconButton(
                                         icon: Icon(
@@ -214,9 +208,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "2. Paste your friends invite here",
-                                  style: TextStyle(
-                                      fontSize: 20.0
-                                  ),
+                                  style: TextStyle(fontSize: 20.0),
                                 ),
                               ),
                               SizedBox(
@@ -248,7 +240,8 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                     maxLines: null,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: 'Paste your friend\'s invite here'),
+                                        hintText:
+                                            'Paste your friend\'s invite here'),
                                     style: Theme.of(context).textTheme.body2,
                                   ),
                                 ),
@@ -277,10 +270,11 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                           _requestAddCert = true;
                         });
                         bool success = await addCert(newCertController.text);
-                        if(success)
+                        if (success)
                           Navigator.pop(context);
                         else
-                          showToast('An error occurred while adding your friend.');
+                          showToast(
+                              'An error occurred while adding your friend.');
                       },
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0 + personDelegateHeight * 0.04),

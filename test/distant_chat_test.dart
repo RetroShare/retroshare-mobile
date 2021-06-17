@@ -1,15 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openapi/api.dart';
 import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/events.dart';
-import 'package:retroshare/services/events.dart';
 import 'package:retroshare/services/chat.dart';
 import 'package:retroshare/services/init.dart';
-import 'package:http/http.dart' as http;
 
 //// tests for ChatId
 void main() {
@@ -102,7 +95,6 @@ void main() {
 //
 //
 //    });
-
 
     test('to test set autosubscribe', () async {
       var resp = await getSubscribedChatLobbies();

@@ -6,9 +6,14 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+def sdkDir = localProperties.getProperty('sdk.dir')
+def ndkDir = localProperties.getProperty('ndk.dir')
+
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    throw new FileNotFoundException(
+		"Flutter SDK not found. Define location with flutter.sdk in the\
+		 local.properties file." )
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -21,21 +26,99 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def rsProp = new Properties()
+def rsPropFileName = 'retroshare-service.properties'
+def rsPropFile = rootProject.file(rsPropFileName)
+if(rsPropFile.exists())
+{
+	rsPropFile.withReader('UTF-8') { reader ->
+	rsProp.load(reader)
+	}
+}
+else
+{
+	throw new FileNotFoundException('File '+rsPropFileName+' not found!')
+}
+
+rsProp.getRequiredProperty = { propName ->
+	def retval = rsProp.getProperty(propName)
+	if(retval == null)
+	{
+		throw new FileNotFoundException(
+			'Property: '+propName+' not found in: '+rsPropFileName+' !' )
+	}
+	return retval
+}
+
+def qtAndroidDirPropName = 'qt.installdir'
+def qtAndroidDir = new File(rsProp.getRequiredProperty(qtAndroidDirPropName))
+if(qtAndroidDir.isDirectory())
+{
+	def mCandDirs = []
+	qtAndroidDir.eachDir() {
+		if(it.name.startsWith('android')) { mCandDirs << it.name }
+	}
+
+	if(mCandDirs.size() < 1)
+	{
+		throw new FileNotFoundException(
+			qtAndroidDirPropName + ' in: ' + rsPropFileName + " doesn't point \
+			to a valid Qt for Androd installation directory" )
+	}
+
+	qtAndroidDir = qtAndroidDir.getCanonicalPath() + '/' + mCandDirs[0]
+}
+else
+{
+	throw new FileNotFoundException(
+	qtAndroidDirPropName + ' in: ' + rsPropFileName + " must point to a valid \
+	directory" )
+}
+
+def rsServiceBlobDir = new File(rootProject.buildDir, 'retroshare-service')
+if(!rsServiceBlobDir.exists()) rsServiceBlobDir.mkdirs()
+
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
+	buildToolsVersion '23.0.0 rc3'
+
+	copy {
+		rsProp.getRequiredProperty('retroshare.servicepackages').split(':').each {
+			from zipTree(it) into rsServiceBlobDir
+		}
+	}
+
+	sourceSets {
+		main {
+			// manifest.srcFile = [ 'src/main/AndroidManifest.xml',
+			//                      'libs/AndroidManifest.xml' ]
+			java.srcDirs = [ qtAndroidDir + '/src/android/java/src',
+			                 'src/main/kotlin', 'src/main/java' ]
+			aidl.srcDirs = [ qtAndroidDir + '/src/android/java/src', 'src',
+			                 'aidl' ]
+			res.srcDirs = [ qtAndroidDir + '/src/android/java/res', 'res',
+			                'src/main/res' ]
+			resources.srcDirs = ['src']
+			renderscript.srcDirs = ['src']
+			assets.srcDirs = [ 'assets',
+			                   rsServiceBlobDir.getCanonicalPath() + '/assets' ]
+			jniLibs.srcDirs += rsServiceBlobDir.getCanonicalPath() + '/lib'
+		}
+	}
 
     lintOptions {
         disable 'InvalidPackage'
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "cc.retroshare.retroshare"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -44,10 +127,12 @@ android {
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Signing with the debug keys for now, so `flutter run --release`
+            // works.
             signingConfig signingConfigs.debug
         }
     }
+
 }
 
 flutter {
@@ -55,7 +140,11 @@ flutter {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation fileTree(dir: qtAndroidDir +'/jar/', include: ['*.jar'])
 }

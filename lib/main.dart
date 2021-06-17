@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter/services.dart';
+
 import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
 import 'package:redux/redux.dart';
@@ -9,14 +12,16 @@ import 'package:retroshare/routes.dart';
 import 'package:retroshare/redux/store.dart';
 import 'package:retroshare/redux/model/app_state.dart';
 
+import 'package:retroshare/services/account.dart';
+
 import 'model/app_life_cycle_state.dart';
 import 'model/auth.dart';
-
+import 'package:http/http.dart' as http;
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
+  startRetroshare();
 
   final rsStore = await retroshareStore();
   openapi = DefaultApi();
@@ -33,8 +38,7 @@ class App extends StatefulWidget {
   _AppState createState() => new _AppState();
 }
 
-class _AppState extends State<App> with WidgetsBindingObserver{
-
+class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void initState() {
     // Used for notifications to open specific Navigator path

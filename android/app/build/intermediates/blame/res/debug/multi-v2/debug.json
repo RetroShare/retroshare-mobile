@@ -1,0 +1,1902 @@
+{
+    "logs": [
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ro_values-ro.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-ro\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "294,174,57,414",
+                        "endColumns": "118,118,115,102",
+                        "endOffsets": "408,288,168,512"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,174,293,510",
+                        "endColumns": "118,118,115,102",
+                        "endOffsets": "169,288,404,608"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ro\\values-ro.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "409",
+                        "endColumns": "100",
+                        "endOffsets": "505"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-el_values-el.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-el\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "320,201,57,438",
+                        "endColumns": "116,117,142,100",
+                        "endOffsets": "432,314,195,534"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,172,290,534",
+                        "endColumns": "116,117,142,100",
+                        "endOffsets": "167,285,428,630"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-el\\values-el.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "433",
+                        "endColumns": "100",
+                        "endOffsets": "529"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-sv_values-sv.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-sv\\values-sv.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-de_values-de.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-de\\values-de.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "448",
+                        "endColumns": "100",
+                        "endOffsets": "544"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-de\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "311,186,57,453",
+                        "endColumns": "140,123,127,101",
+                        "endOffsets": "447,305,180,550"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,196,320,549",
+                        "endColumns": "140,123,127,101",
+                        "endOffsets": "191,315,443,646"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ne_values-ne.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ne\\values-ne.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-mn_values-mn.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-mn\\values-mn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-eu_values-eu.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-eu\\values-eu.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-en-rCA_values-en-rCA.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-en-rCA\\values-en-rCA.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-v21_values-v21.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\77d4e6b7d4c434dc2ce0e301a33494cb\\media-1.1.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "8,11,15,19",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "596,764,1053,1349",
+                        "endLines": "10,13,17,21",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "759,922,1216,1511"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,14,18,22,25",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,927,1221,1516,1688",
+                        "endLines": "2,3,4,5,6,7,14,18,24,29",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,1048,1344,1683,2021"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-en-rIN_values-en-rIN.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-en-rIN\\values-en-rIN.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-am_values-am.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-am\\values-am.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ar_values-ar.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ar\\values-ar.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-lt_values-lt.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-lt\\values-lt.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-mr_values-mr.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-mr\\values-mr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-zh-rHK_values-zh-rHK.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-zh-rHK\\values-zh-rHK.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-es_values-es.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-es\\values-es.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "389",
+                        "endColumns": "100",
+                        "endOffsets": "485"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-es\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "282,174,57,394",
+                        "endColumns": "110,106,115,97",
+                        "endOffsets": "388,276,168,487"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,166,273,490",
+                        "endColumns": "110,106,115,97",
+                        "endOffsets": "161,268,384,583"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-uk_values-uk.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-uk\\values-uk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-tr_values-tr.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-tr\\values-tr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-be_values-be.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-be\\values-be.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-gl_values-gl.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-gl\\values-gl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ur_values-ur.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ur\\values-ur.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-my_values-my.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-my\\values-my.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-fa_values-fa.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-fa\\values-fa.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "403",
+                        "endColumns": "100",
+                        "endOffsets": "499"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-fa\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "293,168,57,408",
+                        "endColumns": "113,123,109,92",
+                        "endOffsets": "402,287,162,496"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,169,293,504",
+                        "endColumns": "113,123,109,92",
+                        "endOffsets": "164,288,398,592"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-nl_values-nl.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-nl\\values-nl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "436",
+                        "endColumns": "100",
+                        "endOffsets": "532"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-nl\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "309,180,57,441",
+                        "endColumns": "130,127,121,103",
+                        "endOffsets": "435,303,174,540"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,186,314,537",
+                        "endColumns": "130,127,121,103",
+                        "endOffsets": "181,309,431,636"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-af_values-af.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-af\\values-af.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-sr_values-sr.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-sr\\values-sr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-is_values-is.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-is\\values-is.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ko_values-ko.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ko\\values-ko.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-kn_values-kn.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-kn\\values-kn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-lv_values-lv.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-lv\\values-lv.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-hu_values-hu.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-hu\\values-hu.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-b+sr+Latn_values-b+sr+Latn.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-b+sr+Latn\\values-b+sr+Latn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-es-rUS_values-es-rUS.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-es-rUS\\values-es-rUS.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-da_values-da.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-da\\values-da.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ml_values-ml.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ml\\values-ml.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-si_values-si.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-si\\values-si.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-uz_values-uz.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-uz\\values-uz.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-vi_values-vi.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-vi\\values-vi.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-sk_values-sk.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-sk\\values-sk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-en-rXC_values-en-rXC.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-en-rXC\\values-en-rXC.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "202",
+                        "endOffsets": "253"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-en-rGB_values-en-rGB.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-en-rGB\\values-en-rGB.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-hi_values-hi.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-hi\\values-hi.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,171,172,176,177,178,6,13,56,88,125",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,124,187,245,7725,7795,7863,7935,8005,8066,8140,8213,8274,8335,8397,8461,8523,8584,8652,8752,8812,8878,8951,9020,9077,9129,9191,9263,9339,9374,9409,9459,9520,9577,9611,9646,9681,9751,9822,9939,10140,10250,10451,10580,10652,319,617,3523,5588,7348",
+                        "endLines": "2,3,4,5,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,170,171,175,176,177,178,12,55,87,124,131",
+                        "endColumns": "68,62,57,73,69,67,71,69,60,73,72,60,60,61,63,61,60,67,99,59,65,72,68,56,51,61,71,75,34,34,49,60,56,33,34,34,69,70,116,12,109,12,128,71,66,24,24,24,24,24",
+                        "endOffsets": "119,182,240,314,7790,7858,7930,8000,8061,8135,8208,8269,8330,8392,8456,8518,8579,8647,8747,8807,8873,8946,9015,9072,9124,9186,9258,9334,9369,9404,9454,9515,9572,9606,9641,9676,9746,9817,9934,10135,10245,10446,10575,10647,10714,612,3518,5583,7343,7720"
+                    },
+                    "to": {
+                        "startLines": "32,33,36,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,65,66,67,68,69,70,71,72,73,74,76,80,87,88,93,96,101,103,104,105,112,155,187,224",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "1353,1422,1645,1776,1850,1920,1988,2060,2130,2191,2265,2338,2399,2460,2522,2586,2648,2709,2777,2877,2937,3003,3076,3145,3202,3254,3528,3600,3676,3711,3746,3796,3857,3914,3948,3983,4078,4490,4956,5073,5340,5633,5900,6096,6168,6235,6533,9439,11504,13264",
+                        "endLines": "32,33,36,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,65,66,67,68,69,70,71,72,73,74,76,80,87,91,93,99,101,103,104,111,154,186,223,230",
+                        "endColumns": "68,62,57,73,69,67,71,69,60,73,72,60,60,61,63,61,60,67,99,59,65,72,68,56,51,61,71,75,34,34,49,60,56,33,34,34,69,70,116,12,109,12,128,71,66,24,24,24,24,24",
+                        "endOffsets": "1417,1480,1698,1845,1915,1983,2055,2125,2186,2260,2333,2394,2455,2517,2581,2643,2704,2772,2872,2932,2998,3071,3140,3197,3249,3311,3595,3671,3706,3741,3791,3852,3909,3943,3978,4013,4143,4556,5068,5269,5445,5829,6024,6163,6230,6528,9434,11499,13259,13636"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "5,4,3,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "324,201,88,433",
+                        "endColumns": "107,121,111,97",
+                        "endOffsets": "427,318,195,526"
+                    },
+                    "to": {
+                        "startLines": "77,78,79,81",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "4148,4256,4378,4561",
+                        "endColumns": "107,121,111,97",
+                        "endOffsets": "4251,4373,4485,4654"
+                    }
+                },
+                {
+                    "source": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\res\\values\\libs.xml",
+                    "from": {
+                        "startLines": "36,23,10,14,3",
+                        "startColumns": "4,4,4,5,4",
+                        "startOffsets": "1455,542,302,362,59",
+                        "endLines": "38,35,12,21,5",
+                        "endColumns": "12,12,12,13,12",
+                        "endOffsets": "1511,1449,353,534,171"
+                    },
+                    "to": {
+                        "startLines": "2,5,18,21,29",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,114,1014,1068,1238",
+                        "endLines": "4,17,20,28,31",
+                        "endColumns": "12,12,12,13,12",
+                        "endOffsets": "109,1009,1063,1233,1348"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\77d4e6b7d4c434dc2ce0e301a33494cb\\media-1.1.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,144,215,288,341,394,447,500,560,626,748,809,875",
+                        "endColumns": "88,70,72,52,52,52,52,59,65,121,60,65,66",
+                        "endOffsets": "139,210,283,336,389,442,495,555,621,743,804,870,937"
+                    },
+                    "to": {
+                        "startLines": "34,35,37,61,62,63,64,75,92,94,95,100,102",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "1485,1574,1703,3316,3369,3422,3475,4018,5274,5450,5572,5834,6029",
+                        "endColumns": "88,70,72,52,52,52,52,59,65,121,60,65,66",
+                        "endOffsets": "1569,1640,1771,3364,3417,3470,3523,4073,5335,5567,5628,5895,6091"
+                    }
+                },
+                {
+                    "source": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "353"
+                    },
+                    "to": {
+                        "startLines": "82",
+                        "startColumns": "4",
+                        "startOffsets": "4659",
+                        "endLines": "86",
+                        "endColumns": "12",
+                        "endOffsets": "4951"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-pa_values-pa.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-pa\\values-pa.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ca_values-ca.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ca\\values-ca.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-gu_values-gu.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-gu\\values-gu.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-in_values-in.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-in\\values-in.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "412",
+                        "endColumns": "100",
+                        "endOffsets": "508"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-in\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "303,178,57,417",
+                        "endColumns": "112,123,119,89",
+                        "endOffsets": "411,297,172,502"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,168,292,513",
+                        "endColumns": "112,123,119,89",
+                        "endOffsets": "163,287,407,598"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-v24_values-v24.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\77d4e6b7d4c434dc2ce0e301a33494cb\\media-1.1.0\\res\\values-v24\\values-v24.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,121,182,248",
+                        "endColumns": "65,60,65,66",
+                        "endOffsets": "116,177,243,310"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-sw_values-sw.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-sw\\values-sw.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ta_values-ta.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ta\\values-ta.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-bs_values-bs.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-bs\\values-bs.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-iw_values-iw.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-iw\\values-iw.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-pt-rBR_values-pt-rBR.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-pt-rBR\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "302,187,57,407",
+                        "endColumns": "103,113,128,95",
+                        "endOffsets": "401,296,181,498"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,159,273,503",
+                        "endColumns": "103,113,128,95",
+                        "endOffsets": "154,268,397,594"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-pt-rBR\\values-pt-rBR.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "402",
+                        "endColumns": "100",
+                        "endOffsets": "498"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-pt_values-pt.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-pt\\values-pt.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-tl_values-tl.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-tl\\values-tl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-fi_values-fi.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-fi\\values-fi.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-sl_values-sl.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-sl\\values-sl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-hy_values-hy.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-hy\\values-hy.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ka_values-ka.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ka\\values-ka.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-as_values-as.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-as\\values-as.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-zh-rCN_values-zh-rCN.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "274",
+                        "endColumns": "100",
+                        "endOffsets": "370"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-zh-rCN\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "211,136,57,279",
+                        "endColumns": "66,73,77,70",
+                        "endOffsets": "273,205,130,345"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,122,196,375",
+                        "endColumns": "66,73,77,70",
+                        "endOffsets": "117,191,269,441"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-lo_values-lo.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-lo\\values-lo.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-pt-rPT_values-pt-rPT.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-pt-rPT\\values-pt-rPT.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-fr_values-fr.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "421",
+                        "endColumns": "100",
+                        "endOffsets": "517"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-fr\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "307,184,57,426",
+                        "endColumns": "117,121,125,102",
+                        "endOffsets": "420,301,178,524"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,173,295,522",
+                        "endColumns": "117,121,125,102",
+                        "endOffsets": "168,290,416,620"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-or_values-or.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-or\\values-or.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-hr_values-hr.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-hr\\values-hr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ms_values-ms.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-ms\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "298,171,57,404",
+                        "endColumns": "104,125,112,89",
+                        "endOffsets": "398,292,165,489"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,160,286,500",
+                        "endColumns": "104,125,112,89",
+                        "endOffsets": "155,281,394,585"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ms\\values-ms.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "399",
+                        "endColumns": "100",
+                        "endOffsets": "495"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ru_values-ru.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-ru\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "285,166,57,405",
+                        "endColumns": "118,117,107,93",
+                        "endOffsets": "399,279,160,494"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,174,292,501",
+                        "endColumns": "118,117,107,93",
+                        "endOffsets": "169,287,395,590"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ru\\values-ru.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "400",
+                        "endColumns": "100",
+                        "endOffsets": "496"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-fr-rCA_values-fr-rCA.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-fr-rCA\\values-fr-rCA.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-en-rAU_values-en-rAU.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-et_values-et.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-et\\values-et.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "381",
+                        "endColumns": "100",
+                        "endOffsets": "477"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-et\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "282,171,57,386",
+                        "endColumns": "102,109,112,91",
+                        "endOffsets": "380,276,165,473"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,158,268,482",
+                        "endColumns": "102,109,112,91",
+                        "endOffsets": "153,263,376,569"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-v16_values-v16.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-mk_values-mk.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-mk\\values-mk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-bn_values-bn.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-bn\\values-bn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-az_values-az.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-az\\values-az.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-zh-rTW_values-zh-rTW.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-zh-rTW\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "211,136,57,279",
+                        "endColumns": "66,73,77,70",
+                        "endOffsets": "273,205,130,345"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,122,196,375",
+                        "endColumns": "66,73,77,70",
+                        "endOffsets": "117,191,269,441"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "274",
+                        "endColumns": "100",
+                        "endOffsets": "370"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-te_values-te.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-te\\values-te.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-th_values-th.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-th\\values-th.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-km_values-km.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-km\\values-km.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ky_values-ky.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ky\\values-ky.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-rs_values-rs.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-rs\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "294,176,57,413",
+                        "endColumns": "117,116,117,92",
+                        "endOffsets": "407,288,170,501"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,173,290,408",
+                        "endColumns": "117,116,117,92",
+                        "endOffsets": "168,285,403,496"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-zu_values-zu.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-zu\\values-zu.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-pl_values-pl.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-pl\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "300,189,57,400",
+                        "endColumns": "98,109,130,96",
+                        "endOffsets": "394,294,183,492"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,154,264,496",
+                        "endColumns": "98,109,130,96",
+                        "endOffsets": "149,259,390,588"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-pl\\values-pl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "395",
+                        "endColumns": "100",
+                        "endOffsets": "491"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-cs_values-cs.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-cs\\values-cs.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-nb_values-nb.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-nb\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "296,175,57,398",
+                        "endColumns": "100,119,116,96",
+                        "endOffsets": "392,290,169,490"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,156,276,494",
+                        "endColumns": "100,119,116,96",
+                        "endOffsets": "151,271,388,586"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-nb\\values-nb.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "393",
+                        "endColumns": "100",
+                        "endOffsets": "489"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-bg_values-bg.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-bg\\values-bg.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ja_values-ja.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-ja\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "248,150,57,325",
+                        "endColumns": "75,96,91,84",
+                        "endOffsets": "319,242,144,405"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,131,228,421",
+                        "endColumns": "75,96,91,84",
+                        "endOffsets": "126,223,315,501"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-ja\\values-ja.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "320",
+                        "endColumns": "100",
+                        "endOffsets": "416"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-kk_values-kk.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-kk\\values-kk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-it_values-it.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-it\\values-it.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "401",
+                        "endColumns": "100",
+                        "endOffsets": "497"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-it\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "292,180,57,406",
+                        "endColumns": "112,110,121,100",
+                        "endOffsets": "400,286,174,502"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,168,279,502",
+                        "endColumns": "112,110,121,100",
+                        "endOffsets": "163,274,396,598"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-sq_values-sq.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-sq\\values-sq.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -34,13 +34,14 @@ class _MessagesTabState extends State<MessagesTab> {
     return Column(
       children: <Widget>[
         Expanded(
-          child:
-          StoreConnector<AppState, List<ChatMessage>>(
+          child: StoreConnector<AppState, List<ChatMessage>>(
             converter: (store) => (widget.chat.chatId == null ||
-                                  store.state.messagesList == null ||
-                                  store.state.messagesList[widget.chat.chatId] == null )
-                ? [] : store.state.messagesList[widget.chat.chatId].reversed.toList(),
-            builder: (context, msgList){
+                    store.state.messagesList == null ||
+                    store.state.messagesList[widget.chat.chatId] == null)
+                ? []
+                : store.state.messagesList[widget.chat.chatId].reversed
+                    .toList(),
+            builder: (context, msgList) {
               return Stack(
                 children: <Widget>[
                   ListView.builder(
@@ -50,10 +51,12 @@ class _MessagesTabState extends State<MessagesTab> {
                     itemBuilder: (BuildContext context, int index) {
                       return MessageDelegate(
                         data: msgList[index],
-                        bubbleTitle: widget.isRoom
-                            && (msgList[index] != null)
-                            && (msgList[index].incoming)  // Why msgList[index]?.incoming ?? false is not working??
-                            ? msgList[index].getChatSenderName(StoreProvider.of<AppState>(context))
+                        bubbleTitle: widget.isRoom &&
+                                (msgList[index] != null) &&
+                                (msgList[index]
+                                    .incoming) // Why msgList[index]?.incoming ?? false is not working??
+                            ? msgList[index].getChatSenderName(
+                                StoreProvider.of<AppState>(context))
                             : null,
                       );
                     },
@@ -71,7 +74,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                   'assets/icons8/pluto-no-messages-1.png'),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 25),
-                                child: Text('It seems like there is no messages',
+                                child: Text(
+                                    'It seems like there is no messages',
                                     style: Theme.of(context).textTheme.body2),
                               ),
                             ],
@@ -126,8 +130,14 @@ class _MessagesTabState extends State<MessagesTab> {
                     Icons.send,
                   ),
                   onPressed: () {
-                    sendMessage(context, widget.chat.chatId, msgController.text,
-                        (widget.isRoom ? ChatIdType.number3_: ChatIdType.number2_));
+                    sendMessage(
+                        context,
+                        widget.chat.chatId,
+                        msgController.text,
+                        (widget.isRoom
+                            ? ChatIdType.number3_
+                            : ChatIdType.number2_));
+
                     msgController.clear();
                   },
                 ),

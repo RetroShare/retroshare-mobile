@@ -1,11 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'button.dart';
 
-Future imagePickerDialog(context, Function callback, {double maxWidth = 1200.0, maxHeight = 1200.0}) async {
+Future imagePickerDialog(context, Function callback,
+    {double maxWidth = 1200.0, maxHeight = 1200.0}) async {
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -17,15 +16,22 @@ Future imagePickerDialog(context, Function callback, {double maxWidth = 1200.0, 
                   Button(
                       name: "Gallery",
                       buttonIcon: Icons.photo_library,
-                      onPressed: () async => callback(await ImagePicker.pickImage(source: ImageSource.gallery, maxWidth: 1200.0, maxHeight: 1200.0))
-                  ),
+                      onPressed: () async => callback(
+                          await ImagePicker.pickImage(
+                              source: ImageSource.gallery,
+                              maxWidth: 1200.0,
+                              maxHeight: 1200.0))),
                   Padding(padding: EdgeInsets.all(8.0)),
                   GestureDetector(
                     child: Button(
                         name: "Camera",
                         buttonIcon: Icons.camera_alt,
-                        onPressed: () async => callback(await ImagePicker.pickImage(source: ImageSource.camera, maxWidth: 1200.0, maxHeight: 1200.0),)
-                    ),
+                        onPressed: () async => callback(
+                              await ImagePicker.pickImage(
+                                  source: ImageSource.camera,
+                                  maxWidth: 1200.0,
+                                  maxHeight: 1200.0),
+                            )),
                   )
                 ],
               ),

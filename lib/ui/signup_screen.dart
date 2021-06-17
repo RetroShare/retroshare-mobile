@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:retroshare/services/init.dart';
 import 'package:tuple/tuple.dart';
 
 import 'package:retroshare/model/account.dart';
 import 'package:retroshare/services/account.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -65,13 +63,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!success) return;
 
     Tuple2<bool, Account> accountCreate;
-    Navigator.pushNamed(context, '/',
-      arguments: {
-        'statusText': "Creating account...\nThis could take minutes",
-        'isLoading': true,
-        'spinner': true
-      }
-    );
+
+    Navigator.pushNamed(context, '/', arguments: {
+      'statusText': "Creating account...\nThis could take minutes",
+      'isLoading': true,
+      'spinner': true
+    });
+
     if (nodeNameController.text == '')
       accountCreate = await requestAccountCreation(
           context, usernameController.text, passwordController.text);
@@ -82,12 +80,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
           passwordController.text,
           nodeNameController.text);
 
+    //await createLocation(usernameController.text, passwordController.text);
+
     if (accountCreate != null && accountCreate.item1) {
       loggedinAccount = accountCreate.item2;
-      bool isAuthTokenValid =
-        await initializeAuth(accountCreate.item2.locationId, passwordController.text);
+      bool isAuthTokenValid = await initializeAuth(
+          accountCreate.item2.locationName, passwordController.text);
       if (isAuthTokenValid) {
-        initializeStore(context,);
+        initializeStore(
+          context,
+        );
       }
     }
   }
