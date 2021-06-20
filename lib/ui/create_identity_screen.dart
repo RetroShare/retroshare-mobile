@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 
 import 'dart:io';
@@ -10,9 +10,7 @@ import 'dart:convert';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/identity.dart';
-import 'package:retroshare/redux/model/app_state.dart';
-import 'package:retroshare/redux/actions/app_actions.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import '../common/color_loader_3.dart';
 
 class CreateIdentityScreen extends StatefulWidget {
@@ -58,15 +56,14 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen> {
 
   // Request create identity
   void _createIdentity() async {
-    Identity id = await createIdentity(
-      Identity('', false, nameController.text, _imageBase64),
-      _imageSize,
-    );
-    final store = StoreProvider.of<AppState>(context);
+    await Provider.of<Identities>(context, listen: false).createnewIdenity(
+        Identity('', false, nameController.text, _imageBase64), _imageSize);
+
+    /*final store = StoreProvider.of<AppState>(context);
     store.dispatch(ChangeCurrentIdentityAction(id));
 
     List<Identity> ownIdsList = await getOwnIdentities();
-    store.dispatch(UpdateOwnIdentitiesAction(ownIdsList));
+    store.dispatch(UpdateOwnIdentitiesAction(ownIdsList));*/
 
     if (widget.isFirstId)
       Navigator.pushReplacementNamed(context, '/home');

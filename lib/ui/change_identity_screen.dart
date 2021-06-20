@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:retroshare/services/init.dart';
-import 'package:tuple/tuple.dart';
-
+import 'package:provider/provider.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/person_delegate.dart';
-import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/redux/model/app_state.dart';
 import 'package:retroshare/redux/actions/app_actions.dart';
 
@@ -23,10 +21,8 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
-      final store = StoreProvider.of<AppState>(context);
-      updateOwnIdentitiesStore(store, context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<Identities>(context, listen: false).fetchOwnidenities();
     });
   }
 
@@ -75,31 +71,22 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                 ),
               ),
               Expanded(
-                child: StoreConnector<AppState,
-                    Tuple2<List<Identity>, Identity>>(
-                  converter: (store) =>
-                      Tuple2(store.state.ownIdsList, store.state.selectedId),
-                  builder: (context, idsTuple) {
-                    return ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      itemCount: idsTuple.item1?.length ?? 0,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PersonDelegate(
-                          data: PersonDelegateData.IdentityData(
-                            idsTuple.item1[index], context
-                          ),
-                          isSelectable: true,
-                          onPressed: () {
-                            final store =
-                                StoreProvider.of<AppState>(context);
-                            final id = idsTuple.item1[index];
-                            store.dispatch(ChangeSelectedIdentityAction(id));
+                child: Consumer<Identities>(
+                    builder: (ctx, idsTuple, _) => ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          itemCount: idsTuple.ownIdentity?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) {
+                            return PersonDelegate(
+                              data: PersonDelegateData.IdentityData(
+                                  idsTuple.ownIdentity[index], context),
+                              isSelectable: true,
+                              onPressed: () {
+                                final id = idsTuple.ownIdentity[index];
+                                idsTuple.updateSelectedIdentity(id);
+                              },
+                            );
                           },
-                        );
-                      },
-                    );
-                  },
-                ),
+                        )),
               ),
               BottomBar(
                 child: Center(
@@ -107,9 +94,8 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                     height: 2 * appBarHeight / 3,
                     child: FlatButton(
                       onPressed: () {
-                        final store = StoreProvider.of<AppState>(context);
-                        final id = store.state.selectedId;
-                        store.dispatch(ChangeCurrentIdentityAction(id));
+                        Provider.of<Identities>(context, listen: false)
+                            .updatecurrentIdentity();
                         Navigator.pop(context);
                       },
                       padding: const EdgeInsets.symmetric(

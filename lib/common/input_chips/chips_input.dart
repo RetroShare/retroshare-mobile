@@ -85,8 +85,8 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
   }
 
   String get text => String.fromCharCodes(
-    _value.text.codeUnits.where((ch) => ch != kObjectReplacementChar),
-  );
+        _value.text.codeUnits.where((ch) => ch != kObjectReplacementChar),
+      );
 
   bool get _hasInputConnection => _connection != null && _connection.attached;
 
@@ -159,9 +159,9 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
           child: StreamBuilder(
             stream: _suggestionsStreamController.stream,
             builder: (
-                BuildContext context,
-                AsyncSnapshot<List<dynamic>> snapshot,
-                ) {
+              BuildContext context,
+              AsyncSnapshot<List<dynamic>> snapshot,
+            ) {
               if (snapshot.hasData && snapshot.data?.length != 0) {
                 return CompositedTransformFollower(
                   link: this._layerLink,
@@ -328,9 +328,7 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
             behavior: HitTestBehavior.opaque,
             onTap: requestKeyboard,
             child: InputDecorator(
-              baseStyle: Theme.of(context)
-                  .textTheme
-                  .body2,
+              baseStyle: Theme.of(context).textTheme.body2,
               decoration: widget.decoration,
               isFocused: _focusNode.hasFocus,
               isEmpty: _value.text.length == 0 && _chips.length == 0,
@@ -373,7 +371,7 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
 
   void _updateTextInputState() {
     final text =
-    String.fromCharCodes(_chips.map((_) => kObjectReplacementChar));
+        String.fromCharCodes(_chips.map((_) => kObjectReplacementChar));
     _value = TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),
@@ -421,6 +419,15 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
 
   @override
   void showAutocorrectionPromptRect(int start, int end) {}
+
+  @override
+  // TODO: implement currentAutofillScope
+  AutofillScope get currentAutofillScope => AutofillGroup.of(context);
+
+  @override
+  void performPrivateCommand(String action, Map<String, dynamic> data) {
+    // TODO: implement performPrivateCommand
+  }
 }
 
 class AlwaysDisabledFocusNode extends FocusNode {

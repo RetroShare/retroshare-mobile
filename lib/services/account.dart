@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/redux/actions/app_actions.dart';
 import 'package:retroshare/redux/model/app_state.dart';
 import 'package:tuple/tuple.dart';
@@ -21,12 +22,12 @@ dynamic checkLoggedIn() async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> getLocations() async {
+Future<List<Account>> getLocations() async {
   final response =
       await http.get('http://localhost:9092/rsLoginHelper/getLocations');
 
   if (response.statusCode == 200) {
-    accountsList = new List();
+    accountsList = [];
     json.decode(response.body)['locations'].forEach((location) {
       if (location != null)
         accountsList.add(Account(location['mLocationId'], location['mPgpId'],
@@ -37,10 +38,9 @@ Future<bool> getLocations() async {
     for (Account account in accountsList) {
       if (account.locationId == currAccount.id) lastAccountUsed = account;
     }
-
-    return true;
-  } else
-    return false;
+    return accountsList;
+  }
+  return [];
 }
 
 dynamic requestLogIn(Account selectedAccount, String password) async {
@@ -60,18 +60,17 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
   }
 }
 
-dynamic requestAccountCreation(
-    BuildContext context, String username, String password,
+dynamic requestAccountCreation(String username, String password,
     [String nodeName = 'Mobile']) async {
   final accountDetails = {
-      "location": {
-        "mLocationName": nodeName,
-        "mPgpName": username,
-      },
-      "password": password,
-      'makeHidden': false,
-      'makeAutoTor': false
-    };
+    "location": {
+      "mLocationName": nodeName,
+      "mPgpName": username,
+    },
+    "password": password,
+    'makeHidden': false,
+    'makeAutoTor': false
+  };
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
