@@ -24,7 +24,6 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
   }
 
   void _getFriendsAccounts() async {
-    final store = StoreProvider.of<AppState>(context);
     await Provider.of<FriendLocations>(context, listen: false)
         .fetchfriendLocation();
     /*await updateLocationsStore(store);

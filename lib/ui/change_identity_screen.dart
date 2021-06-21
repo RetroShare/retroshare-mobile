@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/person_delegate.dart';
-import 'package:retroshare/redux/model/app_state.dart';
-import 'package:retroshare/redux/actions/app_actions.dart';
 
 class ChangeIdentityScreen extends StatefulWidget {
   @override
@@ -14,10 +11,7 @@ class ChangeIdentityScreen extends StatefulWidget {
 }
 
 class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
-  void _undoChangesOnExit(BuildContext context) {
-    final store = StoreProvider.of<AppState>(context);
-    store.dispatch(ChangeSelectedIdentityAction(store.state.currId));
-  }
+  void _undoChangesOnExit(BuildContext context) {}
 
   @override
   void initState() {
@@ -92,33 +86,35 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                 child: Center(
                   child: SizedBox(
                     height: 2 * appBarHeight / 3,
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () {
                         Provider.of<Identities>(context, listen: false)
                             .updatecurrentIdentity();
                         Navigator.pop(context);
                       },
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 + personDelegateHeight * 0.04),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            gradient: LinearGradient(
-                              colors: <Color>[
-                                Color(0xFF00FFFF),
-                                Color(0xFF29ABE2),
-                              ],
-                              begin: Alignment(-1.0, -4.0),
-                              end: Alignment(1.0, 4.0),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0 + personDelegateHeight * 0.04),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF00FFFF),
+                                  Color(0xFF29ABE2),
+                                ],
+                                begin: Alignment(-1.0, -4.0),
+                                end: Alignment(1.0, 4.0),
+                              ),
                             ),
-                          ),
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            'Change identity',
-                            style: Theme.of(context).textTheme.button,
-                            textAlign: TextAlign.center,
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              'Change identity',
+                              style: Theme.of(context).textTheme.button,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),

@@ -3,11 +3,13 @@ import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:retroshare/common/notifications.dart';
+import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/room.dart';
+import 'package:retroshare/provider/subscribed.dart';
 
 import 'package:retroshare/routes.dart';
 import 'package:retroshare/redux/store.dart';
@@ -49,16 +51,23 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => AccountCredentials()),
-        ChangeNotifierProvider(create: (ctx) => Identities()),
-        ChangeNotifierProvider(create: (ctx) => FriendLocations())
+        ChangeNotifierProvider.value(value: Identities()),
+        ChangeNotifierProvider.value(value: FriendLocations()),
+        ChangeNotifierProvider.value(value: ChatLobby()),
+        ChangeNotifierProvider.value(value: FriendsIdentity()),
+        ChangeNotifierProvider.value(value: RoomChatLobby())
       ],
-      child: OKToast(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Retroshare',
-          initialRoute: '/',
-          onGenerateRoute: RouteGenerator.generateRoute,
-        ),
+      child: Builder(
+        builder: (context) {
+          return OKToast(
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Retroshare',
+              initialRoute: '/',
+              onGenerateRoute: RouteGenerator.generateRoute,
+            ),
+          );
+        },
       ),
     );
   }

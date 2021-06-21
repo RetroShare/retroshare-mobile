@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:retroshare/common/input_chips/chips_input.dart';
 
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/location.dart';
-import 'package:retroshare/services/init.dart';
+import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/chat.dart';
-
-import 'package:retroshare/redux/model/app_state.dart';
 
 class CreateRoomScreen extends StatefulWidget {
   @override
@@ -117,14 +118,20 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       ),
     );
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
-        final store = StoreProvider.of<AppState>(context);
-        _friendsList = store.state.friendsSignedIdsList;
-        _suggestionsList = store.state.friendsSignedIdsList;
-        _locationsList = store.state.locations;
-        _selectedLocations = <Location>[];
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //final store = StoreProvider.of<AppState>(context);
+      await Provider.of<FriendLocations>(context, listen: false)
+          .fetchfriendLocation();
+      final identities = Provider.of<FriendsIdentity>(context, listen: false);
+      final locations = Provider.of<FriendLocations>(context, listen: false);
+      _friendsList = identities.friendsSignedIdsList;
+      // store.state.friendsSignedIdsList;
+      _suggestionsList = identities.friendsSignedIdsList;
+      //store.state.friendsSignedIdsList;
+      _locationsList = locations.friendlist;
+      //store.state.locations;
+      _selectedLocations = <Location>[];
+    });
   }
 
   @override
@@ -149,27 +156,27 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
   }
 
   void _createChat() async {
-    final store = StoreProvider.of<AppState>(context);
+    //final store = StoreProvider.of<AppState>(context);
     if (_isRoomCreation && !_blockCreation) {
       _blockCreation = true;
       _doneButtonController.reverse();
-      bool success = await createChatLobby(
-          _roomNameController.text,
-          store.state.currId.mId,
-          _roomTopicController.text,
-          inviteList : _selectedLocations,
-          anonymous:  isAnonymous,
-          public: isPublic
-      );
+      final id =
+          Provider.of<Identities>(context, listen: false).currentIdentity.mId;
+      bool success = await Provider.of<ChatLobby>(context, listen: false)
+          .createChatlobby(
+              _roomNameController.text, id, _roomTopicController.text,
+              inviteList: _selectedLocations,
+              anonymous: isAnonymous,
+              public: isPublic);
 
-      if(success) {
-        updateChatLobbiesStore(StoreProvider.of<AppState>(context));
+      if (success) {
         Navigator.pop(context);
       }
       _doneButtonController.forward();
       _blockCreation = false;
     }
   }
+
   void _updateSuggestions(filteredList) {
     setState(() {
       _suggestionsList = filteredList;
@@ -406,36 +413,55 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   // *********** Start of chips input ***********
                                   ChipsInput(
                                     decoration: InputDecoration(
-                                      hintText: _isRoomCreation ? "Invite friends" : "Search",
+                                      hintText: _isRoomCreation
+                                          ? "Invite friends"
+                                          : "Search",
                                       isDense: true,
                                     ),
                                     findSuggestions: (String query) {
                                       if (query.length != 0) {
-                                        var lowercaseQuery = query.toLowerCase();
+                                        var lowercaseQuery =
+                                            query.toLowerCase();
                                         // If is room creation, open suggestion box and find it on locations list
                                         if (_isRoomCreation) {
-                                          var results = _locationsList.where((profile) {
-                                            return profile.locationName.toLowerCase().contains(query.toLowerCase()) ||
-                                                profile.accountName.toLowerCase().contains(query.toLowerCase());
+                                          var results = _locationsList.where(
+                                              (profile) {
+                                            return profile.locationName
+                                                    .toLowerCase()
+                                                    .contains(
+                                                        query.toLowerCase()) ||
+                                                profile.accountName
+                                                    .toLowerCase()
+                                                    .contains(
+                                                        query.toLowerCase());
                                           }).toList(growable: false)
                                             ..sort((a, b) => a.locationName
                                                 .toLowerCase()
                                                 .indexOf(lowercaseQuery)
-                                                .compareTo(b.locationName.toLowerCase().indexOf(lowercaseQuery)));
+                                                .compareTo(b.locationName
+                                                    .toLowerCase()
+                                                    .indexOf(lowercaseQuery)));
                                           return results;
                                         }
                                         // Otherwise the suggestions will be on friends list and showed on a
                                         // widget using the _updateSuggestions function.
                                         // The suggestion box is not open because it return always an empty list
-                                        var results = _friendsList.where((profile) {
-                                          return profile.name.toLowerCase().contains(query.toLowerCase());
+                                        var results = _friendsList.where(
+                                            (profile) {
+                                          return profile.name
+                                              .toLowerCase()
+                                              .contains(query.toLowerCase());
                                         }).toList(growable: false)
                                           ..sort((a, b) => a.name
                                               .toLowerCase()
                                               .indexOf(lowercaseQuery)
-                                              .compareTo(b.name.toLowerCase().indexOf(lowercaseQuery)));
+                                              .compareTo(b.name
+                                                  .toLowerCase()
+                                                  .indexOf(lowercaseQuery)));
                                         _updateSuggestions(results);
-                                        return _isRoomCreation ? results : const <Location>[];
+                                        return _isRoomCreation
+                                            ? results
+                                            : const <Location>[];
                                       } else {
                                         _updateSuggestions(_friendsList);
                                         return const <Location>[];
@@ -444,7 +470,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     onChanged: (data) {
                                       print(data);
                                     },
-                                    chipBuilder: (context, state, Location profile) {
+                                    chipBuilder:
+                                        (context, state, Location profile) {
                                       if (!_selectedLocations.contains(profile))
                                         _selectedLocations.add(profile);
                                       return InputChip(
@@ -454,16 +481,21 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
 //                                          backgroundImage: NetworkImage(profile.imageUrl),
 //                                        ),
                                         onDeleted: () {
-                                          _selectedLocations.removeWhere((location) => location.rsPeerId == profile.rsPeerId);
+                                          _selectedLocations.removeWhere(
+                                              (location) =>
+                                                  location.rsPeerId ==
+                                                  profile.rsPeerId);
                                           state.deleteChip(profile);
                                         },
-                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
                                       );
                                     },
-                                    suggestionBuilder: (context, state, Location profile) {
+                                    suggestionBuilder:
+                                        (context, state, Location profile) {
                                       return PersonDelegate(
-                                        data: PersonDelegateData.LocationData(profile)
-                                      );
+                                          data: PersonDelegateData.LocationData(
+                                              profile));
                                     },
                                   )
                                 ],
@@ -500,8 +532,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                 builder: (BuildContext context, Widget widget) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .pushNamed('/discover_chats');
+                      Navigator.of(context).pushNamed('/discover_chats');
                     },
                     child: Container(
                       padding: const EdgeInsets.only(
@@ -527,13 +558,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   'Discover public chats',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .body2,
+                                  style: Theme.of(context).textTheme.body2,
                                 ),
                               ),
                             ),
@@ -552,7 +580,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                       padding: const EdgeInsets.only(
                           left: 8, top: 0, right: 16, bottom: 8),
 //                            itemCount: friendsSignedIdsList.length + 1,
-                      itemCount: (_suggestionsList == null) ? 1 : _suggestionsList.length + 1,
+                      itemCount: (_suggestionsList == null)
+                          ? 1
+                          : _suggestionsList.length + 1,
                       itemBuilder: (BuildContext context, int index) {
                         if (index == 0) {
                           return AnimatedBuilder(
@@ -573,8 +603,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                          height:
-                                          _buttonHeightAnimation.value,
+                                          height: _buttonHeightAnimation.value,
                                           width: personDelegateHeight,
                                           child: Center(
                                             child: Icon(Icons.add,
@@ -605,14 +634,16 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                         index -= 1;
                         // Todo: DRY
                         return PersonDelegate(
-                          data: PersonDelegateData.IdentityData(_suggestionsList[index], context),
+                          data: PersonDelegateData.IdentityData(
+                              _suggestionsList[index], context),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
                               '/room',
                               arguments: {
                                 'isRoom': false,
-                                'chatData': getChat(context, _suggestionsList[index])
+                                'chatData':
+                                    getChat(context, _suggestionsList[index])
                               },
                             );
                           },
@@ -634,22 +665,18 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   height: 20,
                                 ),
                                 Padding(
-                                  padding:
-                                  EdgeInsets.symmetric(vertical: 5),
+                                  padding: EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
                                     'Looks like an empty space',
-                                    style:
-                                    Theme.of(context).textTheme.body2,
+                                    style: Theme.of(context).textTheme.body2,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                  EdgeInsets.symmetric(vertical: 5),
+                                  padding: EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
                                     'You can add friends in the menu',
-                                    style:
-                                    Theme.of(context).textTheme.body1,
+                                    style: Theme.of(context).textTheme.body1,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -64,18 +65,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
       'isLoading': true,
       'spinner': true
     });
-    Provider.of<AccountCredentials>(context, listen: false)
+    final item = Provider.of<AccountCredentials>(context, listen: false);
+    item
         .signup(usernameController.text, passwordController.text,
             nodeNameController.text)
-        .then((value) => {
-              if (value['account'])
-                {
-                  if (value['auth'])
-                    {Navigator.pushReplacementNamed(context, '/home')}
-                  else
-                    Navigator.pop(context, '/home')
-                }
-            });
+        .then((value) {
+      if (value['account']) {
+        if (value['auth']) {
+          final ids = Provider.of<Identities>(context, listen: false);
+          ids.fetchOwnidenities().then((value) => {
+                if (ids.ownIdentity != null && ids.ownIdentity.length == 0)
+                  {
+                    Navigator.pushReplacementNamed(context, '/create_identity',
+                        arguments: true)
+                  }
+                else
+                  Navigator.pushReplacementNamed(context, '/home')
+              });
+        } else
+          Navigator.pop(context);
+      }
+    });
+    /*Tuple2<bool, Account> accountCreate;
+    if (nodeNameController.text == '')
+      accountCreate = await requestAccountCreation(
+          usernameController.text, passwordController.text);
+    else
+      accountCreate = await requestAccountCreation(usernameController.text,
+          passwordController.text, nodeNameController.text);
+
+    if (accountCreate != null && accountCreate.item1) {
+      loggedinAccount = accountCreate.item2;
+      bool isAuthTokenValid = await initializeAuth(
+          accountCreate.item2.locationName, passwordController.text);
+      if (isAuthTokenValid) {
+        print("heelo");
+      }
+    }*/
   }
 
   @override
@@ -353,8 +379,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 20),
                 FlatButton(
-                  onPressed: () {
-                    createAccount();
+                  onPressed: () async {
+                    await createAccount();
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),

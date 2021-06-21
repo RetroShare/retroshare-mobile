@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:openapi/api.dart';
-
+import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
-
+import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/services/chat.dart';
-import 'package:retroshare/model/chat.dart';
-
-import 'package:retroshare/redux/model/app_state.dart';
-import 'package:retroshare/services/init.dart';
 
 class DiscoverChatsScreen extends StatefulWidget {
   @override
@@ -16,23 +10,18 @@ class DiscoverChatsScreen extends StatefulWidget {
 }
 
 class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
-
   @override
   void initState() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
-      final store = StoreProvider.of<AppState>(context);
-      updateUnsubsChatLobbiesStore(store);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //final store = StoreProvider.of<AppState>(context);
+      Provider.of<ChatLobby>(context, listen: false)
+          .fetchAndUpdateUnsubscribed();
     });
   }
 
   void _goToChat(lobby) async {
     Navigator.pushNamed(context, '/room',
-        arguments: {
-          'isRoom': true,
-          'chatData': getChat(context, lobby)
-        }
-    );
+        arguments: {'isRoom': true, 'chatData': getChat(context, lobby)});
   }
 
   @override
@@ -42,10 +31,9 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
       body: SafeArea(
         top: true,
         bottom: true,
-        child:
-        StoreConnector<AppState, List<VisibleChatLobbyRecord>>(
-          converter: (store) => store.state.unSubscribedChats,
-          builder: (context, _chatsList) {
+        child: Consumer<ChatLobby>(
+          // converter: (store) => store.state.unSubscribedChats,
+          builder: (context, _chatsList, _) {
             return Column(
               children: <Widget>[
                 Container(
@@ -78,11 +66,11 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                     children: <Widget>[
                       ListView.builder(
                         padding: EdgeInsets.all(8),
-                        itemCount: _chatsList?.length ?? 0,
+                        itemCount: _chatsList.unSubscribedlist?.length ?? 0,
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
-                              _goToChat(_chatsList[index]);
+                              _goToChat(_chatsList.unSubscribedlist[index]);
                             },
                             child: Container(
                               height: personDelegateHeight,
@@ -90,35 +78,45 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                 children: <Widget>[
                                   Expanded(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 8),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            _chatsList[index].lobbyName,
-                                            style:
-                                            Theme.of(context).textTheme.body2,
+                                            _chatsList.unSubscribedlist[index]
+                                                .lobbyName,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body2,
                                           ),
                                           Visibility(
-                                            visible: _chatsList[index]
+                                            visible: _chatsList
+                                                .unSubscribedlist[index]
                                                 .lobbyTopic
                                                 .isNotEmpty,
                                             child: Text(
                                               'Topic: ' +
-                                                  _chatsList[index].lobbyTopic,
-                                              style:
-                                              Theme.of(context).textTheme.body1,
+                                                  _chatsList
+                                                      .unSubscribedlist[index]
+                                                      .lobbyTopic,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .body1,
                                             ),
                                           ),
                                           Text(
                                             'Number of participants: ' +
-                                                _chatsList[index]
+                                                _chatsList
+                                                    .unSubscribedlist[index]
                                                     .totalNumberOfPeers
                                                     .toString(),
-                                            style:
-                                            Theme.of(context).textTheme.body1,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body1,
                                           ),
                                         ],
                                       ),
@@ -128,7 +126,8 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                     child: IconButton(
                                       icon: Icon(Icons.input),
                                       onPressed: () {
-                                        _goToChat(_chatsList[index]);
+                                        _goToChat(
+                                            _chatsList.unSubscribedlist[index]);
                                       },
                                     ),
                                   ),
@@ -139,14 +138,15 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                         },
                       ),
                       Visibility(
-                        visible: _chatsList?.isEmpty ?? true,
+                        visible: _chatsList.unSubscribedlist?.isEmpty ?? true,
                         child: Center(
                           child: SizedBox(
                             width: 250,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Image.asset('assets/icons8/pluto-fatal-error.png'),
+                                Image.asset(
+                                    'assets/icons8/pluto-fatal-error.png'),
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: 25),
                                   child: Text('No public chats are available',

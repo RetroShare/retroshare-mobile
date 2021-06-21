@@ -25,7 +25,7 @@ dynamic checkLoggedIn() async {
 Future<List<Account>> getLocations() async {
   final response =
       await http.get('http://localhost:9092/rsLoginHelper/getLocations');
-
+  print(response.body);
   if (response.statusCode == 200) {
     accountsList = [];
     json.decode(response.body)['locations'].forEach((location) {
@@ -64,17 +64,18 @@ dynamic requestAccountCreation(String username, String password,
     [String nodeName = 'Mobile']) async {
   final accountDetails = {
     "location": {
-      "mLocationName": nodeName,
+      "mLocationName": 'Mobile',
       "mPgpName": username,
     },
     "password": password,
     'makeHidden': false,
     'makeAutoTor': false
   };
+
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
-
+  print(response.body);
   if (response.statusCode == 200 && json.decode(response.body)['retval']) {
     dynamic resp = json.decode(response.body)['location'];
     Account account = Account(resp['mLocationId'], resp['mPgpId'],

@@ -1,12 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
-
 import 'dart:io';
 import 'dart:convert';
-
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/model/identity.dart';

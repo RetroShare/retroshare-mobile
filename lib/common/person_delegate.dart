@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:openapi/api.dart';
+import 'package:provider/provider.dart';
 
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/cache.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/model/location.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/redux/model/app_state.dart';
 
 class PersonDelegateData {
-  const PersonDelegateData(
-      {this.name,
-      this.mId,
-      this.message = '',
-      this.time = '',
-      this.profileImage = '',
-      this.isOnline = false,
-      this.isMessage = false,
-      this.isUnread = false,
-      this.isTime = false,
-      this.isRoom = false,
-      this.icon = Icons.person,
-      this.image,
-      });
+  const PersonDelegateData({
+    this.name,
+    this.mId,
+    this.message = '',
+    this.time = '',
+    this.profileImage = '',
+    this.isOnline = false,
+    this.isMessage = false,
+    this.isUnread = false,
+    this.isTime = false,
+    this.isRoom = false,
+    this.icon = Icons.person,
+    this.image,
+  });
 
   final String name;
   final String mId;
@@ -39,31 +41,30 @@ class PersonDelegateData {
   final MemoryImage image;
 
   /// Generate generic chat person delegate data for DRY
-  static ChatData (Chat chatData){
+  static ChatData(Chat chatData) {
     return PersonDelegateData(
       name: chatData.chatName,
-      message:  chatData.lobbyTopic,
+      message: chatData.lobbyTopic,
       mId: chatData.chatId.toString(),
       isRoom: true,
       isMessage: true,
-      icon: chatData.isPublic ?? true
-          ? Icons.public
-          : Icons.lock,
+      icon: chatData.isPublic ?? true ? Icons.public : Icons.lock,
       isUnread: chatData.unreadCount > 0 ? true : false,
     );
   }
 
-  static PublicChatData (VisibleChatLobbyRecord chatData){
-    String message = 
-        "${chatData.lobbyTopic}"
-          +  (chatData.totalNumberOfPeers != null || chatData.totalNumberOfPeers != 0
-            ? "Total: ${chatData.totalNumberOfPeers}" : " ")
-          + (chatData.participatingFriends.isNotEmpty
-            ? "Friends: ${chatData.participatingFriends.length.toString()}" : "");
+  static PublicChatData(VisibleChatLobbyRecord chatData) {
+    String message = "${chatData.lobbyTopic}" +
+        (chatData.totalNumberOfPeers != null || chatData.totalNumberOfPeers != 0
+            ? "Total: ${chatData.totalNumberOfPeers}"
+            : " ") +
+        (chatData.participatingFriends.isNotEmpty
+            ? "Friends: ${chatData.participatingFriends.length.toString()}"
+            : "");
 
     return PersonDelegateData(
       name: chatData.lobbyName,
-      message:  message,
+      message: message,
       mId: chatData.lobbyId.xstr64,
       isRoom: true,
       isMessage: true,
@@ -73,17 +74,20 @@ class PersonDelegateData {
     );
   }
 
-  static IdentityData(Identity identity, context,){
+  static IdentityData(
+    Identity identity,
+    context,
+  ) {
     return PersonDelegateData(
       name: identity.name,
       mId: identity.mId,
       image: cachedImages[identity.avatar],
       isMessage: true,
-      isUnread: identity.getUnreadCount(context) > 0 ? true : false,
+      //isUnread: identity.getUnreadCount(context) > 0 ? true : false,
     );
   }
 
-  static LocationData(Location location){
+  static LocationData(Location location) {
     return PersonDelegateData(
       name: location.accountName,
       message: location.locationName,
@@ -99,7 +103,8 @@ class PersonDelegate extends StatefulWidget {
   final Function onLongPress;
   final bool isSelectable;
 
-  const PersonDelegate({this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
+  const PersonDelegate(
+      {this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
 
   @override
   _PersonDelegateState createState() => _PersonDelegateState();
@@ -214,26 +219,26 @@ class _PersonDelegateState extends State<PersonDelegate>
                       width: widget.data.isUnread
                           ? delegateHeight * 0.88
                           : delegateHeight * 0.8,
-                      decoration:  (widget.data.isRoom ||
-                          widget.data.image == null)
-                          ? null
-                          : BoxDecoration(
-                        border: widget.data.isUnread
-                            ? Border.all(
-                            color: Colors.white,
-                            width: delegateHeight * 0.03)
-                            : null,
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                            delegateHeight * 0.92 * 0.33),
-                        image: DecorationImage(
-                          fit: BoxFit.fitWidth,
-                          image: widget.data.image,
-                        ),
-                      ),
+                      decoration:
+                          (widget.data.isRoom || widget.data.image == null)
+                              ? null
+                              : BoxDecoration(
+                                  border: widget.data.isUnread
+                                      ? Border.all(
+                                          color: Colors.white,
+                                          width: delegateHeight * 0.03)
+                                      : null,
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(
+                                      delegateHeight * 0.92 * 0.33),
+                                  image: DecorationImage(
+                                    fit: BoxFit.fitWidth,
+                                    image: widget.data.image,
+                                  ),
+                                ),
                       child: Visibility(
-                        visible: widget.data.isRoom ||
-                            widget.data.image == null,
+                        visible:
+                            widget.data.isRoom || widget.data.image == null,
                         child: Center(
                           child: Icon(
                             widget.data.icon,
@@ -279,7 +284,8 @@ class _PersonDelegateState extends State<PersonDelegate>
                           : Theme.of(context).textTheme.body1,
                     ),
                     Visibility(
-                      visible: widget.data.isMessage && widget.data.message.isNotEmpty,
+                      visible: widget.data.isMessage &&
+                          widget.data.message.isNotEmpty,
                       child: Text(
                         widget.data.message,
                         style: Theme.of(context).textTheme.body1,
@@ -303,10 +309,9 @@ class _PersonDelegateState extends State<PersonDelegate>
   @override
   Widget build(BuildContext context) {
     if (widget.isSelectable) {
-      return StoreConnector<AppState, Identity>(
-        converter: (store) => store.state.selectedId,
-        builder: (context, id) {
-          if (id.mId == widget.data.mId)
+      return Consumer<Identities>(
+        builder: (context, id, _) {
+          if (id.selectedIdentity.mId == widget.data.mId)
             _animationController.value = 1;
           else
             _animationController.value = 0;
@@ -320,7 +325,8 @@ class _PersonDelegateState extends State<PersonDelegate>
 }
 
 /// Todo: do this better when new PersonDelegate class will be implemented. For ListTile, integrate new popup menu.
-void showCustomMenu(String title, Icon icon, Function action, Offset tapPosition, context) async {
+void showCustomMenu(String title, Icon icon, Function action,
+    Offset tapPosition, context) async {
   final RenderBox overlay = Overlay.of(context).context.findRenderObject();
 
   final delta = await showMenu(
@@ -332,8 +338,7 @@ void showCustomMenu(String title, Icon icon, Function action, Offset tapPosition
           contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
           enabled: true,
           leading: icon,
-          title: Text(title,
-              style: Theme.of(context).textTheme.body2),
+          title: Text(title, style: Theme.of(context).textTheme.body2),
         ),
       ),
     ],

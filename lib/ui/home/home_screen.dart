@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
+import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/room.dart';
+import 'package:retroshare/provider/subscribed.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:retroshare/ui/home/topbar.dart';
@@ -27,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _panelController = PanelController();
-
     _leftIconAnimation =
         ColorTween(begin: Colors.lightBlueAccent, end: Colors.black12)
             .animate(_tabController.animation);
@@ -43,6 +46,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       begin: Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
+    Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
+    registerChatEvent(context);
   }
 
   @override
@@ -73,7 +85,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color: Colors.white,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/search', arguments: _tabController.index,);
+                Navigator.pushNamed(
+                  context,
+                  '/search',
+                  arguments: _tabController.index,
+                );
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -95,7 +111,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       Expanded(
                         child: Text(
                           'Type text...',
-                          style: Theme.of(context).textTheme.body2.copyWith(color: Theme.of(context).hintColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .body2
+                              .copyWith(color: Theme.of(context).hintColor),
                         ),
                       ),
                     ],

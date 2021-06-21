@@ -36,7 +36,7 @@ Future<List<Identity>> getOwnIdentities() async {
       });
   }
 
-  for (var x = 0; x < ownIdsList.length; x++) {
+  for (int x = 0; x < ownIdsList.length; x++) {
     var resp = await getIdDetails(ownIdsList[x].mId);
     if (resp.item1) ownIdsList[x] = resp.item2;
   }
@@ -51,20 +51,26 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
-
+  print("check+${response.body}");
   if (response.statusCode == 200) {
+    print('check1');
     if (json.decode(response.body)['retval']) {
       Identity identity = Identity(id);
+      print(json.decode(response.body)['details']['mAvatar']['mData']);
       identity.name = json.decode(response.body)['details']['mNickname'];
-      identity.avatar =
-          json.decode(response.body)['details']['mAvatar']['mData']['base64'];
+      /* identity.avatar = json.decode(response.body)['mAvatar']['mData'] != null
+          ? json.decode(response.body)['mAvatar']['mData']['base64']
+          : "";*/
+      print("check21");
       identity.signed =
           json.decode(response.body)['details']['mPgpId'] != '0000000000000000'
               ? true
               : false;
+      print(identity.avatar);
       return Tuple2<bool, Identity>(true, identity);
-    } else
-      return Tuple2<bool, Identity>(false, Identity(''));
+    }
+
+    return Tuple2<bool, Identity>(false, Identity(''));
   } else
     throw Exception('Failed to load response');
 }
@@ -84,7 +90,7 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
-
+  print(response.body);
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval'])
       return Identity(json.decode(response.body)['id'], identity.signed,

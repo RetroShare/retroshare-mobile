@@ -4,7 +4,6 @@ import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/services/init.dart';
 
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/services/auth.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:retroshare/model/account.dart';
 

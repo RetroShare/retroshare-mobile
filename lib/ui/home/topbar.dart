@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:retroshare/model/cache.dart';
+import 'package:provider/provider.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
 import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/identity.dart';
-import 'package:retroshare/redux/model/app_state.dart';
-import 'package:retroshare/redux/actions/app_actions.dart';
 
 class TopBar extends StatefulWidget {
   final double maxHeight;
@@ -106,9 +102,12 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
   }
 
   void _showDialog() {
-    final store = StoreProvider.of<AppState>(context);
-    String name = store.state.currId.name;
-    if (store.state.ownIdsList.length > 1)
+    String name =
+        Provider.of<Identities>(context, listen: false).currentIdentity.name;
+    List<Identity> ownIdsList =
+        Provider.of<Identities>(context, listen: false).ownIdentity;
+
+    if (ownIdsList.length > 1)
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -126,14 +125,17 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
               FlatButton(
                 child: Text('Delete'),
                 onPressed: () async {
-                  bool success = await deleteIdentity(store.state.currId);
-
+                  bool success =
+                      await Provider.of<Identities>(context, listen: false)
+                          .providerdeleteIdentity();
+                  //await deleteIdentity(store.state.currId);
                   if (success) {
-                    List<Identity> ownIdsList = await getOwnIdentities();
+                    /*List<Identity> ownIdsList = await getOwnIdentities();
                     final store = StoreProvider.of<AppState>(context);
-                    store.dispatch(UpdateOwnIdentitiesAction(ownIdsList));
+                    store.dispatch(UpdateOwnIdentitiesAction(ownIdsList));*/
 
-                    Navigator.pushReplacementNamed(context, '/change_identity');
+                    // Navigator.pushReplacementNamed(context, '/change_identity');
+                    Navigator.of(context).pop();
                   }
                 },
               ),
@@ -335,29 +337,34 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                             Expanded(
                               flex: 4,
                               child: Center(
-                                child: StoreConnector<AppState, MemoryImage>(
-                                  converter: (store) =>
-                                    cachedImages[store.state.currId.avatar],
-                                  builder: (context, avatar) {
+                                child: Consumer<Identities>(
+                                  builder: (context, avatar, _) {
+                                    /*final image = cachedImages[
+                                        avatar.currentIdentity.avatar];*/
+
                                     return Container(
                                       width: heightOfTopBar * 0.75,
                                       height: heightOfTopBar * 0.75,
-                                      decoration: (avatar == null)
-                                          ? null
-                                          : BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      heightOfTopBar *
-                                                          0.75 *
-                                                          0.33),
-                                              image: DecorationImage(
-                                                fit: BoxFit.fitWidth,
-                                                image: avatar,
-                                              ),
-                                            ),
+                                      /*decoration:
+                                          (avatar.currentIdentity.avatar ==
+                                                  null)
+                                              ? null,
+                                              : BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          heightOfTopBar *
+                                                              0.75 *
+                                                              0.33),
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.fitWidth,
+                                                    image: cachedImages[avatar
+                                                        .currentIdentity
+                                                        .avatar],
+                                                  ),
+                                                )*/
                                       child: Visibility(
-                                        visible: (avatar == null),
+                                        visible: (avatar != null),
                                         child: Center(
                                           child: Icon(
                                             Icons.person,
@@ -393,9 +400,8 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                         AnimatedBuilder(
                           animation: _curvedAnimation,
                           builder: (BuildContext context, Widget widget) {
-                            return StoreConnector<AppState, String>(
-                              converter: (store) => store.state.currId.name,
-                              builder: (context, idName) {
+                            return Consumer<Identities>(
+                              builder: (context, idName, _) {
                                 return Center(
                                   child: Container(
                                     height: heightOfNameHeader * 2,
@@ -405,7 +411,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                         child: FadeTransition(
                                           opacity: _nameHeaderFadeAnimation,
                                           child: Text(
-                                            idName,
+                                            idName.currentIdentity.name,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .title,

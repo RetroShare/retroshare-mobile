@@ -13,7 +13,7 @@ class AccountCredentials with ChangeNotifier {
 
   get accountList => _accountsList;
   get loggedinAccount => _loggedinAccount;
-  get authToken => _authToken;
+  get getauthToken => _authToken;
   setauthToken(AuthToken authToken) {
     _authToken = authToken;
   }
@@ -40,7 +40,7 @@ class AccountCredentials with ChangeNotifier {
 
   getinitializeAuth(String locationId, String password) async {
     _authToken = AuthToken(locationId, password);
-
+    authToken = AuthToken(locationId, password);
     return await checkExistingAuthTokens(locationId, password);
   }
 
@@ -67,6 +67,7 @@ class AccountCredentials with ChangeNotifier {
     if (resp == 0 || resp == 1) {
       bool isAuthTokenValid =
           await getinitializeAuth(currentAccount.locationId, password);
+
       if (isAuthTokenValid) {
         setLogginAccount(currentAccount);
         map['auth'] = true;
@@ -81,6 +82,7 @@ class AccountCredentials with ChangeNotifier {
 
     Tuple2<bool, Account> accountCreate;
     accountCreate = await requestAccountCreation(username, password, nodename);
+    // print(accountCreate.item2.locationName);
     if (accountCreate != null && accountCreate.item1) {
       map['account'] = true;
       _accountsList.add(accountCreate.item2);
@@ -89,8 +91,8 @@ class AccountCredentials with ChangeNotifier {
       bool isAuthTokenValid =
           await getinitializeAuth(accountCreate.item2.locationId, password);
       if (isAuthTokenValid) map['auth'] = true;
-      notifyListeners();
     }
+    //notifyListeners();
     return map;
   }
 }

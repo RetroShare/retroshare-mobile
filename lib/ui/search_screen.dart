@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:openapi/api.dart';
+import 'package:provider/provider.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
-import 'package:retroshare/services/init.dart';
+import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/subscribed.dart';
 
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/services/chat.dart';
-import 'package:retroshare/services/identity.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/person_delegate.dart';
-
-import 'package:retroshare/redux/model/app_state.dart';
 
 class SearchScreen extends StatefulWidget {
   final int initialTab;
@@ -30,20 +28,19 @@ class _SearchScreenState extends State<SearchScreen>
   Animation<Color> _rightTabIconColor;
 
   String _searchContent = '';
-  List<Identity> allIds = List();
-  List<Identity> filteredAllIds = List();
-  List<Identity> contactsIds = List();
-  List<Identity> filteredContactsIds = List();
-  List<Chat> subscribedChats = List();
-  List<Chat> filteredSubscribedChats = List();
-  List<VisibleChatLobbyRecord> publicChats = List();
-  List<VisibleChatLobbyRecord> filteredPublicChats = List();
+  List<Identity> allIds = [];
+  List<Identity> filteredAllIds = [];
+  List<Identity> contactsIds = [];
+  List<Identity> filteredContactsIds = [];
+  List<Chat> subscribedChats = [];
+  List<Chat> filteredSubscribedChats = [];
+  List<VisibleChatLobbyRecord> publicChats = [];
+  List<VisibleChatLobbyRecord> filteredPublicChats = [];
 
   var _tapPosition;
 
   @override
   void initState() {
-
     _tabController =
         TabController(vsync: this, length: 2, initialIndex: widget.initialTab);
 
@@ -54,6 +51,7 @@ class _SearchScreenState extends State<SearchScreen>
           filteredAllIds = allIds;
           filteredContactsIds = contactsIds;
           filteredSubscribedChats = subscribedChats;
+          //Provider.of<ChatLobby>(context, listen: false).subscribedlist;
           filteredPublicChats = publicChats;
         });
       } else {
@@ -70,26 +68,34 @@ class _SearchScreenState extends State<SearchScreen>
 
     super.initState();
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
-          final store = StoreProvider.of<AppState>(context);
-          updateIdentitiesStore(store);
-          updateChatLobbiesStore(store);
-          updateUnsubsChatLobbiesStore(store);
-          allIds = store.state.notContactIds;
-          contactsIds = store.state.friendsIdsList;
-          subscribedChats = store.state.subscribedChats;
-          publicChats = store.state.unSubscribedChats;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //final store = StoreProvider.of<AppState>(context);
+      //updateIdentitiesStore(store);
+      await Provider.of<FriendsIdentity>(context, listen: false)
+          .fetchAndUpdate();
+      await Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
+      await Provider.of<ChatLobby>(context, listen: false)
+          .fetchAndUpdateUnsubscribed();
+      //updateChatLobbiesStore(store);
+      // updateUnsubsChatLobbiesStore(store);
+      allIds =
+          Provider.of<FriendsIdentity>(context, listen: false).notContactIds;
+      //store.state.notContactIds;
+      contactsIds =
+          Provider.of<FriendsIdentity>(context, listen: false).friendsIdsList;
+      //store.state.friendsIdsList;
+      subscribedChats =
+          Provider.of<ChatLobby>(context, listen: false).subscribedlist;
+      //store.state.subscribedChats;
+      publicChats =
+          Provider.of<ChatLobby>(context, listen: false).unSubscribedlist;
+      //store.state.unSubscribedChats;
     });
   }
 
   void _goToChat(lobby) async {
     Navigator.pushNamed(context, '/room',
-        arguments: {
-          'isRoom': true,
-          'chatData': getChat(context, lobby)
-        }
-    );
+        arguments: {'isRoom': true, 'chatData': getChat(context, lobby)});
   }
 
   @override
@@ -245,8 +251,10 @@ class _SearchScreenState extends State<SearchScreen>
                     children: <Widget>[
                       _buildChatsList(),
                       Visibility(
-                        visible: filteredSubscribedChats?.isEmpty ?? true &&
-                            filteredPublicChats?.isEmpty ?? true,
+                        visible: filteredSubscribedChats?.isEmpty ??
+                            // ignore: null_aware_in_logical_operator
+                            true && filteredPublicChats?.isEmpty ??
+                            true,
                         child: Center(
                           child: SingleChildScrollView(
                             child: Container(
@@ -275,8 +283,10 @@ class _SearchScreenState extends State<SearchScreen>
                     children: <Widget>[
                       _buildPeopleList(),
                       Visibility(
-                        visible: (filteredAllIds == null || filteredAllIds.isEmpty) &&
-                            (filteredContactsIds == null || filteredContactsIds.isEmpty),
+                        visible: (filteredAllIds == null ||
+                                filteredAllIds.isEmpty) &&
+                            (filteredContactsIds == null ||
+                                filteredContactsIds.isEmpty),
                         child: Center(
                           child: SingleChildScrollView(
                             child: SizedBox(
@@ -339,8 +349,9 @@ class _SearchScreenState extends State<SearchScreen>
     }
 
     return Visibility(
-      visible:
-          filteredSubscribedChats?.isNotEmpty ?? false || filteredPublicChats?.isNotEmpty ?? false,
+      visible: filteredSubscribedChats?.isNotEmpty ??
+          false || filteredPublicChats?.isNotEmpty ??
+          false,
       child: CustomScrollView(
         slivers: <Widget>[
           sliverPersistentHeader('Subscribed chats', context),
@@ -350,7 +361,8 @@ class _SearchScreenState extends State<SearchScreen>
               (BuildContext context, int index) {
                 // Todo: DRY
                 return PersonDelegate(
-                  data: PersonDelegateData.ChatData(filteredSubscribedChats[index]),
+                  data: PersonDelegateData.ChatData(
+                      filteredSubscribedChats[index]),
                   onPressed: () {
                     Navigator.pushNamed(context, '/room', arguments: {
                       'isRoom': true,
@@ -372,7 +384,8 @@ class _SearchScreenState extends State<SearchScreen>
                     _goToChat(filteredPublicChats[index]);
                   },
                   child: PersonDelegate(
-                    data: PersonDelegateData.PublicChatData(filteredPublicChats[index]),
+                    data: PersonDelegateData.PublicChatData(
+                        filteredPublicChats[index]),
                     onPressed: () {
                       _goToChat(filteredPublicChats[index]);
                     },
@@ -387,17 +400,19 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  void _removeFromContacts(String gxsId) async {
-    await setContact(gxsId, false);
+  void _toggleContacts(String gxsId, bool type) async {
+    /*await setContact(gxsId, false);
     final store = StoreProvider.of<AppState>(context);
-    await updateIdentitiesStore(store);
+    await updateIdentitiesStore(store);*/
+    await Provider.of<FriendsIdentity>(context, listen: false)
+        .toggleContacts(gxsId, type);
   }
 
-  void _addToContacts(String gxsId) async {
+  /*void _addToContacts(String gxsId) async {
     await setContact(gxsId, true);
     final store = StoreProvider.of<AppState>(context);
     await updateIdentitiesStore(store);
-  }
+  }*/
 
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
@@ -433,8 +448,8 @@ class _SearchScreenState extends State<SearchScreen>
 
     return Visibility(
 //      visible: (filteredAllIds?.isNotEmpty ?? false || filteredContactsIds.isNotEmpty ),
-      visible: (filteredAllIds != null && filteredAllIds.isNotEmpty)
-          || (filteredContactsIds != null && filteredContactsIds.isNotEmpty),
+      visible: (filteredAllIds != null && filteredAllIds.isNotEmpty) ||
+          (filteredContactsIds != null && filteredContactsIds.isNotEmpty),
       child: CustomScrollView(
         slivers: <Widget>[
           sliverPersistentHeader('Contacts', context),
@@ -446,7 +461,8 @@ class _SearchScreenState extends State<SearchScreen>
                   onTapDown: _storePosition,
                   // Todo: DRY
                   child: PersonDelegate(
-                    data: PersonDelegateData.IdentityData(filteredContactsIds[index], context),
+                    data: PersonDelegateData.IdentityData(
+                        filteredContactsIds[index], context),
                     onLongPress: (Offset tapPosition) {
                       showCustomMenu(
                           "Remove from contacts",
@@ -454,10 +470,10 @@ class _SearchScreenState extends State<SearchScreen>
                             Icons.delete,
                             color: Colors.black,
                           ),
-                              () => _removeFromContacts(filteredAllIds[index].mId),
+                          () =>
+                              _toggleContacts(filteredAllIds[index].mId, false),
                           tapPosition,
-                          context
-                      );
+                          context);
                     },
                     onPressed: () {
                       Navigator.pushNamed(
@@ -465,7 +481,8 @@ class _SearchScreenState extends State<SearchScreen>
                         '/room',
                         arguments: {
                           'isRoom': false,
-                          'chatData': getChat(context, filteredContactsIds[index])
+                          'chatData':
+                              getChat(context, filteredContactsIds[index])
                         },
                       );
                     },
@@ -484,7 +501,8 @@ class _SearchScreenState extends State<SearchScreen>
                   onTapDown: _storePosition,
                   // Todo: DRY
                   child: PersonDelegate(
-                    data: PersonDelegateData.IdentityData(filteredAllIds[index], context),
+                    data: PersonDelegateData.IdentityData(
+                        filteredAllIds[index], context),
                     onLongPress: (Offset tapPosition) {
                       showCustomMenu(
                           "Add to contacts",
@@ -492,10 +510,10 @@ class _SearchScreenState extends State<SearchScreen>
                             Icons.person_add,
                             color: Colors.black,
                           ),
-                              () => _addToContacts(filteredAllIds[index].mId),
+                          () =>
+                              _toggleContacts(filteredAllIds[index].mId, true),
                           tapPosition,
-                          context
-                      );
+                          context);
                     },
                     onPressed: () {
                       Navigator.pushNamed(

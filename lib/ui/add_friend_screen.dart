@@ -6,10 +6,9 @@ import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/common/person_delegate.dart';
-
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
-import 'package:retroshare/model/account.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friendLocation.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
@@ -74,6 +73,8 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loggedinAccount =
+        Provider.of<AccountCredentials>(context, listen: false).loggedinAccount;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

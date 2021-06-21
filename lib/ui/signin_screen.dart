@@ -56,10 +56,8 @@ class _SignInScreenState extends State<SignInScreen> {
           final ids = Provider.of<Identities>(context, listen: false);
           ids.fetchOwnidenities().then((value) => {
                 if (ids.ownIdentity != null && ids.ownIdentity.length == 0)
-                  {
-                    Navigator.pushReplacementNamed(context, '/create_identity',
-                        arguments: true)
-                  }
+                  Navigator.pushReplacementNamed(context, '/create_identity',
+                      arguments: true)
                 else
                   Navigator.pushReplacementNamed(context, '/home')
               });
