@@ -12,6 +12,7 @@ class FriendsIdentity with ChangeNotifier {
   List<Identity> get friendsIdsList => [..._friendsIdsList];
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
+
   Future<void> fetchAndUpdate() async {
     Tuple3<List<Identity>, List<Identity>, List<Identity>> tupleIds =
         await getAllIdentities();

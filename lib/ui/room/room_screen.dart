@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/cache.dart';
@@ -37,8 +38,6 @@ class _RoomScreenState extends State<RoomScreen>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.chat.unreadCount = 0;
-      /*StoreProvider.of<AppState>(context)
-          .dispatch(UpdateCurrentChatAction(widget.chat));*/
       await Provider.of<FriendsIdentity>(context, listen: false)
           .fetchAndUpdate();
       Provider.of<RoomChatLobby>(context, listen: false)
@@ -46,23 +45,8 @@ class _RoomScreenState extends State<RoomScreen>
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat.chatId);
-        // getParticipants(widget.chat.chatId, context);
-        /*Timer.periodic(
-          Duration(seconds: 10),
-          (Timer t) => context == null
-              ? t.cancel()
-              : Provider.of<RoomChatLobby>(context, listen: false)
-                  .updateParticipants(widget.chat.chatId)
-          // getParticipants(widget.chat.chatId, context)
-          );*/
       }
     });
-  }
-
-  @override
-  void deactivate() {
-    //StoreProvider.of<AppState>(context).dispatch(UpdateCurrentChatAction(null));
-    Provider.of<RoomChatLobby>(context, listen: false).updateCurrentChat(null);
   }
 
   @override
@@ -94,7 +78,11 @@ class _RoomScreenState extends State<RoomScreen>
                             size: 25,
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Future.delayed(Duration.zero, () async {
+                              Provider.of<RoomChatLobby>(context, listen: false)
+                                  .updateCurrentChat(null);
+                              Navigator.pop(context);
+                            });
                           },
                         ),
                       ),

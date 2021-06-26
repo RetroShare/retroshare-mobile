@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/model/account.dart';
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/auth.dart';
+import 'package:retroshare/services/account.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/identity.dart';
+import 'package:path_provider/path_provider.dart';
 
 class TopBar extends StatefulWidget {
   final double maxHeight;
@@ -128,14 +134,8 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                   bool success =
                       await Provider.of<Identities>(context, listen: false)
                           .providerdeleteIdentity();
-                  //await deleteIdentity(store.state.currId);
                   if (success) {
-                    /*List<Identity> ownIdsList = await getOwnIdentities();
-                    final store = StoreProvider.of<AppState>(context);
-                    store.dispatch(UpdateOwnIdentitiesAction(ownIdsList));*/
-
-                    // Navigator.pushReplacementNamed(context, '/change_identity');
-                    Navigator.of(context).pop();
+                    Navigator.pushReplacementNamed(context, '/change_identity');
                   }
                 },
               ),
@@ -298,6 +298,24 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context, '/friends_locations');
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            child: Button(
+                              name: 'Export Account',
+                              buttonIcon: Icons.import_export,
+                              onPressed: () async {
+                                Directory appDocDir =
+                                    await getApplicationDocumentsDirectory();
+                                String appDocPath = appDocDir.path;
+                                final id = Provider.of<AccountCredentials>(
+                                        context,
+                                        listen: false)
+                                    .lastAccountUsed
+                                    .locationId;
+                                print(appDocPath);
+                                await exportIdentity(appDocPath, id);
                               },
                             ),
                           ),

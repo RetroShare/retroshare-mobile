@@ -83,7 +83,7 @@ class PersonDelegateData {
       mId: identity.mId,
       image: cachedImages[identity.avatar],
       isMessage: true,
-      //isUnread: identity.getUnreadCount(context) > 0 ? true : false,
+      isUnread: identity.getUnreadCount(context) > 0 ? true : false,
     );
   }
 

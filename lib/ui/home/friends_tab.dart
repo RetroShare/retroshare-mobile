@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/services/chat.dart';
-import 'package:retroshare/services/init.dart';
 
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/identity.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/redux/model/app_state.dart';
 import 'package:tuple/tuple.dart';
 
 class FriendsTab extends StatefulWidget {
@@ -23,19 +18,13 @@ class FriendsTab extends StatefulWidget {
 
 class _FriendsTabState extends State<FriendsTab> {
   void _removeFromContacts(String gxsId) async {
-    //await setContact(gxsId, false);
     await Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, false);
-    //final store = StoreProvider.of<AppState>(context);
-    // await updateIdentitiesStore (store);
   }
 
   void _addToContacts(String gxsId) async {
-    //await setContact(gxsId, true);
-    //final store = StoreProvider.of<AppState>(context);
     await Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, true);
-    //await updateIdentitiesStore(store);
   }
 
   @override
@@ -43,25 +32,8 @@ class _FriendsTabState extends State<FriendsTab> {
     return SafeArea(
       top: false,
       bottom: false,
-      child:
-          /*StoreConnector<AppState,
-          Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>>(
-        converter: (store) =>
-            Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(
-                store.state.friendsIdsList,
-                store.state.distantChats?.values
-                        ?.toList()
-                        ?.where((chat) =>
-                            (store.state.allIds[chat.interlocutorId] == null ||
-                                store.state.allIds[chat.interlocutorId]
-                                        .isContact ==
-                                    false))
-                        ?.toList() ??
-                    [],
-                store.state.allIds),*/
-          Consumer<FriendsIdentity>(
+      child: Consumer<FriendsIdentity>(
         builder: (context, friendsIdsList, _) {
-          //return Text("hello");
           print(friendsIdsList);
           return Consumer<RoomChatLobby>(
             builder: (context, roomChat, _) {
@@ -80,7 +52,6 @@ class _FriendsTabState extends State<FriendsTab> {
                               ?.toList() ??
                           [],
                       friendsIdsList.allIds);
-              //print(friendsDistantAndIdsTuple.item1);
               return Stack(
                 children: <Widget>[
                   Visibility(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
-import 'package:redux/redux.dart';
 import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/Idenity.dart';
@@ -12,8 +11,6 @@ import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 
 import 'package:retroshare/routes.dart';
-import 'package:retroshare/redux/store.dart';
-import 'package:retroshare/redux/model/app_state.dart';
 
 import 'model/app_life_cycle_state.dart';
 import 'model/auth.dart';
@@ -22,16 +19,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
 
-  final rsStore = await retroshareStore();
+  //final rsStore = await retroshareStore();
   openapi = DefaultApi();
 
-  runApp(App(rsStore));
+  runApp(App());
 }
 
 class App extends StatefulWidget {
-  final Store<AppState> store;
+  //final Store<AppState> store;
 
-  App(this.store);
+//  App(this.store);
 
   @override
   _AppState createState() => new _AppState();

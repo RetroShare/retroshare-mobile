@@ -10,10 +10,10 @@ class AccountCredentials with ChangeNotifier {
   Account _lastAccountUsed;
   Account _loggedinAccount;
   AuthToken _authToken;
-
-  get accountList => _accountsList;
-  get loggedinAccount => _loggedinAccount;
-  get getauthToken => _authToken;
+  Account get lastAccountUsed => _lastAccountUsed;
+  List<Account> get accountList => _accountsList;
+  Account get loggedinAccount => _loggedinAccount;
+  AuthToken get getauthToken => _authToken;
   setauthToken(AuthToken authToken) {
     _authToken = authToken;
   }

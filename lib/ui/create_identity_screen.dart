@@ -55,17 +55,9 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen> {
   void _createIdentity() async {
     await Provider.of<Identities>(context, listen: false).createnewIdenity(
         Identity('', false, nameController.text, _imageBase64), _imageSize);
-
-    /*final store = StoreProvider.of<AppState>(context);
-    store.dispatch(ChangeCurrentIdentityAction(id));
-
-    List<Identity> ownIdsList = await getOwnIdentities();
-    store.dispatch(UpdateOwnIdentitiesAction(ownIdsList));*/
-
-    if (widget.isFirstId)
-      Navigator.pushReplacementNamed(context, '/home');
-    else
-      Navigator.pop(context);
+    widget.isFirstId
+        ? Navigator.pushReplacementNamed(context, '/home')
+        : Navigator.pop(context);
   }
 
   @override

@@ -34,7 +34,6 @@ class RoomChatLobby with ChangeNotifier {
 
   Future<void> fetchAndUpdateParticipants(
       String lobbyId, List<Identity> participants) async {
-    //List<Identity> participants = await getLobbyParticipants(lobbyId);
     _lobbyParticipants =
         Map.from(_lobbyParticipants ?? Map<String, List<Identity>>())
           ..putIfAbsent(lobbyId, () => [])

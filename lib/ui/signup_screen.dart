@@ -74,34 +74,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (value['auth']) {
           final ids = Provider.of<Identities>(context, listen: false);
           ids.fetchOwnidenities().then((value) => {
-                if (ids.ownIdentity != null && ids.ownIdentity.length == 0)
-                  {
-                    Navigator.pushReplacementNamed(context, '/create_identity',
+                ids.ownIdentity != null && ids.ownIdentity.length == 0
+                    ? Navigator.pushReplacementNamed(
+                        context, '/create_identity',
                         arguments: true)
-                  }
-                else
-                  Navigator.pushReplacementNamed(context, '/home')
+                    : Navigator.pushReplacementNamed(context, '/home')
               });
         } else
           Navigator.pop(context);
       }
     });
-    /*Tuple2<bool, Account> accountCreate;
-    if (nodeNameController.text == '')
-      accountCreate = await requestAccountCreation(
-          usernameController.text, passwordController.text);
-    else
-      accountCreate = await requestAccountCreation(usernameController.text,
-          passwordController.text, nodeNameController.text);
-
-    if (accountCreate != null && accountCreate.item1) {
-      loggedinAccount = accountCreate.item2;
-      bool isAuthTokenValid = await initializeAuth(
-          accountCreate.item2.locationName, passwordController.text);
-      if (isAuthTokenValid) {
-        print("heelo");
-      }
-    }*/
   }
 
   @override

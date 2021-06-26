@@ -119,9 +119,7 @@ class ChatMessage {
 
   bool isLobbyMessage() => this.chat_id.lobbyId.xstr64 != "0";
 
-  String getChatSenderName(
-    dynamic context,
-  ) {
+  String getChatSenderName(dynamic context) {
     final distantChats =
         Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
     final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIds;

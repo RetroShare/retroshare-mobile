@@ -43,6 +43,17 @@ Future<List<Account>> getLocations() async {
   return [];
 }
 
+Future<bool> exportIdentity(String filePath, String pgpId) async {
+  final response =
+      await http.post('http://localhost:9092/rsAccounts/ExportIdentity',
+          headers: {
+            HttpHeaders.authorizationHeader:
+                'Basic ' + base64.encode(utf8.encode('$authToken'))
+          },
+          body: json.encode({"filePath": filePath, "pgpId": pgpId}));
+  print(response.body);
+}
+
 dynamic requestLogIn(Account selectedAccount, String password) async {
   var accountDetails = {
     'account': selectedAccount.locationId,

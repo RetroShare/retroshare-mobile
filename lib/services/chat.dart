@@ -22,7 +22,6 @@ import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 import 'package:retroshare/provider/room.dart';
-import 'init.dart';
 
 // Not used
 //Future<List<Chat>> getChatLobbies() async {
@@ -157,7 +156,7 @@ Future<bool> createChatLobby(
   req.lobbyPrivacyType = privacyType;
 
   var response = await openapi.rsMsgsCreateChatLobby(reqCreateChatLobby: req);
-
+  print(response.retval);
   if (response.retval.xint64 > 0) {
     setLobbyAutoSubscribe(response.retval.xstr64);
     return true;
@@ -230,7 +229,6 @@ Future<ResSendChat> sendMessage(
       chatMiddleware(message, context);
       Provider.of<RoomChatLobby>(context, listen: false)
           .addChatMessage(message, chatId);
-      // store.dispatch(AddChatMessageAction(message, chatId));
     }
   });
 }
@@ -256,7 +254,7 @@ Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
     }),
   );
 
-  List<Identity> ids = List<Identity>();
+  List<Identity> ids = [];
 
   if (response.statusCode == 200) {
     var gxsIds = json.decode(response.body)['info']['gxs_ids'];
@@ -376,8 +374,6 @@ Chat getChat(
         Provider.of<ChatLobby>(context, listen: false)
             .fetchAndUpdateUnsubscribed();
         Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
-        //updateChatLobbiesStore(store);
-        //updateUnsubsChatLobbiesStore(store);
       }
     });
   } else if (to != null && (to is Chat)) {
@@ -386,7 +382,6 @@ Chat getChat(
     //store.dispatch(UpdateLobbyParticipantsAction(to.chatId, []));
     Provider.of<RoomChatLobby>(context, listen: false)
         .fetchAndUpdateParticipants(to.chatId, []);
-    //store.dispatch(AddChatMessageAction(null, to.chatId));
     chatMiddleware(null, context);
     Provider.of<RoomChatLobby>(context, listen: false)
         .addChatMessage(null, to.chatId);

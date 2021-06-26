@@ -33,7 +33,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
     currentAccount = Provider.of<AccountCredentials>(context, listen: false)
         .getlastAccountUsed;
-    print(currentAccount.locationName);
   }
 
   @override
@@ -55,11 +54,11 @@ class _SignInScreenState extends State<SignInScreen> {
         if (value['auth']) {
           final ids = Provider.of<Identities>(context, listen: false);
           ids.fetchOwnidenities().then((value) => {
-                if (ids.ownIdentity != null && ids.ownIdentity.length == 0)
-                  Navigator.pushReplacementNamed(context, '/create_identity',
-                      arguments: true)
-                else
-                  Navigator.pushReplacementNamed(context, '/home')
+                ids.ownIdentity != null && ids.ownIdentity.length == 0
+                    ? Navigator.pushReplacementNamed(
+                        context, '/create_identity',
+                        arguments: true)
+                    : Navigator.pushReplacementNamed(context, '/home')
               });
         } else {
           _isWrongPassword();
@@ -78,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   List<DropdownMenuItem<Account>> getDropDownMenuItems() {
-    List<DropdownMenuItem<Account>> items = new List();
+    List<DropdownMenuItem<Account>> items = [];
     for (Account account
         in Provider.of<AccountCredentials>(context, listen: true).accountList) {
       items.add(DropdownMenuItem(

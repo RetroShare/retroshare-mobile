@@ -21,20 +21,17 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
 //  List<Identity> _lobbyParticipantsList = List<Identity>();
   var _tapPosition;
 
-  /*@override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     Provider.of<RoomChatLobby>(context, listen: false)
         .updateParticipants(widget.chat.chatId);
-  }*/
+  }
 
   void _addToContacts(String gxsId) async {
-    //await setContact(gxsId, true);
     await Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, true);
-    // final store = StoreProvider.of<AppState>(context);
-    // await updateIdentitiesStore(store);
   }
 
   void _storePosition(TapDownDetails details) {
@@ -51,6 +48,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                   null
           ? []
           : lobbyParticipantsList.lobbyParticipants[widget.chat.chatId];
+      print(_lobbyParticipantsList);
       return ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemCount:

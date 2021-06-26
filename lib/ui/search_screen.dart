@@ -41,23 +41,26 @@ class _SearchScreenState extends State<SearchScreen>
 
   @override
   void initState() {
+    super.initState();
     _tabController =
         TabController(vsync: this, length: 2, initialIndex: widget.initialTab);
 
     _searchBoxFilter.addListener(() {
       if (_searchBoxFilter.text.isEmpty) {
-        setState(() {
-          _searchContent = "";
-          filteredAllIds = allIds;
-          filteredContactsIds = contactsIds;
-          filteredSubscribedChats = subscribedChats;
-          //Provider.of<ChatLobby>(context, listen: false).subscribedlist;
-          filteredPublicChats = publicChats;
-        });
+        if (this.mounted)
+          setState(() {
+            _searchContent = "";
+            filteredAllIds = allIds;
+            filteredContactsIds = contactsIds;
+            filteredSubscribedChats = subscribedChats;
+            //Provider.of<ChatLobby>(context, listen: false).subscribedlist;
+            filteredPublicChats = publicChats;
+          });
       } else {
-        setState(() {
-          _searchContent = _searchBoxFilter.text;
-        });
+        if (this.mounted)
+          setState(() {
+            _searchContent = _searchBoxFilter.text;
+          });
       }
     });
 
@@ -66,30 +69,20 @@ class _SearchScreenState extends State<SearchScreen>
     _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
         .animate(_tabController.animation);
 
-    super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //final store = StoreProvider.of<AppState>(context);
-      //updateIdentitiesStore(store);
       await Provider.of<FriendsIdentity>(context, listen: false)
           .fetchAndUpdate();
       await Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
       await Provider.of<ChatLobby>(context, listen: false)
           .fetchAndUpdateUnsubscribed();
-      //updateChatLobbiesStore(store);
-      // updateUnsubsChatLobbiesStore(store);
       allIds =
           Provider.of<FriendsIdentity>(context, listen: false).notContactIds;
-      //store.state.notContactIds;
       contactsIds =
           Provider.of<FriendsIdentity>(context, listen: false).friendsIdsList;
-      //store.state.friendsIdsList;
       subscribedChats =
           Provider.of<ChatLobby>(context, listen: false).subscribedlist;
-      //store.state.subscribedChats;
       publicChats =
           Provider.of<ChatLobby>(context, listen: false).unSubscribedlist;
-      //store.state.unSubscribedChats;
     });
   }
 
@@ -125,52 +118,52 @@ class _SearchScreenState extends State<SearchScreen>
                         size: 25,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          Navigator.pop(context);
+                        });
                       },
                     ),
                   ),
                   Expanded(
-                    child: Hero(
-                      tag: 'search_box',
-                      child: Material(
-                        color: Colors.white,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Color(0xFFF5F5F5),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          height: 40,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.search,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .color),
-                                SizedBox(
-                                  width: 8,
+                    /*child: Hero(
+                      tag: 'search_boxi',*/
+                    child: Material(
+                      color: Colors.white,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color(0xFFF5F5F5),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        margin: EdgeInsets.symmetric(horizontal: 8),
+                        height: 40,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.search,
+                                  color:
+                                      Theme.of(context).textTheme.body1.color),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: TextField(
+                                  controller: _searchBoxFilter,
+                                  autofocus: true,
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Type text...'),
+                                  style: Theme.of(context).textTheme.body2,
                                 ),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _searchBoxFilter,
-                                    autofocus: true,
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Type text...'),
-                                    style: Theme.of(context).textTheme.body2,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
+                  // ),
                 ],
               ),
             ),

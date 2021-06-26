@@ -18,6 +18,7 @@ class Identities with ChangeNotifier {
       _currentIdentity = _ownidentities[0];
       _selected = _ownidentities[0];
     }
+    notifyListeners();
   }
 
   Identity get selectedIdentity => _selected;
@@ -51,6 +52,7 @@ class Identities with ChangeNotifier {
       int randomNum = random.nextInt(_ownidentities.length);
       _currentIdentity = _ownidentities[randomNum];
       _selected = _currentIdentity;
+      notifyListeners();
       return true;
     }
     return false;

@@ -7,6 +7,7 @@ import 'package:retroshare/model/location.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/model/identity.dart';
@@ -119,17 +120,13 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //final store = StoreProvider.of<AppState>(context);
       await Provider.of<FriendLocations>(context, listen: false)
           .fetchfriendLocation();
       final identities = Provider.of<FriendsIdentity>(context, listen: false);
       final locations = Provider.of<FriendLocations>(context, listen: false);
       _friendsList = identities.friendsSignedIdsList;
-      // store.state.friendsSignedIdsList;
       _suggestionsList = identities.friendsSignedIdsList;
-      //store.state.friendsSignedIdsList;
       _locationsList = locations.friendlist;
-      //store.state.locations;
       _selectedLocations = <Location>[];
     });
   }
