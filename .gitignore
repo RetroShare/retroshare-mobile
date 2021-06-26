@@ -4,6 +4,8 @@ gradlew
 gradlew.bat
 local.properties
 pubspec.lock
+retroshare-service.properties
+
 
 # Miscellaneous
 *.class

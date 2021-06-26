@@ -24,9 +24,10 @@ class RouteGenerator {
 //        if (args is bool || args is String || args is SplashScreenArguments)
           return MaterialPageRoute(
               builder: (_) => SplashScreen(
-                isLoading: args['isLoading'],
-                spinner: args['spinner'],
-                statusText: args['statusText'],));
+                    isLoading: args['isLoading'],
+                    spinner: args['spinner'],
+                    statusText: args['statusText'],
+                  ));
 
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/home':
