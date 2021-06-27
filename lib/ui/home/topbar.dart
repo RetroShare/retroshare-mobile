@@ -314,8 +314,9 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                         listen: false)
                                     .lastAccountUsed
                                     .locationId;
-                                print(appDocPath);
-                                await exportIdentity(appDocPath, id);
+                                File('$appDocPath/$id.txt');
+                                print('$appDocPath/$id.txt');
+                                await exportIdentity('$appDocPath/$id.txt', id);
                               },
                             ),
                           ),
