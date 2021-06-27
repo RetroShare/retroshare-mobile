@@ -1,4 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+import 'package:retroshare/services/account.dart';
 
 class LaunchTransitionScreen extends StatefulWidget {
   @override
@@ -6,6 +10,33 @@ class LaunchTransitionScreen extends StatefulWidget {
 }
 
 class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
+  Future<bool> importAccountFunc(BuildContext context) async {
+    FilePickerResult result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      File pgpFile = File(result.files.single.path);
+      try {
+        final file = pgpFile;
+        final contents = await file.readAsString();
+        await importIdentity(contents);
+      } catch (e) {
+        print(e);
+        final snackBar = SnackBar(
+          content: Text('Oops! Something went wrong'),
+          duration: Duration(milliseconds: 200),
+          backgroundColor: Colors.red[200],
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Oops! Please pick up the file'),
+        duration: Duration(milliseconds: 200),
+        backgroundColor: Colors.red[200],
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +100,8 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
                                 height: 10,
                               ),
                               FlatButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  await importAccountFunc(context);
                                   // todo: implement import account
                                 },
                                 textColor: Colors.white,

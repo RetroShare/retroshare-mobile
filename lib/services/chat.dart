@@ -423,3 +423,16 @@ void registerChatEvents(store) {
     }
   });
 }
+
+Future<void> getMessagescall(String lobbyId) async {
+  final response = await http.post(
+    'http://127.0.0.1:9092/rsHistory/getMessages',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'chatPeerId': lobbyId}),
+  );
+  print("hello");
+  print(response.body);
+}

@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/model/account.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
+import 'package:retroshare/services/account.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -25,6 +29,36 @@ class _SignInScreenState extends State<SignInScreen> {
     wrongPassword = false;
   }
 
+  Future<bool> importAccountFunc(BuildContext context) async {
+    FilePickerResult result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File pgpFile = File(result.files.single.path);
+      try {
+        final file = pgpFile;
+        final contents = await file.readAsString();
+        print(contents);
+        await importIdentity(contents);
+      } catch (e) {
+        print(e);
+        final snackBar = SnackBar(
+          content: Text('Oops! Something went wrong'),
+          duration: Duration(milliseconds: 200),
+          backgroundColor: Colors.red[200],
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Oops! Please pick up the file'),
+        duration: Duration(milliseconds: 200),
+        backgroundColor: Colors.red[200],
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -270,7 +304,9 @@ class _SignInScreenState extends State<SignInScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               FlatButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await importAccountFunc(context);
+                                },
                                 textColor: Color(0xFF9E9E9E),
                                 padding: const EdgeInsets.all(0.0),
                                 child: Text(

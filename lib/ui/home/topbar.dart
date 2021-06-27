@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/model/account.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/services/account.dart';
@@ -306,17 +304,25 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                               name: 'Export Account',
                               buttonIcon: Icons.import_export,
                               onPressed: () async {
-                                Directory appDocDir =
-                                    await getApplicationDocumentsDirectory();
-                                String appDocPath = appDocDir.path;
-                                final id = Provider.of<AccountCredentials>(
-                                        context,
-                                        listen: false)
-                                    .lastAccountUsed
-                                    .locationId;
-                                File('$appDocPath/$id.txt');
-                                print('$appDocPath/$id.txt');
-                                await exportIdentity('$appDocPath/$id.txt', id);
+                                bool success =
+                                    await exportIdentityFunc(context);
+                                if (success)
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: const Text(
+                                        'Successfully! Exported your account'),
+                                    duration: const Duration(seconds: 1),
+                                    backgroundColor: Colors.lightBlue[200],
+                                  ));
+                                else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: const Text(
+                                        'Oops ! Something went wrong '),
+                                    duration: const Duration(seconds: 1),
+                                    backgroundColor: Colors.red[200],
+                                  ));
+                                }
                               },
                             ),
                           ),
@@ -455,4 +461,28 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
       ),
     );
   }
+}
+
+Future<bool> exportIdentityFunc(BuildContext context) async {
+  Directory appDocDir = await getApplicationDocumentsDirectory();
+  final id = Provider.of<AccountCredentials>(context, listen: false)
+      .lastAccountUsed
+      .pgpId;
+  String appDocPath = appDocDir.path + '/$id.txt';
+
+// for a file
+  bool check = File("$appDocPath").existsSync();
+  File entry = File("$appDocPath");
+  print(appDocPath);
+  if (check) {
+    await entry.writeAsStringSync('');
+  }
+  String data = await exportIdentity(id);
+  try {
+    await entry.writeAsString(data);
+  } catch (e) {
+    print(e);
+    return false;
+  }
+  return true;
 }

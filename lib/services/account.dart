@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/redux/actions/app_actions.dart';
-import 'package:retroshare/redux/model/app_state.dart';
+
 import 'package:tuple/tuple.dart';
 
 import 'package:retroshare/model/account.dart';
@@ -43,15 +39,29 @@ Future<List<Account>> getLocations() async {
   return [];
 }
 
-Future<bool> exportIdentity(String filePath, String pgpId) async {
+Future<String> exportIdentity(String pgpId) async {
   final response =
-      await http.post('http://localhost:9092/rsAccounts/ExportIdentity',
+      await http.post('http://localhost:9092/rsAccounts/exportIdentityToString',
           headers: {
             HttpHeaders.authorizationHeader:
                 'Basic ' + base64.encode(utf8.encode('$authToken'))
           },
-          body: json.encode({"filePath": filePath, "pgpId": pgpId}));
-  print(response.body);
+          body: json.encode({"pgpId": pgpId}));
+  if (response.statusCode == 200)
+    return json.decode(response.body)['data'];
+  else
+    throw Exception('Failed to load response');
+}
+
+Future<String> importIdentity(String data) async {
+  final response =
+      await http.post('http://localhost:9092/rsAccounts/importIdentityToString',
+          
+          body: json.encode({"data": data}));
+  if (response.statusCode == 200)
+    return json.decode(response.body);
+  else
+    throw Exception('Failed to load response');
 }
 
 dynamic requestLogIn(Account selectedAccount, String password) async {
@@ -86,7 +96,6 @@ dynamic requestAccountCreation(String username, String password,
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
-  print(response.body);
   if (response.statusCode == 200 && json.decode(response.body)['retval']) {
     dynamic resp = json.decode(response.body)['location'];
     Account account = Account(resp['mLocationId'], resp['mPgpId'],

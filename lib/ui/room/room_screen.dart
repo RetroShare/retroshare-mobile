@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/cache.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/room.dart';
+import 'package:retroshare/services/chat.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
 import 'package:retroshare/model/chat.dart';
@@ -45,6 +45,7 @@ class _RoomScreenState extends State<RoomScreen>
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat.chatId);
+        await getMessagescall(widget.chat.chatId);
       }
     });
   }

@@ -51,9 +51,8 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
-  print("check+${response.body}");
+
   if (response.statusCode == 200) {
-    print('check1');
     if (json.decode(response.body)['retval']) {
       Identity identity = Identity(id);
       print(json.decode(response.body)['details']['mAvatar']['mData']);
@@ -61,7 +60,7 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
       /* identity.avatar = json.decode(response.body)['mAvatar']['mData'] != null
           ? json.decode(response.body)['mAvatar']['mData']['base64']
           : "";*/
-      print("check21");
+
       identity.signed =
           json.decode(response.body)['details']['mPgpId'] != '0000000000000000'
               ? true
@@ -90,7 +89,6 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
-  print(response.body);
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval'])
       return Identity(json.decode(response.body)['id'], identity.signed,
