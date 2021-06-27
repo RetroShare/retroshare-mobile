@@ -30,15 +30,17 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<bool> importAccountFunc(BuildContext context) async {
-    FilePickerResult result = await FilePicker.platform.pickFiles();
-
+    // FilePickerResult result = await FilePicker.platform.pickFiles();
+    final result = 'abc';
     if (result != null) {
-      File pgpFile = File(result.files.single.path);
+      File pgpFile = File(
+          '/data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt');
       try {
         final file = pgpFile;
         final contents = await file.readAsString();
         print(contents);
-        await importIdentity(contents);
+
+        final pgpId = await importIdentity(contents);
       } catch (e) {
         print(e);
         final snackBar = SnackBar(

@@ -54,12 +54,11 @@ Future<String> exportIdentity(String pgpId) async {
 }
 
 Future<String> importIdentity(String data) async {
-  final response =
-      await http.post('http://localhost:9092/rsAccounts/importIdentityToString',
-          
-          body: json.encode({"data": data}));
+  final response = await http.post(
+      'http://localhost:9092/rsAccounts/importIdentityFromString',
+      body: json.encode({"data": data}));
   if (response.statusCode == 200)
-    return json.decode(response.body);
+    return json.decode(response.body)['pgpId'];
   else
     throw Exception('Failed to load response');
 }
