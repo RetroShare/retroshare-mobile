@@ -57,9 +57,18 @@ Future<String> importIdentity(String data) async {
   final response = await http.post(
       'http://localhost:9092/rsAccounts/importIdentityFromString',
       body: json.encode({"data": data}));
-  if (response.statusCode == 200)
+  if (response.statusCode == 200) {
+    final resp =
+        await http.post('http://localhost:9092/rsAccounts/getGPGDetails',
+            body: json.encode({
+              'gpg-id': [json.decode(response.body)['pgpId']]
+            }));
+
+    print(json.decode(response.body));
+    print(resp.body);
+
     return json.decode(response.body)['pgpId'];
-  else
+  } else
     throw Exception('Failed to load response');
 }
 
@@ -95,6 +104,7 @@ dynamic requestAccountCreation(String username, String password,
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
+  print(response.body);
   if (response.statusCode == 200 && json.decode(response.body)['retval']) {
     dynamic resp = json.decode(response.body)['location'];
     Account account = Account(resp['mLocationId'], resp['mPgpId'],

@@ -58,6 +58,22 @@ class Identities with ChangeNotifier {
     return false;
   }
 
+  Future<bool> updateIdentity(Identity id, int avatarSize) async {
+    bool success = await updateApiIdentity(id, avatarSize);
+    if (success) {
+      for (var i in _ownidentities) {
+        if (i.mId == id.mId) {
+          i = id;
+          break;
+        }
+      }
+      _currentIdentity = id;
+      _selected = _currentIdentity;
+      notifyListeners();
+    }
+    return success;
+  }
+
   Future<void> callrequestIdentity(Identity unknownId) async {
     await requestIdentity(unknownId.mId);
     notifyListeners();

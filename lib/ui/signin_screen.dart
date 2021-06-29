@@ -38,11 +38,8 @@ class _SignInScreenState extends State<SignInScreen> {
       try {
         final file = pgpFile;
         final contents = await file.readAsString();
-        print(contents);
-
         final pgpId = await importIdentity(contents);
       } catch (e) {
-        print(e);
         final snackBar = SnackBar(
           content: Text('Oops! Something went wrong'),
           duration: Duration(milliseconds: 200),

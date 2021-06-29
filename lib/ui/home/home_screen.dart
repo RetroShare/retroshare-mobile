@@ -76,9 +76,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         SizedBox(
           height: topBarMinHeight,
         ),
-        /*Hero(
-          tag: 'search_box',
-          child:*/
         Material(
           color: Colors.white,
           child: GestureDetector(

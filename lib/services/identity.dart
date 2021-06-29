@@ -79,9 +79,12 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
     'name': identity.name,
     'avatar': {
       'mSize': avatarSize,
-      'mData': {'base64': identity.avatar}
-    }
+      'mData': {'base64': identity.avatar},
+    },
+    'pseudonimous': identity.signed,
+    'pgpPassword': authToken.password
   });
+
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/createIdentity',
       body: b,
@@ -113,6 +116,33 @@ Future<bool> deleteIdentity(Identity identity) async {
       return true;
     else
       return false;
+  } else
+    throw Exception('Failed to load response');
+}
+
+Future<bool> updateApiIdentity(Identity identity, int avatarSize) async {
+  var b = json.encode({
+    'name': identity.name,
+    'id': identity.mId,
+    'avatar': {
+      'mSize': avatarSize,
+      'mData': {'base64': identity.avatar},
+    },
+    'pseudonimous': identity.signed,
+    'pgpPassword': authToken.password
+  });
+  final response = await http.post(
+      'http://127.0.0.1:9092/rsIdentity/updateIdentity',
+      body: b,
+      headers: {
+        HttpHeaders.authorizationHeader:
+            'Basic ' + base64.encode(utf8.encode('$authToken'))
+      });
+
+  if (response.statusCode == 200) {
+    if (json.decode(response.body)['retval']) return true;
+
+    return false;
   } else
     throw Exception('Failed to load response');
 }
