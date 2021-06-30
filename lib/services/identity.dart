@@ -15,7 +15,7 @@ Future<List<Identity>> getOwnIdentities() async {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
-
+  print(respSigned.body);
   if (respSigned.statusCode == 200) {
     json.decode(respSigned.body)['ids']
       ..toSet().forEach((id) {
@@ -81,10 +81,10 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
       'mSize': avatarSize,
       'mData': {'base64': identity.avatar},
     },
-    'pseudonimous': identity.signed,
+    'pseudonimous': !identity.signed,
     'pgpPassword': authToken.password
   });
-
+  print(b);
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/createIdentity',
       body: b,
@@ -92,6 +92,7 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
+  print(response.body);
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval'])
       return Identity(json.decode(response.body)['id'], identity.signed,
@@ -124,13 +125,10 @@ Future<bool> updateApiIdentity(Identity identity, int avatarSize) async {
   var b = json.encode({
     'name': identity.name,
     'id': identity.mId,
-    'avatar': {
-      'mSize': avatarSize,
-      'mData': {'base64': identity.avatar},
-    },
-    'pseudonimous': identity.signed,
-    'pgpPassword': authToken.password
+    'pseudonimous': !identity.signed
   });
+  print(b);
+
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/updateIdentity',
       body: b,
@@ -138,7 +136,7 @@ Future<bool> updateApiIdentity(Identity identity, int avatarSize) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
-
+  print(response.body);
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval']) return true;
 

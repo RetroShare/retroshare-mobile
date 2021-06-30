@@ -26,11 +26,17 @@ class RoomChatLobby with ChangeNotifier {
   Map<String, List<Identity>> _lobbyParticipants;
   Map<String, Chat> _distanceChat = {};
   Chat _currentChat;
+  AuthToken _authToken;
   Map<String, Chat> get distanceChat => {..._distanceChat};
   Map<String, List<ChatMessage>> _messagesList;
   Map<String, List<ChatMessage>> get messagesList => {..._messagesList};
   Map<String, List<Identity>> get lobbyParticipants => {..._lobbyParticipants};
   Chat get currentChat => _currentChat;
+
+  void setAuthToken(AuthToken authToken) {
+    _authToken = authToken;
+    notifyListeners();
+  }
 
   Future<void> fetchAndUpdateParticipants(
       String lobbyId, List<Identity> participants) async {

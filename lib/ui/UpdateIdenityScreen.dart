@@ -1,14 +1,14 @@
-import 'dart:convert';
+import 'dart:ui';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/bottom_bar.dart';
-import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
+import 'dart:convert';
 import 'package:retroshare/common/styles.dart';
+import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
+import '../common/color_loader_3.dart';
 
 class UpdateIdentityScreen extends StatefulWidget {
   @override
@@ -23,15 +23,6 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   bool _showError = false;
   bool _requestCreateIdentity = false;
   Identity curr;
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      curr = Provider.of<Identities>(context, listen: false).currentIdentity;
-
-      nameController = TextEditingController(text: curr.name);
-    });
-  }
 
   @override
   void dispose() {
@@ -39,7 +30,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     super.dispose();
   }
 
-  _setImage(File image) {
+  _setImage(File image) async {
     Navigator.pop(context);
     setState(() {
       if (image != null) {
@@ -50,6 +41,13 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    curr = Provider.of<Identities>(context, listen: false).currentIdentity;
+    nameController = TextEditingController(text: curr.name);
+  }
+
   // Validate the Name
   bool _validate(text) {
     if (nameController.text.length < 3) {
@@ -58,32 +56,117 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     return true;
   }
 
-  // Request create identity
-  void _updateIdentity() async {
-    await Provider.of<Identities>(context, listen: false).updateIdentity(
-        Identity(curr.mId, curr.signed, nameController.text, _imageBase64),
-        _imageSize);
-    Navigator.pop(context);
+  contentBox(context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+              left: Constants.padding,
+              top: Constants.avatarRadius,
+              right: Constants.padding,
+              bottom: Constants.padding),
+          margin: EdgeInsets.only(top: Constants.avatarRadius),
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(Constants.padding),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'something went Wrong!',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "OK",
+                      style: TextStyle(fontSize: 14),
+                    )),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          left: Constants.padding,
+          right: Constants.padding,
+          child: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            radius: Constants.avatarRadius,
+            child: ClipRRect(
+              borderRadius:
+                  BorderRadius.all(Radius.circular(Constants.avatarRadius)),
+              child: Image(
+                image: AssetImage('assets/rs-logo.png'),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    // Request create identity
+    void _updateIdentity() async {
+      bool success =
+          await Provider.of<Identities>(context, listen: false).updateIdentity(
+        Identity(curr.mId, curr.signed, nameController.text, _imageBase64),
+        _imageSize,
+      );
+      print(success);
+      if (success)
+        Navigator.pop(context);
+      else {
+        setState(() {
+          _requestCreateIdentity = false;
+        });
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(Constants.padding),
+              ),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              child: contentBox(context),
+            );
+          },
+        );
+      }
+    }
+
     return WillPopScope(
-        onWillPop: () {
-          return Future.value(true);
-        },
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: SafeArea(
-            top: true,
-            bottom: true,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: appBarHeight,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
+      onWillPop: () {
+        return Future.value(true);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          top: true,
+          bottom: true,
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: appBarHeight,
+                child: Row(
+                  children: <Widget>[
+                    Visibility(
+                      visible: true,
+                      child: Container(
                         width: personDelegateHeight,
                         child: IconButton(
                           icon: Icon(
@@ -95,19 +178,21 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                           },
                         ),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 0.0),
-                          child: Text(
-                            'Update identity',
-                            style: Theme.of(context).textTheme.body2,
-                          ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 0.0),
+                        child: Text(
+                          'Update identity',
+                          style: Theme.of(context).textTheme.body2,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                LayoutBuilder(
+              ),
+              Expanded(
+                child: LayoutBuilder(
                   builder: (BuildContext context,
                       BoxConstraints viewportConstraints) {
                     return SingleChildScrollView(
@@ -118,7 +203,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                         child: IntrinsicHeight(
                           child: Center(
                             child: SizedBox(
-                              width: 400,
+                              width: 300,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -226,49 +311,48 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                     );
                   },
                 ),
-                Visibility(
-                  visible: !_requestCreateIdentity,
-                  child: BottomBar(
-                    child: Center(
-                      child: SizedBox(
-                        height: 2 * appBarHeight / 3,
-                        child: Builder(
-                          builder: (context) => FlatButton(
-                            onPressed: () {
+              ),
+              Visibility(
+                visible: !_requestCreateIdentity,
+                child: BottomBar(
+                  child: Center(
+                    child: SizedBox(
+                      height: 2 * appBarHeight / 3,
+                      child: Builder(
+                        builder: (context) => FlatButton(
+                          onPressed: () async {
+                            setState(() {
+                              _showError = !_validate(nameController.text);
+                            });
+                            if (!_showError) {
                               setState(() {
-                                _showError = !_validate(nameController.text);
+                                _requestCreateIdentity = true;
                               });
-                              if (!_showError) {
-                                setState(() {
-                                  _requestCreateIdentity = true;
-                                });
-                                _updateIdentity();
-                              }
-                            },
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0 + personDelegateHeight * 0.04),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  gradient: LinearGradient(
-                                    colors: <Color>[
-                                      Color(0xFF00FFFF),
-                                      Color(0xFF29ABE2),
-                                    ],
-                                    begin: Alignment(-1.0, -4.0),
-                                    end: Alignment(1.0, 4.0),
-                                  ),
+
+                              await _updateIdentity();
+                            }
+                          },
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0 + personDelegateHeight * 0.04),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                gradient: LinearGradient(
+                                  colors: <Color>[
+                                    Color(0xFF00FFFF),
+                                    Color(0xFF29ABE2),
+                                  ],
+                                  begin: Alignment(-1.0, -4.0),
+                                  end: Alignment(1.0, 4.0),
                                 ),
-                                padding: const EdgeInsets.all(6.0),
-                                child: Center(
-                                  child: Text(
-                                    'Update Identity',
-                                    style: Theme.of(context).textTheme.button,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                              ),
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                'update identity',
+                                style: Theme.of(context).textTheme.button,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
@@ -277,16 +361,24 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                     ),
                   ),
                 ),
-                Visibility(
-                  visible: _requestCreateIdentity,
-                  child: ColorLoader3(
-                    radius: 15.0,
-                    dotRadius: 6.0,
-                  ),
-                )
-              ],
-            ),
+              ),
+              Visibility(
+                visible: _requestCreateIdentity,
+                child: ColorLoader3(
+                  radius: 15.0,
+                  dotRadius: 6.0,
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
+}
+
+class Constants {
+  Constants._();
+  static const double padding = 20;
+  static const double avatarRadius = 80;
 }

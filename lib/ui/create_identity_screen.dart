@@ -67,9 +67,9 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
   }
 
   // Request create identity
-  void _createIdentity() async {
+  void _createIdentity(bool signed) async {
     await Provider.of<Identities>(context, listen: false).createnewIdenity(
-        Identity('', false, nameController.text, _imageBase64), _imageSize);
+        Identity('', signed, nameController.text, _imageBase64), _imageSize);
     widget.isFirstId
         ? Navigator.pushReplacementNamed(context, '/home')
         : Navigator.pop(context);
@@ -450,7 +450,9 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                               setState(() {
                                 _requestCreateIdentity = true;
                               });
-                              _createIdentity();
+
+                              _createIdentity(
+                                  _tabController.index == 1 ? true : false);
                             }
                           },
                           padding: const EdgeInsets.symmetric(

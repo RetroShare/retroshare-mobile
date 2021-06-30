@@ -22,6 +22,8 @@ class AccountCredentials with ChangeNotifier {
     _loggedinAccount = acc;
   }
 
+  get authtoken => _authToken;
+
   fetchAuthAccountList() async {
     _accountsList = await getLocations();
     _lastAccountUsed = await setlastAccountUsed();
@@ -82,7 +84,6 @@ class AccountCredentials with ChangeNotifier {
 
     Tuple2<bool, Account> accountCreate;
     accountCreate = await requestAccountCreation(username, password, nodename);
-    // print(accountCreate.item2.locationName);
     if (accountCreate != null && accountCreate.item1) {
       map['account'] = true;
       _accountsList.add(accountCreate.item2);
@@ -92,7 +93,7 @@ class AccountCredentials with ChangeNotifier {
           await getinitializeAuth(accountCreate.item2.locationId, password);
       if (isAuthTokenValid) map['auth'] = true;
     }
-    //notifyListeners();
+    notifyListeners();
     return map;
   }
 }

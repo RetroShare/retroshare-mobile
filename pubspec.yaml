@@ -52,6 +52,8 @@ dependencies:
   html: ^0.14.0+3
   provider: ^5.0.0
   path_provider: ^2.0.2
+  flutter_custom_dialog: ^1.0.20
+  fluttertoast: ^8.0.7
 
   # Share RetroShare Invite
   share: 0.6.4+3

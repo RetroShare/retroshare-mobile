@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +9,6 @@ import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/provider/Idenity.dart';
-import 'package:retroshare/redux/model/app_state.dart';
 
 class PersonDelegateData {
   const PersonDelegateData({

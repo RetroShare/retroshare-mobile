@@ -12,8 +12,7 @@ import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
-import 'package:retroshare/redux/actions/app_actions.dart';
-import 'package:retroshare/redux/model/app_state.dart';
+
 import 'package:retroshare/services/events.dart';
 import 'package:tuple/tuple.dart';
 
@@ -235,12 +234,6 @@ Future<ResSendChat> sendMessage(
 
 /// todo: should this be in a redux middleware?
 /// Function that update participants of a lobby chat
-void getParticipants(String lobbyId, context) {
-  getLobbyParticipants(lobbyId).then((List<Identity> participants) {
-    final store = StoreProvider.of<AppState>(context);
-    store.dispatch(UpdateLobbyParticipantsAction(lobbyId, participants));
-  });
-}
 
 Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
   final response = await http.post(
@@ -389,7 +382,7 @@ Chat getChat(
   return chat;
 }
 
-void registerChatEvents(store) {
+/*void registerChatEvents(store) {
   eventsRegisterChatMessage(
       listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
     if (msg != null) {
@@ -422,7 +415,7 @@ void registerChatEvents(store) {
       }
     }
   });
-}
+}*/
 
 Future<void> getMessagescall(String lobbyId) async {
   final response = await http.post(

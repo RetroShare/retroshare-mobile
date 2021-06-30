@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/services/init.dart';
-
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:retroshare/model/account.dart';
@@ -100,9 +99,13 @@ class _SplashState extends State<SplashScreen> {
     bool isTokenValid = await provider.checkisvalidAuthToken();
     if (isLoggedIn && isTokenValid && loggedinAccount != null) {
       _setStatusText("Logging in...");
-      initializeStore(
-        context,
-      );
+      final ids = Provider.of<Identities>(context, listen: false);
+      ids.fetchOwnidenities().then((value) => {
+            ids.ownIdentity != null && ids.ownIdentity.length == 0
+                ? Navigator.pushReplacementNamed(context, '/create_identity',
+                    arguments: true)
+                : Navigator.pushReplacementNamed(context, '/home')
+          });
     } else {
       _setStatusText("Get locations...");
       await provider.fetchAuthAccountList();

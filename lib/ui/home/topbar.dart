@@ -239,104 +239,106 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                     opacity: widget.panelAnimationValue,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Visibility(
-                            visible: widget.panelAnimationValue == null
-                                ? false
-                                : widget.panelAnimationValue > 0.5,
-                            child: Button(
-                              name: 'Add friend',
-                              buttonIcon: Icons.person_add,
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/add_friend');
-                              },
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Visibility(
+                              visible: widget.panelAnimationValue == null
+                                  ? false
+                                  : widget.panelAnimationValue > 0.5,
+                              child: Button(
+                                name: 'Add friend',
+                                buttonIcon: Icons.person_add,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/add_friend');
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            visible: widget.panelAnimationValue == null
-                                ? false
-                                : widget.panelAnimationValue > 0.4,
-                            child: Button(
-                              name: 'Create new identity',
-                              buttonIcon: Icons.add,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/create_identity');
-                              },
+                            Visibility(
+                              visible: widget.panelAnimationValue == null
+                                  ? false
+                                  : widget.panelAnimationValue > 0.4,
+                              child: Button(
+                                name: 'Create new identity',
+                                buttonIcon: Icons.add,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/create_identity');
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            visible: widget.panelAnimationValue == null
-                                ? false
-                                : widget.panelAnimationValue > 0.3,
-                            child: Button(
-                              name: 'Change identity',
-                              buttonIcon: Icons.visibility,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/change_identity');
-                              },
+                            Visibility(
+                              visible: widget.panelAnimationValue == null
+                                  ? false
+                                  : widget.panelAnimationValue > 0.3,
+                              child: Button(
+                                name: 'Change identity',
+                                buttonIcon: Icons.visibility,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/change_identity');
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            child: Button(
-                              name: 'Delete identity',
-                              buttonIcon: Icons.delete,
-                              onPressed: () {
-                                _showDialog();
-                              },
+                            Visibility(
+                              child: Button(
+                                name: 'Delete identity',
+                                buttonIcon: Icons.delete,
+                                onPressed: () {
+                                  _showDialog();
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            child: Button(
-                              name: 'Friends locations',
-                              buttonIcon: Icons.devices,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/friends_locations');
-                              },
+                            Visibility(
+                              child: Button(
+                                name: 'Friends locations',
+                                buttonIcon: Icons.devices,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/friends_locations');
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            child: Button(
-                              name: 'Export Account',
-                              buttonIcon: Icons.import_export,
-                              onPressed: () async {
-                                bool success =
-                                    await exportIdentityFunc(context);
-                                if (success)
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: const Text(
-                                        'Successfully! Exported your account'),
-                                    duration: const Duration(seconds: 1),
-                                    backgroundColor: Colors.lightBlue[200],
-                                  ));
-                                else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: const Text(
-                                        'Oops ! Something went wrong '),
-                                    duration: const Duration(seconds: 1),
-                                    backgroundColor: Colors.red[200],
-                                  ));
-                                }
-                              },
-                            ),
-                          ),
-                          Visibility(
-                            child: Button(
-                              name: 'Update Identity',
-                              buttonIcon: Icons.edit,
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed('/updateIdentity');
-                              },
-                            ),
-                          )
-                        ],
+                            /*Visibility(
+                              child: Button(
+                                name: 'Export Account',
+                                buttonIcon: Icons.import_export,
+                                onPressed: () async {
+                                  bool success =
+                                      await exportIdentityFunc(context);
+                                  if (success)
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: const Text(
+                                          'Successfully! Exported your account'),
+                                      duration: const Duration(seconds: 1),
+                                      backgroundColor: Colors.lightBlue[200],
+                                    ));
+                                  else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: const Text(
+                                          'Oops ! Something went wrong '),
+                                      duration: const Duration(seconds: 1),
+                                      backgroundColor: Colors.red[200],
+                                    ));
+                                  }
+                                },
+                              ),
+                            ),*/
+                            Visibility(
+                              child: Button(
+                                name: 'Update Identity',
+                                buttonIcon: Icons.edit,
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed('/updateIdentity');
+                                },
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

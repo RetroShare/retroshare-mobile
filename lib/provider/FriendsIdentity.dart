@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 import 'package:tuple/tuple.dart';
@@ -12,7 +13,7 @@ class FriendsIdentity with ChangeNotifier {
   List<Identity> get friendsIdsList => [..._friendsIdsList];
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
-
+  AuthToken _authToken;
   Future<void> fetchAndUpdate() async {
     Tuple3<List<Identity>, List<Identity>, List<Identity>> tupleIds =
         await getAllIdentities();
@@ -26,6 +27,11 @@ class FriendsIdentity with ChangeNotifier {
         key: (id) => id.mId,
         value: (id) => id);
 
+    notifyListeners();
+  }
+
+  void setAuthToken(AuthToken authToken) {
+    _authToken = authToken;
     notifyListeners();
   }
 
