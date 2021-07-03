@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/identity.dart';
@@ -76,7 +75,7 @@ class Identities with ChangeNotifier {
       }
       _currentIdentity = id;
       _selected = _currentIdentity;
-      notifyListeners();
+      //notifyListeners();
     }
     return success;
   }

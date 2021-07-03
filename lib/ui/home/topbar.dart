@@ -327,16 +327,6 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                 },
                               ),
                             ),*/
-                            Visibility(
-                              child: Button(
-                                name: 'Update Identity',
-                                buttonIcon: Icons.edit,
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed('/updateIdentity');
-                                },
-                              ),
-                            )
                           ],
                         ),
                       ),

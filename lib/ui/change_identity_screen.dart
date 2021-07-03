@@ -86,7 +86,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                 child: Center(
                   child: SizedBox(
                     height: 2 * appBarHeight / 3,
-                    child: TextButton(
+                    child: FlatButton(
                       onPressed: () {
                         Provider.of<Identities>(context, listen: false)
                             .updatecurrentIdentity();

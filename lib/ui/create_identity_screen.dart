@@ -206,7 +206,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                         child: IntrinsicHeight(
                           child: Center(
                             child: SizedBox(
-                              width: 400,
+                              width: 300,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[

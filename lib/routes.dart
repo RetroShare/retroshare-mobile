@@ -40,6 +40,11 @@ class RouteGenerator {
       case '/launch_transition':
         return MaterialPageRoute(builder: (_) => LaunchTransitionScreen());
       case '/updateIdentity':
+        if (args is Map)
+          return MaterialPageRoute(
+              builder: (_) => UpdateIdentityScreen(
+                    curr: args['id'],
+                  ));
         return MaterialPageRoute(builder: (_) => UpdateIdentityScreen());
       case '/room':
         if (args is Map) {

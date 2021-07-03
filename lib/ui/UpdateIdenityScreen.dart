@@ -11,6 +11,8 @@ import 'package:retroshare/provider/Idenity.dart';
 import '../common/color_loader_3.dart';
 
 class UpdateIdentityScreen extends StatefulWidget {
+  final curr;
+  UpdateIdentityScreen({this.curr});
   @override
   _UpdateIdentityScreenState createState() => _UpdateIdentityScreenState();
 }
@@ -22,7 +24,6 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   int _imageSize;
   bool _showError = false;
   bool _requestCreateIdentity = false;
-  Identity curr;
 
   @override
   void dispose() {
@@ -44,8 +45,8 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    curr = Provider.of<Identities>(context, listen: false).currentIdentity;
-    nameController = TextEditingController(text: curr.name);
+    //curr = Provider.of<Identities>(context, listen: false).currentIdentity;
+    nameController = TextEditingController(text: widget.curr.name);
   }
 
   // Validate the Name
@@ -123,7 +124,8 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     void _updateIdentity() async {
       bool success =
           await Provider.of<Identities>(context, listen: false).updateIdentity(
-        Identity(curr.mId, curr.signed, nameController.text, _imageBase64),
+        Identity(widget.curr.mId, widget.curr.signed, nameController.text,
+            _imageBase64),
         _imageSize,
       );
       print(success);

@@ -167,7 +167,7 @@ class _PersonDelegateState extends State<PersonDelegate>
     _tapPosition = details.globalPosition;
   }
 
-  Widget _build(BuildContext context) {
+  Widget _build(BuildContext context, [Identity id = null]) {
     return GestureDetector(
       onTap: () {
         if (widget.onPressed != null) widget.onPressed();
@@ -276,11 +276,38 @@ class _PersonDelegateState extends State<PersonDelegate>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    /*Text(
                       widget.data.name,
                       style: widget.data.isMessage
                           ? Theme.of(context).textTheme.body2
                           : Theme.of(context).textTheme.body1,
+                    ),*/
+
+                    Row(children: [
+                      Text(
+                        widget.data.name,
+                        style: widget.data.isMessage
+                            ? Theme.of(context).textTheme.body2
+                            : Theme.of(context).textTheme.body1,
+                      ),
+                      Spacer(),
+                      Visibility(
+                        visible:
+                            widget.isSelectable && _curvedAnimation.value == 1,
+                        child: IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () => Navigator.of(context).pushNamed(
+                                "/updateIdentity",
+                                arguments: {'id': id})),
+                      )
+                    ]),
+                    Visibility(
+                      visible: widget.data.isMessage &&
+                          widget.data.message.isNotEmpty,
+                      child: Text(
+                        widget.data.message,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
                     ),
                     Visibility(
                       visible: widget.data.isMessage &&
@@ -315,7 +342,7 @@ class _PersonDelegateState extends State<PersonDelegate>
           else
             _animationController.value = 0;
 
-          return _build(context);
+          return _build(context, id.selectedIdentity);
         },
       );
     } else
