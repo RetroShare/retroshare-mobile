@@ -9,6 +9,8 @@ import 'package:retroshare/provider/friendLocation.dart';
 import 'UpdateIdenityScreen.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
+enum QRoperation { save, refresh }
+
 class QRScanner extends StatefulWidget {
   final String qr_data;
   QRScanner({Key key, this.qr_data = null}) : super(key: key);
@@ -98,6 +100,19 @@ class _QRScannerState extends State<QRScanner> {
                         style: Theme.of(context).textTheme.body2,
                       ),
                     ),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        icon: Icon(Icons.more_vert),
+                        items: [
+                          DropdownMenuItem(
+                              value: QRoperation.save, child: Text("Save")),
+                          DropdownMenuItem(
+                              child: Text("Refresh"),
+                              value: QRoperation.refresh)
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10),
                   ],
                 ),
               ),
@@ -113,11 +128,15 @@ class _QRScannerState extends State<QRScanner> {
                       QrImage(
                         data: widget.qr_data,
                         version: QrVersions.auto,
-                        size: 320,
+                        size: 250,
                         gapless: false,
                       ),
-                      RaisedButton(
-                        elevation: 25,
+                      Card(
+                        borderOnForeground: false,
+                        margin: const EdgeInsets.all(0),
+                        color: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        elevation: 20,
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(width: 2, color: Colors.black87),
@@ -137,7 +156,7 @@ class _QRScannerState extends State<QRScanner> {
                             },
                           ),
                         ),
-                      )
+                      ),
                     ]))),
               )
             ]),

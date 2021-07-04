@@ -248,12 +248,14 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                   ? false
                                   : widget.panelAnimationValue > 0.5,
                               child: Button(
-                                name: 'Add friend',
-                                buttonIcon: Icons.person_add,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/add_friend');
-                                },
-                              ),
+                                  name: 'Add friend',
+                                  buttonIcon: Icons.person_add,
+                                  onPressed: () {
+                                    Future.delayed(Duration.zero, () {
+                                      Navigator.pushNamed(
+                                          context, '/add_friend');
+                                    });
+                                  }),
                             ),
                             Visibility(
                               visible: widget.panelAnimationValue == null
