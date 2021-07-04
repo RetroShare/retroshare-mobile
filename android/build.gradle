@@ -27,9 +27,9 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-subprojects {
-    project.configurations.all {
-	resolutionStrategy.eachDependency { details ->
+//subprojects {
+//    project.configurations.all {
+	/*resolutionStrategy.eachDependency { details ->
             if (details.requested.group == 'androidx.lifecycle' &&
 	       !details.requested.name.contains('androidx')) {
 		        details.useVersion "2.0.0"
@@ -42,6 +42,6 @@ subprojects {
 	       !details.requested.name.contains('androidx')) {
 		        details.useVersion "1.0.2"
             }
-	}
-    }    
-}
+	}*/
+   // }    
+//}
