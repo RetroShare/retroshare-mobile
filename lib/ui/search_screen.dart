@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:openapi/api.dart';
+import 'package:provider/provider.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
-import 'package:retroshare/services/init.dart';
+import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/subscribed.dart';
 
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/services/chat.dart';
-import 'package:retroshare/services/identity.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/person_delegate.dart';
-
-import 'package:retroshare/redux/model/app_state.dart';
 
 class SearchScreen extends StatefulWidget {
   final int initialTab;
@@ -30,35 +28,39 @@ class _SearchScreenState extends State<SearchScreen>
   Animation<Color> _rightTabIconColor;
 
   String _searchContent = '';
-  List<Identity> allIds = List();
-  List<Identity> filteredAllIds = List();
-  List<Identity> contactsIds = List();
-  List<Identity> filteredContactsIds = List();
-  List<Chat> subscribedChats = List();
-  List<Chat> filteredSubscribedChats = List();
-  List<VisibleChatLobbyRecord> publicChats = List();
-  List<VisibleChatLobbyRecord> filteredPublicChats = List();
+  List<Identity> allIds = [];
+  List<Identity> filteredAllIds = [];
+  List<Identity> contactsIds = [];
+  List<Identity> filteredContactsIds = [];
+  List<Chat> subscribedChats = [];
+  List<Chat> filteredSubscribedChats = [];
+  List<VisibleChatLobbyRecord> publicChats = [];
+  List<VisibleChatLobbyRecord> filteredPublicChats = [];
 
   var _tapPosition;
 
   @override
   void initState() {
+    super.initState();
     _tabController =
         TabController(vsync: this, length: 2, initialIndex: widget.initialTab);
 
     _searchBoxFilter.addListener(() {
       if (_searchBoxFilter.text.isEmpty) {
-        setState(() {
-          _searchContent = "";
-          filteredAllIds = allIds;
-          filteredContactsIds = contactsIds;
-          filteredSubscribedChats = subscribedChats;
-          filteredPublicChats = publicChats;
-        });
+        if (this.mounted)
+          setState(() {
+            _searchContent = "";
+            filteredAllIds = allIds;
+            filteredContactsIds = contactsIds;
+            filteredSubscribedChats = subscribedChats;
+            //Provider.of<ChatLobby>(context, listen: false).subscribedlist;
+            filteredPublicChats = publicChats;
+          });
       } else {
-        setState(() {
-          _searchContent = _searchBoxFilter.text;
-        });
+        if (this.mounted)
+          setState(() {
+            _searchContent = _searchBoxFilter.text;
+          });
       }
     });
 
@@ -67,17 +69,20 @@ class _SearchScreenState extends State<SearchScreen>
     _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
         .animate(_tabController.animation);
 
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final store = StoreProvider.of<AppState>(context);
-      updateIdentitiesStore(store);
-      updateChatLobbiesStore(store);
-      updateUnsubsChatLobbiesStore(store);
-      allIds = store.state.notContactIds;
-      contactsIds = store.state.friendsIdsList;
-      subscribedChats = store.state.subscribedChats;
-      publicChats = store.state.unSubscribedChats;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<FriendsIdentity>(context, listen: false)
+          .fetchAndUpdate();
+      await Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
+      await Provider.of<ChatLobby>(context, listen: false)
+          .fetchAndUpdateUnsubscribed();
+      allIds =
+          Provider.of<FriendsIdentity>(context, listen: false).notContactIds;
+      contactsIds =
+          Provider.of<FriendsIdentity>(context, listen: false).friendsIdsList;
+      subscribedChats =
+          Provider.of<ChatLobby>(context, listen: false).subscribedlist;
+      publicChats =
+          Provider.of<ChatLobby>(context, listen: false).unSubscribedlist;
     });
   }
 
@@ -113,52 +118,52 @@ class _SearchScreenState extends State<SearchScreen>
                         size: 25,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          Navigator.pop(context);
+                        });
                       },
                     ),
                   ),
                   Expanded(
-                    child: Hero(
-                      tag: 'search_box',
-                      child: Material(
-                        color: Colors.white,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Color(0xFFF5F5F5),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          height: 40,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.search,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .color),
-                                SizedBox(
-                                  width: 8,
+                    /*child: Hero(
+                      tag: 'search_boxi',*/
+                    child: Material(
+                      color: Colors.white,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color(0xFFF5F5F5),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        margin: EdgeInsets.symmetric(horizontal: 8),
+                        height: 40,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.search,
+                                  color:
+                                      Theme.of(context).textTheme.body1.color),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: TextField(
+                                  controller: _searchBoxFilter,
+                                  autofocus: true,
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Type text...'),
+                                  style: Theme.of(context).textTheme.body2,
                                 ),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _searchBoxFilter,
-                                    autofocus: true,
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Type text...'),
-                                    style: Theme.of(context).textTheme.body2,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
+                  // ),
                 ],
               ),
             ),
@@ -240,6 +245,7 @@ class _SearchScreenState extends State<SearchScreen>
                       _buildChatsList(),
                       Visibility(
                         visible: filteredSubscribedChats?.isEmpty ??
+                            // ignore: null_aware_in_logical_operator
                             true && filteredPublicChats?.isEmpty ??
                             true,
                         child: Center(
@@ -387,17 +393,19 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  void _removeFromContacts(String gxsId) async {
-    await setContact(gxsId, false);
+  void _toggleContacts(String gxsId, bool type) async {
+    /*await setContact(gxsId, false);
     final store = StoreProvider.of<AppState>(context);
-    await updateIdentitiesStore(store);
+    await updateIdentitiesStore(store);*/
+    await Provider.of<FriendsIdentity>(context, listen: false)
+        .toggleContacts(gxsId, type);
   }
 
-  void _addToContacts(String gxsId) async {
+  /*void _addToContacts(String gxsId) async {
     await setContact(gxsId, true);
     final store = StoreProvider.of<AppState>(context);
     await updateIdentitiesStore(store);
-  }
+  }*/
 
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
@@ -435,7 +443,6 @@ class _SearchScreenState extends State<SearchScreen>
 //      visible: (filteredAllIds?.isNotEmpty ?? false || filteredContactsIds.isNotEmpty ),
       visible: (filteredAllIds != null && filteredAllIds.isNotEmpty) ||
           (filteredContactsIds != null && filteredContactsIds.isNotEmpty),
-
       child: CustomScrollView(
         slivers: <Widget>[
           sliverPersistentHeader('Contacts', context),
@@ -456,7 +463,8 @@ class _SearchScreenState extends State<SearchScreen>
                             Icons.delete,
                             color: Colors.black,
                           ),
-                          () => _removeFromContacts(filteredAllIds[index].mId),
+                          () =>
+                              _toggleContacts(filteredAllIds[index].mId, false),
                           tapPosition,
                           context);
                     },
@@ -495,7 +503,8 @@ class _SearchScreenState extends State<SearchScreen>
                             Icons.person_add,
                             color: Colors.black,
                           ),
-                          () => _addToContacts(filteredAllIds[index].mId),
+                          () =>
+                              _toggleContacts(filteredAllIds[index].mId, true),
                           tapPosition,
                           context);
                     },

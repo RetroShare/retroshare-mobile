@@ -1,84 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:retroshare/redux/actions/app_actions.dart';
-import 'package:retroshare/redux/model/app_state.dart';
+
 import 'package:tuple/tuple.dart';
 
 import 'package:retroshare/model/account.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/location.dart';
 
-const RETROSHARE_HOST = "127.0.0.1";
-const RETROSHARE_PORT = 9092;
-const RETROSHARE_SERVICE_PREFIX = "http://$RETROSHARE_HOST:$RETROSHARE_PORT";
-
-String getRetroshareServicePrefix() => RETROSHARE_SERVICE_PREFIX;
-
-const rsPlatform = const MethodChannel("cc.retroshare.retroshare/retroshare");
-
-Future<bool> startRetroshare() async {
-  int attempts = 20;
-  for (; attempts >= 0; attempts--) {
-    print("Starting Retroshare Service. Attempts countdown $attempts");
-    try {
-      bool isUp = await isRetroshareRunning();
-      print(isUp);
-      if (isUp) return true;
-
-      await rsPlatform.invokeMethod('start');
-
-      if (attempts == 0) {
-        return false;
-      }
-      await Future.delayed(Duration(seconds: 2));
-    } catch (err) {
-      print(err);
-      await Future.delayed(Duration(seconds: 2));
-    }
-  }
-}
-
-Future<void> stopRetroshare() async {
-  try {
-    await rsPlatform.invokeMethod('stop');
-
-    await Future.delayed(Duration(milliseconds: 3000));
-    bool isUp = await isRetroshareRunning();
-    if (isUp) throw Exception("The service did not stop after a while");
-  } catch (err) {
-    throw Exception("The service could not be stopped");
-  }
-}
-
-Future<void> restartRetroshare() async {
-  try {
-    await rsPlatform.invokeMethod('restart');
-
-    await Future.delayed(Duration(milliseconds: 300));
-    bool isUp = await isRetroshareRunning();
-    if (!isUp) throw Exception("The service did not restart after a while");
-  } catch (err) {
-    throw Exception("The service could not be restarted");
-  }
-}
-
-Future<void> global() async {
-  bool isRunning = await isRetroshareRunning();
-  try {
-    if (!isRunning) await startRetroshare();
-  } catch (err) {
-    throw Exception("The service could not be restarted");
-  }
-}
-
 dynamic checkLoggedIn() async {
   final response =
       await http.get('http://localhost:9092/rsLoginHelper/isLoggedIn');
-  print(response.body);
 
   if (response.statusCode == 200)
     return json.decode(response.body)['retval'];
@@ -86,25 +18,12 @@ dynamic checkLoggedIn() async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> isRetroshareRunning() async {
-  final String reqUrl = "http://localhost:9092";
-  try {
-    final response = await http.get(reqUrl);
-    print(response.body);
-    return response != null && response.statusCode is int;
-  } catch (err) {
-    print(err);
-    return false;
-  }
-}
-
-Future<bool> getLocations() async {
-  await global();
+Future<List<Account>> getLocations() async {
   final response =
-      await http.get('$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/getLocations');
-
+      await http.get('http://localhost:9092/rsLoginHelper/getLocations');
+  print(response.body);
   if (response.statusCode == 200) {
-    accountsList = new List();
+    accountsList = [];
     json.decode(response.body)['locations'].forEach((location) {
       if (location != null)
         accountsList.add(Account(location['mLocationId'], location['mPgpId'],
@@ -115,21 +34,52 @@ Future<bool> getLocations() async {
     for (Account account in accountsList) {
       if (account.locationId == currAccount.id) lastAccountUsed = account;
     }
+    return accountsList;
+  }
+  return [];
+}
 
-    return true;
+Future<String> exportIdentity(String pgpId) async {
+  final response =
+      await http.post('http://localhost:9092/rsAccounts/exportIdentityToString',
+          headers: {
+            HttpHeaders.authorizationHeader:
+                'Basic ' + base64.encode(utf8.encode('$authToken'))
+          },
+          body: json.encode({"pgpId": pgpId}));
+  if (response.statusCode == 200)
+    return json.decode(response.body)['data'];
+  else
+    throw Exception('Failed to load response');
+}
+
+Future<String> importIdentity(String data) async {
+  final response = await http.post(
+      'http://localhost:9092/rsAccounts/importIdentityFromString',
+      body: json.encode({"data": data}));
+  if (response.statusCode == 200) {
+    final resp =
+        await http.post('http://localhost:9092/rsAccounts/getGPGDetails',
+            body: json.encode({
+              'gpg-id': [json.decode(response.body)['pgpId']]
+            }));
+
+    print(json.decode(response.body));
+    print(resp.body);
+
+    return json.decode(response.body)['pgpId'];
   } else
-    return false;
+    throw Exception('Failed to load response');
 }
 
 dynamic requestLogIn(Account selectedAccount, String password) async {
-  await global();
   var accountDetails = {
     'account': selectedAccount.locationId,
     'password': password
   };
 
   final response = await http.post(
-      '$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/attemptLogin',
+      'http://localhost:9092/rsLoginHelper/attemptLogin',
       body: json.encode(accountDetails));
 
   if (response.statusCode == 200) {
@@ -139,101 +89,36 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
   }
 }
 
-String makeAuthHeader(String username, String password) =>
-    'Basic ' + base64Encode(utf8.encode('$username:$password'));
-
-Future<Map<String, dynamic>> rsApiCall(
-  String path, {
-  Map<String, dynamic> params,
-  String basicAuth,
-}) async {
-  final String reqUrl = getRetroshareServicePrefix() + path;
-  await isRetroshareRunning();
-  try {
-    final response = await http.post(
-      reqUrl,
-      body: jsonEncode(params ?? {}),
-      // headers: <String, String>{'Authorization': basicAuth}
-    );
-    print(response.body);
-    if (response == null) throw Exception("Request failed: " + reqUrl);
-
-    return response.statusCode == 200
-        ? jsonDecode(utf8.decode(response.bodyBytes))
-        : throw Exception("error");
-  } catch (err) {
-    throw err;
-  }
-}
-
-Future<Map> createLocation(String locationName, String password,
-    {String api_user}) async {
-  await global();
-  final mPath = "/rsLoginHelper/createLocationV2";
-  final mParams = {
-    "locationName": locationName,
-    "pgpName": locationName,
-    "password": password,
-    "apiUser": "retroshare",
-    /* TODO(G10h4ck): The new token scheme permit arbitrarly more secure
-       * options to avoid sending PGP password at each request. */
-    "apiPass": password
-  };
-  final response = await rsApiCall(mPath, params: mParams);
-
-  if (!(response is Map))
-    throw FormatException("response is not a Map");
-  else if (response["retval"]["errorNumber"] != 0)
-    throw Exception("Failure creating location: " + jsonEncode(response));
-  else if (!(response["locationId"] is String))
-    throw FormatException("location is not a String");
-
-  Map<String, String> location = {
-    "mLocationName": locationName,
-    "mLocationId": response["locationId"]
-  };
-  return location;
-}
-
-dynamic requestAccountCreation(
-    BuildContext context, String username, String password,
+dynamic requestAccountCreation(String username, String password,
     [String nodeName = 'Mobile']) async {
-  await global();
-  final mParams = {
-    "locationName": username,
-    "pgpName": username,
+  final accountDetails = {
+    "location": {
+      "mLocationName": 'Mobile',
+      "mPgpName": username,
+    },
     "password": password,
-    "apiUser": username,
-    /* TODO(G10h4ck): The new token scheme permit arbitrarly more secure
-       * options to avoid sending PGP password at each request. */
-    "apiPass": password
+    'makeHidden': false,
+    'makeAutoTor': false
   };
 
   final response = await http.post(
-      '$RETROSHARE_SERVICE_PREFIX/rsLoginHelper/createLocationV2',
-      body: json.encode(mParams));
-  if (response.statusCode == 200) {
-    final resp = await json.decode(response.body);
-    if (!(resp is Map))
-      throw FormatException("response is not a Map");
-    else if (resp["retval"]["errorNumber"] != 0)
-      throw Exception("Failure creating location: " + jsonEncode(response));
-    else if (!(resp["locationId"] is String))
-      throw FormatException("location is not a String");
+      'http://localhost:9092/rsLoginHelper/createLocation',
+      body: json.encode(accountDetails));
+  print(response.body);
+  if (response.statusCode == 200 && json.decode(response.body)['retval']) {
+    dynamic resp = json.decode(response.body)['location'];
+    Account account = Account(resp['mLocationId'], resp['mPgpId'],
+        resp['mLocationName'], resp['mPgpName']);
 
-    Account account = Account(resp['locationId'], resp['pgpId'],
-        mParams['locationName'], mParams['pgpName']);
-    return Tuple2<bool, Account>(
-        resp["retval"]["errorNumber"] != 0 ? false : true, account);
+    return Tuple2<bool, Account>(json.decode(response.body)['retval'], account);
   } else {
     throw Exception('Failed to load response');
   }
 }
 
 Future<String> getOwnCert() async {
-  await global();
   final response = await http
-      .get('$RETROSHARE_SERVICE_PREFIX/rsPeers/GetRetroshareInvite', headers: {
+      .get('http://localhost:9092/rsPeers/GetRetroshareInvite', headers: {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
@@ -246,9 +131,8 @@ Future<String> getOwnCert() async {
 }
 
 Future<bool> addCert(String cert) async {
-  await global();
   final response = await http.post(
-    '$RETROSHARE_SERVICE_PREFIX/rsPeers/acceptInvite',
+    'http://localhost:9092/rsPeers/acceptInvite',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
@@ -264,9 +148,8 @@ Future<bool> addCert(String cert) async {
 }
 
 Future<List<Location>> getFriendsAccounts() async {
-  await global();
   final response = await http.get(
-    '$RETROSHARE_SERVICE_PREFIX/rsPeers/getFriendList',
+    'http://localhost:9092/rsPeers/getFriendList',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
@@ -286,9 +169,8 @@ Future<List<Location>> getFriendsAccounts() async {
 }
 
 Future<Location> getLocationsDetails(String peerId) async {
-  await global();
   final response = await http.post(
-    '$RETROSHARE_SERVICE_PREFIX/rsPeers/getPeerDetails',
+    'http://localhost:9092/rsPeers/getPeerDetails',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))

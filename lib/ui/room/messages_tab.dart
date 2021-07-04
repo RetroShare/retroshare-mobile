@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:openapi/api.dart';
+import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/redux/model/app_state.dart';
-
+import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/message_delegate.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/model/chat.dart';
@@ -34,14 +33,14 @@ class _MessagesTabState extends State<MessagesTab> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: StoreConnector<AppState, List<ChatMessage>>(
-            converter: (store) => (widget.chat.chatId == null ||
-                    store.state.messagesList == null ||
-                    store.state.messagesList[widget.chat.chatId] == null)
-                ? []
-                : store.state.messagesList[widget.chat.chatId].reversed
-                    .toList(),
-            builder: (context, msgList) {
+          child: Consumer<RoomChatLobby>(
+            builder: (context, messagesList, _) {
+              dynamic msgList = (widget.chat.chatId == null ||
+                      messagesList.messagesList == null ||
+                      messagesList.messagesList[widget.chat.chatId] == null)
+                  ? []
+                  : messagesList.messagesList[widget.chat.chatId].reversed
+                      .toList();
               return Stack(
                 children: <Widget>[
                   ListView.builder(
@@ -55,8 +54,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                 (msgList[index] != null) &&
                                 (msgList[index]
                                     .incoming) // Why msgList[index]?.incoming ?? false is not working??
-                            ? msgList[index].getChatSenderName(
-                                StoreProvider.of<AppState>(context))
+                            ? msgList[index].getChatSenderName(context)
                             : null,
                       );
                     },
@@ -137,7 +135,6 @@ class _MessagesTabState extends State<MessagesTab> {
                         (widget.isRoom
                             ? ChatIdType.number3_
                             : ChatIdType.number2_));
-
                     msgController.clear();
                   },
                 ),

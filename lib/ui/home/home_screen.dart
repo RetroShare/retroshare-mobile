@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
+import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/room.dart';
+import 'package:retroshare/provider/subscribed.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:retroshare/ui/home/topbar.dart';
@@ -27,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _panelController = PanelController();
-
     _leftIconAnimation =
         ColorTween(begin: Colors.lightBlueAccent, end: Colors.black12)
             .animate(_tabController.animation);
@@ -43,6 +46,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       begin: Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
+      Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
+      registerChatEvent(context);
+    });
   }
 
   @override
@@ -67,44 +76,51 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         SizedBox(
           height: topBarMinHeight,
         ),
-        Hero(
-          tag: 'search_box',
-          child: Material(
-            color: Colors.white,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/search', arguments: _tabController.index,);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Color(0xFFF5F5F5),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                margin: EdgeInsets.symmetric(horizontal: 8),
-                height: 40,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.search,
-                          color: Theme.of(context).textTheme.body1.color),
-                      SizedBox(
-                        width: 8,
+        Material(
+          color: Colors.white,
+          child: GestureDetector(
+            onTap: () {
+              Future.delayed(const Duration(milliseconds: 100), () {
+                Navigator.pushNamed(
+                  context,
+                  '/search',
+                  arguments: _tabController.index,
+                );
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Color(0xFFF5F5F5),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              margin: EdgeInsets.symmetric(horizontal: 8),
+              height: 40,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.search,
+                        color: Theme.of(context).textTheme.body1.color),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Type text...',
+                        style: Theme.of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(color: Theme.of(context).hintColor),
                       ),
-                      Expanded(
-                        child: Text(
-                          'Type text...',
-                          style: Theme.of(context).textTheme.body2.copyWith(color: Theme.of(context).hintColor),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
+        //),
         Expanded(
           child: TabBarView(
             controller: _tabController,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:retroshare/services/init.dart';
-
+import 'package:provider/provider.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/services/auth.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:retroshare/model/account.dart';
 
@@ -15,7 +15,6 @@ class SplashScreen extends StatefulWidget {
       this.statusText = "",
       this.spinner = false})
       : super(key: key);
-
   final isLoading;
   String statusText;
   bool spinner;
@@ -31,7 +30,6 @@ class _SplashState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     if (!widget.isLoading) {
       _statusText = "Loading...";
       checkBackendState(context);
@@ -86,27 +84,32 @@ class _SplashState extends State<SplashScreen> {
   }
 
   void checkBackendState(BuildContext context) async {
+    bool connectedToBackend = true;
     bool isLoggedIn;
-    try {
-      await Future.delayed(Duration(seconds: 2));
-      isLoggedIn = await isRetroshareRunning();
-    } catch (err) {
-      print(err);
-    }
-    print(isLoggedIn);
-    await checkLoggedIn();
-    await Future.delayed(Duration(seconds: 2));
-    bool isTokenValid = await isAuthTokenValid();
-
+    do {
+      try {
+        isLoggedIn = await checkLoggedIn();
+        connectedToBackend = true;
+      } catch (e) {
+        if (connectedToBackend == true) _setStatusText("Can't connect...");
+        connectedToBackend = false;
+      }
+    } while (!connectedToBackend);
+    final provider = Provider.of<AccountCredentials>(context, listen: false);
+    bool isTokenValid = await provider.checkisvalidAuthToken();
     if (isLoggedIn && isTokenValid && loggedinAccount != null) {
       _setStatusText("Logging in...");
-      initializeStore(
-        context,
-      );
+      final ids = Provider.of<Identities>(context, listen: false);
+      ids.fetchOwnidenities().then((value) => {
+            ids.ownIdentity != null && ids.ownIdentity.length == 0
+                ? Navigator.pushReplacementNamed(context, '/create_identity',
+                    arguments: true)
+                : Navigator.pushReplacementNamed(context, '/home')
+          });
     } else {
       _setStatusText("Get locations...");
-      await getLocations();
-      if (accountsList.isEmpty)
+      await provider.fetchAuthAccountList();
+      if (provider.accountList.isEmpty)
         // Create or import an account
         Navigator.pushReplacementNamed(context, '/launch_transition');
       else

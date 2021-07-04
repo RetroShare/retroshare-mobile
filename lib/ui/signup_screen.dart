@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:retroshare/services/init.dart';
-import 'package:tuple/tuple.dart';
-
-import 'package:retroshare/model/account.dart';
-import 'package:retroshare/services/account.dart';
+import 'package:provider/provider.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -62,36 +60,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (!success) return;
 
-    Tuple2<bool, Account> accountCreate;
-
     Navigator.pushNamed(context, '/', arguments: {
       'statusText': "Creating account...\nThis could take minutes",
       'isLoading': true,
       'spinner': true
     });
-
-    if (nodeNameController.text == '')
-      accountCreate = await requestAccountCreation(
-          context, usernameController.text, passwordController.text);
-    else
-      accountCreate = await requestAccountCreation(
-          context,
-          usernameController.text,
-          passwordController.text,
-          nodeNameController.text);
-
-    //await createLocation(usernameController.text, passwordController.text);
-
-    if (accountCreate != null && accountCreate.item1) {
-      loggedinAccount = accountCreate.item2;
-      bool isAuthTokenValid = await initializeAuth(
-          accountCreate.item2.locationName, passwordController.text);
-      if (isAuthTokenValid) {
-        initializeStore(
-          context,
-        );
+    final item = Provider.of<AccountCredentials>(context, listen: false);
+    item
+        .signup(usernameController.text, passwordController.text,
+            nodeNameController.text)
+        .then((value) {
+      if (value['account']) {
+        if (value['auth']) {
+          final ids = Provider.of<Identities>(context, listen: false);
+          ids.fetchOwnidenities().then((value) => {
+                ids.ownIdentity != null && ids.ownIdentity.length == 0
+                    ? Navigator.pushReplacementNamed(
+                        context, '/create_identity',
+                        arguments: true)
+                    : Navigator.pushReplacementNamed(context, '/home')
+              });
+        } else
+          Navigator.pop(context);
       }
-    }
+    });
   }
 
   @override
@@ -369,8 +361,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 20),
                 FlatButton(
-                  onPressed: () {
-                    createAccount();
+                  onPressed: () async {
+                    await createAccount();
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),

@@ -7,8 +7,6 @@ import "package:eventsource/eventsource.dart";
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/events.dart';
 
-import 'account.dart';
-
 /// Register event specifically for chat messages
 ///
 /// This function add code to deserialization of the message, automatizing the process.
@@ -18,7 +16,6 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
     // Deserialize the message
     var json = event.data != null ? jsonDecode(event.data) : null;
     ChatMessage chatMessage;
-
     if (json['event'] != null) {
       chatMessage = ChatMessage.fromJson(json['event']['mChatMessage']);
     }
@@ -29,16 +26,14 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
 /// Register generic Event
 ///
 /// Where [eventType] is the enum that specifies the code.
-
 Future<StreamSubscription<Event>> registerEvent(
     RsEventType eventType, Function listenCb,
     {Function onError}) async {
-      await global();
   if (rsEventsSubscriptions != null && rsEventsSubscriptions[eventType] != null)
     return null;
 
   var body = {'eventType': eventType.index};
-  String url = "$RETROSHARE_SERVICE_PREFIX/rsEvents/registerEventsHandler";
+  String url = "http://127.0.0.1:9092/rsEvents/registerEventsHandler";
   EventSource eventSource = await EventSource.connect(
     url,
     method: "POST",

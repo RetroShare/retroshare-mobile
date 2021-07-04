@@ -7,9 +7,6 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:retroshare/main.dart';
-import 'package:retroshare/redux/store.dart';
-
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
 //    String locationId = "814228577bc0c5da968c79272adcbfce";
@@ -18,7 +15,7 @@ void main() {
 //    initializeAuth(locationId, password);
 
     // Build our app and trigger a frame.
-    final identityStore = await retroshareStore();
-    await tester.pumpWidget(App(identityStore));
+    //final identityStore = await retroshareStore();
+    //await tester.pumpWidget(App(identityStore));
   });
 }

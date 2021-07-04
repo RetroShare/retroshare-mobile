@@ -66,7 +66,6 @@ class ChipsInput<T> extends StatefulWidget {
 
 class ChipsInputState<T> extends State<ChipsInput<T>>
     implements TextInputClient {
-  AutofillScope get currentAutofillScope => AutofillGroup.of(context);
   static const kObjectReplacementChar = 0xFFFC;
   Set<T> _chips = Set<T>();
   List<T> _suggestions;
@@ -420,6 +419,10 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
 
   @override
   void showAutocorrectionPromptRect(int start, int end) {}
+
+  @override
+  // TODO: implement currentAutofillScope
+  AutofillScope get currentAutofillScope => AutofillGroup.of(context);
 
   @override
   void performPrivateCommand(String action, Map<String, dynamic> data) {

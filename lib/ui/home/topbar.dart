@@ -1,14 +1,14 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:retroshare/model/cache.dart';
+import 'package:provider/provider.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/auth.dart';
+import 'package:retroshare/services/account.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
 import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/identity.dart';
-import 'package:retroshare/redux/model/app_state.dart';
-import 'package:retroshare/redux/actions/app_actions.dart';
+import 'package:path_provider/path_provider.dart';
 
 class TopBar extends StatefulWidget {
   final double maxHeight;
@@ -106,9 +106,12 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
   }
 
   void _showDialog() {
-    final store = StoreProvider.of<AppState>(context);
-    String name = store.state.currId.name;
-    if (store.state.ownIdsList.length > 1)
+    String name =
+        Provider.of<Identities>(context, listen: false).currentIdentity.name;
+    List<Identity> ownIdsList =
+        Provider.of<Identities>(context, listen: false).ownIdentity;
+
+    if (ownIdsList.length > 1)
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -126,13 +129,10 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
               FlatButton(
                 child: Text('Delete'),
                 onPressed: () async {
-                  bool success = await deleteIdentity(store.state.currId);
-
+                  bool success =
+                      await Provider.of<Identities>(context, listen: false)
+                          .providerdeleteIdentity();
                   if (success) {
-                    List<Identity> ownIdsList = await getOwnIdentities();
-                    final store = StoreProvider.of<AppState>(context);
-                    store.dispatch(UpdateOwnIdentitiesAction(ownIdsList));
-
                     Navigator.pushReplacementNamed(context, '/change_identity');
                   }
                 },
@@ -239,67 +239,96 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                     opacity: widget.panelAnimationValue,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Visibility(
-                            visible: widget.panelAnimationValue == null
-                                ? false
-                                : widget.panelAnimationValue > 0.5,
-                            child: Button(
-                              name: 'Add friend',
-                              buttonIcon: Icons.person_add,
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/add_friend');
-                              },
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Visibility(
+                              visible: widget.panelAnimationValue == null
+                                  ? false
+                                  : widget.panelAnimationValue > 0.5,
+                              child: Button(
+                                name: 'Add friend',
+                                buttonIcon: Icons.person_add,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/add_friend');
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            visible: widget.panelAnimationValue == null
-                                ? false
-                                : widget.panelAnimationValue > 0.4,
-                            child: Button(
-                              name: 'Create new identity',
-                              buttonIcon: Icons.add,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/create_identity');
-                              },
+                            Visibility(
+                              visible: widget.panelAnimationValue == null
+                                  ? false
+                                  : widget.panelAnimationValue > 0.4,
+                              child: Button(
+                                name: 'Create new identity',
+                                buttonIcon: Icons.add,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/create_identity');
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            visible: widget.panelAnimationValue == null
-                                ? false
-                                : widget.panelAnimationValue > 0.3,
-                            child: Button(
-                              name: 'Change identity',
-                              buttonIcon: Icons.visibility,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/change_identity');
-                              },
+                            Visibility(
+                              visible: widget.panelAnimationValue == null
+                                  ? false
+                                  : widget.panelAnimationValue > 0.3,
+                              child: Button(
+                                name: 'Change identity',
+                                buttonIcon: Icons.visibility,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/change_identity');
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            child: Button(
-                              name: 'Delete identity',
-                              buttonIcon: Icons.delete,
-                              onPressed: () {
-                                _showDialog();
-                              },
+                            Visibility(
+                              child: Button(
+                                name: 'Delete identity',
+                                buttonIcon: Icons.delete,
+                                onPressed: () {
+                                  _showDialog();
+                                },
+                              ),
                             ),
-                          ),
-                          Visibility(
-                            child: Button(
-                              name: 'Friends locations',
-                              buttonIcon: Icons.devices,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/friends_locations');
-                              },
+                            Visibility(
+                              child: Button(
+                                name: 'Friends locations',
+                                buttonIcon: Icons.devices,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/friends_locations');
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                            /*Visibility(
+                              child: Button(
+                                name: 'Export Account',
+                                buttonIcon: Icons.import_export,
+                                onPressed: () async {
+                                  bool success =
+                                      await exportIdentityFunc(context);
+                                  if (success)
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: const Text(
+                                          'Successfully! Exported your account'),
+                                      duration: const Duration(seconds: 1),
+                                      backgroundColor: Colors.lightBlue[200],
+                                    ));
+                                  else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: const Text(
+                                          'Oops ! Something went wrong '),
+                                      duration: const Duration(seconds: 1),
+                                      backgroundColor: Colors.red[200],
+                                    ));
+                                  }
+                                },
+                              ),
+                            ),*/
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -335,29 +364,34 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                             Expanded(
                               flex: 4,
                               child: Center(
-                                child: StoreConnector<AppState, MemoryImage>(
-                                  converter: (store) =>
-                                    cachedImages[store.state.currId.avatar],
-                                  builder: (context, avatar) {
+                                child: Consumer<Identities>(
+                                  builder: (context, avatar, _) {
+                                    /*final image = cachedImages[
+                                        avatar.currentIdentity.avatar];*/
+
                                     return Container(
                                       width: heightOfTopBar * 0.75,
                                       height: heightOfTopBar * 0.75,
-                                      decoration: (avatar == null)
-                                          ? null
-                                          : BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      heightOfTopBar *
-                                                          0.75 *
-                                                          0.33),
-                                              image: DecorationImage(
-                                                fit: BoxFit.fitWidth,
-                                                image: avatar,
-                                              ),
-                                            ),
+                                      /*decoration:
+                                          (avatar.currentIdentity.avatar ==
+                                                  null)
+                                              ? null,
+                                              : BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          heightOfTopBar *
+                                                              0.75 *
+                                                              0.33),
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.fitWidth,
+                                                    image: cachedImages[avatar
+                                                        .currentIdentity
+                                                        .avatar],
+                                                  ),
+                                                )*/
                                       child: Visibility(
-                                        visible: (avatar == null),
+                                        visible: (avatar != null),
                                         child: Center(
                                           child: Icon(
                                             Icons.person,
@@ -393,9 +427,8 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                         AnimatedBuilder(
                           animation: _curvedAnimation,
                           builder: (BuildContext context, Widget widget) {
-                            return StoreConnector<AppState, String>(
-                              converter: (store) => store.state.currId.name,
-                              builder: (context, idName) {
+                            return Consumer<Identities>(
+                              builder: (context, idName, _) {
                                 return Center(
                                   child: Container(
                                     height: heightOfNameHeader * 2,
@@ -405,7 +438,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                         child: FadeTransition(
                                           opacity: _nameHeaderFadeAnimation,
                                           child: Text(
-                                            idName,
+                                            idName.currentIdentity.name,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .title,
@@ -430,4 +463,28 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
       ),
     );
   }
+}
+
+Future<bool> exportIdentityFunc(BuildContext context) async {
+  Directory appDocDir = await getApplicationDocumentsDirectory();
+  final id = Provider.of<AccountCredentials>(context, listen: false)
+      .lastAccountUsed
+      .pgpId;
+  String appDocPath = appDocDir.path + '/$id.txt';
+
+// for a file
+  bool check = File("$appDocPath").existsSync();
+  File entry = File("$appDocPath");
+  print(appDocPath);
+  if (check) {
+    await entry.writeAsStringSync('');
+  }
+  String data = await exportIdentity(id);
+  try {
+    await entry.writeAsString(data);
+  } catch (e) {
+    print(e);
+    return false;
+  }
+  return true;
 }

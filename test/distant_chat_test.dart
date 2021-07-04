@@ -10,7 +10,7 @@ void main() {
     String locationId = "814228577bc0c5da968c79272adcbfce";
     String password = "prueba";
     openapi = DefaultApi();
-    initializeAuth(locationId, password);
+    //initializeAuth(locationId, password);
 //
 //    test('to test instant chat initiation', () async {
 //      String from = '';

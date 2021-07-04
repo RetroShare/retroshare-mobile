@@ -23,14 +23,15 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-
   http: ^0.12.0+2
-
+  qr_flutter: ^4.0.0
   tuple: ^1.0.2
   flutter_redux: ^0.8.2
   image_picker: ^0.6.6+4
   sliding_up_panel: ^0.3.4
-
+  file_picker: ^2.1.1
+  flutter_barcode_scanner: ^1.0.1
+  qrscan: ^0.3.2
   # Toast
   oktoast: ^2.1.8
 
@@ -49,6 +50,10 @@ dependencies:
   flutter_local_notifications: ^1.4.3
   rxdart: ^0.23.1
   html: ^0.14.0+3
+  provider: ^5.0.0
+  path_provider: ^2.0.2
+  flutter_custom_dialog: ^1.0.20
+  fluttertoast: ^8.0.7
 
   # Share RetroShare Invite
   share: 0.6.4+3

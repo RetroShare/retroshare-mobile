@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:retroshare/services/init.dart';
-
+import 'package:provider/provider.dart';
 import 'package:retroshare/model/account.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/services/account.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -20,13 +24,48 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void initState() {
+    super.initState();
     hideLocations = true;
     wrongPassword = false;
+  }
+
+  Future<bool> importAccountFunc(BuildContext context) async {
+    // FilePickerResult result = await FilePicker.platform.pickFiles();
+    final result = 'abc';
+    if (result != null) {
+      File pgpFile = File(
+          '/data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt');
+      try {
+        final file = pgpFile;
+        final contents = await file.readAsString();
+        final pgpId = await importIdentity(contents);
+      } catch (e) {
+        final snackBar = SnackBar(
+          content: Text('Oops! Something went wrong'),
+          duration: Duration(milliseconds: 200),
+          backgroundColor: Colors.red[200],
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Oops! Please pick up the file'),
+        duration: Duration(milliseconds: 200),
+        backgroundColor: Colors.red[200],
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     accountsDropdown = getDropDownMenuItems();
 
-    currentAccount = lastAccountUsed;
-    print(lastAccountUsed);
-    super.initState();
+    currentAccount = Provider.of<AccountCredentials>(context, listen: false)
+        .getlastAccountUsed;
   }
 
   @override
@@ -41,23 +80,26 @@ class _SignInScreenState extends State<SignInScreen> {
       'isLoading': true,
       'spinner': true
     });
-    int resp = await requestLogIn(currentAccount, password);
-
-    // Login success 0, already logged in 1
-    if (resp == 0 || resp == 1) {
-      bool isAuthTokenValid =
-          await initializeAuth(currentAccount.locationName, password);
-      print(isAuthTokenValid);
-
-      if (isAuthTokenValid) {
-        loggedinAccount = currentAccount;
-        initializeStore(context);
-      } else {
+    Provider.of<AccountCredentials>(context, listen: false)
+        .login(currentAccount, password)
+        .then((value) {
+      if (value['res'] == 0 || value['res'] == 1) {
+        if (value['auth']) {
+          final ids = Provider.of<Identities>(context, listen: false);
+          ids.fetchOwnidenities().then((value) => {
+                ids.ownIdentity != null && ids.ownIdentity.length == 0
+                    ? Navigator.pushReplacementNamed(
+                        context, '/create_identity',
+                        arguments: true)
+                    : Navigator.pushReplacementNamed(context, '/home')
+              });
+        } else {
+          _isWrongPassword();
+        }
+      } else if (value['res'] == 3) {
         _isWrongPassword();
       }
-    } else if (resp == 3) {
-      _isWrongPassword();
-    }
+    });
   }
 
   void _isWrongPassword() {
@@ -68,8 +110,9 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   List<DropdownMenuItem<Account>> getDropDownMenuItems() {
-    List<DropdownMenuItem<Account>> items = new List();
-    for (Account account in accountsList) {
+    List<DropdownMenuItem<Account>> items = [];
+    for (Account account
+        in Provider.of<AccountCredentials>(context, listen: true).accountList) {
       items.add(DropdownMenuItem(
         value: account,
         child: Row(
@@ -159,9 +202,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                               value: currentAccount,
                                               items: accountsDropdown,
                                               onChanged: changedDropDownItem,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .body2,
                                               disabledHint: Text('Login'),
                                             ),
                                           ),
@@ -193,7 +233,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                       ),
                                       hintText: 'Password',
                                     ),
-                                    style: Theme.of(context).textTheme.body2,
                                     obscureText: true,
                                   ),
                                 ),
@@ -264,12 +303,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               FlatButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await importAccountFunc(context);
+                                },
                                 textColor: Color(0xFF9E9E9E),
                                 padding: const EdgeInsets.all(0.0),
                                 child: Text(
                                   'Import account',
-                                  style: Theme.of(context).textTheme.body1,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -281,7 +321,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 padding: const EdgeInsets.all(0.0),
                                 child: Text(
                                   'Create account',
-                                  style: Theme.of(context).textTheme.body1,
                                   textAlign: TextAlign.center,
                                 ),
                               ),

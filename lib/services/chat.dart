@@ -5,9 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
+import 'package:provider/provider.dart';
+import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/model/location.dart';
-import 'package:retroshare/redux/actions/app_actions.dart';
-import 'package:retroshare/redux/model/app_state.dart';
+import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/room.dart';
+import 'package:retroshare/provider/subscribed.dart';
+
 import 'package:retroshare/services/events.dart';
 import 'package:tuple/tuple.dart';
 
@@ -15,10 +20,7 @@ import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
-
-import 'account.dart';
-
-import 'init.dart';
+import 'package:retroshare/provider/room.dart';
 
 // Not used
 //Future<List<Chat>> getChatLobbies() async {
@@ -49,16 +51,15 @@ import 'init.dart';
 //}
 
 Future<List<Chat>> getSubscribedChatLobbies() async {
-  await global();
   final response = await http.get(
-    '$RETROSHARE_SERVICE_PREFIX/rsMsgs/getChatLobbyList',
+    'http://127.0.0.1:9092/rsMsgs/getChatLobbyList',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
     },
   );
 
-  List<Chat> chatsList = List<Chat>();
+  List<Chat> chatsList = [];
 
   if (response.statusCode == 200) {
     var list = json.decode(response.body)['cl_list'];
@@ -75,7 +76,6 @@ Future<List<Chat>> getSubscribedChatLobbies() async {
 }
 
 Future<Chat> getChatLobbyInfo(String lobbyId) async {
-  await global();
   final response =
       await http.post('http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
           headers: {
@@ -110,7 +110,6 @@ Future<Chat> getChatLobbyInfo(String lobbyId) async {
 }
 
 Future<bool> joinChatLobby(String chatId, String idToUse) async {
-  await global();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/joinVisibleChatLobby',
     headers: {
@@ -135,7 +134,6 @@ Future<bool> createChatLobby(
     {List<Location> inviteList: const <Location>[],
     bool public: true,
     bool anonymous: true}) async {
-  await global();
   var req = ReqCreateChatLobby()
     ..lobbyName = lobbyName
     ..lobbyTopic = lobbyTopic
@@ -143,14 +141,12 @@ Future<bool> createChatLobby(
   if (inviteList.isNotEmpty)
     req.invitedFriends =
         List.from(inviteList.map((location) => location.rsPeerId));
-
   // Lobby flags
   // Public = 4
   // Public + signed = 20
   // Private = 0
   // Private + signed = 16
   int privacyType = 0;
-
   if (public && anonymous)
     privacyType = 4;
   else if (public && !anonymous)
@@ -159,7 +155,7 @@ Future<bool> createChatLobby(
   req.lobbyPrivacyType = privacyType;
 
   var response = await openapi.rsMsgsCreateChatLobby(reqCreateChatLobby: req);
-
+  print(response.retval);
   if (response.retval.xint64 > 0) {
     setLobbyAutoSubscribe(response.retval.xstr64);
     return true;
@@ -189,7 +185,6 @@ Future<bool> getLobbyAutoSubscribe(
 Future<void> unsubscribeChatLobby(
   String lobbyId,
 ) async {
-  await global();
   var req = ReqUnsubscribeChatLobby()
     ..lobbyId = new ChatLobbyId()
     ..lobbyId.xstr64 = lobbyId;
@@ -202,11 +197,9 @@ Future<void> unsubscribeChatLobby(
 ///		2 TYPE_PRIVATE_DISTANT,    // private chat with distant peer, gxs_id is valid
 ///		3 TYPE_LOBBY,              // chat lobby id, lobby_id is valid
 ///		4 TYPE_BROADCAST           // message to/from all connected peers
-
 Future<ResSendChat> sendMessage(
     BuildContext context, String chatId, String msgTxt,
     [ChatIdType type = ChatIdType.number2_]) async {
-  await global();
   var reqSendChat = ReqSendChat() // openapi request object
     ..msg = msgTxt
     ..id = new ChatId()
@@ -223,7 +216,7 @@ Future<ResSendChat> sendMessage(
       .rsMsgsSendChat(reqSendChat: reqSendChat)
       .then((ResSendChat resSendChat) {
     if (resSendChat.retval) {
-      final store = StoreProvider.of<AppState>(context);
+      //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
         ..chat_id = new ChatId()
         ..chat_id.distantChatId = chatId
@@ -232,22 +225,17 @@ Future<ResSendChat> sendMessage(
         ..incoming = false
         ..sendTime = DateTime.now().millisecondsSinceEpoch ~/ 1000
         ..recvTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-      store.dispatch(AddChatMessageAction(message, chatId));
+      chatMiddleware(message, context);
+      Provider.of<RoomChatLobby>(context, listen: false)
+          .addChatMessage(message, chatId);
     }
   });
 }
 
 /// todo: should this be in a redux middleware?
 /// Function that update participants of a lobby chat
-void getParticipants(String lobbyId, context) {
-  _getLobbyParticipants(lobbyId).then((List<Identity> participants) {
-    final store = StoreProvider.of<AppState>(context);
-    store.dispatch(UpdateLobbyParticipantsAction(lobbyId, participants));
-  });
-}
 
-Future<List<Identity>> _getLobbyParticipants(String lobbyId) async {
-  await global();
+Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
     headers: {
@@ -259,7 +247,7 @@ Future<List<Identity>> _getLobbyParticipants(String lobbyId) async {
     }),
   );
 
-  List<Identity> ids = List<Identity>();
+  List<Identity> ids = [];
 
   if (response.statusCode == 200) {
     var gxsIds = json.decode(response.body)['info']['gxs_ids'];
@@ -280,10 +268,8 @@ Future<List<Identity>> _getLobbyParticipants(String lobbyId) async {
 }
 
 Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
-  await global();
   List<VisibleChatLobbyRecord> unsubscribedChatLobby = List();
   var chatLobbies = await openapi.rsMsgsGetListOfNearbyChatLobbies();
-
   for (VisibleChatLobbyRecord chat in chatLobbies.publicLobbies) {
     bool autosubs = await getLobbyAutoSubscribe(chat.lobbyId.xstr64);
     if (!autosubs) {
@@ -295,9 +281,7 @@ Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
 
 /// [TODO] write this as redux Middleware
 /// This function initate a distant chat if not exists and store it.
-
 Future<void> _initiateDistantChat(Chat chat, store) async {
-  await global();
   String to = chat.interlocutorId;
   String from = chat.ownIdToUse;
   var req = ReqInitiateDistantChatConnexion();
@@ -309,7 +293,15 @@ Future<void> _initiateDistantChat(Chat chat, store) async {
   if (resp.retval == true) {
     chat.chatId = resp.pid;
     Chat.addDistantChat(to, from, resp.pid);
-    store.dispatch(AddDistantChatAction(chat));
+    await Provider.of<FriendsIdentity>(store, listen: false).fetchAndUpdate();
+    dynamic allIDs = Provider.of<FriendsIdentity>(store, listen: false).allIds;
+
+    chatActionMiddleware(chat, store);
+    allIDs = Provider.of<RoomChatLobby>(store, listen: false)
+        .addDistanceChat(chat, allIDs);
+    Provider.of<FriendsIdentity>(store, listen: false).setAllIds(allIDs);
+
+    //store.dispatch(AddDistantChatAction(chat));
   } else
     throw ("Error on initiateDistantChat()");
 }
@@ -319,10 +311,8 @@ Future<void> _initiateDistantChat(Chat chat, store) async {
 ///  #define RS_DISTANT_CHAT_STATUS_TUNNEL_DN   		0x0001
 ///  #define RS_DISTANT_CHAT_STATUS_CAN_TALK			0x0002
 ///  #define RS_DISTANT_CHAT_STATUS_REMOTELY_CLOSED 	0x0003
-
-Future<DistantChatPeerInfo> _getDistantChatStatus(
+Future<DistantChatPeerInfo> getDistantChatStatus(
     String pid, ChatMessage aaa) async {
-  await global();
   var req = ReqGetDistantChatStatus();
   req.pid = pid;
   var resp =
@@ -339,48 +329,60 @@ Future<DistantChatPeerInfo> _getDistantChatStatus(
 /// already initiated.
 ///
 /// return: [Chat] object
-
 Chat getChat(
   BuildContext context,
   to, {
   String from,
 }) {
   Chat chat;
-  final store = StoreProvider.of<AppState>(context);
-  String currentId = from ?? store.state.currId.mId;
+  // final store = StoreProvider.of<AppState>(context);
+  Provider.of<Identities>(context, listen: false).fetchOwnidenities();
+  final currentIdentity =
+      Provider.of<Identities>(context, listen: false).currentIdentity;
+  String currentId = from ?? currentIdentity.mId;
+  // store.state.currId.mId;
   if (to != null && to is Identity) {
+    final distanceChat =
+        Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
     String distantChatId = Chat.getDistantChatId(to.mId, currentId);
-    if (Chat.distantChatExistsStore(distantChatId, store)) {
-      chat = store.state.distantChats[distantChatId];
+    if (Chat.distantChatExistsStore(distantChatId, distanceChat)) {
+      chat = Provider.of<RoomChatLobby>(context, listen: false)
+          .distanceChat[distantChatId];
+      // store.state.distantChats[distantChatId];
     } else {
       chat = Chat(
           interlocutorId: to.mId,
           isPublic: false,
           numberOfParticipants: 1,
           ownIdToUse: currentId);
-      _initiateDistantChat(chat, store);
+      _initiateDistantChat(chat, context);
     }
   } else if (to != null && (to is VisibleChatLobbyRecord)) {
     chat = Chat.fromVisibleChatLobbyRecord(to);
-    store.dispatch(AddChatMessageAction(null, to.lobbyId.xstr64));
-    joinChatLobby(to.lobbyId.xstr64, store.state.currId.mId).then((success) {
+    //store.dispatch(AddChatMessageAction(null, to.lobbyId.xstr64));
+    Provider.of<RoomChatLobby>(context, listen: false)
+        .addChatMessage(null, to.lobbyId.xstr64);
+    joinChatLobby(to.lobbyId.xstr64, currentIdentity.mId).then((success) {
       if (success) {
-        updateChatLobbiesStore(store);
-        updateUnsubsChatLobbiesStore(store);
+        Provider.of<ChatLobby>(context, listen: false)
+            .fetchAndUpdateUnsubscribed();
+        Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
       }
     });
   } else if (to != null && (to is Chat)) {
     chat = to;
     // Ugly way to initialize lobby participants
-    store.dispatch(
-        UpdateLobbyParticipantsAction(to.chatId, new List<Identity>()));
-
-    store.dispatch(AddChatMessageAction(null, to.chatId));
+    //store.dispatch(UpdateLobbyParticipantsAction(to.chatId, []));
+    Provider.of<RoomChatLobby>(context, listen: false)
+        .fetchAndUpdateParticipants(to.chatId, []);
+    chatMiddleware(null, context);
+    Provider.of<RoomChatLobby>(context, listen: false)
+        .addChatMessage(null, to.chatId);
   }
   return chat;
 }
 
-void registerChatEvents(store) {
+/*void registerChatEvents(store) {
   eventsRegisterChatMessage(
       listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
     if (msg != null) {
@@ -393,7 +395,7 @@ void registerChatEvents(store) {
           "00000000000000000000000000000000") {
         // First check if the recieved message is from an already registered chat
         !Chat.distantChatExistsStore(msg.chat_id.distantChatId, store)
-            ? _getDistantChatStatus(msg.chat_id.distantChatId, msg)
+            ? getDistantChatStatus(msg.chat_id.distantChatId, msg)
                 .then((DistantChatPeerInfo res) {
                 // Create the chat and add it to the store
                 Chat chat = Chat(
@@ -413,4 +415,17 @@ void registerChatEvents(store) {
       }
     }
   });
+}*/
+
+Future<void> getMessagescall(String lobbyId) async {
+  final response = await http.post(
+    'http://127.0.0.1:9092/rsHistory/getMessages',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'chatPeerId': lobbyId}),
+  );
+  print("hello");
+  print(response.body);
 }

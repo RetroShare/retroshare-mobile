@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:retroshare/ui/UpdateIdenityScreen.dart';
 
 import 'package:retroshare/ui/splash_screen.dart';
 import 'package:retroshare/ui/home/home_screen.dart';
@@ -38,6 +39,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SignUpScreen());
       case '/launch_transition':
         return MaterialPageRoute(builder: (_) => LaunchTransitionScreen());
+      case '/updateIdentity':
+        if (args is Map)
+          return MaterialPageRoute(
+              builder: (_) => UpdateIdentityScreen(
+                    curr: args['id'],
+                  ));
+        return MaterialPageRoute(builder: (_) => UpdateIdentityScreen());
       case '/room':
         if (args is Map) {
           return MaterialPageRoute(
