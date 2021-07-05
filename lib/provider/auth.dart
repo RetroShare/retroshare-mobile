@@ -74,6 +74,7 @@ class AccountCredentials with ChangeNotifier {
         setLogginAccount(currentAccount);
         map['auth'] = true;
       }
+      notifyListeners();
       return map;
     }
   }

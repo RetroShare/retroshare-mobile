@@ -28,7 +28,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
   bool _requestAddCert = false;
 
   Future<String> _getCert() async {
-    ownCert = (await getShortInvite());
+    ownCert = (await getShortInvite()).replaceAll('\n', '');
     return ownCert;
   }
 

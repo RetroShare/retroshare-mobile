@@ -298,7 +298,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                 buttonIcon: Icons.devices,
                                 onPressed: () {
                                   Navigator.pushNamed(
-                                      context, '/friends_locations');
+                                      context, '/about');
                                 },
                               ),
                             ),

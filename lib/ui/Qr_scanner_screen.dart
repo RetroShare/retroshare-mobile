@@ -1,15 +1,22 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friendLocation.dart';
+import 'package:share/share.dart';
 import 'UpdateIdenityScreen.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
-enum QRoperation { save, refresh }
+enum QRoperation { save, refresh, share }
 
 class QRScanner extends StatefulWidget {
   final String qr_data;
@@ -21,16 +28,16 @@ class QRScanner extends StatefulWidget {
 
 class _QRScannerState extends State<QRScanner> {
   bool _requestCreateIdentity;
-
+  final key = GlobalKey();
   Future _scan() async {
     String barcode = null;
     try {
       barcode = await scanner.scan();
-      print("hello");
       print(barcode);
     } catch (e) {
       print(e);
     }
+    Future.delayed(new Duration(seconds: 2), () {});
     if (barcode == null) {
       setState(() {
         _requestCreateIdentity = false;
@@ -50,12 +57,69 @@ class _QRScannerState extends State<QRScanner> {
       );
     } else {
       print(barcode);
+
       bool success = await Provider.of<FriendLocations>(context, listen: false)
           .addFriendLocation(barcode);
       if (success)
         Navigator.pop(context);
-      else
+      else {
         showToast('An error occurred while adding your friend.');
+        setState(() {
+          _requestCreateIdentity = true;
+        });
+      }
+    }
+  }
+
+  PopupMenuItem popupchildWidget(String text, IconData icon, QRoperation val) {
+    return PopupMenuItem(
+        child: Row(children: [
+          Icon(
+            icon,
+            size: 20,
+          ),
+          SizedBox(
+            width: 7,
+          ),
+          Text(
+            '$text',
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          )
+        ]),
+        value: val);
+  }
+
+  Future<void> onChanged(QRoperation val) async {
+    if (val == QRoperation.save) {
+      try {
+        RenderRepaintBoundary boundary =
+            key.currentContext.findRenderObject() as RenderRepaintBoundary;
+        var image = await boundary.toImage();
+        ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+        Uint8List pngBytes = byteData.buffer.asUint8List();
+        final appDir = await getApplicationDocumentsDirectory();
+        File file =
+            await File('${appDir.path}/retroshare_qr_code.png').create();
+        await file?.writeAsBytes(pngBytes);
+        showToast("Hey there! QR Image has successfully saved.");
+      } catch (e) {
+        print(e);
+        showToast("Oops! something went wrong.");
+      }
+    } else if (val == QRoperation.share) {
+      final appDir = await getApplicationDocumentsDirectory();
+      File file = await File('${appDir.path}/retroshare_qr_code');
+      bool check = await file.existsSync();
+      if (check) {
+        Share.shareFiles(['${appDir.path}/retroshare_qr_code.png'],
+            text: "Retroshare Invite");
+      } else {
+        showToast("Please save your image First");
+      }
+    } else {
+      setState(() {});
     }
   }
 
@@ -94,23 +158,24 @@ class _QRScannerState extends State<QRScanner> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    Expanded(
-                      child: Text(
-                        'QR Scanner',
-                        style: Theme.of(context).textTheme.body2,
-                      ),
+                    Text(
+                      'QR Scanner',
+                      style: Theme.of(context).textTheme.body2,
                     ),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        icon: Icon(Icons.more_vert),
-                        items: [
-                          DropdownMenuItem(
-                              value: QRoperation.save, child: Text("Save")),
-                          DropdownMenuItem(
-                              child: Text("Refresh"),
-                              value: QRoperation.refresh)
-                        ],
-                      ),
+                    Spacer(),
+                    PopupMenuButton(
+                      onSelected: (val) => onChanged(val),
+                      icon: Icon(Icons.more_vert),
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          popupchildWidget(
+                              "Save", Icons.save, QRoperation.save),
+                          popupchildWidget(
+                              "Refresh", Icons.refresh, QRoperation.refresh),
+                          popupchildWidget(
+                              "Share", Icons.share_rounded, QRoperation.share)
+                        ];
+                      },
                     ),
                     SizedBox(width: 10),
                   ],
@@ -125,11 +190,24 @@ class _QRScannerState extends State<QRScanner> {
                       SizedBox(
                         height: 20,
                       ),
-                      QrImage(
-                        data: widget.qr_data,
-                        version: QrVersions.auto,
-                        size: 250,
-                        gapless: false,
+                      Card(
+                        elevation: 20,
+                        child: Container(
+                          padding: const EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                    20) //         <--- border radius here
+                                ),
+                          ),
+                          child: QrImage(
+                            key: key,
+                            data: widget.qr_data,
+                            version: QrVersions.auto,
+                            size: 270,
+                            gapless: false,
+                          ),
+                        ),
                       ),
                       Card(
                         borderOnForeground: false,

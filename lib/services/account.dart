@@ -138,7 +138,7 @@ Future<String> getShortInvite() async {
   });
   print(response.body);
   if (response.statusCode == 200 && json.decode(response.body)['retval']) {
-    return json.decode(response.body)['invite'].substring(22);
+    return json.decode(response.body)['invite'].substring(31);
   } else {
     throw Exception('Failed to load response');
   }

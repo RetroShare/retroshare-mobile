@@ -417,15 +417,59 @@ Chat getChat(
   });
 }*/
 
-Future<void> getMessagescall(String lobbyId) async {
+Future<void> getMessagesApi(String lobbyId) async {
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessages',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
     },
-    body: json.encode({'chatPeerId': lobbyId}),
+    body: json.encode({'chatPeerId': lobbyId, 'loadCount': 100}),
   );
   print("hello");
+  print(response.statusCode);
+}
+
+Future<void> message_description(String msgId) async {
+  int msg_Id = int.parse(msgId);
+  final response = await http.post(
+    'http://127.0.0.1:9092/rsHistory/getMessage',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'chatPeerId': msg_Id}),
+  );
+
+  print(response.body);
+}
+
+Future<void> removeMessageApi(List<String> msgIds) async {
+  List<int> msg_ids;
+  for (String x in msgIds) {
+    msg_ids.add(int.parse(x));
+  }
+  final response = await http.post(
+    'http://127.0.0.1:9092/rsHistory/removeMessages',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'msgIds': msg_ids}),
+  );
+
+  print(response.body);
+}
+
+Future<void> clearMessages(String lobbyId) async {
+  final response = await http.post(
+    'http://127.0.0.1:9092/rsHistory/removeMessages',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'chatPeerId': lobbyId}),
+  );
+
   print(response.body);
 }
