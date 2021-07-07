@@ -125,7 +125,8 @@ Future<bool> updateApiIdentity(Identity identity, int avatarSize) async {
   var b = json.encode({
     'name': identity.name,
     'id': identity.mId,
-    'pseudonimous': !identity.signed
+    'pseudonimous': !identity.signed,
+    "pgpPassword": authToken.password
   });
   print(b);
 

@@ -12,12 +12,18 @@ class FriendLocations with ChangeNotifier {
     _friendlist = await getFriendsAccounts();
     notifyListeners();
   }
-    void setAuthToken(AuthToken authToken) {
+
+  void setAuthToken(AuthToken authToken) {
     _authToken = authToken;
     notifyListeners();
   }
+
   Future<bool> addFriendLocation(String name) async {
-    bool isAdded = await addCert(name);
+    bool isAdded = false;
+    if (name != null && name.length < 100)
+      isAdded = await parseShortInvite(name);
+    else
+      isAdded = await addCert(name);
     if (isAdded) {
       fetchfriendLocation();
       return true;

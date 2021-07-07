@@ -309,14 +309,6 @@ class _PersonDelegateState extends State<PersonDelegate>
                         style: Theme.of(context).textTheme.body1,
                       ),
                     ),
-                    Visibility(
-                      visible: widget.data.isMessage &&
-                          widget.data.message.isNotEmpty,
-                      child: Text(
-                        widget.data.message,
-                        style: Theme.of(context).textTheme.body1,
-                      ),
-                    ),
                   ],
                 ),
               ),

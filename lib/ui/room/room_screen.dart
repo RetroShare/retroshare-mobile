@@ -45,7 +45,7 @@ class _RoomScreenState extends State<RoomScreen>
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat.chatId);
-        await getMessagescall(widget.chat.chatId);
+        await getMessagesApi(widget.chat.chatId);
       }
     });
   }

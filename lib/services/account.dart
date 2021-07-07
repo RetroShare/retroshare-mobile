@@ -130,6 +130,20 @@ Future<String> getOwnCert() async {
   }
 }
 
+Future<String> getShortInvite() async {
+  final response =
+      await http.get('http://localhost:9092/rsPeers/getShortInvite', headers: {
+    HttpHeaders.authorizationHeader:
+        'Basic ' + base64.encode(utf8.encode('$authToken'))
+  });
+  print(response.body);
+  if (response.statusCode == 200 && json.decode(response.body)['retval']) {
+    return json.decode(response.body)['invite'].substring(31);
+  } else {
+    throw Exception('Failed to load response');
+  }
+}
+
 Future<bool> addCert(String cert) async {
   final response = await http.post(
     'http://localhost:9092/rsPeers/acceptInvite',
@@ -139,7 +153,24 @@ Future<bool> addCert(String cert) async {
     },
     body: json.encode({'invite': cert}),
   );
+  print(response.body);
+  if (response.statusCode == 200) {
+    return json.decode(response.body)['retval'];
+  } else {
+    throw Exception('Failed to load response');
+  }
+}
 
+Future<bool> parseShortInvite(String cert) async {
+  final response = await http.post(
+    'http://localhost:9092/rsPeers/parseShortInvite',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'invite': cert}),
+  );
+  print(response.body);
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
   } else {

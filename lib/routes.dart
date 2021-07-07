@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:retroshare/ui/UpdateIdenityScreen.dart';
+import 'package:retroshare/ui/about_screen.dart';
 
 import 'package:retroshare/ui/splash_screen.dart';
 import 'package:retroshare/ui/home/home_screen.dart';
@@ -29,6 +30,8 @@ class RouteGenerator {
                     spinner: args['spinner'],
                     statusText: args['statusText'],
                   ));
+     
+
 
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/home':
@@ -77,6 +80,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SearchScreen());
       case '/friends_locations':
         return MaterialPageRoute(builder: (_) => FriendsLocationsScreen());
+      case '/about':
+      return MaterialPageRoute(builder: (_) => MyWebView());
       default:
         return _errorRoute();
     }

@@ -27,14 +27,8 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
   String ownCert;
   bool _requestAddCert = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _getCert();
-  }
-
   Future<String> _getCert() async {
-    ownCert = (await getOwnCert()).replaceAll("\n", "");
+    ownCert = (await getShortInvite()).replaceAll('\n', '');
     return ownCert;
   }
 
@@ -44,30 +38,33 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Your RetroShare invite"),
-            content: Column(
-              children: <Widget>[
-                Button(
-                  name: 'Copy to clipboard',
-                  buttonIcon: Icons.content_copy,
-                  onPressed: () async {
-                    await Clipboard.setData(
-                        ClipboardData(text: ownCertController.text));
-                    await showInviteCopyNotification();
-                  },
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: TextField(
-                      readOnly: true,
-                      controller: ownCertController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(border: InputBorder.none),
-                      style: Theme.of(context).textTheme.body2,
+            content: Container(
+              height: 300,
+              child: Column(
+                children: <Widget>[
+                  Button(
+                    name: 'Copy to clipboard',
+                    buttonIcon: Icons.content_copy,
+                    onPressed: () async {
+                      await Clipboard.setData(
+                          ClipboardData(text: ownCertController.text));
+                      await showInviteCopyNotification();
+                    },
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: TextField(
+                        readOnly: true,
+                        controller: ownCertController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration(border: InputBorder.none),
+                        style: Theme.of(context).textTheme.body2,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });
@@ -118,23 +115,13 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                         if (snapshot.connectionState == ConnectionState.done &&
                             snapshot.hasData) {
                           ownCertController.text = ownCert;
-                          return LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints viewportConstraints) {
-                              return SingleChildScrollView(
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    minHeight: viewportConstraints.maxHeight,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 30),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          /*Padding(
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  /*Padding(
                                     padding: const EdgeInsets.only(bottom: 15.0),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
@@ -156,158 +143,146 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                       isMessage: true,
                                     ),
                                   ),*/
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 15.0),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "1. Share your RetroShare invite",
-                                                style:
-                                                    TextStyle(fontSize: 20.0),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 15.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: <Widget>[
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        width: 2,
-                                                        color: Colors.black87),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(
-                                                            5.0) //         <--- border radius here
-                                                        ),
-                                                  ),
-                                                  child: IconButton(
-                                                    icon: Icon(
-                                                      Icons.share,
-                                                    ),
-                                                    iconSize: 45.0,
-                                                    color: Colors.black87,
-                                                    onPressed: () {
-                                                      Share.share(ownCert);
-                                                    },
-                                                  ),
-                                                ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        width: 2,
-                                                        color: Colors.black87),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(
-                                                            5.0) //         <--- border radius here
-                                                        ),
-                                                  ),
-                                                  child: IconButton(
-                                                    icon: Icon(
-                                                      Icons.remove_red_eye,
-                                                    ),
-                                                    iconSize: 45.0,
-                                                    color: Colors.black87,
-                                                    onPressed: () {
-                                                      _showCertDialog();
-                                                    },
-                                                  ),
-                                                ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        width: 2,
-                                                        color: Colors.black87),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(
-                                                            5.0) //         <--- border radius here
-                                                        ),
-                                                  ),
-                                                  child: IconButton(
-                                                    icon: Icon(
-                                                        Icons.document_scanner),
-                                                    iconSize: 45.0,
-                                                    color: Colors.black87,
-                                                    onPressed: () {
-                                                      Navigator.of(context).push(
-                                                          new MaterialPageRoute(
-                                                              builder: (_) => QRScanner(
-                                                                  qr_data:
-                                                                      ownCertController
-                                                                          .text)));
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "2. Paste your friends invite here",
-                                              style: TextStyle(fontSize: 20.0),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                color: Color(0xFFF5F5F5),
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 15),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 30,
-                                          ),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                color: Color(0xFFF5F5F5),
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 15),
-                                              child: TextField(
-                                                controller: newCertController,
-                                                keyboardType:
-                                                    TextInputType.multiline,
-                                                maxLines: null,
-                                                decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintText:
-                                                        'Paste your friend\'s invite here'),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .body2,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 15.0),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "1. Share your RetroShare invite",
+                                        style: TextStyle(fontSize: 20.0),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 15.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 2,
+                                                color: Colors.black87),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    5.0) //         <--- border radius here
+                                                ),
+                                          ),
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.share,
+                                            ),
+                                            iconSize: 45.0,
+                                            color: Colors.black87,
+                                            onPressed: () {
+                                              Share.share(ownCert);
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 2,
+                                                color: Colors.black87),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    5.0) //         <--- border radius here
+                                                ),
+                                          ),
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.remove_red_eye,
+                                            ),
+                                            iconSize: 45.0,
+                                            color: Colors.black87,
+                                            onPressed: () {
+                                              _showCertDialog();
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 2,
+                                                color: Colors.black87),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    5.0) //         <--- border radius here
+                                                ),
+                                          ),
+                                          child: IconButton(
+                                            icon: Icon(Icons.document_scanner),
+                                            iconSize: 45.0,
+                                            color: Colors.black87,
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  new MaterialPageRoute(
+                                                      builder: (_) => QRScanner(
+                                                          qr_data:
+                                                              ownCertController
+                                                                  .text)));
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "2. Paste your friends invite here",
+                                      style: TextStyle(fontSize: 20.0),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Color(0xFFF5F5F5),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Color(0xFFF5F5F5),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: TextField(
+                                        controller: newCertController,
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: null,
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText:
+                                                'Paste your friend\'s invite here'),
+                                        style:
+                                            Theme.of(context).textTheme.body2,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
                           );
                         }
                         if (snapshot.hasError) {
-                          showDialog(
+                          /*showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return Dialog(
@@ -320,7 +295,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                 child: contentBox(context),
                               );
                             },
-                          );
+                          );*/
                         }
 
                         return Center(
@@ -394,46 +369,63 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
   }
 
   contentBox(context) {
-    return Stack(children: <Widget>[
-      Container(
-        padding: EdgeInsets.only(
-            left: Constants.padding,
-            top: Constants.avatarRadius,
-            right: Constants.padding,
-            bottom: Constants.padding),
-        margin: EdgeInsets.only(top: Constants.avatarRadius),
-        decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(Constants.padding),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
-            ]),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              'something went Wrong!',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "OK",
-                    style: TextStyle(fontSize: 14),
-                  )),
-            ),
-          ],
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+              left: Constants.padding,
+              top: Constants.avatarRadius,
+              right: Constants.padding,
+              bottom: Constants.padding),
+          margin: EdgeInsets.only(top: Constants.avatarRadius),
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(Constants.padding),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'something went Wrong!',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "OK",
+                      style: TextStyle(fontSize: 14),
+                    )),
+              ),
+            ],
+          ),
         ),
-      )
-    ]);
+        Positioned(
+          left: Constants.padding,
+          right: Constants.padding,
+          child: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            radius: Constants.avatarRadius,
+            child: ClipRRect(
+              borderRadius:
+                  BorderRadius.all(Radius.circular(Constants.avatarRadius)),
+              child: Image(
+                image: AssetImage('assets/rs-logo.png'),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
