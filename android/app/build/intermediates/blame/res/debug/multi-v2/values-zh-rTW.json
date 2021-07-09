@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-zh-rTW\\values-zh-rTW.xml",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-zh-rTW\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "211,136,57,279",
+                        "endColumns": "66,73,77,70",
+                        "endOffsets": "273,205,130,345"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,122,196,375",
+                        "endColumns": "66,73,77,70",
+                        "endOffsets": "117,191,269,441"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "274",
+                        "endColumns": "100",
+                        "endOffsets": "370"
+                    }
+                }
+            ]
+        }
+    ]
+}

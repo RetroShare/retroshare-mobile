@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-es\\values-es.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-es\\values-es.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "389",
+                        "endColumns": "100",
+                        "endOffsets": "485"
+                    }
+                },
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-es\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "282,174,57,394",
+                        "endColumns": "110,106,115,97",
+                        "endOffsets": "388,276,168,487"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,166,273,490",
+                        "endColumns": "110,106,115,97",
+                        "endOffsets": "161,268,384,583"
+                    }
+                }
+            ]
+        }
+    ]
+}

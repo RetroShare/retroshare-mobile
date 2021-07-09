@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "F:\\GSOC\\RetroshareAndroid\\retroshare-mobile\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pt-rBR\\values-pt-rBR.xml",
+            "map": [
+                {
+                    "source": "C:\\Qt\\5.12.5\\android_arm64_v8a\\src\\android\\java\\res\\values-pt-rBR\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,2,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "302,187,57,407",
+                        "endColumns": "103,113,128,95",
+                        "endOffsets": "401,296,181,498"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,159,273,503",
+                        "endColumns": "103,113,128,95",
+                        "endOffsets": "154,268,397,594"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\6c37dc1209c69ee0b7d519a29c0705a3\\core-1.0.2\\res\\values-pt-rBR\\values-pt-rBR.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "402",
+                        "endColumns": "100",
+                        "endOffsets": "498"
+                    }
+                }
+            ]
+        }
+    ]
+}
