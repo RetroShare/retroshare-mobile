@@ -474,10 +474,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       return InputChip(
                                         key: ObjectKey(profile),
                                         label: Text(profile.accountName),
-//                                        avatar: CircleAvatar(
-//                                          backgroundImage: NetworkImage(profile.imageUrl),
-//                                        ),
-                                        onDeleted: () {
+                                       // avatar: CircleAvatar(
+                                         // backgroundImage: NetworkImage(profile.imageUrl),
+                                     //),
+                                       onDeleted: () {
                                           _selectedLocations.removeWhere(
                                               (location) =>
                                                   location.rsPeerId ==

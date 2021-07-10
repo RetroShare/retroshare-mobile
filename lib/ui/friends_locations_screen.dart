@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friendLocation.dart';
-import 'package:retroshare/model/location.dart';
 import 'package:retroshare/common/person_delegate.dart';
 
 class FriendsLocationsScreen extends StatefulWidget {
@@ -12,7 +11,6 @@ class FriendsLocationsScreen extends StatefulWidget {
 }
 
 class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
-  List<Location> _locations = List();
   @override
   void initState() {
     super.initState();

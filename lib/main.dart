@@ -9,11 +9,7 @@ import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friendLocation.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
-
 import 'package:retroshare/routes.dart';
-import 'package:retroshare/ui/add_friend_screen.dart';
-import 'package:retroshare/ui/profile_screen.dart';
-
 import 'model/app_life_cycle_state.dart';
 import 'model/auth.dart';
 
@@ -21,17 +17,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
 
-  //final rsStore = await retroshareStore();
   openapi = DefaultApi();
 
   runApp(App());
 }
 
 class App extends StatefulWidget {
-  //final Store<AppState> store;
-
-//  App(this.store);
-
   @override
   _AppState createState() => new _AppState();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/account.dart';
 import 'package:retroshare/model/identity.dart';
@@ -50,7 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Spacer(),
                     PopupMenuButton(
                       onSelected: (val) {
-                        if (val == "edit") {}
+                        val == "edit"
+                            ? Navigator.of(context).pushReplacementNamed(
+                                '/updateIdentity',
+                                arguments: {'id': widget.curr})
+                            : showdeleteDialog(context);
                       },
                       icon: Icon(Icons.more_vert),
                       itemBuilder: (BuildContext context) {

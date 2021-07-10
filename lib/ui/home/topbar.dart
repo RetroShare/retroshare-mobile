@@ -7,7 +7,6 @@ import 'package:retroshare/services/account.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/identity.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 

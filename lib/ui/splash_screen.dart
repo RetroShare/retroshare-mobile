@@ -15,17 +15,18 @@ class SplashScreen extends StatefulWidget {
       this.statusText = "",
       this.spinner = false})
       : super(key: key);
+
   final isLoading;
-  String statusText;
   bool spinner;
+  String statusText;
 
   @override
   _SplashState createState() => new _SplashState();
 }
 
 class _SplashState extends State<SplashScreen> {
-  String _statusText;
   bool _spinner = false;
+  String _statusText;
 
   @override
   void initState() {
@@ -36,6 +37,47 @@ class _SplashState extends State<SplashScreen> {
     } else {
       _statusText = widget.statusText;
       _spinner = widget.spinner;
+    }
+  }
+
+  void _setStatusText(String txt) {
+    setState(() {
+      _statusText = txt;
+    });
+  }
+
+  void checkBackendState(BuildContext context) async {
+    bool connectedToBackend = true;
+    bool isLoggedIn;
+    do {
+      try {
+        isLoggedIn = await checkLoggedIn();
+        connectedToBackend = true;
+      } catch (e) {
+        if (connectedToBackend == true) _setStatusText("Can't connect...");
+        connectedToBackend = false;
+      }
+    } while (!connectedToBackend);
+    final provider = Provider.of<AccountCredentials>(context, listen: false);
+    bool isTokenValid = await provider.checkisvalidAuthToken();
+    if (isLoggedIn && isTokenValid && loggedinAccount != null) {
+      _setStatusText("Logging in...");
+      final ids = Provider.of<Identities>(context, listen: false);
+      ids.fetchOwnidenities().then((value) {
+        if (ids.ownIdentity != null && ids.ownIdentity.length == 0)
+          Navigator.pushReplacementNamed(context, '/create_identity',
+              arguments: true);
+        else
+          Navigator.pushReplacementNamed(context, '/home');
+      });
+    } else {
+      _setStatusText("Get locations...");
+      await provider.fetchAuthAccountList();
+      if (provider.accountList.isEmpty)
+        // Create or import an account
+        Navigator.pushReplacementNamed(context, '/launch_transition');
+      else
+        Navigator.pushReplacementNamed(context, '/signin');
     }
   }
 
@@ -75,45 +117,5 @@ class _SplashState extends State<SplashScreen> {
         )),
       ),
     );
-  }
-
-  void _setStatusText(String txt) {
-    setState(() {
-      _statusText = txt;
-    });
-  }
-
-  void checkBackendState(BuildContext context) async {
-    bool connectedToBackend = true;
-    bool isLoggedIn;
-    do {
-      try {
-        isLoggedIn = await checkLoggedIn();
-        connectedToBackend = true;
-      } catch (e) {
-        if (connectedToBackend == true) _setStatusText("Can't connect...");
-        connectedToBackend = false;
-      }
-    } while (!connectedToBackend);
-    final provider = Provider.of<AccountCredentials>(context, listen: false);
-    bool isTokenValid = await provider.checkisvalidAuthToken();
-    if (isLoggedIn && isTokenValid && loggedinAccount != null) {
-      _setStatusText("Logging in...");
-      final ids = Provider.of<Identities>(context, listen: false);
-      ids.fetchOwnidenities().then((value) => {
-            ids.ownIdentity != null && ids.ownIdentity.length == 0
-                ? Navigator.pushReplacementNamed(context, '/create_identity',
-                    arguments: true)
-                : Navigator.pushReplacementNamed(context, '/home')
-          });
-    } else {
-      _setStatusText("Get locations...");
-      await provider.fetchAuthAccountList();
-      if (provider.accountList.isEmpty)
-        // Create or import an account
-        Navigator.pushReplacementNamed(context, '/launch_transition');
-      else
-        Navigator.pushReplacementNamed(context, '/signin');
-    }
   }
 }

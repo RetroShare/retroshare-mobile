@@ -10,11 +10,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:retroshare/common/color_loader_3.dart';
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friendLocation.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
-import 'Update_idenity_screen.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
@@ -381,64 +381,4 @@ class _QRScannerState extends State<QRScanner>
         ));
   }
 
-  contentBox(context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              left: Constants.padding,
-              top: Constants.avatarRadius,
-              right: Constants.padding,
-              bottom: Constants.padding),
-          margin: EdgeInsets.only(top: Constants.avatarRadius),
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(Constants.padding),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
-              ]),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'something went Wrong!',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "OK",
-                      style: TextStyle(fontSize: 14),
-                    )),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          left: Constants.padding,
-          right: Constants.padding,
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: Constants.avatarRadius,
-            child: ClipRRect(
-              borderRadius:
-                  BorderRadius.all(Radius.circular(Constants.avatarRadius)),
-              child: Image(
-                image: AssetImage('assets/rs-logo.png'),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

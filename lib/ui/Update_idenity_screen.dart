@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
+import 'package:retroshare/common/show_dialog.dart';
 import 'dart:convert';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
@@ -24,6 +25,12 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   int _imageSize;
   bool _showError = false;
   bool _requestCreateIdentity = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    nameController = TextEditingController(text: widget.curr.name);
+  }
 
   @override
   void dispose() {
@@ -42,81 +49,12 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    //curr = Provider.of<Identities>(context, listen: false).currentIdentity;
-    nameController = TextEditingController(text: widget.curr.name);
-  }
-
   // Validate the Name
   bool _validate(text) {
-    if (nameController.text.length < 3) {
-      return false;
-    }
-    return true;
+    return nameController.text.length < 3 ? false : true;
   }
 
-  contentBox(context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              left: Constants.padding,
-              top: Constants.avatarRadius,
-              right: Constants.padding,
-              bottom: Constants.padding),
-          margin: EdgeInsets.only(top: Constants.avatarRadius),
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(Constants.padding),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
-              ]),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'something went Wrong!',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "OK",
-                      style: TextStyle(fontSize: 14),
-                    )),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          left: Constants.padding,
-          right: Constants.padding,
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: Constants.avatarRadius,
-            child: ClipRRect(
-              borderRadius:
-                  BorderRadius.all(Radius.circular(Constants.avatarRadius)),
-              child: Image(
-                image: AssetImage('assets/rs-logo.png'),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -151,64 +89,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
       }
     }
 
-    void _showDialog() {
-      String name =
-          Provider.of<Identities>(context, listen: false).currentIdentity.name;
-      List<Identity> ownIdsList =
-          Provider.of<Identities>(context, listen: false).ownIdentity;
-
-      if (ownIdsList.length > 1)
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Delete '$name'?"),
-              content: Text(
-                  "The deletion of identity cannot be undone. Are you sure you want to continue?"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                FlatButton(
-                  child: Text('Delete'),
-                  onPressed: () async {
-                    bool success =
-                        await Provider.of<Identities>(context, listen: false)
-                            .providerdeleteIdentity();
-                    if (success) {
-                      Navigator.pushReplacementNamed(
-                          context, '/change_identity');
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      else
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Too few identities"),
-              content: Text(
-                  "You must have at least one more identity to be able to delete this one."),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-    }
-
+    
     return WillPopScope(
       onWillPop: () {
         return Future.value(true);
@@ -251,7 +132,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                     Spacer(),
                     PopupMenuButton(
                       onSelected: (val) {
-                        _showDialog();
+                        showdeleteDialog(context);
                       },
                       icon: Icon(Icons.more_vert),
                       itemBuilder: (BuildContext context) {
@@ -467,8 +348,3 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   }
 }
 
-class Constants {
-  Constants._();
-  static const double padding = 20;
-  static const double avatarRadius = 80;
-}

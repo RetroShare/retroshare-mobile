@@ -13,7 +13,6 @@ class FriendLocations with ChangeNotifier {
   }
 
   Future<bool> addFriendLocation(String name) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isAdded = false;
     if (name != null && name.length < 100)
       isAdded = await parseShortInvite(name);

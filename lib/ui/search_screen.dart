@@ -125,8 +125,6 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                   ),
                   Expanded(
-                    /*child: Hero(
-                      tag: 'search_boxi',*/
                     child: Material(
                       color: Colors.white,
                       child: Container(
@@ -241,6 +239,7 @@ class _SearchScreenState extends State<SearchScreen>
                 controller: _tabController,
                 children: [
                   Stack(
+                    key: UniqueKey(),
                     children: <Widget>[
                       _buildChatsList(),
                       Visibility(
@@ -273,6 +272,7 @@ class _SearchScreenState extends State<SearchScreen>
                     ],
                   ),
                   Stack(
+                    key: UniqueKey(),
                     children: <Widget>[
                       _buildPeopleList(),
                       Visibility(
@@ -394,18 +394,9 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   void _toggleContacts(String gxsId, bool type) async {
-    /*await setContact(gxsId, false);
-    final store = StoreProvider.of<AppState>(context);
-    await updateIdentitiesStore(store);*/
     await Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, type);
   }
-
-  /*void _addToContacts(String gxsId) async {
-    await setContact(gxsId, true);
-    final store = StoreProvider.of<AppState>(context);
-    await updateIdentitiesStore(store);
-  }*/
 
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
