@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:retroshare/ui/UpdateIdenityScreen.dart';
+import 'package:retroshare/ui/Update_idenity_screen.dart';
 import 'package:retroshare/ui/about_screen.dart';
+import 'package:retroshare/ui/profile_screen.dart';
 
 import 'package:retroshare/ui/splash_screen.dart';
 import 'package:retroshare/ui/home/home_screen.dart';
@@ -30,8 +31,6 @@ class RouteGenerator {
                     spinner: args['spinner'],
                     statusText: args['statusText'],
                   ));
-     
-
 
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/home':
@@ -67,6 +66,14 @@ class RouteGenerator {
               builder: (_) => CreateIdentityScreen(isFirstId: args));
 
         return MaterialPageRoute(builder: (_) => CreateIdentityScreen());
+      case '/profile':
+       if (args is Map)
+          return MaterialPageRoute(
+              builder: (_) => ProfileScreen(
+                    curr: args['id'],
+                  ));
+        return MaterialPageRoute(builder: (_) => ProfileScreen());
+       
       case '/change_identity':
         return MaterialPageRoute(builder: (_) => ChangeIdentityScreen());
       case '/add_friend':
@@ -81,7 +88,7 @@ class RouteGenerator {
       case '/friends_locations':
         return MaterialPageRoute(builder: (_) => FriendsLocationsScreen());
       case '/about':
-      return MaterialPageRoute(builder: (_) => MyWebView());
+        return MaterialPageRoute(builder: (_) => MyWebView());
       default:
         return _errorRoute();
     }

@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +12,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
-import 'UpdateIdenityScreen.dart';
+import 'Update_idenity_screen.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 enum QRoperation { save, refresh, share }
@@ -26,22 +28,109 @@ class QRScanner extends StatefulWidget {
   _QRScannerState createState() => _QRScannerState();
 }
 
-class _QRScannerState extends State<QRScanner> {
-  bool _requestCreateIdentity;
-  final key = GlobalKey();
+class _QRScannerState extends State<QRScanner>
+    with SingleTickerProviderStateMixin {
+  bool _requestQR;
+  GlobalKey key = new GlobalKey();
+  bool check;
+  TextEditingController ownCertController = TextEditingController();
+  TabController tabController;
+
+  Animation<double> _leftHeaderFadeAnimation;
+  Animation<double> _leftHeaderScaleAnimation;
+  Animation<double> _rightHeaderFadeAnimation;
+  Animation<double> _rightHeaderScaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    check = false;
+    _requestQR = false;
+    tabController = TabController(vsync: this, length: 2);
+
+    _leftHeaderFadeAnimation = Tween(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(tabController.animation);
+
+    _leftHeaderScaleAnimation = Tween(
+      begin: 1.0,
+      end: 0.5,
+    ).animate(tabController.animation);
+
+    _rightHeaderFadeAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(tabController.animation);
+
+    _rightHeaderScaleAnimation = Tween(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(tabController.animation);
+  }
+
+  Future<String> _getCert() async {
+    String ownCert;
+    if (!check)
+      ownCert = (await getOwnCert()).replaceAll("\n", "");
+    else
+      ownCert = (await getShortInvite()).replaceAll("\n", "");
+    Future.delayed(Duration(milliseconds: 60));
+    return ownCert;
+  }
+
+  Widget getHeaderBuilder() {
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          ScaleTransition(
+            scale: _leftHeaderScaleAnimation,
+            child: FadeTransition(
+              opacity: _leftHeaderFadeAnimation,
+              child: Container(
+                child: Text(
+                  'Short Invite',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
+            ),
+          ),
+          ScaleTransition(
+            scale: _rightHeaderScaleAnimation,
+            child: FadeTransition(
+              opacity: _rightHeaderFadeAnimation,
+              child: Container(
+                child: Text(
+                  'Long Invite',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future _scan() async {
     String barcode = null;
     try {
       barcode = await scanner.scan();
       print(barcode);
+      bool success = await Provider.of<FriendLocations>(context, listen: false)
+          .addFriendLocation(barcode);
+      if (success) {
+        showToast('Friend has successfully added');
+        Navigator.pop(context);
+      } else {
+        showToast('An error occurred while adding your friend.');
+
+        setState(() {
+          _requestQR = false;
+        });
+      }
     } catch (e) {
       print(e);
-    }
-    Future.delayed(new Duration(seconds: 2), () {});
-    if (barcode == null) {
-      setState(() {
-        _requestCreateIdentity = false;
-      });
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -55,19 +144,9 @@ class _QRScannerState extends State<QRScanner> {
           );
         },
       );
-    } else {
-      print(barcode);
-
-      bool success = await Provider.of<FriendLocations>(context, listen: false)
-          .addFriendLocation(barcode);
-      if (success)
-        Navigator.pop(context);
-      else {
-        showToast('An error occurred while adding your friend.');
-        setState(() {
-          _requestCreateIdentity = true;
-        });
-      }
+      setState(() {
+        _requestQR = false;
+      });
     }
   }
 
@@ -94,15 +173,14 @@ class _QRScannerState extends State<QRScanner> {
   Future<void> onChanged(QRoperation val) async {
     if (val == QRoperation.save) {
       try {
-        RenderRepaintBoundary boundary =
-            key.currentContext.findRenderObject() as RenderRepaintBoundary;
+        RenderRepaintBoundary boundary = key.currentContext.findRenderObject();
         var image = await boundary.toImage();
         ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
         Uint8List pngBytes = byteData.buffer.asUint8List();
         final appDir = await getApplicationDocumentsDirectory();
-        File file =
-            await File('${appDir.path}/retroshare_qr_code.png').create();
-        await file?.writeAsBytes(pngBytes);
+        final result =
+            await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
+        final file = new File('${appDir.path}/retroshare_qr_code.png').create();
         showToast("Hey there! QR Image has successfully saved.");
       } catch (e) {
         print(e);
@@ -110,24 +188,11 @@ class _QRScannerState extends State<QRScanner> {
       }
     } else if (val == QRoperation.share) {
       final appDir = await getApplicationDocumentsDirectory();
-      File file = await File('${appDir.path}/retroshare_qr_code');
-      bool check = await file.existsSync();
-      if (check) {
-        Share.shareFiles(['${appDir.path}/retroshare_qr_code.png'],
-            text: "Retroshare Invite");
-      } else {
-        showToast("Please save your image First");
-      }
+      Share.shareFiles(['${appDir.path}/retroshare_qr_code.png'],
+          text: "RetroShare invite");
     } else {
       setState(() {});
     }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _requestCreateIdentity = false;
   }
 
   @override
@@ -200,13 +265,78 @@ class _QRScannerState extends State<QRScanner> {
                                     20) //         <--- border radius here
                                 ),
                           ),
-                          child: QrImage(
+                          child: RepaintBoundary(
                             key: key,
-                            data: widget.qr_data,
-                            version: QrVersions.auto,
-                            size: 270,
-                            gapless: false,
+                            child: FutureBuilder(
+                                future: _getCert(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.done &&
+                                      snapshot.hasData)
+                                    return QrImage(
+                                      data: snapshot.data,
+                                      version: QrVersions.auto,
+                                      size: 270,
+                                    );
+                                  return SizedBox(
+                                    width: 270,
+                                    height: 270,
+                                    child: Center(
+                                      child: snapshot.connectionState ==
+                                              ConnectionState.waiting
+                                          ? Container(
+                                              child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () async {},
+                                                    icon: Icon(Icons.refresh)),
+                                                Text(
+                                                  "Loading",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.blueAccent),
+                                                ),
+                                              ],
+                                            ))
+                                          : Container(
+                                              child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () async {},
+                                                    icon: Icon(
+                                                      Icons.error,
+                                                      color: Colors.grey,
+                                                    )),
+                                                Text("something went wrong !",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.grey)),
+                                              ],
+                                            )),
+                                    ),
+                                  );
+                                }),
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: SwitchListTile(
+                          value: check,
+                          title: getHeaderBuilder(),
+                          onChanged: (newval) {
+                            setState(() {
+                              check = newval;
+                            });
+                            if (check)
+                              tabController.animateTo(0);
+                            else
+                              tabController.animateTo(1);
+                          },
                         ),
                       ),
                       Card(
@@ -228,7 +358,7 @@ class _QRScannerState extends State<QRScanner> {
                             color: Colors.black87,
                             onPressed: () async {
                               setState(() {
-                                _requestCreateIdentity = true;
+                                _requestQR = true;
                               });
                               await _scan();
                             },
@@ -239,7 +369,7 @@ class _QRScannerState extends State<QRScanner> {
               )
             ]),
             Visibility(
-              visible: _requestCreateIdentity,
+              visible: _requestQR,
               child: Center(
                 child: ColorLoader3(
                   radius: 15.0,

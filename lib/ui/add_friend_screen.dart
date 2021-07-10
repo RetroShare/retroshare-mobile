@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/button.dart';
@@ -12,8 +13,7 @@ import 'package:retroshare/provider/friendLocation.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:retroshare/ui/Qr_scanner_screen.dart';
 import 'package:share/share.dart';
-
-import 'UpdateIdenityScreen.dart';
+import 'Update_idenity_screen.dart';
 
 class AddFriendScreen extends StatefulWidget {
   @override
@@ -21,352 +21,12 @@ class AddFriendScreen extends StatefulWidget {
 }
 
 class _AddFriendScreenState extends State<AddFriendScreen> {
-  TextEditingController ownCertController = TextEditingController();
   TextEditingController newCertController = TextEditingController();
-
   String ownCert;
+  TextEditingController ownCertController = TextEditingController();
+  bool type = false;
+
   bool _requestAddCert = false;
-
-  Future<String> _getCert() async {
-    ownCert = (await getShortInvite()).replaceAll('\n', '');
-    return ownCert;
-  }
-
-  _showCertDialog() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Your RetroShare invite"),
-            content: Container(
-              height: 300,
-              child: Column(
-                children: <Widget>[
-                  Button(
-                    name: 'Copy to clipboard',
-                    buttonIcon: Icons.content_copy,
-                    onPressed: () async {
-                      await Clipboard.setData(
-                          ClipboardData(text: ownCertController.text));
-                      await showInviteCopyNotification();
-                    },
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: TextField(
-                        readOnly: true,
-                        controller: ownCertController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: InputDecoration(border: InputBorder.none),
-                        style: Theme.of(context).textTheme.body2,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final loggedinAccount =
-        Provider.of<AccountCredentials>(context, listen: false).loggedinAccount;
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          top: true,
-          bottom: true,
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: appBarHeight,
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: personDelegateHeight,
-                      child: Visibility(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            size: 25,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Add friend',
-                        style: Theme.of(context).textTheme.body2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                  child: FutureBuilder(
-                      future: _getCert(),
-                      builder: (context, AsyncSnapshot<String> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            snapshot.hasData) {
-                          ownCertController.text = ownCert;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  /*Padding(
-                                    padding: const EdgeInsets.only(bottom: 15.0),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "About me:",
-                                        style: TextStyle(fontSize: 20.0),
-                                      ),
-                                    ),
-                                  ),
-                                   PersonDelegate(
-                                    data: PersonDelegateData(
-                                      name: loggedinAccount.pgpName +
-                                          ':' +
-                                          loggedinAccount.locationName,
-                                      message: loggedinAccount.pgpId +
-                                          ':' +
-                                          loggedinAccount.locationId,
-                                      isOnline: true,
-                                      isMessage: true,
-                                    ),
-                                  ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 15.0),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "1. Share your RetroShare invite",
-                                        style: TextStyle(fontSize: 20.0),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 15.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 2,
-                                                color: Colors.black87),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    5.0) //         <--- border radius here
-                                                ),
-                                          ),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.share,
-                                            ),
-                                            iconSize: 45.0,
-                                            color: Colors.black87,
-                                            onPressed: () {
-                                              Share.share(ownCert);
-                                            },
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 2,
-                                                color: Colors.black87),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    5.0) //         <--- border radius here
-                                                ),
-                                          ),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.remove_red_eye,
-                                            ),
-                                            iconSize: 45.0,
-                                            color: Colors.black87,
-                                            onPressed: () {
-                                              _showCertDialog();
-                                            },
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 2,
-                                                color: Colors.black87),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    5.0) //         <--- border radius here
-                                                ),
-                                          ),
-                                          child: IconButton(
-                                            icon: Icon(Icons.document_scanner),
-                                            iconSize: 45.0,
-                                            color: Colors.black87,
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                  new MaterialPageRoute(
-                                                      builder: (_) => QRScanner(
-                                                          qr_data:
-                                                              ownCertController
-                                                                  .text)));
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "2. Paste your friends invite here",
-                                      style: TextStyle(fontSize: 20.0),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Color(0xFFF5F5F5),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Color(0xFFF5F5F5),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15),
-                                      child: TextField(
-                                        controller: newCertController,
-                                        keyboardType: TextInputType.multiline,
-                                        maxLines: null,
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText:
-                                                'Paste your friend\'s invite here'),
-                                        style:
-                                            Theme.of(context).textTheme.body2,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                        if (snapshot.hasError) {
-                          /*showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(Constants.padding),
-                                ),
-                                elevation: 0,
-                                backgroundColor: Colors.transparent,
-                                child: contentBox(context),
-                              );
-                            },
-                          );*/
-                        }
-
-                        return Center(
-                          child: ColorLoader3(
-                            radius: 15.0,
-                            dotRadius: 6.0,
-                          ),
-                        );
-                      })),
-              Visibility(
-                visible: !_requestAddCert,
-                child: BottomBar(
-                  child: Center(
-                    child: SizedBox(
-                      height: 2 * appBarHeight / 3,
-                      child: FlatButton(
-                        onPressed: () async {
-                          if (newCertController != null &&
-                              newCertController.text.length > 0) {
-                            setState(() {
-                              _requestAddCert = true;
-                            });
-                            bool success = await Provider.of<FriendLocations>(
-                                    context,
-                                    listen: false)
-                                .addFriendLocation(newCertController.text);
-                            if (success) Navigator.pop(context);
-                          } else
-                            showToast(
-                                'An error occurred while adding your friend.');
-                        },
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0 + personDelegateHeight * 0.04),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              gradient: LinearGradient(
-                                colors: <Color>[
-                                  Color(0xFF00FFFF),
-                                  Color(0xFF29ABE2),
-                                ],
-                                begin: Alignment(-1.0, -4.0),
-                                end: Alignment(1.0, 4.0),
-                              ),
-                            ),
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Add friend',
-                              style: Theme.of(context).textTheme.button,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: _requestAddCert,
-                child: ColorLoader3(
-                  radius: 15.0,
-                  dotRadius: 6.0,
-                ),
-              )
-            ],
-          ),
-        ));
-  }
 
   contentBox(context) {
     return Stack(
@@ -425,6 +85,448 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
             ),
           ),
         ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+          top: true,
+          bottom: true,
+          child: Column(children: <Widget>[
+            Container(
+              height: appBarHeight,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: personDelegateHeight,
+                    child: Visibility(
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: 25,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Add friend',
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: Stack(children: [
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      TextFormField(
+                        maxLines: 10,
+                        minLines: 6,
+                        controller: newCertController,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                            prefix: SizedBox(
+                              width: 10,
+                            ),
+                            labelStyle: TextStyle(fontSize: 12),
+                            hintText: 'Paste your friend\'s invite here',
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(6))),
+                      ),
+                      SizedBox(height: 10),
+                      FlatButton(
+                        onPressed: () async {
+                          setState(() {
+                            _requestAddCert = true;
+                          });
+                          Provider.of<FriendLocations>(context, listen: false)
+                              .addFriendLocation(newCertController.text)
+                              .then((value) {
+                            setState(() {
+                              _requestAddCert = false;
+                            });
+                            Fluttertoast.cancel();
+                            value
+                                ? Fluttertoast.showToast(
+                                    msg: "Friend has been added",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0)
+                                : Fluttertoast.showToast(
+                                    msg: "Something went wrong",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                          });
+                        },
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(0.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF00FFFF),
+                                  Color(0xFF29ABE2),
+                                ],
+                                begin: Alignment(-1.0, -4.0),
+                                end: Alignment(1.0, 4.0),
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(10.0),
+                            child: const Text(
+                              'Add Friend',
+                              style: TextStyle(fontSize: 13),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "OR",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (_) => QRScanner()));
+                        },
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(0.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF00FFFF),
+                                  Color(0xFF29ABE2),
+                                ],
+                                begin: Alignment(-1.0, -4.0),
+                                end: Alignment(1.0, 4.0),
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(10.0),
+                            child: const Text(
+                              'Add Friend via QR',
+                              style: TextStyle(fontSize: 13),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      GetInvite(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Visibility(
+                    visible: _requestAddCert,
+                    child: ColorLoader3(
+                      radius: 15.0,
+                      dotRadius: 6.0,
+                    ),
+                  ),
+                )
+              ]),
+            ))
+          ])),
+    );
+  }
+}
+
+class GetInvite extends StatefulWidget {
+  GetInvite({Key key, this.settype}) : super(key: key);
+
+  final settype;
+
+  @override
+  _GetInviteState createState() => _GetInviteState();
+}
+
+class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
+  bool check;
+  TextEditingController ownCertController = TextEditingController();
+  TabController tabController;
+
+  Animation<double> _leftHeaderFadeAnimation;
+  Animation<double> _leftHeaderScaleAnimation;
+  Animation<double> _rightHeaderFadeAnimation;
+  Animation<double> _rightHeaderScaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    check = false;
+    tabController = TabController(vsync: this, length: 2);
+
+    _leftHeaderFadeAnimation = Tween(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(tabController.animation);
+
+    _leftHeaderScaleAnimation = Tween(
+      begin: 1.0,
+      end: 0.5,
+    ).animate(tabController.animation);
+
+    _rightHeaderFadeAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(tabController.animation);
+
+    _rightHeaderScaleAnimation = Tween(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(tabController.animation);
+  }
+
+  Future<String> _getCert() async {
+    String ownCert;
+    if (!check)
+      ownCert = (await getOwnCert()).replaceAll("\n", "");
+    else
+      ownCert = (await getShortInvite()).replaceAll("\n", "");
+    Future.delayed(Duration(milliseconds: 60));
+    return ownCert;
+  }
+
+  Widget getHeaderBuilder() {
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          ScaleTransition(
+            scale: _leftHeaderScaleAnimation,
+            child: FadeTransition(
+              opacity: _leftHeaderFadeAnimation,
+              child: Container(
+                child: Text(
+                  'Short Invite',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
+            ),
+          ),
+          ScaleTransition(
+            scale: _rightHeaderScaleAnimation,
+            child: FadeTransition(
+              opacity: _rightHeaderFadeAnimation,
+              child: Container(
+                child: Text(
+                  'Long Invite',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getinvitelink() {
+    return FutureBuilder(
+        future: _getCert(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            String val = snapshot.data;
+            ownCertController.text = val;
+            return Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Opacity(
+                  opacity: .2,
+                  child: TextFormField(
+                    key: UniqueKey(),
+                    readOnly: true,
+                    initialValue: val,
+                    maxLines: 10,
+                    minLines: 10,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.center,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                        prefix: SizedBox(
+                          width: 10,
+                        ),
+                        filled: true,
+                        fillColor: Colors.black.withOpacity(.2),
+                        labelStyle: TextStyle(fontSize: 12),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(6))),
+                  ),
+                ),
+                Container(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        onPressed: () async {
+                          await Clipboard.setData(
+                              ClipboardData(text: ownCertController.text));
+                          await showInviteCopyNotification();
+                        },
+                        icon: Icon(
+                          Icons.copy,
+                          color: Colors.blueAccent[200],
+                        )),
+                    Text(
+                      "Tap to copy",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueAccent),
+                    ),
+                  ],
+                ))
+              ],
+            );
+          }
+          return Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Opacity(
+                opacity: .2,
+                child: TextFormField(
+                  readOnly: true,
+                  initialValue: ownCertController.text,
+                  maxLines: 10,
+                  minLines: 10,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.center,
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                      prefix: SizedBox(
+                        width: 10,
+                      ),
+                      labelStyle: TextStyle(fontSize: 12),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.circular(6))),
+                ),
+              ),
+              snapshot.connectionState == ConnectionState.waiting
+                  ? Container(
+                      child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: () async {}, icon: Icon(Icons.refresh)),
+                        Text(
+                          "Loading",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent),
+                        ),
+                      ],
+                    ))
+                  : Container(
+                      child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: () async {},
+                            icon: Icon(
+                              Icons.error,
+                              color: Colors.grey,
+                            )),
+                        Text("something went wrong !",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey)),
+                      ],
+                    ))
+            ],
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SwitchListTile(
+          value: check,
+          title: getHeaderBuilder(),
+          onChanged: (newval) {
+            setState(() {
+              check = newval;
+            });
+            if (check)
+              tabController.animateTo(0);
+            else
+              tabController.animateTo(1);
+          },
+        ),
+        SizedBox(height: 10),
+        getinvitelink(),
+        SizedBox(height: 20),
+        FlatButton(
+          onPressed: () async {
+            Share.share(ownCertController.text);
+          },
+          textColor: Colors.white,
+          padding: const EdgeInsets.all(0.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    Color(0xFF00FFFF),
+                    Color(0xFF29ABE2),
+                  ],
+                  begin: Alignment(-1.0, -4.0),
+                  end: Alignment(1.0, 4.0),
+                ),
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: const Text(
+                'Tap to Share',
+                style: TextStyle(fontSize: 13),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

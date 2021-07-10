@@ -3,6 +3,7 @@ import 'package:retroshare/model/account.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:retroshare/services/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
 class AccountCredentials with ChangeNotifier {
@@ -14,8 +15,12 @@ class AccountCredentials with ChangeNotifier {
   List<Account> get accountList => _accountsList;
   Account get loggedinAccount => _loggedinAccount;
   AuthToken get getauthToken => _authToken;
-  setauthToken(AuthToken authToken) {
+  setauthToken(AuthToken authToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("username", authToken.username);
+    prefs.setString('password', authToken.password);
     _authToken = authToken;
+    notifyListeners();
   }
 
   setLogginAccount(Account acc) {
@@ -43,7 +48,13 @@ class AccountCredentials with ChangeNotifier {
   getinitializeAuth(String locationId, String password) async {
     _authToken = AuthToken(locationId, password);
     authToken = AuthToken(locationId, password);
-    return await checkExistingAuthTokens(locationId, password);
+    bool success = await checkExistingAuthTokens(locationId, password);
+    if (success) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("username", locationId);
+      prefs.setString('password', password);
+    }
+    return success;
   }
 
   Future<int> requestloginAccount(

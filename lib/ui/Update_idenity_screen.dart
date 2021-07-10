@@ -151,6 +151,64 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
       }
     }
 
+    void _showDialog() {
+      String name =
+          Provider.of<Identities>(context, listen: false).currentIdentity.name;
+      List<Identity> ownIdsList =
+          Provider.of<Identities>(context, listen: false).ownIdentity;
+
+      if (ownIdsList.length > 1)
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Delete '$name'?"),
+              content: Text(
+                  "The deletion of identity cannot be undone. Are you sure you want to continue?"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('Delete'),
+                  onPressed: () async {
+                    bool success =
+                        await Provider.of<Identities>(context, listen: false)
+                            .providerdeleteIdentity();
+                    if (success) {
+                      Navigator.pushReplacementNamed(
+                          context, '/change_identity');
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      else
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Too few identities"),
+              content: Text(
+                  "You must have at least one more identity to be able to delete this one."),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+    }
+
     return WillPopScope(
       onWillPop: () {
         return Future.value(true);
@@ -190,6 +248,36 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                         ),
                       ),
                     ),
+                    Spacer(),
+                    PopupMenuButton(
+                      onSelected: (val) {
+                        _showDialog();
+                      },
+                      icon: Icon(Icons.more_vert),
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem(
+                            value: 'delete',
+                            child: Row(children: [
+                              Icon(
+                                Icons.delete,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 7,
+                              ),
+                              Text(
+                                'Delete',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              )
+                            ]),
+                          ),
+                        ];
+                      },
+                    ),
+                    SizedBox(width: 10),
                   ],
                 ),
               ),

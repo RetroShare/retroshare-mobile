@@ -7,7 +7,6 @@ import 'package:retroshare/services/chat.dart';
 
 class ChatLobby with ChangeNotifier {
   List<Chat> _listchat = [];
-  AuthToken _authToken;
   List<VisibleChatLobbyRecord> _unsubscribedlist = [];
   List<Chat> get subscribedlist => _listchat;
   List<VisibleChatLobbyRecord> get unSubscribedlist => _unsubscribedlist;
@@ -16,10 +15,6 @@ class ChatLobby with ChangeNotifier {
     notifyListeners();
   }
 
-  void setAuthToken(AuthToken authToken) {
-    _authToken = authToken;
-    notifyListeners();
-  }
 
   Future<void> fetchAndUpdateUnsubscribed() async {
     _unsubscribedlist = await getUnsubscribedChatLobbies();

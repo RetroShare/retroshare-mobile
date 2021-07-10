@@ -8,8 +8,6 @@ import 'package:retroshare/common/styles.dart';
 
 class ChatsTab extends StatelessWidget {
   void _unsubscribeChatLobby(String lobbyId, context) async {
-    /*await unsubscribeChatLobby(lobbyId);
-    final store = StoreProvider.of<AppState>(context);*/
     Provider.of<ChatLobby>(context, listen: false).unsubscribed(lobbyId);
   }
 
@@ -66,7 +64,7 @@ class ChatsTab extends StatelessWidget {
                     )
                   ],
                 );
-              else
+             
                 return Container();
             },
           ),
