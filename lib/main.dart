@@ -47,49 +47,29 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return /*MultiProvider(
+    return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => AccountCredentials()),
-        ChangeNotifierProxyProvider<AccountCredentials, Identities>(
-          create: (_) => Identities(),
-          update: (_, auth, identities) =>
-              identities..setAuthToken(auth.authtoken),
-        ),
-        ChangeNotifierProxyProvider<AccountCredentials, FriendLocations>(
-          create: (_) => FriendLocations(),
-          update: (_, auth, friendLocations) =>
-              friendLocations..setAuthToken(auth.authtoken),
-        ),
-        ChangeNotifierProxyProvider<AccountCredentials, ChatLobby>(
-          create: (_) => ChatLobby(),
-          update: (_, auth, chatLobby) =>
-              chatLobby..setAuthToken(auth.authtoken),
-        ),
-        ChangeNotifierProxyProvider<AccountCredentials, FriendsIdentity>(
-          create: (_) => FriendsIdentity(),
-          update: (_, auth, friendsIdentity) =>
-              friendsIdentity..setAuthToken(auth.authtoken),
-        ),
-        ChangeNotifierProxyProvider<AccountCredentials, RoomChatLobby>(
-          create: (_) => RoomChatLobby(),
-          update: (_, auth, roomChatLobby) =>
-              roomChatLobby..setAuthToken(auth.authtoken),
-        ),
+        ChangeNotifierProvider(create: (ctx)=>Identities()),
+        ChangeNotifierProvider(create: (ctx)=>FriendLocations()),
+        ChangeNotifierProvider(create: (ctx)=>ChatLobby()),
+        ChangeNotifierProvider(create: (ctx)=>FriendsIdentity()),
+        ChangeNotifierProvider(create: (ctx)=>RoomChatLobby())
       ],
       child: Builder(
         builder: (context) {
-          return*/
+          return
         OKToast(
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Retroshare',
-          home: AddFriendScreen()
-          //initialRoute: '/profile',
-          //onGenerateRoute: RouteGenerator.generateRoute,
+          //home: AddFriendScreen()
+          initialRoute: '/profile',
+          onGenerateRoute: RouteGenerator.generateRoute,
           ),
     );
-    //  },
-    //),
-    // );
+     },
+    ),
+    );
   }
 }

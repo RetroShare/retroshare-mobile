@@ -67,7 +67,13 @@ class RouteGenerator {
 
         return MaterialPageRoute(builder: (_) => CreateIdentityScreen());
       case '/profile':
+       if (args is Map)
+          return MaterialPageRoute(
+              builder: (_) => ProfileScreen(
+                    curr: args['id'],
+                  ));
         return MaterialPageRoute(builder: (_) => ProfileScreen());
+       
       case '/change_identity':
         return MaterialPageRoute(builder: (_) => ChangeIdentityScreen());
       case '/add_friend':

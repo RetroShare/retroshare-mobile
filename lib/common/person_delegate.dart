@@ -295,9 +295,9 @@ class _PersonDelegateState extends State<PersonDelegate>
                         visible:
                             widget.isSelectable && _curvedAnimation.value == 1,
                         child: IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () => Navigator.of(context).pushNamed(
-                                "/updateIdentity",
+                            icon: Icon(Icons.navigate_next),
+                            onPressed: () => Navigator.of(context).pushReplacementNamed(
+                                "/profile",
                                 arguments: {'id': id})),
                       )
                     ]),
