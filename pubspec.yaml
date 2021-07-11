@@ -36,6 +36,8 @@ dependencies:
   oktoast: ^2.1.8
   flutter_spinkit: "^4.1.2"
   image_gallery_saver: ^1.6.9
+  emoji_picker: ^0.0.3
+  
 
 
   # https://gitlab.com/b1rdG/retroshare-dart-see
@@ -60,7 +62,8 @@ dependencies:
   webview_flutter: ^1.0.7
   # Share RetroShare Invite
   share: ^2.0.4
-  shared_preferences: ^2.0.6
+  shared_preferences: ^0.5.4+1
+  google_fonts: ^1.1.0
 
 
 dev_dependencies:
@@ -103,17 +106,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: Oxygen
+      fonts:
+        - asset: assets/fonts/Oxygen-Regular.ttf
+        - asset: assets/fonts/Oxygen-Light.ttf
+        - asset: assets/fonts/Oxygen-Bold.ttf
+         
+    - family: Abel
+      fonts:
+        - asset: assets/fonts/Abel-Regular.ttf
+  #     
+  #     
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

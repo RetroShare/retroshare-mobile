@@ -321,7 +321,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                               ),
                               padding: const EdgeInsets.all(10.0),
                               child: Text(
-                                'update identity',
+                                'Update Identity',
                                 style: Theme.of(context).textTheme.button,
                                 textAlign: TextAlign.center,
                               ),

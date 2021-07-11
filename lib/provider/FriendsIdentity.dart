@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 import 'package:tuple/tuple.dart';

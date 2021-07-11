@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,10 @@ import 'model/auth.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
-
+  /* LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });*/
   openapi = DefaultApi();
 
   runApp(App());

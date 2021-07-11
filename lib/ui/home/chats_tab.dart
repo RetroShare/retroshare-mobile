@@ -84,9 +84,7 @@ class ChatsTab extends StatelessWidget {
               );
             },
           ),
-          
-        
-      
+
     );
   }
 }

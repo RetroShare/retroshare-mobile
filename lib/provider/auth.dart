@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
 class AccountCredentials with ChangeNotifier {
-  List<Account> _accountsList;
+  List<Account> _accountsList=[];
   Account _lastAccountUsed;
   Account _loggedinAccount;
   AuthToken _authToken;
@@ -47,7 +47,7 @@ class AccountCredentials with ChangeNotifier {
 
   getinitializeAuth(String locationId, String password) async {
     _authToken = AuthToken(locationId, password);
-    authToken = AuthToken(locationId, password);
+    //authToken = AuthToken(locationId, password);
     bool success = await checkExistingAuthTokens(locationId, password);
     if (success) {
       SharedPreferences prefs = await SharedPreferences.getInstance();

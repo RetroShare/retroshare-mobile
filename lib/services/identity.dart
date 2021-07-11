@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
+import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:tuple/tuple.dart';
 
 import 'package:retroshare/model/identity.dart';
@@ -9,7 +10,7 @@ import 'package:retroshare/model/auth.dart';
 
 Future<List<Identity>> getOwnIdentities() async {
   List<Identity> ownIdsList = [];
-
+  final authToken = await authcheck();
   final respSigned = await http
       .get('http://127.0.0.1:9092/rsIdentity/getOwnSignedIds', headers: {
     HttpHeaders.authorizationHeader:
@@ -44,6 +45,7 @@ Future<List<Identity>> getOwnIdentities() async {
 }
 
 Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
+  final authToken = await authcheck();
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/getIdDetails',
       body: json.encode({'id': id}),
@@ -75,6 +77,7 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
 }
 
 Future<Identity> createIdentity(Identity identity, int avatarSize) async {
+  final authToken = await authcheck();
   var b = json.encode({
     'name': identity.name,
     'avatar': {
@@ -104,6 +107,7 @@ Future<Identity> createIdentity(Identity identity, int avatarSize) async {
 }
 
 Future<bool> deleteIdentity(Identity identity) async {
+  final authToken = await authcheck();
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/deleteIdentity',
       body: json.encode({'id': identity.mId}),
@@ -122,6 +126,7 @@ Future<bool> deleteIdentity(Identity identity) async {
 }
 
 Future<bool> updateApiIdentity(Identity identity, int avatarSize) async {
+  final authToken = await authcheck();
   var b = json.encode({
     'name': identity.name,
     'id': identity.mId,
@@ -148,6 +153,7 @@ Future<bool> updateApiIdentity(Identity identity, int avatarSize) async {
 
 // Identities that are not contacts do not have loaded avatars
 dynamic getAllIdentities() async {
+  final authToken = await authcheck();
   final response = await http
       .get('http://127.0.0.1:9092/rsIdentity/getIdentitiesSummaries', headers: {
     HttpHeaders.authorizationHeader:
@@ -224,6 +230,7 @@ dynamic getAllIdentities() async {
 }
 
 Future<bool> setContact(String id, bool makeContact) async {
+  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsIdentity/setAsRegularContact',
     headers: {
@@ -235,7 +242,7 @@ Future<bool> setContact(String id, bool makeContact) async {
 
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
-  } else
+  } 
     throw Exception('Failed to load response');
 }
 

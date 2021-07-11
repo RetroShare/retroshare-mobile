@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:openapi/api.dart';
-import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/services/chat.dart';

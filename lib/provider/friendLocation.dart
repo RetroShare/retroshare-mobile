@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/services/account.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FriendLocations with ChangeNotifier {
   List<Location> _friendlist = [];

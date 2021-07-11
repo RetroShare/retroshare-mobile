@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
@@ -27,7 +28,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    check = false;
+    check = true;
     tabController = TabController(vsync: this, length: 2);
 
     _leftHeaderFadeAnimation = Tween(
@@ -113,9 +114,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                     initialValue: val,
                     maxLines: 10,
                     minLines: 10,
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
+                    style: GoogleFonts.oxygen(textStyle:TextStyle(
+                      fontSize: 12,color: Colors.black
+                    )),
                     textAlign: TextAlign.center,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
@@ -163,11 +164,12 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                 child: TextFormField(
                   readOnly: true,
                   initialValue: ownCertController.text,
+                  
                   maxLines: 10,
                   minLines: 10,
-                  style: TextStyle(
+                  style: GoogleFonts.oxygen(textStyle: TextStyle(
                     fontSize: 12,
-                  ),
+                  )),
                   textAlign: TextAlign.center,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
@@ -229,7 +231,6 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             });
            check?
               tabController.animateTo(0):
-            
               tabController.animateTo(1);
           },
         ),

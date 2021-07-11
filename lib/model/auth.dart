@@ -1,7 +1,7 @@
 //AuthToken authToken = '0000';
 import 'package:openapi/api.dart';
 
-AuthToken authToken;
+//AuthToken authToken;
 DefaultApi openapi;
 
 class AuthToken {

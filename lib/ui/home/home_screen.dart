@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
-import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
       Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
-      registerChatEvent(context);
+      await registerChatEvent(context);
     });
   }
 

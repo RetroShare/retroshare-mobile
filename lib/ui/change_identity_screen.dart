@@ -111,7 +111,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                             ),
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              'Change identity',
+                              'Change Identity',
                               style: Theme.of(context).textTheme.button,
                               textAlign: TextAlign.center,
                             ),

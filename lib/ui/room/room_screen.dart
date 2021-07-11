@@ -202,13 +202,11 @@ class _RoomScreenState extends State<RoomScreen>
                     controller: _tabController,
                     children: List<Widget>.generate(widget.isRoom ? 2 : 1,
                         (int index) {
-                      if (index == 0)
-                        return MessagesTab(
+                      return index == 0?
+                         MessagesTab(
                           chat: widget.chat,
                           isRoom: widget.isRoom,
-                        );
-                      else
-                        return RoomFriendsTab(chat: widget.chat);
+                        ): RoomFriendsTab(chat: widget.chat);
                     }),
                   ),
                 ),

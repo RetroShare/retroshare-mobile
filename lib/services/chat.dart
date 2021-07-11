@@ -1,26 +1,24 @@
-import 'dart:collection';
+
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
+import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
-
-import 'package:retroshare/services/events.dart';
 import 'package:tuple/tuple.dart';
-
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
-import 'package:retroshare/provider/room.dart';
+
 
 // Not used
 //Future<List<Chat>> getChatLobbies() async {
@@ -51,6 +49,7 @@ import 'package:retroshare/provider/room.dart';
 //}
 
 Future<List<Chat>> getSubscribedChatLobbies() async {
+  final authToken = await authcheck();
   final response = await http.get(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyList',
     headers: {
@@ -76,6 +75,7 @@ Future<List<Chat>> getSubscribedChatLobbies() async {
 }
 
 Future<Chat> getChatLobbyInfo(String lobbyId) async {
+  final authToken = await authcheck();
   final response =
       await http.post('http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
           headers: {
@@ -110,6 +110,7 @@ Future<Chat> getChatLobbyInfo(String lobbyId) async {
 }
 
 Future<bool> joinChatLobby(String chatId, String idToUse) async {
+  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/joinVisibleChatLobby',
     headers: {
@@ -159,7 +160,7 @@ Future<bool> createChatLobby(
   if (response.retval.xint64 > 0) {
     setLobbyAutoSubscribe(response.retval.xstr64);
     return true;
-  } else
+  } 
     throw Exception('Failed to load response');
 }
 
@@ -216,6 +217,7 @@ Future<ResSendChat> sendMessage(
       .rsMsgsSendChat(reqSendChat: reqSendChat)
       .then((ResSendChat resSendChat) {
     if (resSendChat.retval) {
+      print(resSendChat.retval);
       //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
         ..chat_id = new ChatId()
@@ -236,6 +238,7 @@ Future<ResSendChat> sendMessage(
 /// Function that update participants of a lobby chat
 
 Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
+  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
     headers: {
@@ -268,6 +271,7 @@ Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
 }
 
 Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
+
   List<VisibleChatLobbyRecord> unsubscribedChatLobby = List();
   var chatLobbies = await openapi.rsMsgsGetListOfNearbyChatLobbies();
   for (VisibleChatLobbyRecord chat in chatLobbies.publicLobbies) {
@@ -418,6 +422,7 @@ Chat getChat(
 }*/
 
 Future<void> getMessagesApi(String lobbyId) async {
+  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessages',
     headers: {
@@ -431,6 +436,7 @@ Future<void> getMessagesApi(String lobbyId) async {
 }
 
 Future<void> message_description(String msgId) async {
+  final authToken = await authcheck();
   int msg_Id = int.parse(msgId);
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessage',
@@ -445,6 +451,7 @@ Future<void> message_description(String msgId) async {
 }
 
 Future<void> removeMessageApi(List<String> msgIds) async {
+  final authToken = await authcheck();
   List<int> msg_ids;
   for (String x in msgIds) {
     msg_ids.add(int.parse(x));
@@ -462,6 +469,7 @@ Future<void> removeMessageApi(List<String> msgIds) async {
 }
 
 Future<void> clearMessages(String lobbyId) async {
+  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/removeMessages',
     headers: {
