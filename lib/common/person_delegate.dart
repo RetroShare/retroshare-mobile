@@ -284,11 +284,16 @@ class _PersonDelegateState extends State<PersonDelegate>
                     ),*/
 
                     Row(children: [
-                      Text(
-                        widget.data.name,
-                        style: widget.data.isMessage
-                            ? Theme.of(context).textTheme.body2
-                            : Theme.of(context).textTheme.body1,
+                      SizedBox(
+                        width: 200,
+                        child: Text(
+                          widget.data.name,
+                          style: widget.data.isMessage
+                              ? Theme.of(context).textTheme.body2
+                              : Theme.of(context).textTheme.body1,
+                            overflow: TextOverflow.ellipsis,
+                              
+                        ),
                       ),
                       Spacer(),
                       Visibility(
