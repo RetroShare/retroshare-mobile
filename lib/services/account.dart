@@ -96,7 +96,7 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
 dynamic requestAccountCreation(String username, String password,
     [String nodeName = 'Mobile']) async {
 
-  final accountDetails = {
+  /*final accountDetails = {
     "location": {
       "mLocationName": 'Mobile',
       "mPgpName": username,
@@ -118,7 +118,38 @@ dynamic requestAccountCreation(String username, String password,
     return Tuple2<bool, Account>(json.decode(response.body)['retval'], account);
   } else {
     throw Exception('Failed to load response');
+  }*/
+  final mParams = {
+    "locationName": username,
+    "pgpName": username,
+    "password": password,
+    "apiUser": username,
+    /* TODO(G10h4ck): The new token scheme permit arbitrarly more secure
+       * options to avoid sending PGP password at each request. */
+    "apiPass": password
+  };
+
+  final response = await http.post(
+      'http://localhost:9092/rsLoginHelper/createLocationV2',
+      body: json.encode(mParams));
+  if (response.statusCode == 200) {
+    final resp = await json.decode(response.body);
+    if (!(resp is Map))
+      throw FormatException("response is not a Map");
+    else if (resp["retval"]["errorNumber"] != 0)
+      throw Exception("Failure creating location: " + jsonEncode(response));
+    else if (!(resp["locationId"] is String))
+      throw FormatException("location is not a String");
+
+    Account account = Account(resp['locationId'], resp['pgpId'],
+        mParams['locationName'], mParams['pgpName']);
+    return Tuple2<bool, Account>(
+        resp["retval"]["errorNumber"] != 0 ? false : true, account);
+  } else {
+    throw Exception('Failed to load response');
   }
+
+
 }
 
 Future<String> getOwnCert() async {

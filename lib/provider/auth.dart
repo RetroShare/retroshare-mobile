@@ -79,7 +79,7 @@ class AccountCredentials with ChangeNotifier {
     // Login success 0, already logged in 1
     if (resp == 0 || resp == 1) {
       bool isAuthTokenValid =
-          await getinitializeAuth(currentAccount.locationId, password);
+          await getinitializeAuth(currentAccount.locationName, password);
 
       if (isAuthTokenValid) {
         setLogginAccount(currentAccount);
@@ -102,7 +102,7 @@ class AccountCredentials with ChangeNotifier {
       setLogginAccount(accountCreate.item2);
 
       bool isAuthTokenValid =
-          await getinitializeAuth(accountCreate.item2.locationId, password);
+          await getinitializeAuth(accountCreate.item2.locationName, password);
       if (isAuthTokenValid) map['auth'] = true;
     }
     notifyListeners();
