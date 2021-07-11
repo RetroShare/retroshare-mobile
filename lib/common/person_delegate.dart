@@ -284,31 +284,28 @@ class _PersonDelegateState extends State<PersonDelegate>
                     ),*/
 
                     Row(children: [
-                      Text(
-                        widget.data.name,
-                        style: widget.data.isMessage
-                            ? Theme.of(context).textTheme.body2
-                            : Theme.of(context).textTheme.body1,
+                      SizedBox(
+                        width: 200,
+                        child: Text(
+                          widget.data.name,
+                          style: widget.data.isMessage
+                              ? Theme.of(context).textTheme.body2
+                              : Theme.of(context).textTheme.body1,
+                            overflow: TextOverflow.ellipsis,
+                              
+                        ),
                       ),
                       Spacer(),
                       Visibility(
                         visible:
                             widget.isSelectable && _curvedAnimation.value == 1,
                         child: IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () => Navigator.of(context).pushNamed(
-                                "/updateIdentity",
+                            icon: Icon(Icons.navigate_next),
+                            onPressed: () => Navigator.of(context).pushReplacementNamed(
+                                "/profile",
                                 arguments: {'id': id})),
                       )
                     ]),
-                    Visibility(
-                      visible: widget.data.isMessage &&
-                          widget.data.message.isNotEmpty,
-                      child: Text(
-                        widget.data.message,
-                        style: Theme.of(context).textTheme.body1,
-                      ),
-                    ),
                     Visibility(
                       visible: widget.data.isMessage &&
                           widget.data.message.isNotEmpty,

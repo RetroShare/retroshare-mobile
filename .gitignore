@@ -5,6 +5,7 @@ gradlew.bat
 local.properties
 pubspec.lock
 retroshare-service.properties
+build/
 
 
 # Miscellaneous

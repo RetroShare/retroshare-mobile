@@ -73,13 +73,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (value['account']) {
         if (value['auth']) {
           final ids = Provider.of<Identities>(context, listen: false);
-          ids.fetchOwnidenities().then((value) => {
-                ids.ownIdentity != null && ids.ownIdentity.length == 0
-                    ? Navigator.pushReplacementNamed(
-                        context, '/create_identity',
-                        arguments: true)
-                    : Navigator.pushReplacementNamed(context, '/home')
-              });
+          ids.fetchOwnidenities().then((value) {
+            ids.ownIdentity != null && ids.ownIdentity.length == 0
+                ? Navigator.pushReplacementNamed(context, '/create_identity',
+                    arguments: true)
+                : Navigator.pushReplacementNamed(context, '/home');
+          });
         } else
           Navigator.pop(context);
       }

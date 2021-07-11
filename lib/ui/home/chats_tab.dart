@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/services/chat.dart';
@@ -8,8 +7,6 @@ import 'package:retroshare/common/styles.dart';
 
 class ChatsTab extends StatelessWidget {
   void _unsubscribeChatLobby(String lobbyId, context) async {
-    /*await unsubscribeChatLobby(lobbyId);
-    final store = StoreProvider.of<AppState>(context);*/
     Provider.of<ChatLobby>(context, listen: false).unsubscribed(lobbyId);
   }
 
@@ -18,8 +15,7 @@ class ChatsTab extends StatelessWidget {
     return SafeArea(
       top: false,
       bottom: false,
-      child: Stack(
-        children: <Widget>[
+      child:
           Consumer<ChatLobby>(
             builder: (context, chatsList, _) {
               if (chatsList.subscribedlist != null &&
@@ -66,39 +62,29 @@ class ChatsTab extends StatelessWidget {
                     )
                   ],
                 );
-              else
-                return Container();
-            },
-          ),
-          Consumer<ChatLobby>(
-            builder: (context, chatsList, _) {
-              if (chatsList.subscribedlist == null ||
-                  chatsList.subscribedlist?.isEmpty)
+             
                 return Center(
-                  child: SizedBox(
-                    width: 200,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset('assets/icons8/pluto-sign-in.png'),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 25),
-                          child: Text(
-                            "Looks like there aren't any subscribed chats",
-                            style: Theme.of(context).textTheme.body2,
-                            textAlign: TextAlign.center,
-                          ),
+                child: SizedBox(
+                  width: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset('assets/icons8/pluto-sign-in.png'),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 25),
+                        child: Text(
+                          "Looks like there aren't any subscribed chats",
+                          style: Theme.of(context).textTheme.body2,
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              else
-                return Container();
+                ),
+              );
             },
           ),
-        ],
-      ),
+
     );
   }
 }

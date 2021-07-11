@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:retroshare/Middleware/shared_preference.dart';
 
 import 'package:tuple/tuple.dart';
 
@@ -21,7 +22,7 @@ dynamic checkLoggedIn() async {
 Future<List<Account>> getLocations() async {
   final response =
       await http.get('http://localhost:9092/rsLoginHelper/getLocations');
-  print(response.body);
+
   if (response.statusCode == 200) {
     accountsList = [];
     json.decode(response.body)['locations'].forEach((location) {
@@ -40,6 +41,7 @@ Future<List<Account>> getLocations() async {
 }
 
 Future<String> exportIdentity(String pgpId) async {
+  final authToken = await authcheck();
   final response =
       await http.post('http://localhost:9092/rsAccounts/exportIdentityToString',
           headers: {
@@ -54,6 +56,7 @@ Future<String> exportIdentity(String pgpId) async {
 }
 
 Future<String> importIdentity(String data) async {
+  final authToken = await authcheck();
   final response = await http.post(
       'http://localhost:9092/rsAccounts/importIdentityFromString',
       body: json.encode({"data": data}));
@@ -73,6 +76,7 @@ Future<String> importIdentity(String data) async {
 }
 
 dynamic requestLogIn(Account selectedAccount, String password) async {
+  final authToken = await authcheck();
   var accountDetails = {
     'account': selectedAccount.locationId,
     'password': password
@@ -91,6 +95,7 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
 
 dynamic requestAccountCreation(String username, String password,
     [String nodeName = 'Mobile']) async {
+
   final accountDetails = {
     "location": {
       "mLocationName": 'Mobile',
@@ -100,7 +105,7 @@ dynamic requestAccountCreation(String username, String password,
     'makeHidden': false,
     'makeAutoTor': false
   };
-
+ final authToken = await authcheck();
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
@@ -117,6 +122,7 @@ dynamic requestAccountCreation(String username, String password,
 }
 
 Future<String> getOwnCert() async {
+  final authToken = await authcheck();
   final response = await http
       .get('http://localhost:9092/rsPeers/GetRetroshareInvite', headers: {
     HttpHeaders.authorizationHeader:
@@ -130,7 +136,23 @@ Future<String> getOwnCert() async {
   }
 }
 
+Future<String> getShortInvite() async {
+  final authToken = await authcheck();
+  final response =
+      await http.get('http://localhost:9092/rsPeers/getShortInvite', headers: {
+    HttpHeaders.authorizationHeader:
+        'Basic ' + base64.encode(utf8.encode('$authToken'))
+  });
+  print(response.body);
+  if (response.statusCode == 200 && json.decode(response.body)['retval']) {
+    return json.decode(response.body)['invite'].substring(31);
+  } else {
+    throw Exception('Failed to load response');
+  }
+}
+
 Future<bool> addCert(String cert) async {
+  final authToken = await authcheck();
   final response = await http.post(
     'http://localhost:9092/rsPeers/acceptInvite',
     headers: {
@@ -139,7 +161,25 @@ Future<bool> addCert(String cert) async {
     },
     body: json.encode({'invite': cert}),
   );
+  print(response.body);
+  if (response.statusCode == 200) {
+    return json.decode(response.body)['retval'];
+  } else {
+    throw Exception('Failed to load response');
+  }
+}
 
+Future<bool> parseShortInvite(String cert) async {
+  final authToken = await authcheck();
+  final response = await http.post(
+    'http://localhost:9092/rsPeers/parseShortInvite',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'invite': cert}),
+  );
+  print(response.body);
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
   } else {
@@ -148,6 +188,7 @@ Future<bool> addCert(String cert) async {
 }
 
 Future<List<Location>> getFriendsAccounts() async {
+  final authToken = await authcheck();
   final response = await http.get(
     'http://localhost:9092/rsPeers/getFriendList',
     headers: {
@@ -169,6 +210,7 @@ Future<List<Location>> getFriendsAccounts() async {
 }
 
 Future<Location> getLocationsDetails(String peerId) async {
+  final authToken = await authcheck();
   final response = await http.post(
     'http://localhost:9092/rsPeers/getPeerDetails',
     headers: {

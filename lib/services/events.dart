@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:retroshare/model/auth.dart';
 import "package:eventsource/eventsource.dart";
 import 'package:retroshare/model/chat.dart';
@@ -34,6 +35,7 @@ Future<StreamSubscription<Event>> registerEvent(
 
   var body = {'eventType': eventType.index};
   String url = "http://127.0.0.1:9092/rsEvents/registerEventsHandler";
+  final authToken = await authcheck();
   EventSource eventSource = await EventSource.connect(
     url,
     method: "POST",

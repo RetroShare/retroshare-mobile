@@ -60,10 +60,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
 
   // Validate the Name
   bool _validate(text) {
-    if (nameController.text.length < 3) {
-      return false;
-    }
-    return true;
+    return nameController.text.length < 3?false:true;
   }
 
   // Request create identity
@@ -196,6 +193,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
               Expanded(
                   child: TabBarView(controller: _tabController, children: [
                 LayoutBuilder(
+                  key: UniqueKey(),
                   builder: (BuildContext context,
                       BoxConstraints viewportConstraints) {
                     return SingleChildScrollView(
@@ -315,6 +313,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                   },
                 ),
                 LayoutBuilder(
+                  key: UniqueKey(),
                   builder: (BuildContext context,
                       BoxConstraints viewportConstraints) {
                     return SingleChildScrollView(
@@ -450,7 +449,6 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                               setState(() {
                                 _requestCreateIdentity = true;
                               });
-
                               _createIdentity(
                                   _tabController.index == 1 ? true : false);
                             }

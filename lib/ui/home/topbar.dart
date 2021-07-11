@@ -7,8 +7,8 @@ import 'package:retroshare/services/account.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/identity.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 
 class TopBar extends StatefulWidget {
   final double maxHeight;
@@ -105,62 +105,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
     return widget.panelAnimationValue;
   }
 
-  void _showDialog() {
-    String name =
-        Provider.of<Identities>(context, listen: false).currentIdentity.name;
-    List<Identity> ownIdsList =
-        Provider.of<Identities>(context, listen: false).ownIdentity;
-
-    if (ownIdsList.length > 1)
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Delete '$name'?"),
-            content: Text(
-                "The deletion of identity cannot be undone. Are you sure you want to continue?"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: Text('Delete'),
-                onPressed: () async {
-                  bool success =
-                      await Provider.of<Identities>(context, listen: false)
-                          .providerdeleteIdentity();
-                  if (success) {
-                    Navigator.pushReplacementNamed(context, '/change_identity');
-                  }
-                },
-              ),
-            ],
-          );
-        },
-      );
-    else
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Too few identities"),
-            content: Text(
-                "You must have at least one more identity to be able to delete this one."),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-  }
+ 
 
   Widget getHeaderBuilder(BuildContext context, Widget widget) {
     return Container(
@@ -248,12 +193,14 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                   ? false
                                   : widget.panelAnimationValue > 0.5,
                               child: Button(
-                                name: 'Add friend',
-                                buttonIcon: Icons.person_add,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/add_friend');
-                                },
-                              ),
+                                  name: 'Add friend',
+                                  buttonIcon: Icons.person_add,
+                                  onPressed: () {
+                                    Future.delayed(Duration.zero, () {
+                                      Navigator.pushNamed(
+                                          context, '/add_friend');
+                                    });
+                                  }),
                             ),
                             Visibility(
                               visible: widget.panelAnimationValue == null
@@ -281,22 +228,22 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                 },
                               ),
                             ),
-                            Visibility(
-                              child: Button(
-                                name: 'Delete identity',
-                                buttonIcon: Icons.delete,
-                                onPressed: () {
-                                  _showDialog();
-                                },
-                              ),
-                            ),
+                          
                             Visibility(
                               child: Button(
                                 name: 'Friends locations',
                                 buttonIcon: Icons.devices,
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, '/friends_locations');
+                                  Navigator.pushNamed(context, '/friends_locations');
+                                },
+                              ),
+                            ),
+                             Visibility(
+                              child: Button(
+                                name: 'About',
+                                buttonIcon: Icons.info_rounded,
+                                onPressed: () {
+                                   Navigator.pushNamed(context, '/about');
                                 },
                               ),
                             ),
@@ -372,10 +319,10 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                     return Container(
                                       width: heightOfTopBar * 0.75,
                                       height: heightOfTopBar * 0.75,
-                                      /*decoration:
+                                      decoration:
                                           (avatar.currentIdentity.avatar ==
                                                   null)
-                                              ? null,
+                                              ? null
                                               : BoxDecoration(
                                                   color: Colors.white,
                                                   borderRadius:
@@ -385,11 +332,12 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                                               0.33),
                                                   image: DecorationImage(
                                                     fit: BoxFit.fitWidth,
-                                                    image: cachedImages[avatar
-                                                        .currentIdentity
-                                                        .avatar],
+                                                    image: MemoryImage(
+                                                        base64.decode(avatar
+                                                            .currentIdentity
+                                                            .avatar)),
                                                   ),
-                                                )*/
+                                                ),
                                       child: Visibility(
                                         visible: (avatar != null),
                                         child: Center(

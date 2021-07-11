@@ -1,13 +1,12 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
 class Identities with ChangeNotifier {
   List<Identity> _ownidentities = [];
   Identity _selected;
-  AuthToken _authToken;
+
   List<Identity> get ownIdentity => _ownidentities;
   Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
@@ -19,11 +18,6 @@ class Identities with ChangeNotifier {
       _currentIdentity = _ownidentities[0];
       _selected = _ownidentities[0];
     }
-    notifyListeners();
-  }
-
-  void setAuthToken(AuthToken authToken) {
-    _authToken = authToken;
     notifyListeners();
   }
 

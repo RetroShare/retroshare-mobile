@@ -7,7 +7,6 @@ import 'package:retroshare/model/location.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/friendLocation.dart';
-import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/model/identity.dart';
@@ -474,10 +473,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       return InputChip(
                                         key: ObjectKey(profile),
                                         label: Text(profile.accountName),
-//                                        avatar: CircleAvatar(
-//                                          backgroundImage: NetworkImage(profile.imageUrl),
-//                                        ),
-                                        onDeleted: () {
+                                       // avatar: CircleAvatar(
+                                         // backgroundImage: NetworkImage(profile.imageUrl),
+                                     //),
+                                       onDeleted: () {
                                           _selectedLocations.removeWhere(
                                               (location) =>
                                                   location.rsPeerId ==
