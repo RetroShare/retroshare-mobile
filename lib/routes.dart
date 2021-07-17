@@ -8,7 +8,7 @@ import 'package:retroshare/ui/signin_screen.dart';
 import 'package:retroshare/ui/signup_screen.dart';
 import 'package:retroshare/ui/room/room_screen.dart';
 import 'package:retroshare/ui/create_room_screen.dart';
-import 'package:retroshare/ui/create_identity_screen.dart';
+import 'package:retroshare/ui/createIdenity_screen/create_identity_screen.dart';
 import 'package:retroshare/ui/launch_transition_screen.dart';
 import 'package:retroshare/ui/change_identity_screen.dart';
 import 'package:retroshare/ui/add_friend/add_friend_screen.dart';

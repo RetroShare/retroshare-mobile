@@ -121,11 +121,10 @@ class _QRScannerState extends State<QRScanner>
                 .addFriendLocation(barcode);
 
         if (success) {
-            setState(() {
+          setState(() {
             _requestQR = false;
-           });
+          });
           showToast('Friend has successfully added');
-        
         } else {
           setState(() {
             _requestQR = false;
@@ -186,6 +185,7 @@ class _QRScannerState extends State<QRScanner>
         final appDir = await getApplicationDocumentsDirectory();
         final result =
             await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
+        print(result);
         final file = new File('${appDir.path}/retroshare_qr_code.png').create();
         showToast("Hey there! QR Image has successfully saved.");
       } catch (e) {
@@ -377,7 +377,7 @@ class _QRScannerState extends State<QRScanner>
 
 Widget Qrinfo() {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 13),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -389,7 +389,7 @@ Widget Qrinfo() {
         ),
         SizedBox(height: 8),
         Text(
-          "Use Long invite when you want to connect with computers running a retroshare version <0.6. Otherwise you can use Short invite",
+          "Use Long invite when you want to connect with computers running a retroshare version <0.6.6. Otherwise you can use Short invite",
           style: GoogleFonts.oxygen(),
         )
       ],
