@@ -80,23 +80,28 @@ class _SignInScreenState extends State<SignInScreen> {
       'isLoading': true,
       'spinner': true
     });
+
     Provider.of<AccountCredentials>(context, listen: false)
         .login(currentAccount, password)
         .then((value) {
-      if (value['res'] == 0 || value['res'] == 1) {
-        if (value['auth']) {
-          final ids = Provider.of<Identities>(context, listen: false);
-          ids.fetchOwnidenities().then((value) {
-            ids.ownIdentity != null && ids.ownIdentity.length == 0
-                ? Navigator.pushReplacementNamed(context, '/create_identity',
-                    arguments: true)
-                : Navigator.pushReplacementNamed(context, '/home');
-          });
-        } else {
+      try {
+        if (value['res'] == 0 || value['res'] == 1) {
+          if (value['auth']) {
+            final ids = Provider.of<Identities>(context, listen: false);
+            ids.fetchOwnidenities().then((value) {
+              ids.ownIdentity != null && ids.ownIdentity.length == 0
+                  ? Navigator.pushReplacementNamed(context, '/create_identity',
+                      arguments: true)
+                  : Navigator.pushReplacementNamed(context, '/home');
+            });
+          } else {
+            _isWrongPassword();
+          }
+        } else if (value['res'] == 3) {
           _isWrongPassword();
         }
-      } else if (value['res'] == 3) {
-        _isWrongPassword();
+      } catch (e) {
+        print('error');
       }
     });
   }

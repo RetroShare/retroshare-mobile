@@ -20,9 +20,7 @@ class UpdateIdentityScreen extends StatefulWidget {
 
 class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   TextEditingController nameController = TextEditingController();
-  File _image;
-  String _imageBase64 = '';
-  int _imageSize;
+  RsGxsImage _image;
   bool _showError = false;
   bool _requestCreateIdentity = false;
   @override
@@ -30,6 +28,8 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     // TODO: implement initState
     super.initState();
     nameController = TextEditingController(text: widget.curr.name);
+    if (widget.curr.avatar != null)
+      _image.mData = base64.decode(widget.curr.avatar);
   }
 
   @override
@@ -42,9 +42,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     Navigator.pop(context);
     setState(() {
       if (image != null) {
-        _image = image;
-        _imageSize = image.readAsBytesSync().length;
-        _imageBase64 = base64.encode(image.readAsBytesSync());
+        _image = new RsGxsImage(image.readAsBytesSync());
       }
     });
   }
@@ -54,18 +52,15 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     return nameController.text.length < 3 ? false : true;
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     // Request create identity
     void _updateIdentity() async {
-      bool success =
-          await Provider.of<Identities>(context, listen: false).updateIdentity(
-        Identity(widget.curr.mId, widget.curr.signed, nameController.text,
-            _imageBase64),
-        _imageSize,
-      );
+      bool success = await Provider.of<Identities>(context, listen: false)
+          .updateIdentity(
+              Identity(widget.curr.mId, widget.curr.signed, nameController.text,
+                  _image?.base64String),
+              _image);
       print(success);
       if (success)
         Navigator.pop(context);
@@ -89,7 +84,6 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
       }
     }
 
-    
     return WillPopScope(
       onWillPop: () {
         return Future.value(true);
@@ -188,7 +182,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                     child: Container(
                                       height: 300 * 0.7,
                                       width: 300 * 0.7,
-                                      decoration: _image == null
+                                      decoration: _image?.mData == null
                                           ? null
                                           : BoxDecoration(
                                               borderRadius:
@@ -196,11 +190,14 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                                       300 * 0.7 * 0.33),
                                               image: DecorationImage(
                                                 fit: BoxFit.fitWidth,
-                                                image: FileImage(_image),
+                                                image:
+                                                    MemoryImage(_image.mData),
                                               ),
                                             ),
                                       child: Visibility(
-                                        visible: _imageBase64.isEmpty,
+                                        visible: _image != null
+                                            ? _image?.mData?.isEmpty
+                                            : false,
                                         child: Center(
                                           child: Icon(
                                             Icons.person,
@@ -347,4 +344,3 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     );
   }
 }
-

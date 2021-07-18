@@ -21,17 +21,14 @@ class PseudoSignedIdenityTab extends StatefulWidget {
 class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
   bool _pseduorequestCreateIdentity = false;
   TextEditingController pseudosignednameController = TextEditingController();
-  File _image;
-  String _imageBase64 = '';
-  int _imageSize;
+  RsGxsImage _image;
+  
   bool _showError = false;
   _setImage(File image) {
     Navigator.pop(context);
     setState(() {
       if (image != null) {
-        _image = image;
-        _imageSize = image.readAsBytesSync().length;
-        _imageBase64 = base64.encode(image.readAsBytesSync());
+            _image = new RsGxsImage(image.readAsBytesSync());
       }
     });
   }
@@ -42,8 +39,8 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
 
   void _createIdentity() async {
     await Provider.of<Identities>(context, listen: false).createnewIdenity(
-        Identity('', false, pseudosignednameController.text, _imageBase64),
-        _imageSize);
+        Identity('', false, pseudosignednameController.text, _image?.base64String),_image
+        );
     widget.isFirstId
         ? Navigator.pushReplacementNamed(context, '/home')
         : Navigator.pop(context);
@@ -73,18 +70,18 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                               child: Container(
                                 height: 300 * 0.7,
                                 width: 300 * 0.7,
-                                decoration: _image == null
+                                decoration: _image?.mData== null
                                     ? null
                                     : BoxDecoration(
                                         borderRadius: BorderRadius.circular(
                                             300 * 0.7 * 0.33),
                                         image: DecorationImage(
                                           fit: BoxFit.fitWidth,
-                                          image: FileImage(_image),
+                                          image: MemoryImage(_image?.mData),
                                         ),
                                       ),
                                 child: Visibility(
-                                  visible: _imageBase64.isEmpty,
+                                  visible:_image!=null?_image?.mData?.isEmpty:false,
                                   child: Center(
                                     child: Icon(
                                       Icons.person,
@@ -218,9 +215,11 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
       ),
       Visibility(
         visible: _pseduorequestCreateIdentity,
-        child: ColorLoader3(
-          radius: 15.0,
-          dotRadius: 6.0,
+        child: Center(
+          child: ColorLoader3(
+            radius: 15.0,
+            dotRadius: 6.0,
+          ),
         ),
       )
     ]);

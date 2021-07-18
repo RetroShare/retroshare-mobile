@@ -85,7 +85,7 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/attemptLogin',
       body: json.encode(accountDetails));
-
+  print(response.body);
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
   } else {
@@ -95,7 +95,6 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
 
 dynamic requestAccountCreation(String username, String password,
     [String nodeName = 'Mobile']) async {
-
   final accountDetails = {
     "location": {
       "mLocationName": 'Mobile',
@@ -105,7 +104,7 @@ dynamic requestAccountCreation(String username, String password,
     'makeHidden': false,
     'makeAutoTor': false
   };
- final authToken = await authcheck();
+  final authToken = await authcheck();
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
