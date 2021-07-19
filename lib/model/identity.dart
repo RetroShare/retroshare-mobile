@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -45,4 +46,19 @@ class Identity {
             0
         : 0;
   }
+}
+class RsGxsImage {
+  int mSize;
+  Uint8List mData;
+  String base64String;
+
+  RsGxsImage(this.mData) {
+    this.mSize = mData?.length;
+    this.base64String = base64.encode(mData);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'mSize': mSize,
+        'mData': {'base64': base64String},
+      };
 }

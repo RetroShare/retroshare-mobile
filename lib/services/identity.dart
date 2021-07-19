@@ -76,17 +76,15 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
     throw Exception('Failed to load response');
 }
 
-Future<Identity> createIdentity(Identity identity, int avatarSize) async {
+Future<Identity> createIdentity(Identity identity, avatar) async {
   final authToken = await authcheck();
-  var b = json.encode({
+  var params = {
     'name': identity.name,
-    'avatar': {
-      'mSize': avatarSize,
-      'mData': {'base64': identity.avatar},
-    },
     'pseudonimous': !identity.signed,
     'pgpPassword': authToken.password
-  });
+  };
+  if (identity.avatar != null) params['avatar'] = avatar.toJson();
+  var b = json.encode(params);
   print(b);
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/createIdentity',
@@ -125,14 +123,16 @@ Future<bool> deleteIdentity(Identity identity) async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> updateApiIdentity(Identity identity, int avatarSize) async {
+Future<bool> updateApiIdentity(Identity identity, dynamic avatar) async {
   final authToken = await authcheck();
-  var b = json.encode({
+  final params = {
     'name': identity.name,
     'id': identity.mId,
     'pseudonimous': !identity.signed,
     "pgpPassword": authToken.password
-  });
+  };
+  if (identity.avatar != null) params['avatar'] = avatar.toJson();
+  var b = json.encode(params);
   print(b);
 
   final response = await http.post(
@@ -175,10 +175,10 @@ dynamic getAllIdentities() async {
       body: json.encode({'ids': ids}),
     );
 
-    List<Identity> notContactIds = List();
-    List<Identity> contactIds = List();
-    List<Identity> signedContactIds = List();
-    List<Identity> ownIds = List();
+    List<Identity> notContactIds = [];
+    List<Identity> contactIds = [];
+    List<Identity> signedContactIds = [];
+    List<Identity> ownIds = [];
 
     if (response2.statusCode == 200) {
       var idsInfo = json.decode(response2.body)['idsInfo'];
@@ -242,8 +242,8 @@ Future<bool> setContact(String id, bool makeContact) async {
 
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
-  } 
-    throw Exception('Failed to load response');
+  }
+  throw Exception('Failed to load response');
 }
 
 /// Request unknown identity to near peers

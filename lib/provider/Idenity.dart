@@ -10,6 +10,8 @@ class Identities with ChangeNotifier {
   List<Identity> get ownIdentity => _ownidentities;
   Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
+
+
   Future<void> fetchOwnidenities() async {
     _ownidentities = await getOwnIdentities();
     if (_currentIdentity == null &&
@@ -35,8 +37,8 @@ class Identities with ChangeNotifier {
     }
   }
 
-  Future<void> createnewIdenity(Identity id, int avatarSize) async {
-    Identity newId = await createIdentity(id, avatarSize);
+  Future<void> createnewIdenity(Identity id, RsGxsImage image) async {
+    Identity newId = await createIdentity(id, image);
     _ownidentities.add(newId);
     _currentIdentity = newId;
     _selected = _currentIdentity;
@@ -58,8 +60,8 @@ class Identities with ChangeNotifier {
     return false;
   }
 
-  Future<bool> updateIdentity(Identity id, int avatarSize) async {
-    bool success = await updateApiIdentity(id, avatarSize);
+  Future<bool> updateIdentity(Identity id, RsGxsImage avatar) async {
+    bool success = await updateApiIdentity(id,avatar);
     if (success) {
       for (var i in _ownidentities) {
         if (i.mId == id.mId) {

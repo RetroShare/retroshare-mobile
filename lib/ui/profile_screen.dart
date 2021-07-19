@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/show_dialog.dart';
@@ -102,17 +104,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 height: 300 * 0.7,
                 width: 300 * 0.7,
-                /*decoration: null
-                    ? null
+                decoration: widget.curr.avatar == null?
+                    null
                     : BoxDecoration(
                         borderRadius: BorderRadius.circular(300 * 0.7 * 0.33),
-                        //image: DecorationImage(
-                        // fit: BoxFit.fitWidth,
-                        //image: FileImage(),
-                        //),
-                      //),*/
+                        image: DecorationImage(
+                         fit: BoxFit.fitWidth,
+                        image: MemoryImage(
+                              base64.decode(widget.curr.avatar)),
+                        ),
+                      ),
                 child: Visibility(
-                  visible: true,
+                  visible: widget.curr.avatar != null?false:true,
                   child: Center(
                     child: Icon(
                       Icons.person,
