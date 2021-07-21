@@ -105,8 +105,6 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
     return widget.panelAnimationValue;
   }
 
- 
-
   Widget getHeaderBuilder(BuildContext context, Widget widget) {
     return Container(
       child: FadeTransition(
@@ -228,22 +226,22 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                 },
                               ),
                             ),
-                          
                             Visibility(
                               child: Button(
                                 name: 'Friends locations',
                                 buttonIcon: Icons.devices,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/friends_locations');
+                                  Navigator.pushNamed(
+                                      context, '/friends_locations');
                                 },
                               ),
                             ),
-                             Visibility(
+                            Visibility(
                               child: Button(
                                 name: 'About',
                                 buttonIcon: Icons.info_rounded,
                                 onPressed: () {
-                                   Navigator.pushNamed(context, '/about');
+                                  Navigator.pushNamed(context, '/about');
                                 },
                               ),
                             ),
@@ -313,9 +311,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                               child: Center(
                                 child: Consumer<Identities>(
                                   builder: (context, avatar, _) {
-                                    /*final image = cachedImages[
-                                        avatar.currentIdentity.avatar];*/
-
+                                    print("hello");
                                     return Container(
                                       width: heightOfTopBar * 0.75,
                                       height: heightOfTopBar * 0.75,
@@ -339,7 +335,9 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                                   ),
                                                 ),
                                       child: Visibility(
-                                        visible: (avatar != null),
+                                        visible:
+                                            (avatar.currentIdentity?.avatar ==
+                                                null),
                                         child: Center(
                                           child: Icon(
                                             Icons.person,

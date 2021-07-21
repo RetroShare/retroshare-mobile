@@ -81,7 +81,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                                         ),
                                       ),
                                 child: Visibility(
-                                  visible:_image!=null?_image?.mData?.isEmpty:false,
+                                  visible:_image!=null?_image?.mData?.isEmpty:true,
                                   child: Center(
                                     child: Icon(
                                       Icons.person,

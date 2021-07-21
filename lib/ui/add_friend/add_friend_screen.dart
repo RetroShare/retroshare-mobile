@@ -12,6 +12,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SafeArea(
           top: true,

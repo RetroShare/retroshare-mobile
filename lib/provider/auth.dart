@@ -92,12 +92,12 @@ class AccountCredentials with ChangeNotifier {
     try {
       int resp = await requestloginAccount(currentAccount, password);
       map['res'] = resp;
+       setLogginAccount(currentAccount);
       // Login success 0, already logged in 1
       if (resp == 0 || resp == 1) {
         bool isAuthTokenValid =
             await getinitializeAuth(currentAccount.locationId, password);
         if (isAuthTokenValid) {
-          setLogginAccount(currentAccount);
           map['auth'] = true;
         }
         notifyListeners();

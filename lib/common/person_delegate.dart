@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/common_methods.dart';
 
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/cache.dart';
@@ -82,7 +83,7 @@ class PersonDelegateData {
       mId: identity.mId,
       image: cachedImages[identity.avatar],
       isMessage: true,
-      isUnread: identity.getUnreadCount(context) > 0 ? true : false,
+      isUnread: getUnreadCount(context,identity) > 0 ? true : false,
     );
   }
 

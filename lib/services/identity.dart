@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 import 'package:retroshare/Middleware/shared_preference.dart';
@@ -55,6 +56,7 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
       });
 
   if (response.statusCode == 200) {
+    print(response.body);
     if (json.decode(response.body)['retval']) {
       Identity identity = Identity(id);
       print(json.decode(response.body)['details']['mAvatar']['mData']);
@@ -85,7 +87,7 @@ Future<Identity> createIdentity(Identity identity, avatar) async {
   };
   if (identity.avatar != null) params['avatar'] = avatar.toJson();
   var b = json.encode(params);
-  print(b);
+  debugPrint(b);
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/createIdentity',
       body: b,
@@ -142,10 +144,8 @@ Future<bool> updateApiIdentity(Identity identity, dynamic avatar) async {
         HttpHeaders.authorizationHeader:
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       });
-  print(response.body);
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval']) return true;
-
     return false;
   } else
     throw Exception('Failed to load response');

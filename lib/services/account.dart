@@ -178,8 +178,10 @@ Future<bool> parseShortInvite(String cert) async {
     },
     body: json.encode({'invite': cert}),
   );
+  print('short');
   print(response.body);
   if (response.statusCode == 200) {
+    print(json.decode(response.body)['retval']);
     return json.decode(response.body)['retval'];
   } else {
     throw Exception('Failed to load response');

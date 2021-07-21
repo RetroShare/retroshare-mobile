@@ -2,7 +2,6 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
@@ -20,34 +19,6 @@ import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
 
-// Not used
-//Future<List<Chat>> getChatLobbies() async {
-//  final response = await http.get(
-//    'http://localhost:9092/rsMsgs/getListOfNearbyChatLobbies',
-//    headers: {
-//      HttpHeaders.authorizationHeader:
-//      'Basic ' + base64.encode(utf8.encode('$authToken'))
-//    },
-//  );
-//
-//  List<Chat> chatsList = List<Chat>();
-//
-//  if (response.statusCode == 200) {
-//    json.decode(response.body)['public_lobbies'].forEach((chat) {
-//      if (chat != null && chat['lobby_flags'] != 0 && chat['lobby_flags'] != 4)
-//        chatsList.add(Chat(
-//          chatId: chat['lobby_id'].toInt(),
-//          chatName: chat['lobby_name'],
-//          lobbyTopic: chat['lobby_topic'],
-//          numberOfParticipants: chat['total_number_of_peers'],
-//        ));
-//    });
-//    return chatsList;
-//  } else {
-//    throw Exception('Failed to load response');
-//  }
-//}
-
 Future<List<Chat>> getSubscribedChatLobbies() async {
   final authToken = await authcheck();
   final response = await http.get(
@@ -57,18 +28,14 @@ Future<List<Chat>> getSubscribedChatLobbies() async {
           'Basic ' + base64.encode(utf8.encode('$authToken'))
     },
   );
-
   List<Chat> chatsList = [];
-
   if (response.statusCode == 200) {
     var list = json.decode(response.body)['cl_list'];
     for (int i = 0; i < list.length; i++) {
       Chat chatItem;
       chatItem = await getChatLobbyInfo(list[i]['xstr64']);
-
       chatsList.add(chatItem);
     }
-
     return chatsList;
   } else
     throw Exception('Failed to load response');
@@ -386,40 +353,7 @@ Chat getChat(
   return chat;
 }
 
-/*void registerChatEvents(store) {
-  eventsRegisterChatMessage(
-      listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
-    if (msg != null) {
-      // Check if is a lobby chat
-      if (msg.chat_id.lobbyId.xstr64 != "0") {
-        store.dispatch(AddChatMessageAction(msg, msg.chat_id.lobbyId.xstr64));
-      }
-      // Check if is distant chat message
-      else if (msg.chat_id.distantChatId !=
-          "00000000000000000000000000000000") {
-        // First check if the recieved message is from an already registered chat
-        !Chat.distantChatExistsStore(msg.chat_id.distantChatId, store)
-            ? getDistantChatStatus(msg.chat_id.distantChatId, msg)
-                .then((DistantChatPeerInfo res) {
-                // Create the chat and add it to the store
-                Chat chat = Chat(
-                    interlocutorId: res.toId,
-                    isPublic: false,
-                    numberOfParticipants: 1,
-                    ownIdToUse: res.ownId,
-                    chatId: msg.chat_id.distantChatId);
-                Chat.addDistantChat(res.toId, res.ownId, res.peerId);
-                store.dispatch(AddDistantChatAction(chat));
-                // Finally send AddChatMessageAction
-                store.dispatch(
-                    AddChatMessageAction(msg, msg.chat_id.distantChatId));
-              })
-            : store
-                .dispatch(AddChatMessageAction(msg, msg.chat_id.distantChatId));
-      }
-    }
-  });
-}*/
+
 
 Future<void> getMessagesApi(String lobbyId) async {
   final authToken = await authcheck();

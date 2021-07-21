@@ -47,11 +47,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       end: Colors.black12,
     ).animate(_animationController);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
       Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
-      await registerChatEvent(context);
-    });
+       registerChatEvent(context);
+
   }
 
   @override
