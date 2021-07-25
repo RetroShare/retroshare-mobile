@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:openapi/api.dart';
+import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/services/chat.dart';
@@ -8,9 +9,14 @@ class ChatLobby with ChangeNotifier {
   List<Chat> _listchat = [];
   List<VisibleChatLobbyRecord> _unsubscribedlist = [];
   List<Chat> get subscribedlist => _listchat;
+  AuthToken _authToken;
+  setAuthToken(AuthToken authToken) async {
+    _authToken = authToken;
+      notifyListeners();
+  }
   List<VisibleChatLobbyRecord> get unSubscribedlist => _unsubscribedlist;
   Future<void> fetchAndUpdate() async {
-    _listchat = await getSubscribedChatLobbies();
+    _listchat = await getSubscribedChatLobbies(_authToken);
     notifyListeners();
   }
 
@@ -22,7 +28,7 @@ class ChatLobby with ChangeNotifier {
 
   Future<void> unsubscribed(String lobbyId) async {
     await unsubscribeChatLobby(lobbyId);
-    _listchat = await getSubscribedChatLobbies();
+    _listchat = await getSubscribedChatLobbies(_authToken);
     _unsubscribedlist = await getUnsubscribedChatLobbies();
     notifyListeners();
   }

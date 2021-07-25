@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/chat.dart';
-
-
 
 class RoomChatLobby with ChangeNotifier {
   Map<String, List<Identity>> _lobbyParticipants;
@@ -14,8 +13,13 @@ class RoomChatLobby with ChangeNotifier {
   Map<String, List<ChatMessage>> get messagesList => {..._messagesList};
   Map<String, List<Identity>> get lobbyParticipants => {..._lobbyParticipants};
   Chat get currentChat => _currentChat;
+  AuthToken _authToken;
+  setAuthToken(AuthToken authToken) async {
+    _authToken = authToken;
+    notifyListeners();
+  }
 
-  
+  get authToken => _authToken;
 
   Future<void> fetchAndUpdateParticipants(
       String lobbyId, List<Identity> participants) async {
@@ -27,7 +31,7 @@ class RoomChatLobby with ChangeNotifier {
   }
 
   Future<void> updateParticipants(String lobbyId) async {
-    List<Identity> participants = await getLobbyParticipants(lobbyId);
+    List<Identity> participants = await getLobbyParticipants(lobbyId, _authToken);
     await fetchAndUpdateParticipants(lobbyId, participants);
   }
 
@@ -61,4 +65,3 @@ class RoomChatLobby with ChangeNotifier {
     notifyListeners();
   }
 }
-

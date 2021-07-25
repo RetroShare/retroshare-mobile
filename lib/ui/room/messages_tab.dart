@@ -139,7 +139,6 @@ class _MessagesTabState extends State<MessagesTab> {
                       child: TextField(
                         readOnly: isShowSticker,
                         onTap: () {
-                          print("hello");
                           if (isShowSticker) {
                             setState(() {
                               isShowSticker = false;

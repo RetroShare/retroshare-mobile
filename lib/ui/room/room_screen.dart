@@ -5,6 +5,7 @@ import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/cache.dart';
 import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
@@ -29,7 +30,7 @@ class _RoomScreenState extends State<RoomScreen>
   @override
   void initState() {
     super.initState();
-       
+
     _tabController =
         new TabController(vsync: this, length: widget.isRoom ? 2 : 1);
 
@@ -39,7 +40,8 @@ class _RoomScreenState extends State<RoomScreen>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.chat.unreadCount = 0;
-       await registerChatEvent(context);
+      final authToken = Provider.of<AccountCredentials>(context, listen: false).authtoken;
+      await registerChatEvent(context,authToken);
       await Provider.of<FriendsIdentity>(context, listen: false)
           .fetchAndUpdate();
       Provider.of<RoomChatLobby>(context, listen: false)
@@ -202,11 +204,12 @@ class _RoomScreenState extends State<RoomScreen>
                     controller: _tabController,
                     children: List<Widget>.generate(widget.isRoom ? 2 : 1,
                         (int index) {
-                      return index == 0?
-                         MessagesTab(
-                          chat: widget.chat,
-                          isRoom: widget.isRoom,
-                        ): RoomFriendsTab(chat: widget.chat);
+                      return index == 0
+                          ? MessagesTab(
+                              chat: widget.chat,
+                              isRoom: widget.isRoom,
+                            )
+                          : RoomFriendsTab(chat: widget.chat);
                     }),
                   ),
                 ),

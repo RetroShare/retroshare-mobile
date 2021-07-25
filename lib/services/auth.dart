@@ -7,8 +7,8 @@ import 'package:retroshare/Middleware/shared_preference.dart';
 
 import 'package:retroshare/model/auth.dart';
 
-Future<bool> isAuthTokenValid() async {
-  final authToken = await authcheck();
+Future<bool> isAuthTokenValid(AuthToken authToken) async {
+
   final response = await http
       .get('http://localhost:9092/RsJsonApi/getAuthorizedTokens', headers: {
     HttpHeaders.authorizationHeader:
@@ -21,8 +21,7 @@ Future<bool> isAuthTokenValid() async {
     return false;
 }
 
-Future<bool> checkExistingAuthTokens(String locationId, String password) async {
-  final authToken = await authcheck();
+Future<bool> checkExistingAuthTokens(String locationId, String password, AuthToken authToken) async {
   final response = await http
       .get('http://localhost:9092/RsJsonApi/getAuthorizedTokens', headers: {
     HttpHeaders.authorizationHeader:

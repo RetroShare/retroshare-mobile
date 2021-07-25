@@ -16,13 +16,14 @@ class AccountCredentials with ChangeNotifier {
   Account get lastAccountUsed => _lastAccountUsed;
   List<Account> get accountList => _accountsList;
   Account get loggedinAccount => _loggedinAccount;
-  AuthToken get getauthToken => _authToken;
+  AuthToken get getAuthToken => _authToken;
   setauthToken(AuthToken authToken) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("username", authToken.username);
     prefs.setString('password', authToken.password);
     _authToken = authToken;
     notifyListeners();
+      
   }
 
   setLogginAccount(Account acc) {
@@ -59,9 +60,9 @@ class AccountCredentials with ChangeNotifier {
     _authToken = AuthToken(locationId, password);
     bool success = false;
     try {
-      success = await checkExistingAuthTokens(locationId, password);
+      success = await checkExistingAuthTokens(locationId, password,_authToken);
     } catch (e) {
-      print('xx');
+
       throw HttpException(e);
     }
     if (success) {
@@ -78,7 +79,7 @@ class AccountCredentials with ChangeNotifier {
   }
 
   Future<bool> checkisvalidAuthToken() {
-    return isAuthTokenValid();
+    return isAuthTokenValid(_authToken);
   }
 
   Future<Tuple2<bool, Account>> requestsignup(

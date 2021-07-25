@@ -9,9 +9,9 @@ import 'package:tuple/tuple.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/model/auth.dart';
 
-Future<List<Identity>> getOwnIdentities() async {
+Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
   List<Identity> ownIdsList = [];
-  final authToken = await authcheck();
+  
   final respSigned = await http
       .get('http://127.0.0.1:9092/rsIdentity/getOwnSignedIds', headers: {
     HttpHeaders.authorizationHeader:
@@ -39,14 +39,14 @@ Future<List<Identity>> getOwnIdentities() async {
   }
 
   for (int x = 0; x < ownIdsList.length; x++) {
-    var resp = await getIdDetails(ownIdsList[x].mId);
+    var resp = await getIdDetails(ownIdsList[x].mId,authToken);
     if (resp.item1) ownIdsList[x] = resp.item2;
   }
   return ownIdsList;
 }
 
-Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
-  final authToken = await authcheck();
+Future<Tuple2<bool, Identity>> getIdDetails(String id, AuthToken authToken) async {
+
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/getIdDetails',
       body: json.encode({'id': id}),
@@ -78,8 +78,8 @@ Future<Tuple2<bool, Identity>> getIdDetails(String id) async {
     throw Exception('Failed to load response');
 }
 
-Future<Identity> createIdentity(Identity identity, avatar) async {
-  final authToken = await authcheck();
+Future<Identity> createIdentity(Identity identity, avatar, AuthToken authToken) async {
+
   var params = {
     'name': identity.name,
     'pseudonimous': !identity.signed,
@@ -106,8 +106,8 @@ Future<Identity> createIdentity(Identity identity, avatar) async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> deleteIdentity(Identity identity) async {
-  final authToken = await authcheck();
+Future<bool> deleteIdentity(Identity identity, AuthToken authToken) async {
+
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/deleteIdentity',
       body: json.encode({'id': identity.mId}),
@@ -125,8 +125,8 @@ Future<bool> deleteIdentity(Identity identity) async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> updateApiIdentity(Identity identity, dynamic avatar) async {
-  final authToken = await authcheck();
+Future<bool> updateApiIdentity(Identity identity, dynamic avatar, AuthToken authToken) async {
+
   final params = {
     'name': identity.name,
     'id': identity.mId,
@@ -152,8 +152,8 @@ Future<bool> updateApiIdentity(Identity identity, dynamic avatar) async {
 }
 
 // Identities that are not contacts do not have loaded avatars
-dynamic getAllIdentities() async {
-  final authToken = await authcheck();
+dynamic getAllIdentities(AuthToken authToken) async {
+
   final response = await http
       .get('http://127.0.0.1:9092/rsIdentity/getIdentitiesSummaries', headers: {
     HttpHeaders.authorizationHeader:
@@ -189,7 +189,7 @@ dynamic getAllIdentities() async {
           Identity id;
           do {
             Tuple2<bool, Identity> tuple =
-                await getIdDetails(idsInfo[i]['mMeta']['mGroupId']);
+                await getIdDetails(idsInfo[i]['mMeta']['mGroupId'],authToken);
             success = tuple.item1;
             id = tuple.item2;
           } while (!success);
@@ -229,8 +229,8 @@ dynamic getAllIdentities() async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> setContact(String id, bool makeContact) async {
-  final authToken = await authcheck();
+Future<bool> setContact(String id, bool makeContact, AuthToken authToken) async {
+
   final response = await http.post(
     'http://127.0.0.1:9092/rsIdentity/setAsRegularContact',
     headers: {

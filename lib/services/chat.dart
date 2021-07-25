@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
@@ -18,9 +17,7 @@ import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
-
-Future<List<Chat>> getSubscribedChatLobbies() async {
-  final authToken = await authcheck();
+Future<List<Chat>> getSubscribedChatLobbies(AuthToken authToken) async {
   final response = await http.get(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyList',
     headers: {
@@ -33,7 +30,7 @@ Future<List<Chat>> getSubscribedChatLobbies() async {
     var list = json.decode(response.body)['cl_list'];
     for (int i = 0; i < list.length; i++) {
       Chat chatItem;
-      chatItem = await getChatLobbyInfo(list[i]['xstr64']);
+      chatItem = await getChatLobbyInfo(list[i]['xstr64'], authToken);
       chatsList.add(chatItem);
     }
     return chatsList;
@@ -41,7 +38,7 @@ Future<List<Chat>> getSubscribedChatLobbies() async {
     throw Exception('Failed to load response');
 }
 
-Future<Chat> getChatLobbyInfo(String lobbyId) async {
+Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
   final authToken = await authcheck();
   final response =
       await http.post('http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
@@ -76,7 +73,8 @@ Future<Chat> getChatLobbyInfo(String lobbyId) async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> joinChatLobby(String chatId, String idToUse) async {
+Future<bool> joinChatLobby(
+    String chatId, String idToUse, AuthToken authToken) async {
   final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/joinVisibleChatLobby',
@@ -127,8 +125,8 @@ Future<bool> createChatLobby(
   if (response.retval.xint64 > 0) {
     setLobbyAutoSubscribe(response.retval.xstr64);
     return true;
-  } 
-    throw Exception('Failed to load response');
+  }
+  throw Exception('Failed to load response');
 }
 
 void setLobbyAutoSubscribe(String lobbyId, [bool subs = true]) {
@@ -204,7 +202,8 @@ Future<ResSendChat> sendMessage(
 /// todo: should this be in a redux middleware?
 /// Function that update participants of a lobby chat
 
-Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
+Future<List<Identity>> getLobbyParticipants(
+    String lobbyId, AuthToken authToken) async {
   final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
@@ -225,7 +224,7 @@ Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
       bool success = true;
       Identity id;
       do {
-        Tuple2<bool, Identity> tuple = await getIdDetails(gxsIds[i]['key']);
+        Tuple2<bool, Identity> tuple = await getIdDetails(gxsIds[i]['key'],authToken);
         success = tuple.item1;
         id = tuple.item2;
       } while (!success);
@@ -238,7 +237,6 @@ Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
 }
 
 Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
-
   List<VisibleChatLobbyRecord> unsubscribedChatLobby = List();
   var chatLobbies = await openapi.rsMsgsGetListOfNearbyChatLobbies();
   for (VisibleChatLobbyRecord chat in chatLobbies.publicLobbies) {
@@ -333,7 +331,10 @@ Chat getChat(
     //store.dispatch(AddChatMessageAction(null, to.lobbyId.xstr64));
     Provider.of<RoomChatLobby>(context, listen: false)
         .addChatMessage(null, to.lobbyId.xstr64);
-    joinChatLobby(to.lobbyId.xstr64, currentIdentity.mId).then((success) {
+    final authToken =
+        Provider.of<RoomChatLobby>(context, listen: false).authToken;
+    joinChatLobby(to.lobbyId.xstr64, currentIdentity.mId, authToken)
+        .then((success) {
       if (success) {
         Provider.of<ChatLobby>(context, listen: false)
             .fetchAndUpdateUnsubscribed();
@@ -353,10 +354,8 @@ Chat getChat(
   return chat;
 }
 
+Future<void> getMessagesApi(String lobbyId, AuthToken authToken) async {
 
-
-Future<void> getMessagesApi(String lobbyId) async {
-  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessages',
     headers: {
@@ -369,8 +368,7 @@ Future<void> getMessagesApi(String lobbyId) async {
   print(response.statusCode);
 }
 
-Future<void> message_description(String msgId) async {
-  final authToken = await authcheck();
+Future<void> message_description(String msgId, AuthToken authToken) async {
   int msg_Id = int.parse(msgId);
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessage',
@@ -384,7 +382,7 @@ Future<void> message_description(String msgId) async {
   print(response.body);
 }
 
-Future<void> removeMessageApi(List<String> msgIds) async {
+Future<void> removeMessageApi(List<String> msgIds, AuthToken authToken) async {
   final authToken = await authcheck();
   List<int> msg_ids;
   for (String x in msgIds) {
@@ -402,8 +400,8 @@ Future<void> removeMessageApi(List<String> msgIds) async {
   print(response.body);
 }
 
-Future<void> clearMessages(String lobbyId) async {
-  final authToken = await authcheck();
+Future<void> clearMessages(String lobbyId,AuthToken authToken) async {
+
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/removeMessages',
     headers: {

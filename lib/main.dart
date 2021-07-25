@@ -46,11 +46,31 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => AccountCredentials()),
-        ChangeNotifierProvider(create: (ctx)=>Identities()),
-        ChangeNotifierProvider(create: (ctx)=>FriendLocations()),
-        ChangeNotifierProvider(create: (ctx)=>ChatLobby()),
-        ChangeNotifierProvider(create: (ctx)=>FriendsIdentity()),
-        ChangeNotifierProvider(create: (ctx)=>RoomChatLobby())
+        ChangeNotifierProxyProvider<AccountCredentials, Identities>(
+          create: (_) => Identities(),
+          update: (_, auth, identities) =>
+              identities..setAuthToken(auth.authtoken),
+        ),
+        ChangeNotifierProxyProvider<AccountCredentials, FriendLocations>(
+          create: (_) => FriendLocations(),
+          update: (_, auth, friendLocations) =>
+              friendLocations..setAuthToken(auth.authtoken),
+        ),
+        ChangeNotifierProxyProvider<AccountCredentials, ChatLobby>(
+          create: (_) => ChatLobby(),
+          update: (_, auth, chatLobby) =>
+              chatLobby..setAuthToken(auth.authtoken),
+        ),
+        ChangeNotifierProxyProvider<AccountCredentials, FriendsIdentity>(
+          create: (_) => FriendsIdentity(),
+          update: (_, auth, friendsIdentity) =>
+              friendsIdentity..setAuthToken(auth.authtoken),
+        ),
+        ChangeNotifierProxyProvider<AccountCredentials, RoomChatLobby>(
+          create: (_) => RoomChatLobby(),
+          update: (_, auth, roomChatLobby) =>
+              roomChatLobby..setAuthToken(auth.authtoken),
+        ),
       ],
       child: Builder(
         builder: (context) {

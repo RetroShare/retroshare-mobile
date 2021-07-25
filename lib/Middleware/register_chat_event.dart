@@ -24,7 +24,7 @@ Future<DistantChatPeerInfo> _getDistantChatStatus(
   return resp.info;
 }
 
-Future<void> registerChatEvent(BuildContext context) async {
+Future<void> registerChatEvent(BuildContext context,AuthToken authToken) async {
   await eventsRegisterChatMessage(
       listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
     if (msg != null) {
@@ -68,6 +68,6 @@ Future<void> registerChatEvent(BuildContext context) async {
                 .addChatMessage(msg, msg.chat_id.distantChatId);
       }
     }
-  });
+  },authToken: authToken);
 }
 

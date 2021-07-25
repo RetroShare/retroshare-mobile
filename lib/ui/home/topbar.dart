@@ -1,13 +1,11 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
-import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/services/account.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'dart:convert';
 
 class TopBar extends StatefulWidget {
@@ -411,7 +409,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
   }
 }
 
-Future<bool> exportIdentityFunc(BuildContext context) async {
+/*Future<bool> exportIdentityFunc(BuildContext context) async {
   Directory appDocDir = await getApplicationDocumentsDirectory();
   final id = Provider.of<AccountCredentials>(context, listen: false)
       .lastAccountUsed
@@ -433,4 +431,4 @@ Future<bool> exportIdentityFunc(BuildContext context) async {
     return false;
   }
   return true;
-}
+}*/

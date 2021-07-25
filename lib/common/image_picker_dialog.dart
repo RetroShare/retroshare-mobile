@@ -19,8 +19,9 @@ Future imagePickerDialog(context, Function callback,
                       onPressed: () async => callback(
                           await ImagePicker.pickImage(
                               source: ImageSource.gallery,
-                              maxWidth: 1200.0,
-                              maxHeight: 1200.0))),
+                              maxHeight: 250,
+                            maxWidth: 250,
+                          ))),
                   Padding(padding: EdgeInsets.all(8.0)),
                   GestureDetector(
                     child: Button(
@@ -29,8 +30,9 @@ Future imagePickerDialog(context, Function callback,
                         onPressed: () async => callback(
                               await ImagePicker.pickImage(
                                   source: ImageSource.camera,
-                                  maxWidth: 1200.0,
-                                  maxHeight: 1200.0),
+                                  
+                                  maxWidth: 250,
+                                  maxHeight: 250),
                             )),
                   )
                 ],

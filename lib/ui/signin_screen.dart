@@ -29,7 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
     wrongPassword = false;
   }
 
-  Future<bool> importAccountFunc(BuildContext context) async {
+  /*Future<bool> importAccountFunc(BuildContext context) async {
     // FilePickerResult result = await FilePicker.platform.pickFiles();
     final result = 'abc';
     if (result != null) {
@@ -55,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }
+  }*/
 
   ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt
   @override
@@ -308,7 +308,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             children: <Widget>[
                               FlatButton(
                                 onPressed: () async {
-                                  await importAccountFunc(context);
+                                  //await importAccountFunc(context);
                                 },
                                 textColor: Color(0xFF9E9E9E),
                                 padding: const EdgeInsets.all(0.0),

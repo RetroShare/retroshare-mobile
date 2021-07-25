@@ -17,7 +17,6 @@ class Identity {
   Identity(String this.mId,
       [this.signed, name, this._avatar, this.isContact = false]) {
     this.name = name ?? mId;
-    
   }
 }
 

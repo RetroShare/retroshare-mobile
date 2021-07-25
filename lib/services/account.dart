@@ -30,17 +30,12 @@ Future<List<Account>> getLocations() async {
         accountsList.add(Account(location['mLocationId'], location['mPgpId'],
             location['mLocationName'], location['mPgpName']));
     });
-
-    var currAccount = await openapi.rsAccountsGetCurrentAccountId();
-    for (Account account in accountsList) {
-      if (account.locationId == currAccount.id) lastAccountUsed = account;
-    }
     return accountsList;
   }
   return [];
 }
 
-Future<String> exportIdentity(String pgpId) async {
+Future<String> exportIdentity(String pgpId, AuthToken authToken) async {
   final authToken = await authcheck();
   final response =
       await http.post('http://localhost:9092/rsAccounts/exportIdentityToString',
@@ -55,7 +50,7 @@ Future<String> exportIdentity(String pgpId) async {
     throw Exception('Failed to load response');
 }
 
-Future<String> importIdentity(String data) async {
+Future<String> importIdentity(String data, AuthToken authToken) async {
   final authToken = await authcheck();
   final response = await http.post(
       'http://localhost:9092/rsAccounts/importIdentityFromString',
@@ -104,7 +99,6 @@ dynamic requestAccountCreation(String username, String password,
     'makeHidden': false,
     'makeAutoTor': false
   };
-  final authToken = await authcheck();
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
@@ -120,7 +114,7 @@ dynamic requestAccountCreation(String username, String password,
   }
 }
 
-Future<String> getOwnCert() async {
+Future<String> getOwnCert(AuthToken authToken) async {
   final authToken = await authcheck();
   final response = await http
       .get('http://localhost:9092/rsPeers/GetRetroshareInvite', headers: {
@@ -135,7 +129,7 @@ Future<String> getOwnCert() async {
   }
 }
 
-Future<String> getShortInvite() async {
+Future<String> getShortInvite(AuthToken authToken) async {
   final authToken = await authcheck();
   final response =
       await http.get('http://localhost:9092/rsPeers/getShortInvite', headers: {
@@ -150,8 +144,7 @@ Future<String> getShortInvite() async {
   }
 }
 
-Future<bool> addCert(String cert) async {
-  final authToken = await authcheck();
+Future<bool> addCert(String cert,AuthToken authToken) async {
   final response = await http.post(
     'http://localhost:9092/rsPeers/acceptInvite',
     headers: {
@@ -168,8 +161,8 @@ Future<bool> addCert(String cert) async {
   }
 }
 
-Future<bool> parseShortInvite(String cert) async {
-  final authToken = await authcheck();
+Future<bool> parseShortInvite(String cert, AuthToken authToken) async {
+
   final response = await http.post(
     'http://localhost:9092/rsPeers/parseShortInvite',
     headers: {
@@ -188,8 +181,8 @@ Future<bool> parseShortInvite(String cert) async {
   }
 }
 
-Future<List<Location>> getFriendsAccounts() async {
-  final authToken = await authcheck();
+Future<List<Location>> getFriendsAccounts(AuthToken authToken) async {
+
   final response = await http.get(
     'http://localhost:9092/rsPeers/getFriendList',
     headers: {
@@ -202,7 +195,7 @@ Future<List<Location>> getFriendsAccounts() async {
     var sslIds = json.decode(response.body)['sslIds'];
     List<Location> locations = List();
     for (int i = 0; i < sslIds.length; i++) {
-      locations.add(await getLocationsDetails(sslIds[i]));
+      locations.add(await getLocationsDetails(sslIds[i],authToken));
     }
     return locations;
   } else {
@@ -210,7 +203,7 @@ Future<List<Location>> getFriendsAccounts() async {
   }
 }
 
-Future<Location> getLocationsDetails(String peerId) async {
+Future<Location> getLocationsDetails(String peerId, AuthToken authToken) async {
   final authToken = await authcheck();
   final response = await http.post(
     'http://localhost:9092/rsPeers/getPeerDetails',

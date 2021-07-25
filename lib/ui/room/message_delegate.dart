@@ -34,7 +34,6 @@ class MessageDelegate extends StatelessWidget {
                           ))),
                 ),
                 Stack(
-//          alignment: WrapAlignment.end,
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(
