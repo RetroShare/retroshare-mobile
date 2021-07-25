@@ -43,11 +43,11 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
     return Consumer<RoomChatLobby>(
         builder: (context, lobbyParticipantsList, _) {
       List<Identity> _lobbyParticipantsList = widget.chat.chatId != null ||
-              lobbyParticipantsList.lobbyParticipants == null ||
-              lobbyParticipantsList.lobbyParticipants[widget.chat.chatId] ==
+              lobbyParticipantsList.lobbyParticipants != null ||
+              lobbyParticipantsList.lobbyParticipants[widget.chat.chatId] !=
                   null
-          ? []
-          : lobbyParticipantsList.lobbyParticipants[widget.chat.chatId];
+          ? lobbyParticipantsList.lobbyParticipants[widget.chat.chatId]
+          : null;
       print(_lobbyParticipantsList);
       return ListView.builder(
         padding: const EdgeInsets.all(16.0),

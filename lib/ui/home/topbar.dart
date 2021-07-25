@@ -309,7 +309,6 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                               child: Center(
                                 child: Consumer<Identities>(
                                   builder: (context, avatar, _) {
-                                    print("hello");
                                     return Container(
                                       width: heightOfTopBar * 0.75,
                                       height: heightOfTopBar * 0.75,
