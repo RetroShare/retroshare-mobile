@@ -61,7 +61,6 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
               Identity(widget.curr.mId, widget.curr.signed, nameController.text,
                   _image?.base64String),
               _image);
-      print(success);
       if (success)
         Navigator.pop(context);
       else {

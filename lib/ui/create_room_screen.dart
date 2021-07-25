@@ -464,7 +464,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       }
                                     },
                                     onChanged: (data) {
-                                      print(data);
+                                 
                                     },
                                     chipBuilder:
                                         (context, state, Location profile) {

@@ -19,7 +19,7 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
         final contents = await file.readAsString();
         await importIdentity(contents);
       } catch (e) {
-        print(e);
+    
         final snackBar = SnackBar(
           content: Text('Oops! Something went wrong'),
           duration: Duration(milliseconds: 200),

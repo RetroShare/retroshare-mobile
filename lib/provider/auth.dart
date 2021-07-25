@@ -105,7 +105,7 @@ class AccountCredentials with ChangeNotifier {
         return map;
       }
     } on HttpException catch (e) {
-      print(e);
+
     } catch (e) {
       throw (e);
     }

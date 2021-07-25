@@ -121,7 +121,7 @@ Future<bool> createChatLobby(
   req.lobbyPrivacyType = privacyType;
 
   var response = await openapi.rsMsgsCreateChatLobby(reqCreateChatLobby: req);
-  print(response.retval);
+
   if (response.retval.xint64 > 0) {
     setLobbyAutoSubscribe(response.retval.xstr64);
     return true;
@@ -182,7 +182,6 @@ Future<ResSendChat> sendMessage(
       .rsMsgsSendChat(reqSendChat: reqSendChat)
       .then((ResSendChat resSendChat) {
     if (resSendChat.retval) {
-      print(resSendChat.retval);
       //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
         ..chat_id = new ChatId()
@@ -224,7 +223,8 @@ Future<List<Identity>> getLobbyParticipants(
       bool success = true;
       Identity id;
       do {
-        Tuple2<bool, Identity> tuple = await getIdDetails(gxsIds[i]['key'],authToken);
+        Tuple2<bool, Identity> tuple =
+            await getIdDetails(gxsIds[i]['key'], authToken);
         success = tuple.item1;
         id = tuple.item2;
       } while (!success);
@@ -263,14 +263,11 @@ Future<void> _initiateDistantChat(Chat chat, store) async {
     chat.chatId = resp.pid;
     Chat.addDistantChat(to, from, resp.pid);
     await Provider.of<FriendsIdentity>(store, listen: false).fetchAndUpdate();
-    dynamic allIDs = Provider.of<FriendsIdentity>(store, listen: false).allIds;
-
+   Map<String,Identity> allIDs = Provider.of<FriendsIdentity>(store, listen: false).allIds;
     chatActionMiddleware(chat, store);
     allIDs = Provider.of<RoomChatLobby>(store, listen: false)
         .addDistanceChat(chat, allIDs);
     Provider.of<FriendsIdentity>(store, listen: false).setAllIds(allIDs);
-
-    //store.dispatch(AddDistantChatAction(chat));
   } else
     throw ("Error on initiateDistantChat()");
 }
@@ -304,12 +301,10 @@ Chat getChat(
   String from,
 }) {
   Chat chat;
-  // final store = StoreProvider.of<AppState>(context);
   Provider.of<Identities>(context, listen: false).fetchOwnidenities();
   final currentIdentity =
       Provider.of<Identities>(context, listen: false).currentIdentity;
   String currentId = from ?? currentIdentity.mId;
-  // store.state.currId.mId;
   if (to != null && to is Identity) {
     final distanceChat =
         Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
@@ -317,7 +312,6 @@ Chat getChat(
     if (Chat.distantChatExistsStore(distantChatId, distanceChat)) {
       chat = Provider.of<RoomChatLobby>(context, listen: false)
           .distanceChat[distantChatId];
-      // store.state.distantChats[distantChatId];
     } else {
       chat = Chat(
           interlocutorId: to.mId,
@@ -328,7 +322,6 @@ Chat getChat(
     }
   } else if (to != null && (to is VisibleChatLobbyRecord)) {
     chat = Chat.fromVisibleChatLobbyRecord(to);
-    //store.dispatch(AddChatMessageAction(null, to.lobbyId.xstr64));
     Provider.of<RoomChatLobby>(context, listen: false)
         .addChatMessage(null, to.lobbyId.xstr64);
     final authToken =
@@ -355,7 +348,6 @@ Chat getChat(
 }
 
 Future<void> getMessagesApi(String lobbyId, AuthToken authToken) async {
-
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessages',
     headers: {
@@ -364,8 +356,6 @@ Future<void> getMessagesApi(String lobbyId, AuthToken authToken) async {
     },
     body: json.encode({'chatPeerId': lobbyId, 'loadCount': 100}),
   );
-  print("hello");
-  print(response.statusCode);
 }
 
 Future<void> message_description(String msgId, AuthToken authToken) async {
@@ -378,8 +368,6 @@ Future<void> message_description(String msgId, AuthToken authToken) async {
     },
     body: json.encode({'chatPeerId': msg_Id}),
   );
-
-  print(response.body);
 }
 
 Future<void> removeMessageApi(List<String> msgIds, AuthToken authToken) async {
@@ -396,12 +384,9 @@ Future<void> removeMessageApi(List<String> msgIds, AuthToken authToken) async {
     },
     body: json.encode({'msgIds': msg_ids}),
   );
-
-  print(response.body);
 }
 
-Future<void> clearMessages(String lobbyId,AuthToken authToken) async {
-
+Future<void> clearMessages(String lobbyId, AuthToken authToken) async {
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/removeMessages',
     headers: {
@@ -410,6 +395,4 @@ Future<void> clearMessages(String lobbyId,AuthToken authToken) async {
     },
     body: json.encode({'chatPeerId': lobbyId}),
   );
-
-  print(response.body);
 }

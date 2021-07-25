@@ -31,7 +31,8 @@ class RoomChatLobby with ChangeNotifier {
   }
 
   Future<void> updateParticipants(String lobbyId) async {
-    List<Identity> participants = await getLobbyParticipants(lobbyId, _authToken);
+    List<Identity> participants =
+        await getLobbyParticipants(lobbyId, _authToken);
     await fetchAndUpdateParticipants(lobbyId, participants);
   }
 
@@ -43,10 +44,11 @@ class RoomChatLobby with ChangeNotifier {
   Map<String, Identity> addDistanceChat(
       Chat distantChat, Map<String, Identity> allIDs) {
     Map<String, Identity> allIds;
-    if (allIds[distantChat.interlocutorId] == null)
+    if (allIDs[distantChat.interlocutorId] == null) {
       allIds = Map.from(allIDs)
         ..[distantChat.interlocutorId] =
             new Identity(distantChat.interlocutorId);
+    }
 
     _distanceChat = Map.from(_distanceChat ?? Map<String, Chat>())
       ..addAll({distantChat.chatId: distantChat});

@@ -48,7 +48,6 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                   null
           ? lobbyParticipantsList.lobbyParticipants[widget.chat.chatId]
           : null;
-      print(_lobbyParticipantsList);
       return ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemCount:

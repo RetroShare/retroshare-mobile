@@ -116,8 +116,6 @@ class _QRScannerState extends State<QRScanner>
     String barcode = null;
     try {
       barcode = await scanner.scan();
-
-      print(barcode);
       if (barcode != null) {
         bool success =
             await Provider.of<FriendLocations>(context, listen: false)
@@ -141,7 +139,6 @@ class _QRScannerState extends State<QRScanner>
       setState(() {
         _requestQR = false;
       });
-      print(e);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -189,11 +186,10 @@ class _QRScannerState extends State<QRScanner>
         final appDir = await getApplicationDocumentsDirectory();
         // final result =
         //await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
-        //print(result);
+
         final file = new File('${appDir.path}/retroshare_qr_code.png').create();
         showToast("Hey there! QR Image has successfully saved.");
       } catch (e) {
-        print(e);
         showToast("Oops! something went wrong.");
       }
     } else if (val == QRoperation.share) {
@@ -283,7 +279,7 @@ class _QRScannerState extends State<QRScanner>
                                   key: _globalkey,
                                   child: QrImage(
                                     errorStateBuilder: (context, result) {
-                                      print(result);
+                                      
                                       /*setState(() {
                                           _requestQR = false;
                                         });*/

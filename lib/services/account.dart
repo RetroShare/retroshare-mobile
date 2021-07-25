@@ -62,8 +62,7 @@ Future<String> importIdentity(String data, AuthToken authToken) async {
               'gpg-id': [json.decode(response.body)['pgpId']]
             }));
 
-    print(json.decode(response.body));
-    print(resp.body);
+    
 
     return json.decode(response.body)['pgpId'];
   } else
@@ -80,7 +79,7 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/attemptLogin',
       body: json.encode(accountDetails));
-  print(response.body);
+ 
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
   } else {
@@ -102,7 +101,7 @@ dynamic requestAccountCreation(String username, String password,
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/createLocation',
       body: json.encode(accountDetails));
-  print(response.body);
+
   if (response.statusCode == 200 && json.decode(response.body)['retval']) {
     dynamic resp = json.decode(response.body)['location'];
     Account account = Account(resp['mLocationId'], resp['mPgpId'],
@@ -136,7 +135,7 @@ Future<String> getShortInvite(AuthToken authToken) async {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
-  print(response.body);
+
   if (response.statusCode == 200 && json.decode(response.body)['retval']) {
     return json.decode(response.body)['invite'].substring(31);
   } else {
@@ -153,7 +152,7 @@ Future<bool> addCert(String cert,AuthToken authToken) async {
     },
     body: json.encode({'invite': cert}),
   );
-  print(response.body);
+  
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
   } else {
@@ -171,10 +170,9 @@ Future<bool> parseShortInvite(String cert, AuthToken authToken) async {
     },
     body: json.encode({'invite': cert}),
   );
-  print('short');
-  print(response.body);
+
   if (response.statusCode == 200) {
-    print(json.decode(response.body)['retval']);
+    
     return json.decode(response.body)['retval'];
   } else {
     throw Exception('Failed to load response');

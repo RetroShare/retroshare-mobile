@@ -102,7 +102,6 @@ void main() {
 
       setLobbyAutoSubscribe(resp[3].chatId);
       resp = await getSubscribedChatLobbies();
-      print(resp);
     });
   });
 }
