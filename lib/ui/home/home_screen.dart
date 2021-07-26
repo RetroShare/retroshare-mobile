@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/register_chat_event.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

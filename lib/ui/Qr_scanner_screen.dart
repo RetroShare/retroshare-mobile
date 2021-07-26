@@ -13,7 +13,7 @@ import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';

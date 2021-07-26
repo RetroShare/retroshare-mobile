@@ -17,19 +17,11 @@ class AccountCredentials with ChangeNotifier {
   List<Account> get accountList => _accountsList;
   Account get loggedinAccount => _loggedinAccount;
   AuthToken get getAuthToken => _authToken;
-  setauthToken(AuthToken authToken) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("username", authToken.username);
-    prefs.setString('password', authToken.password);
-    _authToken = authToken;
-    notifyListeners();
-      
-  }
 
   setLogginAccount(Account acc) {
     _loggedinAccount = acc;
   }
-
+  
   get authtoken => _authToken;
 
   fetchAuthAccountList() async {

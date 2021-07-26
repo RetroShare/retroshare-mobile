@@ -1,14 +1,13 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/notifications.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/routes.dart';

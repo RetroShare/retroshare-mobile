@@ -1,7 +1,7 @@
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 

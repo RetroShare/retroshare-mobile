@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:retroshare/model/location.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
@@ -16,6 +16,7 @@ import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
+
 
 Future<List<Chat>> getSubscribedChatLobbies(AuthToken authToken) async {
   final response = await http.get(
@@ -37,6 +38,8 @@ Future<List<Chat>> getSubscribedChatLobbies(AuthToken authToken) async {
   } else
     throw Exception('Failed to load response');
 }
+
+
 
 Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
   final authToken = await authcheck();
@@ -73,6 +76,7 @@ Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
     throw Exception('Failed to load response');
 }
 
+
 Future<bool> joinChatLobby(
     String chatId, String idToUse, AuthToken authToken) async {
   final authToken = await authcheck();
@@ -94,6 +98,7 @@ Future<bool> joinChatLobby(
   } else
     throw Exception('Failed to load response');
 }
+
 
 Future<bool> createChatLobby(
     String lobbyName, String idToUse, String lobbyTopic,
@@ -129,6 +134,7 @@ Future<bool> createChatLobby(
   throw Exception('Failed to load response');
 }
 
+
 void setLobbyAutoSubscribe(String lobbyId, [bool subs = true]) {
   var req = ReqSetLobbyAutoSubscribe()
     ..lobbyId = new ChatLobbyId()
@@ -136,6 +142,7 @@ void setLobbyAutoSubscribe(String lobbyId, [bool subs = true]) {
     ..autoSubscribe = subs;
   openapi.rsMsgsSetLobbyAutoSubscribe(reqSetLobbyAutoSubscribe: req);
 }
+
 
 Future<bool> getLobbyAutoSubscribe(
   String lobbyId,
@@ -148,6 +155,7 @@ Future<bool> getLobbyAutoSubscribe(
   return resp.retval;
 }
 
+
 Future<void> unsubscribeChatLobby(
   String lobbyId,
 ) async {
@@ -156,6 +164,7 @@ Future<void> unsubscribeChatLobby(
     ..lobbyId.xstr64 = lobbyId;
   openapi.rsMsgsUnsubscribeChatLobby(reqUnsubscribeChatLobby: req);
 }
+
 
 /// Send a message of chat [type].
 ///   0 TYPE_NOT_SET,
@@ -316,6 +325,7 @@ Chat getChat(
       chat = Chat(
           interlocutorId: to.mId,
           isPublic: false,
+          chatName: to.name,
           numberOfParticipants: 1,
           ownIdToUse: currentId);
       _initiateDistantChat(chat, context);

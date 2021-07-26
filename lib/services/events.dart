@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:retroshare/Middleware/shared_preference.dart';
 import "package:eventsource/eventsource.dart";
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';

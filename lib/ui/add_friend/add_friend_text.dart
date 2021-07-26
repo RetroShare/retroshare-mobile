@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/color_loader_3.dart';
-import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/friend_location.dart';
 
 import '../Qr_scanner_screen.dart';
 

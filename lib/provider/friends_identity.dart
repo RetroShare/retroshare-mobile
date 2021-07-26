@@ -10,21 +10,21 @@ class FriendsIdentity with ChangeNotifier {
   List<Identity> _notContactIds = [];
   List<Identity> _friendsSignedIdsList = [];
   AuthToken _authToken;
-  setAuthToken(AuthToken authToken) async {
-    _authToken = authToken;
-      notifyListeners();
-  }
   Map<String, Identity> get allIds => {..._allIds};
   List<Identity> get friendsIdsList => [..._friendsIdsList];
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
-
+  setAuthToken(AuthToken authToken) async {
+    _authToken = authToken;
+      notifyListeners();
+  }
   Future<void> fetchAndUpdate() async {
     Tuple3<List<Identity>, List<Identity>, List<Identity>> tupleIds =
         await getAllIdentities(_authToken);
     _friendsSignedIdsList = tupleIds.item1;
     _friendsIdsList = tupleIds.item2;
     _notContactIds = tupleIds.item3;
+    
     _allIds = Map.fromIterable(
         [tupleIds.item1, tupleIds.item2, tupleIds.item3]
             .expand((x) => x)

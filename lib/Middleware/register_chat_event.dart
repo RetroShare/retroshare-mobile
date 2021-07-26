@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/services/events.dart';
 
