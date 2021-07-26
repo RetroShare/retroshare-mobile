@@ -39,7 +39,7 @@ class AccountCredentials with ChangeNotifier {
   Future<Account> setlastAccountUsed() async {
     try {
       var currAccount = await openapi.rsAccountsGetCurrentAccountId();
-      for (Account account in accountsList) {
+      for (Account account in _accountsList) {
         if (account.locationId == currAccount.id) return account;
       }
     } catch (e) {

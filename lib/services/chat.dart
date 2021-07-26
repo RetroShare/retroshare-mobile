@@ -42,7 +42,6 @@ Future<List<Chat>> getSubscribedChatLobbies(AuthToken authToken) async {
 
 
 Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
-  final authToken = await authcheck();
   final response =
       await http.post('http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
           headers: {
@@ -79,7 +78,6 @@ Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
 
 Future<bool> joinChatLobby(
     String chatId, String idToUse, AuthToken authToken) async {
-  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/joinVisibleChatLobby',
     headers: {
@@ -212,7 +210,6 @@ Future<ResSendChat> sendMessage(
 
 Future<List<Identity>> getLobbyParticipants(
     String lobbyId, AuthToken authToken) async {
-  final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
     headers: {
@@ -381,7 +378,6 @@ Future<void> message_description(String msgId, AuthToken authToken) async {
 }
 
 Future<void> removeMessageApi(List<String> msgIds, AuthToken authToken) async {
-  final authToken = await authcheck();
   List<int> msg_ids;
   for (String x in msgIds) {
     msg_ids.add(int.parse(x));

@@ -60,7 +60,7 @@ class _SplashState extends State<SplashScreen> {
     } while (!connectedToBackend);
     final provider = Provider.of<AccountCredentials>(context, listen: false);
     bool isTokenValid = await provider.checkisvalidAuthToken();
-    if (isLoggedIn && isTokenValid && loggedinAccount != null) {
+    if (isLoggedIn && isTokenValid && provider.loggedinAccount != null) {
       _setStatusText("Logging in...");
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {

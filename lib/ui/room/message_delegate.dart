@@ -8,6 +8,16 @@ class MessageDelegate extends StatelessWidget {
   final ChatMessage data;
   final String bubbleTitle;
 
+  bool isMessageType(String msg) {
+    final regexp =
+        RegExp(r'^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$');
+
+// find the first match though you could also do `allMatches`
+    final match = regexp.hasMatch(msg);
+    print(match);
+    return match;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Visibility(
@@ -39,7 +49,7 @@ class MessageDelegate extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
                       child: Html(
-                          data: data.msg +
+                          data: (isMessageType(data.msg)? "<img alt='Red dot (png)' src='data:image/png;base64,${data.msg}' />" : data.msg) +
                               "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
                           ),
                     ),

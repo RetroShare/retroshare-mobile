@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
@@ -144,7 +148,8 @@ class _MessagesTabState extends State<MessagesTab> {
                               isShowSticker = false;
                               Future.delayed(Duration(milliseconds: 15));
                             });
-                          };
+                          }
+                          ;
                         },
                         controller: msgController,
                         keyboardType: TextInputType.multiline,
@@ -160,7 +165,24 @@ class _MessagesTabState extends State<MessagesTab> {
                     icon: Icon(
                       Icons.image,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      File image = await ImagePicker.pickImage(
+                          source: ImageSource.gallery,
+                          maxWidth: 250,
+                          maxHeight: 250);
+                      setState(() {
+                        if (image != null) {
+                          var text = base64.encode(image.readAsBytesSync());
+                          sendMessage(
+                              context,
+                              widget.chat.chatId,
+                              text,
+                              (widget.isRoom
+                                  ? ChatIdType.number3_
+                                  : ChatIdType.number2_));
+                        }
+                      });
+                    },
                   ),
                   IconButton(
                     icon: Icon(
