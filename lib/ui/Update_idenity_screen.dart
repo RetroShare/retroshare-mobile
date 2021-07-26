@@ -29,7 +29,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     super.initState();
     nameController = TextEditingController(text: widget.curr.name);
     if (widget.curr.avatar != null)
-      _image.mData = base64.decode(widget.curr.avatar);
+      _image = new  RsGxsImage(base64.decode(widget.curr.avatar));
   }
 
   @override
@@ -61,7 +61,6 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
               Identity(widget.curr.mId, widget.curr.signed, nameController.text,
                   _image?.base64String),
               _image);
-      print(success);
       if (success)
         Navigator.pop(context);
       else {
@@ -182,7 +181,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                     child: Container(
                                       height: 300 * 0.7,
                                       width: 300 * 0.7,
-                                      decoration: _image?.mData == null
+                                      decoration: _image?.mData == null 
                                           ? null
                                           : BoxDecoration(
                                               borderRadius:
@@ -197,7 +196,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                       child: Visibility(
                                         visible: _image != null
                                             ? _image?.mData?.isEmpty
-                                            : false,
+                                            : true,
                                         child: Center(
                                           child: Icon(
                                             Icons.person,

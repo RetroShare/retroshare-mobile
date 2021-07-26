@@ -1,11 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/cache.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
+import 'package:retroshare/services/chat.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
 import 'package:retroshare/model/chat.dart';
@@ -29,7 +31,7 @@ class _RoomScreenState extends State<RoomScreen>
   @override
   void initState() {
     super.initState();
-       
+
     _tabController =
         new TabController(vsync: this, length: widget.isRoom ? 2 : 1);
 
@@ -39,15 +41,17 @@ class _RoomScreenState extends State<RoomScreen>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.chat.unreadCount = 0;
-       await registerChatEvent(context);
-      await Provider.of<FriendsIdentity>(context, listen: false)
-          .fetchAndUpdate();
+      final authToken =
+          Provider.of<AccountCredentials>(context, listen: false).authtoken;
+      await registerChatEvent(context, authToken);
+      /*await Provider.of<FriendsIdentity>(context, listen: false)
+          .fetchAndUpdate();*/
       Provider.of<RoomChatLobby>(context, listen: false)
           .updateCurrentChat(widget.chat);
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat.chatId);
-        //await getMessagesApi(widget.chat.chatId);
+        await getMessagesApi(widget.chat.chatId, authToken);
       }
     });
   }
@@ -117,19 +121,20 @@ class _RoomScreenState extends State<RoomScreen>
                                               appBarHeight * 0.70 * 0.33),
                                           image: DecorationImage(
                                               fit: BoxFit.fitWidth,
-                                              image: cachedImages[friendIdentity
-                                                  .allIds[widget
-                                                      .chat.interlocutorId]
-                                                  .avatar]),
+                                              image: MemoryImage(base64Decode(
+                                                  friendIdentity
+                                                      .allIds[widget
+                                                          .chat.interlocutorId]
+                                                      .avatar))),
                                         ),
                                   child: Visibility(
-                                    visible: (widget.chat.interlocutorId ==
-                                            null ||
-                                        friendIdentity
-                                                .allIds[
-                                                    widget.chat.interlocutorId]
-                                                .avatar ==
-                                            null),
+                                    visible: (widget.chat.interlocutorId == null ||
+                                                friendIdentity
+                                                        .allIds[widget.chat
+                                                            .interlocutorId]
+                                                        ?.avatar ==
+                                                    null ??
+                                            false),
                                     child: Center(
                                       child: Icon(
                                         (widget.chat.isPublic == null ||
@@ -171,7 +176,7 @@ class _RoomScreenState extends State<RoomScreen>
                           widget.isRoom
                               ? widget.chat.chatName
                               : friendIdentity
-                                  .allIds[widget.chat.interlocutorId].name,
+                                  .allIds[widget.chat.interlocutorId]?.name??widget.chat.chatName??"name",
                           style: Theme.of(context).textTheme.body2,
                         ),
                       ),
@@ -202,11 +207,12 @@ class _RoomScreenState extends State<RoomScreen>
                     controller: _tabController,
                     children: List<Widget>.generate(widget.isRoom ? 2 : 1,
                         (int index) {
-                      return index == 0?
-                         MessagesTab(
-                          chat: widget.chat,
-                          isRoom: widget.isRoom,
-                        ): RoomFriendsTab(chat: widget.chat);
+                      return index == 0
+                          ? MessagesTab(
+                              chat: widget.chat,
+                              isRoom: widget.isRoom,
+                            )
+                          : RoomFriendsTab(chat: widget.chat);
                     }),
                   ),
                 ),

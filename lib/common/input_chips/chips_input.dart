@@ -406,12 +406,11 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
 
   @override
   void updateFloatingCursor(RawFloatingCursorPoint point) {
-    print(point);
+
   }
 
   @override
   void connectionClosed() {
-    print('TextInputClient.connectionCLosed()');
   }
 
   @override

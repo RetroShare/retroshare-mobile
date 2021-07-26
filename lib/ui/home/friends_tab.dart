@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
 import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/services/chat.dart';
 

@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/services/events.dart';
 
@@ -24,7 +24,7 @@ Future<DistantChatPeerInfo> _getDistantChatStatus(
   return resp.info;
 }
 
-Future<void> registerChatEvent(BuildContext context) async {
+Future<void> registerChatEvent(BuildContext context,AuthToken authToken) async {
   await eventsRegisterChatMessage(
       listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
     if (msg != null) {
@@ -68,6 +68,6 @@ Future<void> registerChatEvent(BuildContext context) async {
                 .addChatMessage(msg, msg.chat_id.distantChatId);
       }
     }
-  });
+  },authToken: authToken);
 }
 

@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:retroshare/common/notifications.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
 
@@ -54,10 +56,12 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
 
   Future<String> _getCert() async {
     String ownCert;
+    final authToken =
+        Provider.of<AccountCredentials>(context, listen: false).authtoken;
     if (!check)
-      ownCert = (await getOwnCert()).replaceAll("\n", "");
+      ownCert = (await getOwnCert(authToken)).replaceAll("\n", "");
     else
-      ownCert = (await getShortInvite()).replaceAll("\n", "");
+      ownCert = (await getShortInvite(authToken)).replaceAll("\n", "");
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }
@@ -114,9 +118,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                     initialValue: val,
                     maxLines: 10,
                     minLines: 10,
-                    style: GoogleFonts.oxygen(textStyle:TextStyle(
-                      fontSize: 12,color: Colors.black
-                    )),
+                    style: GoogleFonts.oxygen(
+                        textStyle:
+                            TextStyle(fontSize: 12, color: Colors.black)),
                     textAlign: TextAlign.center,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
@@ -164,10 +168,10 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                 child: TextFormField(
                   readOnly: true,
                   initialValue: ownCertController.text,
-                  
                   maxLines: 10,
                   minLines: 10,
-                  style: GoogleFonts.oxygen(textStyle: TextStyle(
+                  style: GoogleFonts.oxygen(
+                      textStyle: TextStyle(
                     fontSize: 12,
                   )),
                   textAlign: TextAlign.center,
@@ -229,9 +233,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             setState(() {
               check = newval;
             });
-           check?
-              tabController.animateTo(0):
-              tabController.animateTo(1);
+            check ? tabController.animateTo(0) : tabController.animateTo(1);
           },
         ),
         SizedBox(height: 10),

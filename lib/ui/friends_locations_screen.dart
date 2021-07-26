@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/common/person_delegate.dart';
 
 class FriendsLocationsScreen extends StatefulWidget {

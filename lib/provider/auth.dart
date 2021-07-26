@@ -16,19 +16,12 @@ class AccountCredentials with ChangeNotifier {
   Account get lastAccountUsed => _lastAccountUsed;
   List<Account> get accountList => _accountsList;
   Account get loggedinAccount => _loggedinAccount;
-  AuthToken get getauthToken => _authToken;
-  setauthToken(AuthToken authToken) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("username", authToken.username);
-    prefs.setString('password', authToken.password);
-    _authToken = authToken;
-    notifyListeners();
-  }
+  AuthToken get getAuthToken => _authToken;
 
   setLogginAccount(Account acc) {
     _loggedinAccount = acc;
   }
-
+  
   get authtoken => _authToken;
 
   fetchAuthAccountList() async {
@@ -59,9 +52,9 @@ class AccountCredentials with ChangeNotifier {
     _authToken = AuthToken(locationId, password);
     bool success = false;
     try {
-      success = await checkExistingAuthTokens(locationId, password);
+      success = await checkExistingAuthTokens(locationId, password,_authToken);
     } catch (e) {
-      print('xx');
+
       throw HttpException(e);
     }
     if (success) {
@@ -78,7 +71,7 @@ class AccountCredentials with ChangeNotifier {
   }
 
   Future<bool> checkisvalidAuthToken() {
-    return isAuthTokenValid();
+    return isAuthTokenValid(_authToken);
   }
 
   Future<Tuple2<bool, Account>> requestsignup(
@@ -92,19 +85,19 @@ class AccountCredentials with ChangeNotifier {
     try {
       int resp = await requestloginAccount(currentAccount, password);
       map['res'] = resp;
+       setLogginAccount(currentAccount);
       // Login success 0, already logged in 1
       if (resp == 0 || resp == 1) {
         bool isAuthTokenValid =
             await getinitializeAuth(currentAccount.locationId, password);
         if (isAuthTokenValid) {
-          setLogginAccount(currentAccount);
           map['auth'] = true;
         }
         notifyListeners();
         return map;
       }
     } on HttpException catch (e) {
-      print(e);
+
     } catch (e) {
       throw (e);
     }

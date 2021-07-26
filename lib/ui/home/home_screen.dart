@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/register_chat_event.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -47,11 +48,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       end: Colors.black12,
     ).animate(_animationController);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
       Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
-      await registerChatEvent(context);
-    });
+      final authToken = Provider.of<AccountCredentials>(context, listen: false).authtoken;
+        
+       registerChatEvent(context,authToken);
+
   }
 
   @override

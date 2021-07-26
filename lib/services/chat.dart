@@ -1,15 +1,13 @@
-
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:retroshare/model/location.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
@@ -20,36 +18,7 @@ import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
 
-// Not used
-//Future<List<Chat>> getChatLobbies() async {
-//  final response = await http.get(
-//    'http://localhost:9092/rsMsgs/getListOfNearbyChatLobbies',
-//    headers: {
-//      HttpHeaders.authorizationHeader:
-//      'Basic ' + base64.encode(utf8.encode('$authToken'))
-//    },
-//  );
-//
-//  List<Chat> chatsList = List<Chat>();
-//
-//  if (response.statusCode == 200) {
-//    json.decode(response.body)['public_lobbies'].forEach((chat) {
-//      if (chat != null && chat['lobby_flags'] != 0 && chat['lobby_flags'] != 4)
-//        chatsList.add(Chat(
-//          chatId: chat['lobby_id'].toInt(),
-//          chatName: chat['lobby_name'],
-//          lobbyTopic: chat['lobby_topic'],
-//          numberOfParticipants: chat['total_number_of_peers'],
-//        ));
-//    });
-//    return chatsList;
-//  } else {
-//    throw Exception('Failed to load response');
-//  }
-//}
-
-Future<List<Chat>> getSubscribedChatLobbies() async {
-  final authToken = await authcheck();
+Future<List<Chat>> getSubscribedChatLobbies(AuthToken authToken) async {
   final response = await http.get(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyList',
     headers: {
@@ -57,24 +26,22 @@ Future<List<Chat>> getSubscribedChatLobbies() async {
           'Basic ' + base64.encode(utf8.encode('$authToken'))
     },
   );
-
   List<Chat> chatsList = [];
-
   if (response.statusCode == 200) {
     var list = json.decode(response.body)['cl_list'];
     for (int i = 0; i < list.length; i++) {
       Chat chatItem;
-      chatItem = await getChatLobbyInfo(list[i]['xstr64']);
-
+      chatItem = await getChatLobbyInfo(list[i]['xstr64'], authToken);
       chatsList.add(chatItem);
     }
-
     return chatsList;
   } else
     throw Exception('Failed to load response');
 }
 
-Future<Chat> getChatLobbyInfo(String lobbyId) async {
+
+
+Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
   final authToken = await authcheck();
   final response =
       await http.post('http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
@@ -109,7 +76,9 @@ Future<Chat> getChatLobbyInfo(String lobbyId) async {
     throw Exception('Failed to load response');
 }
 
-Future<bool> joinChatLobby(String chatId, String idToUse) async {
+
+Future<bool> joinChatLobby(
+    String chatId, String idToUse, AuthToken authToken) async {
   final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/joinVisibleChatLobby',
@@ -129,6 +98,7 @@ Future<bool> joinChatLobby(String chatId, String idToUse) async {
   } else
     throw Exception('Failed to load response');
 }
+
 
 Future<bool> createChatLobby(
     String lobbyName, String idToUse, String lobbyTopic,
@@ -156,13 +126,14 @@ Future<bool> createChatLobby(
   req.lobbyPrivacyType = privacyType;
 
   var response = await openapi.rsMsgsCreateChatLobby(reqCreateChatLobby: req);
-  print(response.retval);
+
   if (response.retval.xint64 > 0) {
     setLobbyAutoSubscribe(response.retval.xstr64);
     return true;
-  } 
-    throw Exception('Failed to load response');
+  }
+  throw Exception('Failed to load response');
 }
+
 
 void setLobbyAutoSubscribe(String lobbyId, [bool subs = true]) {
   var req = ReqSetLobbyAutoSubscribe()
@@ -171,6 +142,7 @@ void setLobbyAutoSubscribe(String lobbyId, [bool subs = true]) {
     ..autoSubscribe = subs;
   openapi.rsMsgsSetLobbyAutoSubscribe(reqSetLobbyAutoSubscribe: req);
 }
+
 
 Future<bool> getLobbyAutoSubscribe(
   String lobbyId,
@@ -183,6 +155,7 @@ Future<bool> getLobbyAutoSubscribe(
   return resp.retval;
 }
 
+
 Future<void> unsubscribeChatLobby(
   String lobbyId,
 ) async {
@@ -191,6 +164,7 @@ Future<void> unsubscribeChatLobby(
     ..lobbyId.xstr64 = lobbyId;
   openapi.rsMsgsUnsubscribeChatLobby(reqUnsubscribeChatLobby: req);
 }
+
 
 /// Send a message of chat [type].
 ///   0 TYPE_NOT_SET,
@@ -217,7 +191,6 @@ Future<ResSendChat> sendMessage(
       .rsMsgsSendChat(reqSendChat: reqSendChat)
       .then((ResSendChat resSendChat) {
     if (resSendChat.retval) {
-      print(resSendChat.retval);
       //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
         ..chat_id = new ChatId()
@@ -237,7 +210,8 @@ Future<ResSendChat> sendMessage(
 /// todo: should this be in a redux middleware?
 /// Function that update participants of a lobby chat
 
-Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
+Future<List<Identity>> getLobbyParticipants(
+    String lobbyId, AuthToken authToken) async {
   final authToken = await authcheck();
   final response = await http.post(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyInfo',
@@ -258,7 +232,8 @@ Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
       bool success = true;
       Identity id;
       do {
-        Tuple2<bool, Identity> tuple = await getIdDetails(gxsIds[i]['key']);
+        Tuple2<bool, Identity> tuple =
+            await getIdDetails(gxsIds[i]['key'], authToken);
         success = tuple.item1;
         id = tuple.item2;
       } while (!success);
@@ -271,7 +246,6 @@ Future<List<Identity>> getLobbyParticipants(String lobbyId) async {
 }
 
 Future<List<VisibleChatLobbyRecord>> getUnsubscribedChatLobbies() async {
-
   List<VisibleChatLobbyRecord> unsubscribedChatLobby = List();
   var chatLobbies = await openapi.rsMsgsGetListOfNearbyChatLobbies();
   for (VisibleChatLobbyRecord chat in chatLobbies.publicLobbies) {
@@ -298,14 +272,11 @@ Future<void> _initiateDistantChat(Chat chat, store) async {
     chat.chatId = resp.pid;
     Chat.addDistantChat(to, from, resp.pid);
     await Provider.of<FriendsIdentity>(store, listen: false).fetchAndUpdate();
-    dynamic allIDs = Provider.of<FriendsIdentity>(store, listen: false).allIds;
-
+   Map<String,Identity> allIDs = Provider.of<FriendsIdentity>(store, listen: false).allIds;
     chatActionMiddleware(chat, store);
     allIDs = Provider.of<RoomChatLobby>(store, listen: false)
         .addDistanceChat(chat, allIDs);
     Provider.of<FriendsIdentity>(store, listen: false).setAllIds(allIDs);
-
-    //store.dispatch(AddDistantChatAction(chat));
   } else
     throw ("Error on initiateDistantChat()");
 }
@@ -339,12 +310,10 @@ Chat getChat(
   String from,
 }) {
   Chat chat;
-  // final store = StoreProvider.of<AppState>(context);
   Provider.of<Identities>(context, listen: false).fetchOwnidenities();
   final currentIdentity =
       Provider.of<Identities>(context, listen: false).currentIdentity;
   String currentId = from ?? currentIdentity.mId;
-  // store.state.currId.mId;
   if (to != null && to is Identity) {
     final distanceChat =
         Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
@@ -352,21 +321,23 @@ Chat getChat(
     if (Chat.distantChatExistsStore(distantChatId, distanceChat)) {
       chat = Provider.of<RoomChatLobby>(context, listen: false)
           .distanceChat[distantChatId];
-      // store.state.distantChats[distantChatId];
     } else {
       chat = Chat(
           interlocutorId: to.mId,
           isPublic: false,
+          chatName: to.name,
           numberOfParticipants: 1,
           ownIdToUse: currentId);
       _initiateDistantChat(chat, context);
     }
   } else if (to != null && (to is VisibleChatLobbyRecord)) {
     chat = Chat.fromVisibleChatLobbyRecord(to);
-    //store.dispatch(AddChatMessageAction(null, to.lobbyId.xstr64));
     Provider.of<RoomChatLobby>(context, listen: false)
         .addChatMessage(null, to.lobbyId.xstr64);
-    joinChatLobby(to.lobbyId.xstr64, currentIdentity.mId).then((success) {
+    final authToken =
+        Provider.of<RoomChatLobby>(context, listen: false).authToken;
+    joinChatLobby(to.lobbyId.xstr64, currentIdentity.mId, authToken)
+        .then((success) {
       if (success) {
         Provider.of<ChatLobby>(context, listen: false)
             .fetchAndUpdateUnsubscribed();
@@ -386,43 +357,7 @@ Chat getChat(
   return chat;
 }
 
-/*void registerChatEvents(store) {
-  eventsRegisterChatMessage(
-      listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
-    if (msg != null) {
-      // Check if is a lobby chat
-      if (msg.chat_id.lobbyId.xstr64 != "0") {
-        store.dispatch(AddChatMessageAction(msg, msg.chat_id.lobbyId.xstr64));
-      }
-      // Check if is distant chat message
-      else if (msg.chat_id.distantChatId !=
-          "00000000000000000000000000000000") {
-        // First check if the recieved message is from an already registered chat
-        !Chat.distantChatExistsStore(msg.chat_id.distantChatId, store)
-            ? getDistantChatStatus(msg.chat_id.distantChatId, msg)
-                .then((DistantChatPeerInfo res) {
-                // Create the chat and add it to the store
-                Chat chat = Chat(
-                    interlocutorId: res.toId,
-                    isPublic: false,
-                    numberOfParticipants: 1,
-                    ownIdToUse: res.ownId,
-                    chatId: msg.chat_id.distantChatId);
-                Chat.addDistantChat(res.toId, res.ownId, res.peerId);
-                store.dispatch(AddDistantChatAction(chat));
-                // Finally send AddChatMessageAction
-                store.dispatch(
-                    AddChatMessageAction(msg, msg.chat_id.distantChatId));
-              })
-            : store
-                .dispatch(AddChatMessageAction(msg, msg.chat_id.distantChatId));
-      }
-    }
-  });
-}*/
-
-Future<void> getMessagesApi(String lobbyId) async {
-  final authToken = await authcheck();
+Future<void> getMessagesApi(String lobbyId, AuthToken authToken) async {
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessages',
     headers: {
@@ -431,12 +366,9 @@ Future<void> getMessagesApi(String lobbyId) async {
     },
     body: json.encode({'chatPeerId': lobbyId, 'loadCount': 100}),
   );
-  print("hello");
-  print(response.statusCode);
 }
 
-Future<void> message_description(String msgId) async {
-  final authToken = await authcheck();
+Future<void> message_description(String msgId, AuthToken authToken) async {
   int msg_Id = int.parse(msgId);
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/getMessage',
@@ -446,11 +378,9 @@ Future<void> message_description(String msgId) async {
     },
     body: json.encode({'chatPeerId': msg_Id}),
   );
-
-  print(response.body);
 }
 
-Future<void> removeMessageApi(List<String> msgIds) async {
+Future<void> removeMessageApi(List<String> msgIds, AuthToken authToken) async {
   final authToken = await authcheck();
   List<int> msg_ids;
   for (String x in msgIds) {
@@ -464,12 +394,9 @@ Future<void> removeMessageApi(List<String> msgIds) async {
     },
     body: json.encode({'msgIds': msg_ids}),
   );
-
-  print(response.body);
 }
 
-Future<void> clearMessages(String lobbyId) async {
-  final authToken = await authcheck();
+Future<void> clearMessages(String lobbyId, AuthToken authToken) async {
   final response = await http.post(
     'http://127.0.0.1:9092/rsHistory/removeMessages',
     headers: {
@@ -478,6 +405,4 @@ Future<void> clearMessages(String lobbyId) async {
     },
     body: json.encode({'chatPeerId': lobbyId}),
   );
-
-  print(response.body);
 }

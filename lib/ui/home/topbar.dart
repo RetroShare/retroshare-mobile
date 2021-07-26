@@ -1,13 +1,11 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
-import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/services/account.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'dart:convert';
 
 class TopBar extends StatefulWidget {
@@ -104,8 +102,6 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
   double get getPanelAnimationValue {
     return widget.panelAnimationValue;
   }
-
- 
 
   Widget getHeaderBuilder(BuildContext context, Widget widget) {
     return Container(
@@ -228,22 +224,22 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                 },
                               ),
                             ),
-                          
                             Visibility(
                               child: Button(
                                 name: 'Friends locations',
                                 buttonIcon: Icons.devices,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/friends_locations');
+                                  Navigator.pushNamed(
+                                      context, '/friends_locations');
                                 },
                               ),
                             ),
-                             Visibility(
+                            Visibility(
                               child: Button(
                                 name: 'About',
                                 buttonIcon: Icons.info_rounded,
                                 onPressed: () {
-                                   Navigator.pushNamed(context, '/about');
+                                  Navigator.pushNamed(context, '/about');
                                 },
                               ),
                             ),
@@ -313,9 +309,6 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                               child: Center(
                                 child: Consumer<Identities>(
                                   builder: (context, avatar, _) {
-                                    /*final image = cachedImages[
-                                        avatar.currentIdentity.avatar];*/
-
                                     return Container(
                                       width: heightOfTopBar * 0.75,
                                       height: heightOfTopBar * 0.75,
@@ -339,7 +332,9 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                                                   ),
                                                 ),
                                       child: Visibility(
-                                        visible: (avatar != null),
+                                        visible:
+                                            (avatar.currentIdentity?.avatar ==
+                                                null),
                                         child: Center(
                                           child: Icon(
                                             Icons.person,
@@ -413,7 +408,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
   }
 }
 
-Future<bool> exportIdentityFunc(BuildContext context) async {
+/*Future<bool> exportIdentityFunc(BuildContext context) async {
   Directory appDocDir = await getApplicationDocumentsDirectory();
   final id = Provider.of<AccountCredentials>(context, listen: false)
       .lastAccountUsed
@@ -435,4 +430,4 @@ Future<bool> exportIdentityFunc(BuildContext context) async {
     return false;
   }
   return true;
-}
+}*/

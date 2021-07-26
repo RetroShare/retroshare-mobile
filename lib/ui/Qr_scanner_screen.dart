@@ -12,7 +12,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/provider/friendLocation.dart';
+import 'package:retroshare/provider/auth.dart';
+import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -68,10 +69,12 @@ class _QRScannerState extends State<QRScanner>
 
   Future<String> _getCert() async {
     String ownCert;
+    final authToken =
+        Provider.of<AccountCredentials>(context, listen: false).authtoken;
     if (!check)
-      ownCert = (await getOwnCert()).replaceAll("\n", "");
+      ownCert = (await getOwnCert(authToken)).replaceAll("\n", "");
     else
-      ownCert = (await getShortInvite()).replaceAll("\n", "");
+      ownCert = (await getShortInvite(authToken)).replaceAll("\n", "");
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }
@@ -113,8 +116,6 @@ class _QRScannerState extends State<QRScanner>
     String barcode = null;
     try {
       barcode = await scanner.scan();
-
-      print(barcode);
       if (barcode != null) {
         bool success =
             await Provider.of<FriendLocations>(context, listen: false)
@@ -138,7 +139,6 @@ class _QRScannerState extends State<QRScanner>
       setState(() {
         _requestQR = false;
       });
-      print(e);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -186,11 +186,10 @@ class _QRScannerState extends State<QRScanner>
         final appDir = await getApplicationDocumentsDirectory();
         // final result =
         //await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
-        //print(result);
+
         final file = new File('${appDir.path}/retroshare_qr_code.png').create();
         showToast("Hey there! QR Image has successfully saved.");
       } catch (e) {
-        print(e);
         showToast("Oops! something went wrong.");
       }
     } else if (val == QRoperation.share) {
@@ -280,7 +279,7 @@ class _QRScannerState extends State<QRScanner>
                                   key: _globalkey,
                                   child: QrImage(
                                     errorStateBuilder: (context, result) {
-                                      print(result);
+                                      
                                       /*setState(() {
                                           _requestQR = false;
                                         });*/

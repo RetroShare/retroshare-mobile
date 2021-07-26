@@ -1,19 +1,23 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
 class Identities with ChangeNotifier {
   List<Identity> _ownidentities = [];
   Identity _selected;
-
+ AuthToken _authToken;
+  setAuthToken(AuthToken authToken) async {
+    _authToken = authToken;
+  }
   List<Identity> get ownIdentity => _ownidentities;
   Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
 
 
   Future<void> fetchOwnidenities() async {
-    _ownidentities = await getOwnIdentities();
+    _ownidentities = await getOwnIdentities(_authToken);
     if (_currentIdentity == null &&
         _ownidentities != null &&
         _ownidentities.length > 0) {
@@ -38,7 +42,7 @@ class Identities with ChangeNotifier {
   }
 
   Future<void> createnewIdenity(Identity id, RsGxsImage image) async {
-    Identity newId = await createIdentity(id, image);
+    Identity newId = await createIdentity(id, image, _authToken);
     _ownidentities.add(newId);
     _currentIdentity = newId;
     _selected = _currentIdentity;
@@ -46,7 +50,7 @@ class Identities with ChangeNotifier {
   }
 
   Future<bool> providerdeleteIdentity() async {
-    bool success = await deleteIdentity(_currentIdentity);
+    bool success = await deleteIdentity(_currentIdentity, _authToken);
     if (success) {
       // ignore: unrelated_type_equality_checks
       _ownidentities.removeWhere((element) => element.mId == _currentIdentity);
@@ -61,7 +65,7 @@ class Identities with ChangeNotifier {
   }
 
   Future<bool> updateIdentity(Identity id, RsGxsImage avatar) async {
-    bool success = await updateApiIdentity(id,avatar);
+    bool success = await updateApiIdentity(id,avatar, _authToken);
     if (success) {
       for (var i in _ownidentities) {
         if (i.mId == id.mId) {

@@ -5,7 +5,7 @@ import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/model/app_life_cycle_state.dart';
 import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/provider/FriendsIdentity.dart';
+import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';

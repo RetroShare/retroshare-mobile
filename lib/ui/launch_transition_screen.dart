@@ -10,7 +10,7 @@ class LaunchTransitionScreen extends StatefulWidget {
 }
 
 class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
-  Future<bool> importAccountFunc(BuildContext context) async {
+  /*Future<bool> importAccountFunc(BuildContext context) async {
     FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result != null) {
       File pgpFile = File(result.files.single.path);
@@ -19,7 +19,7 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
         final contents = await file.readAsString();
         await importIdentity(contents);
       } catch (e) {
-        print(e);
+    
         final snackBar = SnackBar(
           content: Text('Oops! Something went wrong'),
           duration: Duration(milliseconds: 200),
@@ -35,7 +35,7 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
                               ),
                               FlatButton(
                                 onPressed: () async {
-                                  await importAccountFunc(context);
+                                  //await importAccountFunc(context);
                                   // todo: implement import account
                                 },
                                 textColor: Colors.white,
