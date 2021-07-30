@@ -17,7 +17,6 @@ import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
-
 Future<List<Chat>> getSubscribedChatLobbies(AuthToken authToken) async {
   final response = await http.get(
     'http://127.0.0.1:9092/rsMsgs/getChatLobbyList',
@@ -38,8 +37,6 @@ Future<List<Chat>> getSubscribedChatLobbies(AuthToken authToken) async {
   } else
     throw Exception('Failed to load response');
 }
-
-
 
 Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
   final response =
@@ -75,7 +72,6 @@ Future<Chat> getChatLobbyInfo(String lobbyId, AuthToken authToken) async {
     throw Exception('Failed to load response');
 }
 
-
 Future<bool> joinChatLobby(
     String chatId, String idToUse, AuthToken authToken) async {
   final response = await http.post(
@@ -96,7 +92,6 @@ Future<bool> joinChatLobby(
   } else
     throw Exception('Failed to load response');
 }
-
 
 Future<bool> createChatLobby(
     String lobbyName, String idToUse, String lobbyTopic,
@@ -132,7 +127,6 @@ Future<bool> createChatLobby(
   throw Exception('Failed to load response');
 }
 
-
 void setLobbyAutoSubscribe(String lobbyId, [bool subs = true]) {
   var req = ReqSetLobbyAutoSubscribe()
     ..lobbyId = new ChatLobbyId()
@@ -140,7 +134,6 @@ void setLobbyAutoSubscribe(String lobbyId, [bool subs = true]) {
     ..autoSubscribe = subs;
   openapi.rsMsgsSetLobbyAutoSubscribe(reqSetLobbyAutoSubscribe: req);
 }
-
 
 Future<bool> getLobbyAutoSubscribe(
   String lobbyId,
@@ -153,7 +146,6 @@ Future<bool> getLobbyAutoSubscribe(
   return resp.retval;
 }
 
-
 Future<void> unsubscribeChatLobby(
   String lobbyId,
 ) async {
@@ -162,7 +154,6 @@ Future<void> unsubscribeChatLobby(
     ..lobbyId.xstr64 = lobbyId;
   openapi.rsMsgsUnsubscribeChatLobby(reqUnsubscribeChatLobby: req);
 }
-
 
 /// Send a message of chat [type].
 ///   0 TYPE_NOT_SET,
@@ -189,6 +180,7 @@ Future<ResSendChat> sendMessage(
       .rsMsgsSendChat(reqSendChat: reqSendChat)
       .then((ResSendChat resSendChat) {
     if (resSendChat.retval) {
+      print(resSendChat.retval);
       //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
         ..chat_id = new ChatId()
@@ -269,7 +261,8 @@ Future<void> _initiateDistantChat(Chat chat, store) async {
     chat.chatId = resp.pid;
     Chat.addDistantChat(to, from, resp.pid);
     await Provider.of<FriendsIdentity>(store, listen: false).fetchAndUpdate();
-   Map<String,Identity> allIDs = Provider.of<FriendsIdentity>(store, listen: false).allIds;
+    Map<String, Identity> allIDs =
+        Provider.of<FriendsIdentity>(store, listen: false).allIds;
     chatActionMiddleware(chat, store);
     allIDs = Provider.of<RoomChatLobby>(store, listen: false)
         .addDistanceChat(chat, allIDs);
