@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
@@ -168,20 +169,36 @@ class _MessagesTabState extends State<MessagesTab> {
                     onPressed: () async {
                       File image = await ImagePicker.pickImage(
                           source: ImageSource.gallery,
+                          imageQuality: 40,
                           maxWidth: 250,
                           maxHeight: 250);
-                      setState(() {
-                        if (image != null) {
-                          var text = base64.encode(image.readAsBytesSync());
-                          sendMessage(
-                              context,
-                              widget.chat.chatId,
-                              text,
-                              (widget.isRoom
-                                  ? ChatIdType.number3_
-                                  : ChatIdType.number2_));
-                        }
-                      });
+                      final bytes = image.readAsBytesSync().lengthInBytes;
+                      final kb = bytes / 1024;
+                      final mb = kb / 1024;
+                      if (mb < 3) {
+                        setState(() {
+                          if (image != null) {
+                            var text = base64.encode(image.readAsBytesSync());
+                            sendMessage(
+                                context,
+                                widget.chat.chatId,
+                                text,
+                                (widget.isRoom
+                                    ? ChatIdType.number3_
+                                    : ChatIdType.number2_));
+                          }
+                        });
+                      }
+                      else {
+                        Fluttertoast.showToast(
+                            msg:"Image Size is too large !",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
                     },
                   ),
                   IconButton(

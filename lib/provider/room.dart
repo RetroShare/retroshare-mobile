@@ -56,7 +56,6 @@ class RoomChatLobby with ChangeNotifier {
       ..addAll({
         distantChat.chatId: [],
       });
-    notifyListeners();
     return allIds != null ? allIds : allIDs;
   }
 

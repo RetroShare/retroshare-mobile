@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
-import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';

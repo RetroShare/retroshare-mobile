@@ -39,6 +39,7 @@ dependencies:
   emoji_picker: ^0.0.3
   transparent_image: ^1.0.0
   cached_network_image: ^2.4.1
+  flutter_image_compress: ^0.7.0
   
   
 
