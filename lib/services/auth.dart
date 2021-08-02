@@ -34,7 +34,7 @@ Future<bool> checkExistingAuthTokens(String locationId, String password, AuthTok
       if (token['key'] + ":" + token['value'] == authToken.toString())
         return true;
     }
-    authorizeNewToken(locationId, password);
+    authorizeNewToken(locationId, password,authToken);
     return true;
   } else if (response.statusCode == 401) {
     return false;
@@ -42,8 +42,8 @@ Future<bool> checkExistingAuthTokens(String locationId, String password, AuthTok
     throw Exception('Failed to load response');
 }
 
-void authorizeNewToken(String locationId, String password) async {
-  final authToken = await authcheck();
+void authorizeNewToken(String locationId, String password,AuthToken authToken) async {
+
   final response = await http.post(
       'http://localhost:9092/RsJsonApi/authorizeUser',
       body: json.encode({'token': '$authToken'}),

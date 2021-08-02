@@ -30,8 +30,8 @@ Future imagePickerDialog(context, Function callback,
                         onPressed: () async => callback(
                               await ImagePicker.pickImage(
                                   source: ImageSource.camera,
-                                  
                                   maxWidth: 250,
+                                  imageQuality: 10,
                                   maxHeight: 250),
                             )),
                   )

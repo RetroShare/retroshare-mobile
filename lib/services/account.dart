@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:retroshare/Middleware/shared_preference.dart';
 
 import 'package:tuple/tuple.dart';
 
@@ -24,7 +23,7 @@ Future<List<Account>> getLocations() async {
       await http.get('http://localhost:9092/rsLoginHelper/getLocations');
 
   if (response.statusCode == 200) {
-    accountsList = [];
+    List<Account> accountsList = [];
     json.decode(response.body)['locations'].forEach((location) {
       if (location != null)
         accountsList.add(Account(location['mLocationId'], location['mPgpId'],
@@ -36,7 +35,6 @@ Future<List<Account>> getLocations() async {
 }
 
 Future<String> exportIdentity(String pgpId, AuthToken authToken) async {
-  final authToken = await authcheck();
   final response =
       await http.post('http://localhost:9092/rsAccounts/exportIdentityToString',
           headers: {
@@ -51,7 +49,6 @@ Future<String> exportIdentity(String pgpId, AuthToken authToken) async {
 }
 
 Future<String> importIdentity(String data, AuthToken authToken) async {
-  final authToken = await authcheck();
   final response = await http.post(
       'http://localhost:9092/rsAccounts/importIdentityFromString',
       body: json.encode({"data": data}));
@@ -62,15 +59,12 @@ Future<String> importIdentity(String data, AuthToken authToken) async {
               'gpg-id': [json.decode(response.body)['pgpId']]
             }));
 
-    
-
     return json.decode(response.body)['pgpId'];
   } else
     throw Exception('Failed to load response');
 }
 
 dynamic requestLogIn(Account selectedAccount, String password) async {
-  final authToken = await authcheck();
   var accountDetails = {
     'account': selectedAccount.locationId,
     'password': password
@@ -79,7 +73,7 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
   final response = await http.post(
       'http://localhost:9092/rsLoginHelper/attemptLogin',
       body: json.encode(accountDetails));
- 
+
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
   } else {
@@ -114,7 +108,6 @@ dynamic requestAccountCreation(String username, String password,
 }
 
 Future<String> getOwnCert(AuthToken authToken) async {
-  final authToken = await authcheck();
   final response = await http
       .get('http://localhost:9092/rsPeers/GetRetroshareInvite', headers: {
     HttpHeaders.authorizationHeader:
@@ -128,8 +121,8 @@ Future<String> getOwnCert(AuthToken authToken) async {
   }
 }
 
-Future<String> getShortInvite(AuthToken authToken) async {
-  final authToken = await authcheck();
+Future<String> getShortInvite(AuthToken authToken,
+    {String sslId, String baseUrl}) async {
   final response =
       await http.get('http://localhost:9092/rsPeers/getShortInvite', headers: {
     HttpHeaders.authorizationHeader:
@@ -143,7 +136,7 @@ Future<String> getShortInvite(AuthToken authToken) async {
   }
 }
 
-Future<bool> addCert(String cert,AuthToken authToken) async {
+Future<bool> addCert(String cert, AuthToken authToken) async {
   final response = await http.post(
     'http://localhost:9092/rsPeers/acceptInvite',
     headers: {
@@ -152,7 +145,7 @@ Future<bool> addCert(String cert,AuthToken authToken) async {
     },
     body: json.encode({'invite': cert}),
   );
-  
+
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
   } else {
@@ -161,18 +154,17 @@ Future<bool> addCert(String cert,AuthToken authToken) async {
 }
 
 Future<bool> parseShortInvite(String cert, AuthToken authToken) async {
-
   final response = await http.post(
     'http://localhost:9092/rsPeers/parseShortInvite',
     headers: {
       HttpHeaders.authorizationHeader:
           'Basic ' + base64.encode(utf8.encode('$authToken'))
     },
-    body: json.encode({'invite': cert}),
+    body: json.encode({'invite': "https://retroshare.me/${cert}"}),
   );
+  print(json.decode(response.body));
 
   if (response.statusCode == 200) {
-    
     return json.decode(response.body)['retval'];
   } else {
     throw Exception('Failed to load response');
@@ -180,7 +172,6 @@ Future<bool> parseShortInvite(String cert, AuthToken authToken) async {
 }
 
 Future<List<Location>> getFriendsAccounts(AuthToken authToken) async {
-
   final response = await http.get(
     'http://localhost:9092/rsPeers/getFriendList',
     headers: {
@@ -191,9 +182,9 @@ Future<List<Location>> getFriendsAccounts(AuthToken authToken) async {
 
   if (response.statusCode == 200) {
     var sslIds = json.decode(response.body)['sslIds'];
-    List<Location> locations = List();
+    List<Location> locations = [];
     for (int i = 0; i < sslIds.length; i++) {
-      locations.add(await getLocationsDetails(sslIds[i],authToken));
+      locations.add(await getLocationsDetails(sslIds[i], authToken));
     }
     return locations;
   } else {
@@ -202,7 +193,6 @@ Future<List<Location>> getFriendsAccounts(AuthToken authToken) async {
 }
 
 Future<Location> getLocationsDetails(String peerId, AuthToken authToken) async {
-  final authToken = await authcheck();
   final response = await http.post(
     'http://localhost:9092/rsPeers/getPeerDetails',
     headers: {
