@@ -96,8 +96,6 @@ class AccountCredentials with ChangeNotifier {
         notifyListeners();
         return map;
       }
-    } on HttpException catch (e) {
-
     } catch (e) {
       throw (e);
     }
@@ -108,7 +106,7 @@ class AccountCredentials with ChangeNotifier {
     final map = {"auth": false, "account": false};
 
     Tuple2<bool, Account> accountCreate;
-    accountCreate = await requestAccountCreation(username, password, nodename);
+    accountCreate =  requestAccountCreation(username, password, nodename);
     if (accountCreate != null && accountCreate.item1) {
       map['account'] = true;
       _accountsList.add(accountCreate.item2);

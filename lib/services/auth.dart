@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:retroshare/Middleware/shared_preference.dart';
 
 import 'package:retroshare/model/auth.dart';
 

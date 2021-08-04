@@ -162,7 +162,7 @@ Future<bool> parseShortInvite(String cert, AuthToken authToken) async {
     },
     body: json.encode({'invite': "https://retroshare.me/${cert}"}),
   );
-  print(json.decode(response.body));
+
 
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
@@ -217,3 +217,4 @@ Future<Location> getLocationsDetails(String peerId, AuthToken authToken) async {
     throw Exception('Failed to load response');
   }
 }
+

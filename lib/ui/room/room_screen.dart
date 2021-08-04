@@ -44,8 +44,6 @@ class _RoomScreenState extends State<RoomScreen>
       final authToken =
           Provider.of<AccountCredentials>(context, listen: false).authtoken;
       await registerChatEvent(context, authToken);
-      /*await Provider.of<FriendsIdentity>(context, listen: false)
-          .fetchAndUpdate();*/
       Provider.of<RoomChatLobby>(context, listen: false)
           .updateCurrentChat(widget.chat);
       if (widget.isRoom) {
@@ -128,7 +126,8 @@ class _RoomScreenState extends State<RoomScreen>
                                                       .avatar))),
                                         ),
                                   child: Visibility(
-                                    visible: (widget.chat.interlocutorId == null ||
+                                    visible:
+                                        (widget.chat.interlocutorId == null ||
                                                 friendIdentity
                                                         .allIds[widget.chat
                                                             .interlocutorId]
@@ -176,7 +175,10 @@ class _RoomScreenState extends State<RoomScreen>
                           widget.isRoom
                               ? widget.chat.chatName
                               : friendIdentity
-                                  .allIds[widget.chat.interlocutorId]?.name??widget.chat.chatName??"name",
+                                      .allIds[widget.chat.interlocutorId]
+                                      ?.name ??
+                                  widget.chat.chatName ??
+                                  "name",
                           style: Theme.of(context).textTheme.body2,
                         ),
                       ),

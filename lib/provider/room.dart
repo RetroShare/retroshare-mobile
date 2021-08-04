@@ -12,7 +12,9 @@ class RoomChatLobby with ChangeNotifier {
   Map<String, List<ChatMessage>> _messagesList;
   Map<String, List<ChatMessage>> get messagesList => {..._messagesList};
   Map<String, List<Identity>> get lobbyParticipants => {..._lobbyParticipants};
+
   Chat get currentChat => _currentChat;
+
   AuthToken _authToken;
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;

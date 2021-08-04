@@ -90,7 +90,9 @@ void chatMiddleware(ChatMessage message, BuildContext context) {
 void chatActionMiddleware(Chat distantChat, BuildContext context) {
   final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIds;
   if (allIds[distantChat.interlocutorId] == null) {
+    var  identity = new Identity(distantChat.interlocutorId);
+    identity.name = distantChat.chatName;
     Provider.of<Identities>(context, listen: false)
-        .callrequestIdentity(new Identity(distantChat.interlocutorId));
+        .callrequestIdentity(identity);
   }
 }

@@ -68,8 +68,10 @@ dependencies:
   share: ^2.0.4
   shared_preferences: ^0.5.4+1
   google_fonts: ^1.1.0
-
-
+  font_awesome_flutter: '>= 4.7.0'
+  step_progress_indicator: ^1.0.1
+  liquid_progress_indicator: ^0.4.0
+  shimmer: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -98,7 +100,7 @@ flutter:
     - assets/icons8/pluto-children-parent-relationships-petting-animal.png
     - assets/icons8/sport-yoga-reading-1.png
     - assets/icons8/virtual-reality.png
-
+    - assets/icons8/participant_list.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

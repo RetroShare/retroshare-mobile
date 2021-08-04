@@ -62,10 +62,11 @@ class _FriendsTabState extends State<FriendsTab> {
                         left: 8,
                         top: 8,
                         right: 16,
-                        bottom:
-                            (friendsDistantAndIdsTuple.item2?.isEmpty ?? true)
-                                ? homeScreenBottomBarHeight * 2
-                                : 8.0),
+                        bottom: (friendsDistantAndIdsTuple.item2?.isEmpty !=
+                                    false ??
+                                true)
+                            ? homeScreenBottomBarHeight * 2
+                            : 8.0),
                     sliver: SliverFixedExtentList(
                       itemExtent: personDelegateHeight,
                       delegate: SliverChildBuilderDelegate(

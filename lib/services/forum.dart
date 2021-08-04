@@ -9,13 +9,14 @@ String errToStr(Map<String, dynamic> cxx_std_error_condition) {
   return "${err["errorCategory"]} ${err["errorNumber"]} ${err["errorMessage"]}";
 }
 
-
 Future<Map<String, dynamic>> rsApiCall(
   String path,
   AuthToken authToken, {
   Map<String, dynamic> params,
 }) async {
-  final response = await http.get('http://localhost:9092${path}', headers: {
+  final reqUrl = 'http://localhost:9092${path}';
+  final response = await http
+      .post(Uri.parse(reqUrl), body: jsonEncode(params ?? {}), headers: {
     HttpHeaders.authorizationHeader:
         'Basic ' + base64.encode(utf8.encode('$authToken'))
   });
@@ -25,24 +26,23 @@ Future<Map<String, dynamic>> rsApiCall(
     throw Exception('Failed to load response');
 }
 
-
 Future<String> createForumV2(String name, AuthToken authToken,
-    {String circleId = ''}) async {
+    {String circleId = '', String description = ''}) async {
   var circleType =
       circleId.isEmpty ? RsGxsCircleType.PUBLIC : RsGxsCircleType.EXTERNAL;
 
-  final response = await rsApiCall('/rsGxsForums/createForumV2', authToken,
-      params: {
-        'name': name,
-        'circleType': circleType.index,
-        'circleId': circleId
-      });
+  final response =
+      await rsApiCall('/rsGxsForums/createForumV2', authToken, params: {
+    'name': name,
+    'description': description,
+    'circleType': circleType.index,
+    'circleId': circleId
+  });
   if (response['retval'] != true) {
     throw Exception('Forum could not be created.');
   }
   return response['forumId'];
 }
-
 
 Future<String> createPost(String forumId, String title, String mBody,
     String authorId, AuthToken authToken,
@@ -62,7 +62,6 @@ Future<String> createPost(String forumId, String title, String mBody,
   return response['postMsgId'];
 }
 
-
 Future<List<dynamic>> getForumsInfo(
     List<String> forumIds, AuthToken authToken) async {
   final response = await rsApiCall('/rsGxsForums/getForumsInfo', authToken,
@@ -73,22 +72,22 @@ Future<List<dynamic>> getForumsInfo(
   return response['forumsInfo'];
 }
 
-
 Future<List<dynamic>> getForumsSummaries(AuthToken authToken) async {
   final response =
       await rsApiCall('/rsGxsForums/getForumsSummaries', authToken);
   if (response['retval'] != true) {
     throw Exception('Could not retrieve forum summaries');
   }
+  getForumMsgMetaData(response['forums'][0]['mGroupId'],authToken);
   return response['forums'];
 }
-
 
 Future<List<RsMsgMetaData>> getForumMsgMetaData(
     String forumId, AuthToken authToken) async {
   final response = await rsApiCall(
       '/rsGxsForums/getForumMsgMetaData', authToken,
       params: {'forumId': forumId});
+  print(response);
   if (response['retval'] != true) {
     throw Exception('Could not retrieve messages metadata');
   }
@@ -97,7 +96,6 @@ Future<List<RsMsgMetaData>> getForumMsgMetaData(
       RsMsgMetaData.fromJson(meta)
   ];
 }
-
 
 Future<List<dynamic>> getForumContent(
     String forumId, AuthToken authToken, List<String> msgIds) async {
@@ -109,7 +107,6 @@ Future<List<dynamic>> getForumContent(
   return response['msgs'];
 }
 
-
 Future<bool> subscribeToForum(
     String forumId, bool subscribe, AuthToken authToken) async {
   final response = await rsApiCall('/rsGxsForums/subscribeToForum', authToken,
@@ -120,7 +117,6 @@ Future<bool> subscribeToForum(
   return response['retval'] == true;
 }
 
-
 void requestSynchronization(AuthToken authToken) async {
   try {
     rsApiCall('/rsGxsForums/requestSynchronization', authToken);
@@ -128,7 +124,6 @@ void requestSynchronization(AuthToken authToken) async {
     print('/rsGxsForums/requestSynchronization not available $err');
   }
 }
-
 
 Future<List<dynamic>> getChildPosts(
     String forumId, String parentId, AuthToken authToken) async {
@@ -147,7 +142,6 @@ Future<List<dynamic>> getChildPosts(
   return childPosts;
 }
 
-
 Future<int> distantSearchRequest(
     String matchString, AuthToken authToken) async {
   final response = await rsApiCall(
@@ -159,7 +153,6 @@ Future<int> distantSearchRequest(
   return response['searchId'];
 }
 
-
 Future<List<dynamic>> localSearch(
     String matchString, AuthToken authToken) async {
   final response = await rsApiCall('/rsGxsForums/localSearch', authToken,
@@ -170,7 +163,6 @@ Future<List<dynamic>> localSearch(
   return response['searchResults'];
 }
 
-
 Future<bool> toggleSubscribeToForum(
     String forumId, bool subscribe, AuthToken authToken) async {
   final response = await rsApiCall('/rsGxsForums/subscribeToForum', authToken,
@@ -178,8 +170,12 @@ Future<bool> toggleSubscribeToForum(
   return response['retval'];
 }
 
-
 String publishTs(Map post) {
   String pts = post['mMeta']['mPublishTs']['xstr64'];
   return pts;
 }
+
+/*Future<void> getForumServiceStatistics(AuthToken authToken) async {
+  final response = await rsApiCall('/rsGxsForums/subscribeToForum', authToken);
+  print(response);
+}*/

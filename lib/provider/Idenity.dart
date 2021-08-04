@@ -7,14 +7,14 @@ import 'package:retroshare/services/identity.dart';
 class Identities with ChangeNotifier {
   List<Identity> _ownidentities = [];
   Identity _selected;
- AuthToken _authToken;
+  AuthToken _authToken;
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;
   }
+
   List<Identity> get ownIdentity => _ownidentities;
   Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
-
 
   Future<void> fetchOwnidenities() async {
     _ownidentities = await getOwnIdentities(_authToken);
@@ -65,7 +65,7 @@ class Identities with ChangeNotifier {
   }
 
   Future<bool> updateIdentity(Identity id, RsGxsImage avatar) async {
-    bool success = await updateApiIdentity(id,avatar, _authToken);
+    bool success = await updateApiIdentity(id, avatar, _authToken);
     if (success) {
       for (var i in _ownidentities) {
         if (i.mId == id.mId) {
@@ -75,10 +75,12 @@ class Identities with ChangeNotifier {
       }
       _currentIdentity = id;
       _selected = _currentIdentity;
-      //notifyListeners();
+      notifyListeners();
     }
     return success;
   }
+
+ 
 
   Future<void> callrequestIdentity(Identity unknownId) async {
     await requestIdentity(unknownId.mId);

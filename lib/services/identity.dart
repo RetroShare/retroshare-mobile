@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 import 'package:tuple/tuple.dart';
-
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/model/auth.dart';
 
@@ -40,6 +39,7 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
     var resp = await getIdDetails(ownIdsList[x].mId, authToken);
     if (resp.item1) ownIdsList[x] = resp.item2;
   }
+
   return ownIdsList;
 }
 
@@ -57,14 +57,16 @@ Future<Tuple2<bool, Identity>> getIdDetails(
     if (json.decode(response.body)['retval']) {
       Identity identity = Identity(id);
       identity.name = json.decode(response.body)['details']['mNickname'];
-      /* identity.avatar = json.decode(response.body)['mAvatar']['mData'] != null
+      identity.avatar = json.decode(response.body)['mAvatar'] != null &&
+              json.decode(response.body)['mAvatar']['mData'] != null
           ? json.decode(response.body)['mAvatar']['mData']['base64']
-          : "";*/
+          : null;
 
       identity.signed =
           json.decode(response.body)['details']['mPgpId'] != '0000000000000000'
               ? true
               : false;
+
       return Tuple2<bool, Identity>(true, identity);
     }
 
@@ -109,10 +111,8 @@ Future<bool> deleteIdentity(Identity identity, AuthToken authToken) async {
       });
 
   if (response.statusCode == 200) {
-    if (json.decode(response.body)['retval'])
-      return true;
-    else
-      return false;
+    if (json.decode(response.body)['retval']) return true;
+    return false;
   } else
     throw Exception('Failed to load response');
 }
@@ -127,7 +127,6 @@ Future<bool> updateApiIdentity(
   };
   if (identity.avatar != null) params['avatar'] = avatar.toJson();
   var b = json.encode(params);
-
   final response = await http.post(
       'http://127.0.0.1:9092/rsIdentity/updateIdentity',
       body: b,
@@ -151,7 +150,7 @@ dynamic getAllIdentities(AuthToken authToken) async {
   });
 
   if (response.statusCode == 200) {
-    List<String> ids = List();
+    List<String> ids = [];
     json.decode(response.body)['ids'].forEach((id) {
       ids.add(id['mGroupId']);
     });
@@ -242,4 +241,16 @@ Future<bool> requestIdentity(
 ) async {
   ReqRequestIdentity req = ReqRequestIdentity()..id = id;
   openapi.rsIdentityRequestIdentity(reqRequestIdentity: req);
+}
+
+Future<bool> setAutoAddFriendIdsAsContact(
+    bool enabled, AuthToken authToken) async {
+  final response = await http.post(
+      'http://127.0.0.1:9092/rsIdentity/setAutoAddFriendIdsAsContact',
+      headers: {
+        HttpHeaders.authorizationHeader:
+            'Basic ' + base64.encode(utf8.encode('$authToken'))
+      },
+      body: jsonEncode({"enabled": enabled}));
+
 }
