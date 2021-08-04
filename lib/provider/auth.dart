@@ -71,7 +71,7 @@ class AccountCredentials with ChangeNotifier {
       // Login success 0, already logged in 1
       if (resp == 0 || resp == 1) {
         bool isAuthTokenValid =
-            await getinitializeAuth(currentAccount.locationId, password);
+            await getinitializeAuth(currentAccount.locationName, password);
         if (!isAuthTokenValid) {
           throw HttpException("AUTHTOKEN FAILED");
         }
@@ -93,7 +93,7 @@ class AccountCredentials with ChangeNotifier {
         _accountsList.add(account_create.item2);
         setLogginAccount(account_create.item2);
         bool isAuthTokenValid =
-            await getinitializeAuth(account_create.item2.locationId, password);
+            await getinitializeAuth(account_create.item2.locationName, password);
         if (!isAuthTokenValid) throw HttpException("AUTHTOKEN FAILED");
         notifyListeners();
       } else

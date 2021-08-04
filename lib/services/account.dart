@@ -83,28 +83,36 @@ dynamic requestLogIn(Account selectedAccount, String password) async {
 
 dynamic requestAccountCreation(String username, String password,
     [String nodeName = 'Mobile']) async {
-  final accountDetails = {
-    "location": {
-      "mLocationName": 'Mobile',
-      "mPgpName": username,
-    },
+  final mParams = {
+    "locationName": username,
+    "pgpName": username,
     "password": password,
-    'makeHidden': false,
-    'makeAutoTor': false
+    "apiUser": username,
+    /* TODO(G10h4ck): The new token scheme permit arbitrarly more secure
+       * options to avoid sending PGP password at each request. */
+    "apiPass": password
   };
+
   final response = await http.post(
-      'http://localhost:9092/rsLoginHelper/createLocation',
-      body: json.encode(accountDetails));
+      'http://localhost:9092/rsLoginHelper/createLocationV2',
+      body: json.encode(mParams));
+  if (response.statusCode == 200) {
+    final resp = await json.decode(response.body);
+    if (!(resp is Map))
+      throw FormatException("response is not a Map");
+    else if (resp["retval"]["errorNumber"] != 0)
+      throw Exception("Failure creating location: " + jsonEncode(response));
+    else if (!(resp["locationId"] is String))
+      throw FormatException("location is not a String");
 
-  if (response.statusCode == 200 && json.decode(response.body)['retval']) {
-    dynamic resp = json.decode(response.body)['location'];
-    Account account = Account(resp['mLocationId'], resp['mPgpId'],
-        resp['mLocationName'], resp['mPgpName']);
-
-    return Tuple2<bool, Account>(json.decode(response.body)['retval'], account);
+    Account account = Account(resp['locationId'], resp['pgpId'],
+        mParams['locationName'], mParams['pgpName']);
+    return Tuple2<bool, Account>(
+        resp["retval"]["errorNumber"] != 0 ? false : true, account);
   } else {
     throw Exception('Failed to load response');
   }
+
 }
 
 Future<String> getOwnCert(AuthToken authToken) async {
@@ -162,6 +170,7 @@ Future<bool> parseShortInvite(String cert, AuthToken authToken) async {
     },
     body: json.encode({'invite': "https://retroshare.me/${cert}"}),
   );
+
 
   if (response.statusCode == 200) {
     return json.decode(response.body)['retval'];
