@@ -187,10 +187,9 @@ class _MessagesTabState extends State<MessagesTab> {
                                     : ChatIdType.number2_));
                           }
                         });
-                      }
-                      else {
+                      } else {
                         Fluttertoast.showToast(
-                            msg:"Image Size is too large !",
+                            msg: "Image Size is too large !",
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 1,

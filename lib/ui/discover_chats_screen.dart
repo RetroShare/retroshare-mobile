@@ -60,7 +60,6 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                     ),
                   ),
                   Expanded(
-                    
                     child: _chatsList.unSubscribedlist != null &&
                             _chatsList.unSubscribedlist.length > 0
                         ? ListView.builder(

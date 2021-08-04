@@ -12,14 +12,14 @@ class ChatLobby with ChangeNotifier {
   AuthToken _authToken;
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;
-      notifyListeners();
+    notifyListeners();
   }
+
   List<VisibleChatLobbyRecord> get unSubscribedlist => _unsubscribedlist;
   Future<void> fetchAndUpdate() async {
     _listchat = await getSubscribedChatLobbies(_authToken);
     notifyListeners();
   }
-
 
   Future<void> fetchAndUpdateUnsubscribed() async {
     _unsubscribedlist = await getUnsubscribedChatLobbies();

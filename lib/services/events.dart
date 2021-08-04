@@ -19,14 +19,14 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
       chatMessage = ChatMessage.fromJson(json['event']['mChatMessage']);
     }
     if (listenCb != null) listenCb(json, chatMessage);
-  },authToken,onError: onError);
+  }, authToken, onError: onError);
 }
 
 /// Register generic Event
 ///
 /// Where [eventType] is the enum that specifies the code.
 Future<StreamSubscription<Event>> registerEvent(
-    RsEventType eventType, Function listenCb,AuthToken authToken,
+    RsEventType eventType, Function listenCb, AuthToken authToken,
     {Function onError}) async {
   if (rsEventsSubscriptions != null && rsEventsSubscriptions[eventType] != null)
     return null;

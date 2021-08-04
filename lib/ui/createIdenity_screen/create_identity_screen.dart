@@ -14,7 +14,6 @@ class CreateIdentityScreen extends StatefulWidget {
 
 class _CreateIdentityScreenState extends State<CreateIdentityScreen>
     with SingleTickerProviderStateMixin {
-
   Animation<Color> _leftTabIconColor;
   Animation<Color> _rightTabIconColor;
   TabController _tabController;
@@ -28,6 +27,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
     _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
         .animate(_tabController.animation);
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -35,7 +35,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
         return Future.value(!widget.isFirstId);
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false ,
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: SafeArea(
           top: true,
@@ -149,11 +149,9 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
               ),
               Expanded(
                   child: TabBarView(controller: _tabController, children: [
-                    PseudoSignedIdenityTab(widget.isFirstId,UniqueKey()),
-                    SignedIdenityTab(widget.isFirstId,UniqueKey())
+                PseudoSignedIdenityTab(widget.isFirstId, UniqueKey()),
+                SignedIdenityTab(widget.isFirstId, UniqueKey())
               ])),
-             
-              
             ],
           ),
         ),

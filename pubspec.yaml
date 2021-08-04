@@ -71,6 +71,7 @@ dependencies:
   font_awesome_flutter: '>= 4.7.0'
   step_progress_indicator: ^1.0.1
   liquid_progress_indicator: ^0.4.0
+  cool_alert: ^1.1.0
   shimmer: ^2.0.0
 dev_dependencies:
   flutter_test:

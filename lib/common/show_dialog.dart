@@ -1,9 +1,48 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 
+errorShowDialog(String title, String text, BuildContext context) {
+  return CoolAlert.show(
+    context: context,
+    type: CoolAlertType.error,
+    onConfirmBtnTap: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+    title: title,
+    text: text,
+  );
+}
+
+successShowDialog(String title, String text, BuildContext context) {
+  return CoolAlert.show(
+    context: context,
+    type: CoolAlertType.success,
+    onConfirmBtnTap: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+    title: title,
+    text: text,
+  );
+}
+
+warningShowDialog(String title, String text, BuildContext context) {
+  return CoolAlert.show(
+    context: context,
+    type: CoolAlertType.warning,
+    onConfirmBtnTap: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+    title: title,
+    text: text,
+  );
+}
 
 contentBox(context) {
   return Stack(
@@ -65,9 +104,6 @@ contentBox(context) {
     ],
   );
 }
-
-
-
 
 // delete dialog Box
 

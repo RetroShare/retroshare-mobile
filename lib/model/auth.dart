@@ -14,8 +14,10 @@ class AuthToken {
   get password => _password;
 
   AuthToken(this._username, this._password) {
-    defaultApiClient.getAuthentication<HttpBasicAuth>('BasicAuth').username = this._username;
-    defaultApiClient.getAuthentication<HttpBasicAuth>('BasicAuth').password = this._password;
+    defaultApiClient.getAuthentication<HttpBasicAuth>('BasicAuth').username =
+        this._username;
+    defaultApiClient.getAuthentication<HttpBasicAuth>('BasicAuth').password =
+        this._password;
   }
 
   @override

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:openapi/api.dart';
@@ -73,18 +72,17 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       ],
       child: Builder(
         builder: (context) {
-          return
-        OKToast(
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Retroshare',
-          //home: AddFriendScreen()
-          initialRoute: '/profile',
-          onGenerateRoute: RouteGenerator.generateRoute,
-          ),
-    );
-     },
-    ),
+          return OKToast(
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Retroshare',
+              //home: AddFriendScreen()
+              initialRoute: '/profile',
+              onGenerateRoute: RouteGenerator.generateRoute,
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -77,8 +77,6 @@ enum RsForumEventCode {
   DISTANT_SEARCH_RESULT, //= 0x0e
 }
 
-
-
 enum RsGxsCircleType {
   /// Used to detect uninizialized values.
   UNKNOWN,

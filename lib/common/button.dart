@@ -13,8 +13,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(onPressed != null)
-          onPressed();
+        if (onPressed != null) onPressed();
       },
       child: Container(
         color: Colors.white,

@@ -80,8 +80,6 @@ class Identities with ChangeNotifier {
     return success;
   }
 
- 
-
   Future<void> callrequestIdentity(Identity unknownId) async {
     await requestIdentity(unknownId.mId);
     notifyListeners();

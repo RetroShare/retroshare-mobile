@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:retroshare/model/auth.dart';
 
 Future<bool> isAuthTokenValid(AuthToken authToken) async {
-
   final response = await http
       .get('http://localhost:9092/RsJsonApi/getAuthorizedTokens', headers: {
     HttpHeaders.authorizationHeader:
@@ -20,7 +19,8 @@ Future<bool> isAuthTokenValid(AuthToken authToken) async {
     return false;
 }
 
-Future<bool> checkExistingAuthTokens(String locationId, String password, AuthToken authToken) async {
+Future<bool> checkExistingAuthTokens(
+    String locationId, String password, AuthToken authToken) async {
   final response = await http
       .get('http://localhost:9092/RsJsonApi/getAuthorizedTokens', headers: {
     HttpHeaders.authorizationHeader:
@@ -33,7 +33,7 @@ Future<bool> checkExistingAuthTokens(String locationId, String password, AuthTok
       if (token['key'] + ":" + token['value'] == authToken.toString())
         return true;
     }
-    authorizeNewToken(locationId, password,authToken);
+    authorizeNewToken(locationId, password, authToken);
     return true;
   } else if (response.statusCode == 401) {
     return false;
@@ -41,8 +41,8 @@ Future<bool> checkExistingAuthTokens(String locationId, String password, AuthTok
     throw Exception('Failed to load response');
 }
 
-void authorizeNewToken(String locationId, String password,AuthToken authToken) async {
-
+void authorizeNewToken(
+    String locationId, String password, AuthToken authToken) async {
   final response = await http.post(
       'http://localhost:9092/RsJsonApi/authorizeUser',
       body: json.encode({'token': '$authToken'}),
@@ -54,6 +54,6 @@ void authorizeNewToken(String locationId, String password,AuthToken authToken) a
   if (response.statusCode == 200) {
     return;
   }
-  
-    throw Exception('Failed to load response');
+
+  throw Exception('Failed to load response');
 }

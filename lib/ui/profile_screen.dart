@@ -104,18 +104,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 height: 300 * 0.7,
                 width: 300 * 0.7,
-                decoration: widget.curr.avatar == null?
-                    null
+                decoration: widget.curr.avatar == null
+                    ? null
                     : BoxDecoration(
                         borderRadius: BorderRadius.circular(300 * 0.7 * 0.33),
                         image: DecorationImage(
-                         fit: BoxFit.fitWidth,
-                        image: MemoryImage(
-                              base64.decode(widget.curr.avatar)),
+                          fit: BoxFit.fitWidth,
+                          image: MemoryImage(base64.decode(widget.curr.avatar)),
                         ),
                       ),
                 child: Visibility(
-                  visible: widget.curr.avatar != null?false:true,
+                  visible: widget.curr.avatar != null ? false : true,
                   child: Center(
                     child: Icon(
                       Icons.person,

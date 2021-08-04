@@ -66,7 +66,6 @@ class _MyWebViewState extends State<MyWebView> {
                 initialUrl: 'https://retrosharedocs.readthedocs.io/en/latest/',
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller.complete(webViewController);
-              
                 },
                 onPageFinished: _handleLoad,
               ),

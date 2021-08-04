@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:openapi/api.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/services/chat.dart';
-import 'package:retroshare/services/init.dart';
 
 //// tests for ChatId
 void main() {

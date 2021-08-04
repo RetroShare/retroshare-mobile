@@ -6,4 +6,3 @@ class Account {
 
   Account(this.locationId, this.pgpId, this.locationName, this.pgpName);
 }
-

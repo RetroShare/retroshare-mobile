@@ -1,13 +1,11 @@
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/model/account.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/services/account.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -80,30 +78,29 @@ class _SignInScreenState extends State<SignInScreen> {
       'isLoading': true,
       'spinner': true
     });
-
-    Provider.of<AccountCredentials>(context, listen: false)
-        .login(currentAccount, password)
-        .then((value) {
-      try {
-        if (value['res'] == 0 || value['res'] == 1) {
-          if (value['auth']) {
-            final ids = Provider.of<Identities>(context, listen: false);
-            ids.fetchOwnidenities().then((value) {
-              ids.ownIdentity != null && ids.ownIdentity.length == 0
-                  ? Navigator.pushReplacementNamed(context, '/create_identity',
-                      arguments: true)
-                  : Navigator.pushReplacementNamed(context, '/home');
-            });
-          } else {
-            _isWrongPassword();
-          }
-        } else if (value['res'] == 3) {
-          _isWrongPassword();
-        }
-      } catch (e) {
-        print('error');
-      }
-    });
+    try {
+      await Provider.of<AccountCredentials>(context, listen: false)
+          .login(currentAccount, password);
+      final ids = Provider.of<Identities>(context, listen: false);
+      ids.fetchOwnidenities().then((value) {
+        ids.ownIdentity != null && ids.ownIdentity.length == 0
+            ? Navigator.pushReplacementNamed(context, '/create_identity',
+                arguments: true)
+            : Navigator.pushReplacementNamed(context, '/home');
+      });
+    } on HttpException catch (error) {
+      var errorMessage = 'Authentication failed';
+      print(error);
+      if (error.toString().contains('WRONG PASSWORD')) {
+        errorMessage = 'Your Password is wrong';
+        errorShowDialog('WRONG PASSWORD', errorMessage, context);
+      } else
+        errorShowDialog(
+            errorMessage, 'Please input your valid credentials', context);
+    } catch (e) {
+      errorShowDialog('Retroshare Service Down',
+          'Please ensure retroshare dervice is not down!', context);
+    }
   }
 
   void _isWrongPassword() {

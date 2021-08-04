@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/show_dialog.dart';
+import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 
@@ -65,24 +67,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
       'isLoading': true,
       'spinner': true
     });
-    final item = Provider.of<AccountCredentials>(context, listen: false);
-    item
-        .signup(usernameController.text, passwordController.text,
-            nodeNameController.text)
-        .then((value) {
-      if (value['account']) {
-        if (value['auth']) {
-          final ids = Provider.of<Identities>(context, listen: false);
-          ids.fetchOwnidenities().then((value) {
-            ids.ownIdentity != null && ids.ownIdentity.length == 0
-                ? Navigator.pushReplacementNamed(context, '/create_identity',
-                    arguments: true)
-                : Navigator.pushReplacementNamed(context, '/home');
-          });
-        } else
-          Navigator.pop(context);
-      }
-    });
+    try {
+      final account_signup =
+          Provider.of<AccountCredentials>(context, listen: false);
+      account_signup.signup(usernameController.text, passwordController.text,
+          nodeNameController.text);
+
+      final ids = Provider.of<Identities>(context, listen: false);
+      ids.fetchOwnidenities().then((value) {
+        ids.ownIdentity != null && ids.ownIdentity.length == 0
+            ? Navigator.pushReplacementNamed(context, '/create_identity',
+                arguments: true)
+            : Navigator.pushReplacementNamed(context, '/home');
+      });
+    } on HttpException catch (err) {
+      var errorMessage = 'Authentication failed';
+      errorShowDialog("Auth Failed", 'Something went wrong', context);
+    } catch (e) {
+      errorShowDialog('Retroshare Service Down',
+          'Please ensure retroshare dervice is not down!', context);
+    }
   }
 
   @override

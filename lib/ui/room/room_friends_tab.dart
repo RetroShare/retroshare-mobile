@@ -26,6 +26,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -101,42 +102,40 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                       },
                     )
                   : Center(
-                child: SizedBox(
-                  width: 200,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      myImage,
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          'Looks like an empty space',
-                          style: Theme.of(context).textTheme.body2,
-                          textAlign: TextAlign.center,
+                      child: SizedBox(
+                        width: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            myImage,
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                'Looks like an empty space',
+                                style: Theme.of(context).textTheme.body2,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                'You can invite your friends',
+                                style: Theme.of(context).textTheme.body1,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          'You can invite your friends',
-                          style: Theme.of(context).textTheme.body1,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                    ],
-                  ),
-                ),
-              );
+                    );
             });
-          return Center(
-            child:CircularProgressIndicator()
-          );
+          return Center(child: CircularProgressIndicator());
         });
   }
 }

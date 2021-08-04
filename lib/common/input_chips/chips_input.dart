@@ -405,13 +405,10 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
   }
 
   @override
-  void updateFloatingCursor(RawFloatingCursorPoint point) {
-
-  }
+  void updateFloatingCursor(RawFloatingCursorPoint point) {}
 
   @override
-  void connectionClosed() {
-  }
+  void connectionClosed() {}
 
   @override
   TextEditingValue get currentTextEditingValue => _value;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:retroshare/ui/Update_idenity_screen.dart';
 import 'package:retroshare/ui/about_screen.dart';
+import 'package:retroshare/ui/forum_screen.dart';
 import 'package:retroshare/ui/profile_screen.dart';
 import 'package:retroshare/ui/splash_screen.dart';
 import 'package:retroshare/ui/home/home_screen.dart';
@@ -66,14 +67,13 @@ class RouteGenerator {
 
         return MaterialPageRoute(builder: (_) => CreateIdentityScreen());
       case '/profile':
-       if (args is Map)
+        if (args is Map)
           return MaterialPageRoute(
               builder: (_) => ProfileScreen(
                     curr: args['id'],
                   ));
-                  return   MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => SplashScreen());
 
-       
       case '/change_identity':
         return MaterialPageRoute(builder: (_) => ChangeIdentityScreen());
       case '/add_friend':
@@ -89,6 +89,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => FriendsLocationsScreen());
       case '/about':
         return MaterialPageRoute(builder: (_) => MyWebView());
+
+      case '/forum':
+        return MaterialPageRoute(builder: (_) => ForumScreen());
       default:
         return _errorRoute();
     }

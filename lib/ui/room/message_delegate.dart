@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:retroshare/model/chat.dart';
+
 class MessageDelegate extends StatelessWidget {
   const MessageDelegate({this.data, this.bubbleTitle});
 
@@ -46,14 +45,14 @@ class MessageDelegate extends StatelessWidget {
                 Stack(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
-                      child:
-                      Html(
-                          data: (isMessageType(data.msg)? "<img alt='Red dot (png)' src='data:image/png;base64,${data.msg}' />" : data.msg) +
-                              "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
-                          )
-                    ),
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
+                        child: Html(
+                            data: (isMessageType(data.msg)
+                                    ? "<img alt='Red dot (png)' src='data:image/png;base64,${data.msg}' />"
+                                    : data.msg) +
+                                "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
+                            )),
                     //real additionalInfo
                     Positioned(
                       child: Text(

@@ -78,7 +78,7 @@ Future<List<dynamic>> getForumsSummaries(AuthToken authToken) async {
   if (response['retval'] != true) {
     throw Exception('Could not retrieve forum summaries');
   }
-  getForumMsgMetaData(response['forums'][0]['mGroupId'],authToken);
+  getForumMsgMetaData(response['forums'][0]['mGroupId'], authToken);
   return response['forums'];
 }
 

@@ -252,5 +252,4 @@ Future<bool> setAutoAddFriendIdsAsContact(
             'Basic ' + base64.encode(utf8.encode('$authToken'))
       },
       body: jsonEncode({"enabled": enabled}));
-
 }

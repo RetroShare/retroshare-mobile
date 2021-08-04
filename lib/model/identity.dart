@@ -20,7 +20,6 @@ class Identity {
   }
 }
 
-
 class RsGxsImage {
   int mSize;
   Uint8List mData;

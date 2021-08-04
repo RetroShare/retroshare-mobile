@@ -16,7 +16,6 @@ import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 enum QRoperation { save, refresh, share }
@@ -279,7 +278,6 @@ class _QRScannerState extends State<QRScanner>
                                   key: _globalkey,
                                   child: QrImage(
                                     errorStateBuilder: (context, result) {
-                                      
                                       /*setState(() {
                                           _requestQR = false;
                                         });*/

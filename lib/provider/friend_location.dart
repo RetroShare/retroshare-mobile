@@ -13,8 +13,6 @@ class FriendLocations with ChangeNotifier {
   }
 
   Future<void> fetchfriendLocation() async {
-   
-
     _friendlist = await getFriendsAccounts(_authToken);
     notifyListeners();
   }
@@ -26,7 +24,7 @@ class FriendLocations with ChangeNotifier {
     else
       isAdded = await addCert(name, _authToken);
     if (isAdded) {
-       setAutoAddFriendIdsAsContact(true, _authToken);
+      setAutoAddFriendIdsAsContact(true, _authToken);
       fetchfriendLocation();
       return true;
     }

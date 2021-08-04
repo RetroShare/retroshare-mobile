@@ -29,7 +29,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     super.initState();
     nameController = TextEditingController(text: widget.curr.name);
     if (widget.curr.avatar != null)
-      _image = new  RsGxsImage(base64.decode(widget.curr.avatar));
+      _image = new RsGxsImage(base64.decode(widget.curr.avatar));
   }
 
   @override
@@ -181,7 +181,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                     child: Container(
                                       height: 300 * 0.7,
                                       width: 300 * 0.7,
-                                      decoration: _image?.mData == null 
+                                      decoration: _image?.mData == null
                                           ? null
                                           : BoxDecoration(
                                               borderRadius:
