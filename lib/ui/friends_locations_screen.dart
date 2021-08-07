@@ -20,6 +20,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
   }
 
   Future<void> _getFriendsAccounts() async {
+    await Future.delayed(Duration(seconds: 3));
     await Provider.of<FriendLocations>(context, listen: false)
         .fetchfriendLocation();
   }
@@ -135,7 +136,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                           })
                         : Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
+                                horizontal: 15, vertical: 0),
                             child: Shimmer(
                               gradient: LinearGradient(
                                 colors: [

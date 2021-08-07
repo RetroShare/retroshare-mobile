@@ -1,5 +1,0 @@
-// Qt for Android install path
-qt.installdir=C:/Qt/5.12.5/
-
-// Paths of retroshare-service APKs separated by ':' to extract the native libraries
-retroshare.servicepackages=/retroshare-service-apks/android-build-debug-armeabi-v7a.apk:/retroshare-service-apks/android-build-debug-arm64-v8a.apk

@@ -8,9 +8,7 @@ import 'package:shimmer/shimmer.dart';
 
 class ChatsTab extends StatelessWidget {
   void _unsubscribeChatLobby(String lobbyId, context) async {
-    Provider.of<ChatLobby>(context, listen: false)
-        .unsubscribed(lobbyId)
-        .then((value) => {});
+    Provider.of<ChatLobby>(context, listen: false).unsubscribed(lobbyId); 
   }
 
   @override

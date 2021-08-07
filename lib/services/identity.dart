@@ -151,6 +151,7 @@ dynamic getAllIdentities(AuthToken authToken) async {
 
   if (response.statusCode == 200) {
     List<String> ids = [];
+    print(json.decode(response.body)['ids'].length);
     json.decode(response.body)['ids'].forEach((id) {
       ids.add(id['mGroupId']);
     });
@@ -210,7 +211,9 @@ dynamic getAllIdentities(AuthToken authToken) async {
       notContactIds.sort((id1, id2) {
         return id1.name.compareTo(id2.name);
       });
-
+      print("checks");
+      print(signedContactIds.length);
+      print(contactIds.length);
       return Tuple3<List<Identity>, List<Identity>, List<Identity>>(
           signedContactIds, contactIds, notContactIds);
     }
