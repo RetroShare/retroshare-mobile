@@ -98,7 +98,7 @@ class _SignInScreenState extends State<SignInScreen> {
             errorMessage, 'Please input your valid credentials', context);
     } catch (e) {
       errorShowDialog('Retroshare Service Down',
-          'Please ensure retroshare dervice is not down!', context);
+          'Please ensure retroshare service is not down!', context);
     }
   }
 
