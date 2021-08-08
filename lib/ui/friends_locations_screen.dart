@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:shimmer/shimmer.dart';
@@ -34,36 +33,16 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text("Friend Location",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,fontFamily: "Oxygen"),),
+        automaticallyImplyLeading: true,
+      ),
       body: SafeArea(
         top: true,
         bottom: true,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: appBarHeight,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: personDelegateHeight,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        size: 25,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Friends locations',
-                      style: Theme.of(context).textTheme.body2,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+        child:
             Expanded(
               child: FutureBuilder(
                   future: _getFriendsAccounts(),
@@ -210,8 +189,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                           );
                   }),
             ),
-          ],
-        ),
+          
       ),
     );
   }

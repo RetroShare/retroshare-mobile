@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:retroshare/model/auth.dart';
+import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 import 'package:tuple/tuple.dart';
@@ -41,9 +42,13 @@ class FriendsIdentity with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> toggleContacts(String gxsId, bool type) async {
-    bool success = await setContact(gxsId, false, _authToken);
-    if (success) await fetchAndUpdate();
-    return success;
+  Future<void> toggleContacts(String gxsId, bool type) async {
+    try {
+      bool success = await setContact(gxsId, false, _authToken);
+      await fetchAndUpdate();
+      if (!success) throw HttpException("CHECK CONNECTIVITY");
+    } catch (e) {
+      throw e;
+    }
   }
 }

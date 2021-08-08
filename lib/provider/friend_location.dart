@@ -17,17 +17,19 @@ class FriendLocations with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> addFriendLocation(String name) async {
+  Future<void> addFriendLocation(String name) async {
     bool isAdded = false;
-    if (name != null && name.length < 100)
-      isAdded = await parseShortInvite(name, _authToken);
-    else
-      isAdded = await addCert(name, _authToken);
-    if (isAdded) {
-      setAutoAddFriendIdsAsContact(true, _authToken);
-      fetchfriendLocation();
-      return true;
+    try {
+      if (name != null && name.length < 100)
+        isAdded = await parseShortInvite(name, _authToken);
+      else
+        isAdded = await addCert(name, _authToken);
+      if (isAdded) {
+        setAutoAddFriendIdsAsContact(true, _authToken);
+        fetchfriendLocation();
+      }
+    } catch (e) {
+      throw e;
     }
-    return false;
   }
 }

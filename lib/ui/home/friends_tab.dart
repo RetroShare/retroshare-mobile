@@ -17,13 +17,13 @@ class FriendsTab extends StatefulWidget {
 }
 
 class _FriendsTabState extends State<FriendsTab> {
-  void _removeFromContacts(String gxsId) async {
-    await Provider.of<FriendsIdentity>(context, listen: false)
+  void _removeFromContacts(String gxsId) {
+     Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, false);
   }
 
-  void _addToContacts(String gxsId) async {
-    await Provider.of<FriendsIdentity>(context, listen: false)
+  void _addToContacts(String gxsId)  {
+    Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, true);
   }
 

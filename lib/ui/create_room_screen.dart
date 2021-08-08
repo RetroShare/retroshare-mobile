@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/input_chips/chips_input.dart';
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/provider/friends_identity.dart';
@@ -156,17 +157,21 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       _doneButtonController.reverse();
       final id =
           Provider.of<Identities>(context, listen: false).currentIdentity.mId;
-      print(_selectedLocations.length);
-      bool success = await Provider.of<ChatLobby>(context, listen: false)
-          .createChatlobby(
-              _roomNameController.text, id, _roomTopicController.text,
-              inviteList: _selectedLocations,
-              anonymous: isAnonymous,
-              public: isPublic);
-
-      if (success) {
-        Navigator.pop(context);
+      try {
+        Provider.of<ChatLobby>(context, listen: false)
+            .createChatlobby(
+                _roomNameController.text, id, _roomTopicController.text,
+                inviteList: _selectedLocations,
+                anonymous: isAnonymous,
+                public: isPublic)
+            .then((value) {
+          Navigator.of(context).pop();
+        });
+      } catch (e) {
+        errorShowDialog(
+            "Error", "Please ensure retroshare service is not down!", context);
       }
+
       _doneButtonController.forward();
       _blockCreation = false;
     }

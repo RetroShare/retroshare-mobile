@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -116,23 +117,17 @@ class _QRScannerState extends State<QRScanner>
     try {
       barcode = await scanner.scan();
       if (barcode != null) {
-        bool success =
-            await Provider.of<FriendLocations>(context, listen: false)
-                .addFriendLocation(barcode);
-
-        if (success) {
-          setState(() {
-            _requestQR = false;
-          });
-          showToast('Friend has successfully added');
-        } else {
-          setState(() {
-            _requestQR = false;
-          });
-          showToast('An error occurred while adding your friend.');
-        }
-      } else {
-        showToast('An error occurred while adding your friend.');
+        Provider.of<FriendLocations>(context, listen: false)
+            .addFriendLocation(barcode).then((value) {
+                 Fluttertoast.showToast(
+              msg: "Friend has been added",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+            });
       }
     } catch (e) {
       setState(() {

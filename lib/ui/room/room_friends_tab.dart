@@ -35,8 +35,8 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
         .updateParticipants(widget.chat.chatId);
   }
 
-  void _addToContacts(String gxsId) async {
-    await Provider.of<FriendsIdentity>(context, listen: false)
+  void _addToContacts(String gxsId)  {
+    Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, true);
   }
 

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:retroshare/common/styles.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MyWebView extends StatefulWidget {
@@ -23,39 +22,13 @@ class _MyWebViewState extends State<MyWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text("About",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,fontFamily: "Oxygen"),),
+        centerTitle: true,
+      ),
         body: SafeArea(
-      child: Column(children: [
-        Container(
-          height: appBarHeight,
-          child: Row(
-            children: <Widget>[
-              Visibility(
-                visible: true,
-                child: Container(
-                  width: personDelegateHeight,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 25,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.0),
-                  child: Text(
-                    'About',
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      child: 
         Expanded(
           child: IndexedStack(
             index: _stackToView,
@@ -77,7 +50,7 @@ class _MyWebViewState extends State<MyWebView> {
             ],
           ),
         ),
-      ]),
+    
     ));
   }
 }

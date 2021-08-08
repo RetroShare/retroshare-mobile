@@ -1,9 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/show_dialog.dart';
-import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/account.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/auth.dart';
@@ -23,102 +20,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final Account lastAccount =
         Provider.of<AccountCredentials>(context, listen: false).loggedinAccount;
     return Scaffold(
-      body: Padding(
-          padding: const EdgeInsets.only(top: 40, left: 8, right: 8),
-          child: SingleChildScrollView(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          "Identity Info",
+          style: TextStyle(
+              fontWeight: FontWeight.w600, fontSize: 16, fontFamily: "Oxygen"),
+        ),
+        automaticallyImplyLeading: true,
+      ),
+      body: 
+          SingleChildScrollView(
             child: Column(children: <Widget>[
               Container(
-                  height: appBarHeight,
-                  child: Row(children: <Widget>[
-                    Visibility(
-                      visible: true,
-                      child: Container(
-                        width: personDelegateHeight,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            size: 25,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Identity Info',
-                      style: Theme.of(context).textTheme.body2,
-                    ),
-                    Spacer(),
-                    PopupMenuButton(
-                      onSelected: (val) {
-                        val == "edit"
-                            ? Navigator.of(context).pushReplacementNamed(
-                                '/updateIdentity',
-                                arguments: {'id': widget.curr})
-                            : showdeleteDialog(context);
-                      },
-                      icon: Icon(Icons.more_vert),
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          PopupMenuItem(
-                              child: Row(children: [
-                                Icon(
-                                  Icons.edit,
-                                  size: 20,
-                                ),
-                                SizedBox(
-                                  width: 7,
-                                ),
-                                Text(
-                                  'Edit',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                )
-                              ]),
-                              value: 'edit'),
-                          PopupMenuItem(
-                              child: Row(children: [
-                                Icon(
-                                  Icons.delete,
-                                  size: 20,
-                                ),
-                                SizedBox(
-                                  width: 7,
-                                ),
-                                Text(
-                                  'Delete',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                )
-                              ]),
-                              value: 'trash'),
-                        ];
-                      },
-                    ),
-                    SizedBox(width: 10),
-                  ])),
-              Container(
-                height: 300 * 0.7,
-                width: 300 * 0.7,
-                decoration: widget.curr.avatar == null
-                    ? null
+                height: 100,
+                width: 100,
+                margin: const EdgeInsets.only(top: 10),
+                decoration: (widget.curr.avatar == null)
+                    ? BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.black))
                     : BoxDecoration(
-                        borderRadius: BorderRadius.circular(300 * 0.7 * 0.33),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.black),
                         image: DecorationImage(
                           fit: BoxFit.fitWidth,
-                          image: MemoryImage(base64.decode(widget.curr.avatar)),
+                          image: MemoryImage(
+                              base64.decode(widget.curr.avatar)),
                         ),
                       ),
                 child: Visibility(
-                  visible: widget.curr.avatar != null ? false : true,
+                  visible: (widget.curr?.avatar == null),
                   child: Center(
                     child: Icon(
                       Icons.person,
-                      size: 300 * 0.7,
+                      size: 80,
                     ),
                   ),
                 ),
@@ -141,58 +78,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 20),
                   textField(lastAccount.locationId, "Node ID"),
                   SizedBox(height: 20),
-                  FlatButton(
-                    onPressed: () async {
+                  InkWell(
+                    
+                    onTap: () async {
                       Navigator.of(context).pushReplacementNamed(
                           '/updateIdentity',
                           arguments: {'id': widget.curr});
                     },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: <Color>[
-                              Color(0xFF00FFFF),
-                              Color(0xFF29ABE2),
-                            ],
-                            begin: Alignment(-1.0, -4.0),
-                            end: Alignment(1.0, 4.0),
+            
+                    child:
+                      Container(
+                         height: 40,
+                         width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF00FFFF),
+                                Color(0xFF29ABE2),
+                              ],
+                              begin: Alignment(-1.0, -4.0),
+                              end: Alignment(1.0, 4.0),
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical:10.0,horizontal: 6),
+                          child: const Text(
+                            'Edit Identity',
+                            style: TextStyle(fontSize: 15,fontFamily: "Vollkorn"),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        padding: const EdgeInsets.all(10.0),
-                        child: const Text(
-                          'Edit Identity',
-                          style: TextStyle(fontSize: 15),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
+                     ),
                 ])),
               )
             ]),
-          )),
+          ),
     );
   }
 }
 
 Widget textField(String text, String label) {
-  return TextFormField(
-    readOnly: true,
-    initialValue: text,
-    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-    decoration: InputDecoration(
-        labelText: label,
-        prefix: SizedBox(
-          width: 10,
-        ),
-        labelStyle: TextStyle(fontSize: 12),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-            borderRadius: BorderRadius.circular(6))),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    
+    children: [
+      Text(label,style: TextStyle(fontFamily: "Vollkorn",fontSize: 16,fontWeight: FontWeight.w600),),
+      TextFormField(
+        readOnly: true,
+        initialValue: text,
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,fontFamily: 'Oxygen'),
+        decoration: InputDecoration(
+            prefix: SizedBox(
+              width: 10,
+            ),
+            labelStyle: TextStyle(fontSize: 12),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black,width: 2),
+                borderRadius: BorderRadius.circular(12))),
+      ),
+    ],
   );
 }

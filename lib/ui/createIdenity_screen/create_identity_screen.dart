@@ -30,56 +30,28 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return Future.value(!widget.isFirstId);
-      },
-      child: Scaffold(
+    return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
+        appBar: AppBar(backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          "Create Identity",
+          style: TextStyle(
+              fontWeight: FontWeight.w600, fontSize: 16, fontFamily: "Oxygen"),
+        ),
+        automaticallyImplyLeading: true,
+        ),
         body: SafeArea(
           top: true,
           bottom: true,
           child: Column(
             children: <Widget>[
               Container(
-                height: appBarHeight,
-                child: Row(
-                  children: <Widget>[
-                    Visibility(
-                      visible: !widget.isFirstId,
-                      child: Container(
-                        width: personDelegateHeight,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            size: 25,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: widget.isFirstId
-                                ? 16.0 + personDelegateHeight * 0.04
-                                : 0.0),
-                        child: Text(
-                          'Create identity',
-                          style: Theme.of(context).textTheme.body2,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
                 child: Padding(
                   padding: EdgeInsets.only(
                     bottom: (appBarHeight - 40) / 2,
+                    top: 20,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +127,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

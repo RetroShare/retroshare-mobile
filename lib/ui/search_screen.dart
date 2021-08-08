@@ -393,8 +393,8 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  void _toggleContacts(String gxsId, bool type) async {
-    await Provider.of<FriendsIdentity>(context, listen: false)
+  void _toggleContacts(String gxsId, bool type)  {
+     Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, type);
   }
 

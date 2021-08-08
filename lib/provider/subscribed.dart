@@ -10,6 +10,7 @@ class ChatLobby with ChangeNotifier {
   List<VisibleChatLobbyRecord> _unsubscribedlist = [];
   List<Chat> get subscribedlist => _listchat;
   AuthToken _authToken;
+
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;
     notifyListeners();
@@ -33,14 +34,17 @@ class ChatLobby with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> createChatlobby(
+  Future<void> createChatlobby(
       String lobbyName, String idToUse, String lobbyTopic,
       {List<Location> inviteList = const <Location>[],
       bool public = true,
       bool anonymous = true}) async {
-    bool success = await createChatLobby(lobbyName, idToUse, lobbyTopic,
-        inviteList: inviteList, anonymous: anonymous, public: public);
-    if (success) fetchAndUpdate();
-    return success;
+    try {
+      bool success = await createChatLobby(lobbyName, idToUse, lobbyTopic,
+          inviteList: inviteList, anonymous: anonymous, public: public);
+      if (success) fetchAndUpdate();
+    } catch (e) {
+      throw e;
+    }
   }
 }

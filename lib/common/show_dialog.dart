@@ -2,6 +2,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
+import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 
@@ -131,11 +132,18 @@ void showdeleteDialog(context) {
             FlatButton(
               child: Text('Delete'),
               onPressed: () async {
-                bool success =
-                    await Provider.of<Identities>(context, listen: false)
-                        .providerdeleteIdentity();
-                if (success) {
-                  Navigator.pushReplacementNamed(context, '/change_identity');
+                try {
+                  Provider.of<Identities>(context, listen: false)
+                      .deleteIdentityfunc();
+                } on HttpException catch (err) {
+                  warningShowDialog(
+                    "Retro Service is Down",
+                  "Please ensure retroshare service is not down",
+                  context
+                  );
+                } catch (e) {
+                  warningShowDialog("Try Again",
+                      "Something wrong happens!", context);
                 }
               },
             ),

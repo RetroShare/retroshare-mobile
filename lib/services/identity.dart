@@ -113,7 +113,8 @@ Future<bool> deleteIdentity(Identity identity, AuthToken authToken) async {
   if (response.statusCode == 200) {
     if (json.decode(response.body)['retval']) return true;
     return false;
-  } else
+  } 
+  
     throw Exception('Failed to load response');
 }
 

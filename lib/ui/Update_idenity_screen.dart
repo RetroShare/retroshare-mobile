@@ -25,7 +25,6 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   bool _requestCreateIdentity = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     nameController = TextEditingController(text: widget.curr.name);
     if (widget.curr.avatar != null)
@@ -108,7 +107,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                             size: 25,
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.of(context).pop();
                           },
                         ),
                       ),

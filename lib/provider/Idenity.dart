@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:retroshare/model/auth.dart';
+import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/services/identity.dart';
 
@@ -11,7 +12,6 @@ class Identities with ChangeNotifier {
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;
   }
-
   List<Identity> get ownIdentity => _ownidentities;
   Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
@@ -49,9 +49,9 @@ class Identities with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> providerdeleteIdentity() async {
-    bool success = await deleteIdentity(_currentIdentity, _authToken);
-    if (success) {
+  Future<void> deleteIdentityfunc() async {
+    try {
+      bool success = await deleteIdentity(_currentIdentity, _authToken);
       // ignore: unrelated_type_equality_checks
       _ownidentities.removeWhere((element) => element.mId == _currentIdentity);
       Random random = new Random();
@@ -59,9 +59,10 @@ class Identities with ChangeNotifier {
       _currentIdentity = _ownidentities[randomNum];
       _selected = _currentIdentity;
       notifyListeners();
-      return true;
+      if (!success) throw HttpException("BAD REQUEST");
+    } catch (e) {
+      throw e;
     }
-    return false;
   }
 
   Future<bool> updateIdentity(Identity id, RsGxsImage avatar) async {
@@ -77,7 +78,6 @@ class Identities with ChangeNotifier {
       _selected = _currentIdentity;
       notifyListeners();
     }
-    return success;
   }
 
   Future<void> callrequestIdentity(Identity unknownId) async {

@@ -178,6 +178,8 @@ class _MessagesTabState extends State<MessagesTab> {
                         setState(() {
                           if (image != null) {
                             var text = base64.encode(image.readAsBytesSync());
+                            text =
+                                "<img alt='Red dot (png)' src='data:image/png;base64,$text' />";
                             sendMessage(
                                 context,
                                 widget.chat.chatId,

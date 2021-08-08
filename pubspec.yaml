@@ -123,6 +123,13 @@ flutter:
     - family: Abel
       fonts:
         - asset: assets/fonts/Abel-Regular.ttf
+    - family: Vollkorn
+      fonts:
+        - asset: assets/fonts/Vollkorn/static/Vollkorn-Regular.ttf
+        - asset: assets/fonts/Vollkorn/static/Vollkorn-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Vollkorn/static/Vollkorn-Bold.ttf
+          weight: 700
   #     
   #     
   #
