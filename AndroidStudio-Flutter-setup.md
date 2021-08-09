@@ -74,3 +74,55 @@ to update the flutter package dependancies as need in the project.
 1. load the service apk to the mobile and start it
 2. cmd: flutter run [[--release]]<return>  
 without release it gets run in debug mode
+
+# Debugging and Tracing
+## Debuging RS-Mobile
+RS- Mobile is debugale simpy with Android-Studio as usual with. Just intuitiv and relative conmfortabel.
+## Tracing RS-mobile in the context of the android-activities
+Open a cmd-console in the directory of the android ../sdk/patform-tools.
+There you will find the adb.exe (Android Debug Bridge).
+This tool enables you for excample to get the tracefiles from your android-device 
+by
+adb logcat > trace.txt<return>
+
+You may filter the content of trace.txt than by "restroshare" to get only the lines of the clinet and the service without other andoris contextual activities.
+
+
+## Debugging RS-Service-Apk
+TBD; actual not knwon how to setup a debug-environment fort it.
+
+##Tracing RS-Service in the context of the android-activities
+As above with the adb.exe tool.
+If you want manually check the communicatio  interface of the servcice 
+
+you may use the cUrl tool.
+To use it you must redirect establich a redirection of the ports:
+adb forward tcp:9091 tcp:9092
+than you should be able to talk to the servcie direcly.
+for exc. like:
+curl http://127.0.0.1:9091/RsJsonApi/version -v
+This would for exc generate an output like
+    *   Trying 127.0.0.1...
+    * TCP_NODELAY set
+    * Connected to 127.0.0.1 (127.0.0.1) port 9091 (#0)
+    > GET /RsJsonApi/version HTTP/1.1  
+    > Host: 127.0.0.1:9091  
+    > User-Agent: curl/7.55.1  
+    > Accept: */*  
+    >  
+    < HTTP/1.1 200 OK  
+    < Access-Control-Allow-Headers: Authorization,DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range  
+    < Access-Control-Allow-Methods: GET, POST, OPTIONS  
+    < Access-Control-Allow-Origin: *  
+    < Access-Control-Expose-Headers: Content-Length,Content-Range  
+    < Connection: close  
+    < Content-Length: 116  
+    < Content-Type: application/json  
+    <  
+    {
+        "major": 0,
+        "minor": 6,
+        "mini": 6,
+        "extra": "-38-g25f58bc10",
+        "human": "0.6.6-38-g25f58bc10"
+    }* Closing connection 0
