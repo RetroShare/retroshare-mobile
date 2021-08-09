@@ -89,7 +89,8 @@ You may filter the content of trace.txt than by "restroshare" to get only the li
 
 
 ## Debugging RS-Service-Apk
-TBD; actual not knwon how to setup a debug-environment fort it.
+TBD; actual not knwon how to setup a debug-environment fort it.  
+Hints in context: https://gitlab.com/elRepo.io/elRepo.io-android/-/issues/43
 
 ##Tracing RS-Service in the context of the android-activities
 As above with the adb.exe tool.
