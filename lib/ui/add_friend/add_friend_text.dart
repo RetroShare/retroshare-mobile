@@ -48,41 +48,44 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 _requestAddCert = true;
               });
               try{
-               Provider.of<FriendLocations>(context, listen: false)
-                  .addFriendLocation(ownCertController.text);
-                   setState(() {
+               await Provider.of<FriendLocations>(context, listen: false)
+                  .addFriendLocation(ownCertController.text)
+                  .then((value) {
+                setState(() {
                   _requestAddCert = false;
-                  });
-                  Fluttertoast.showToast(
-                    msg:
-                        "Friend has been added",
-                        
+                });
+                Fluttertoast.cancel();
+                Fluttertoast.showToast(
+                    msg:"Friend has been added",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
                     fontSize: 16.0);
-              }on HttpException catch(err){
+              });
+              } on HttpException catch(e){
                 setState(() {
                   _requestAddCert = false;
                 });
                 Fluttertoast.cancel();
                 Fluttertoast.showToast(
-                    msg: 'something went Wrong',
+                    msg:  'Invalid certi',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
                     fontSize: 16.0);
-              }catch(e){
+
+              
+              } catch(e){
                 setState(() {
                   _requestAddCert = false;
                 });
                 Fluttertoast.cancel();
                 Fluttertoast.showToast(
-                    msg: 'something went Wrong',
+                    msg:  'something went Wrong',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
@@ -91,7 +94,6 @@ class _GetAddfriendState extends State<GetAddfriend> {
                     fontSize: 16.0);
 
               }
-
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),

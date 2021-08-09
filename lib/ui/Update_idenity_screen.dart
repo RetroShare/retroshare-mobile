@@ -53,19 +53,17 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Request create identity
     void _updateIdentity() async {
-      bool success = await Provider.of<Identities>(context, listen: false)
+      try{
+      await Provider.of<Identities>(context, listen: false)
           .updateIdentity(
               Identity(widget.curr.mId, widget.curr.signed, nameController.text,
                   _image?.base64String),
-              _image);
-      if (success)
-        Navigator.pop(context);
-      else {
-        setState(() {
-          _requestCreateIdentity = false;
-        });
+              _image)
+          .then((value) {
+             Navigator.pop(context);
+          });
+      }catch(e){
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -79,14 +77,9 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
             );
           },
         );
-      }
-    }
-
-    return WillPopScope(
-      onWillPop: () {
-        return Future.value(true);
-      },
-      child: Scaffold(
+      }}
+    
+    return  Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
           top: true,
@@ -338,7 +331,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

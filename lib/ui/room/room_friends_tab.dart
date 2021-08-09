@@ -25,6 +25,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
     myImage = Image.asset('assets/icons8/participant_list.jpg');
     // TODO: implement initState
     super.initState();
+ 
   }
 
   @override
@@ -36,6 +37,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   }
 
   void _addToContacts(String gxsId)  {
+
     Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, true);
   }

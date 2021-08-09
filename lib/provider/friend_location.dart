@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:retroshare/model/auth.dart';
+import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/model/location.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:retroshare/services/identity.dart';
@@ -19,17 +20,13 @@ class FriendLocations with ChangeNotifier {
 
   Future<void> addFriendLocation(String name) async {
     bool isAdded = false;
-    try {
-      if (name != null && name.length < 100)
-        isAdded = await parseShortInvite(name, _authToken);
-      else
-        isAdded = await addCert(name, _authToken);
-      if (isAdded) {
-        setAutoAddFriendIdsAsContact(true, _authToken);
-        fetchfriendLocation();
-      }
-    } catch (e) {
-      throw e;
-    }
+    if (name != null && name.length < 100)
+      isAdded = await parseShortInvite(name, _authToken);
+    else
+      isAdded = await addCert(name, _authToken);
+
+    if (!isAdded) throw HttpException("WRONG Certi");
+    setAutoAddFriendIdsAsContact(true, _authToken);
+    fetchfriendLocation();
   }
 }

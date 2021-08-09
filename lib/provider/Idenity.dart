@@ -12,6 +12,7 @@ class Identities with ChangeNotifier {
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;
   }
+
   List<Identity> get ownIdentity => _ownidentities;
   Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
@@ -65,19 +66,20 @@ class Identities with ChangeNotifier {
     }
   }
 
-  Future<bool> updateIdentity(Identity id, RsGxsImage avatar) async {
+  Future<void> updateIdentity(Identity id, RsGxsImage avatar) async {
     bool success = await updateApiIdentity(id, avatar, _authToken);
-    if (success) {
-      for (var i in _ownidentities) {
-        if (i.mId == id.mId) {
-          i = id;
-          break;
-        }
+
+    if (!success) throw "Try Again";
+
+    for (var i in _ownidentities) {
+      if (i.mId == id.mId) {
+        i = id;
+        break;
       }
-      _currentIdentity = id;
-      _selected = _currentIdentity;
-      notifyListeners();
     }
+    _currentIdentity = id;
+    _selected = _currentIdentity;
+    notifyListeners();
   }
 
   Future<void> callrequestIdentity(Identity unknownId) async {

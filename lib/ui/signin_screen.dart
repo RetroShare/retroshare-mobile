@@ -90,7 +90,6 @@ class _SignInScreenState extends State<SignInScreen> {
       });
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
-      print(error);
       if (error.toString().contains('WRONG PASSWORD')) {
         errorMessage = 'Your Password is wrong';
         errorShowDialog('WRONG PASSWORD', errorMessage, context);

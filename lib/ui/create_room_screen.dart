@@ -442,7 +442,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                     .toLowerCase()
                                                     .indexOf(lowercaseQuery)));
 
-                                          print(results);
+                                        
 
                                           return results;
                                         }
@@ -472,7 +472,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     },
                                     onChanged: (data) {},
                                     onChipTapped: (Location loc) {
-                                      print("hello");
+                                
                                       if (!_selectedLocations.contains(loc))
                                         _selectedLocations.add(loc);
                                     },

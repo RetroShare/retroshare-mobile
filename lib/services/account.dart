@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -210,10 +211,7 @@ Future<Location> getLocationsDetails(String peerId, AuthToken authToken) async {
   );
 
   if (response.statusCode == 200) {
-    print(response.body);
     var det = json.decode(response.body)['det'];
-
-    await addFriend(peerId, det['gpg_id'], authToken);
     return Location(
       det['id'],
       det['gpg_id'],
@@ -237,9 +235,21 @@ Future<bool> addFriend(String sslId, String gpgId, AuthToken authToken) async {
     },
     body: json.encode({'sslId': sslId, 'gpgId': gpgId}),
   );
+
   if (response.statusCode == 200) {
-    print(response.body);
+
   } else {
     throw Exception('Failed to load response');
   }
+}
+
+Future<void> peerDetails(String sslId, AuthToken authToken) async {
+  final response = await http.post(
+    'http://localhost:9092/rsPeers/getPeerDetails',
+    headers: {
+      HttpHeaders.authorizationHeader:
+          'Basic ' + base64.encode(utf8.encode('$authToken'))
+    },
+    body: json.encode({'sslId': sslId}),
+  );
 }

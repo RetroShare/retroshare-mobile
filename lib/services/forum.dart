@@ -87,7 +87,6 @@ Future<List<RsMsgMetaData>> getForumMsgMetaData(
   final response = await rsApiCall(
       '/rsGxsForums/getForumMsgMetaData', authToken,
       params: {'forumId': forumId});
-  print(response);
   if (response['retval'] != true) {
     throw Exception('Could not retrieve messages metadata');
   }
@@ -175,7 +174,3 @@ String publishTs(Map post) {
   return pts;
 }
 
-/*Future<void> getForumServiceStatistics(AuthToken authToken) async {
-  final response = await rsApiCall('/rsGxsForums/subscribeToForum', authToken);
-  print(response);
-}*/

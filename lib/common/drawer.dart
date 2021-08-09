@@ -39,7 +39,7 @@ Widget drawerWidget(BuildContext ctx) {
       children: [
         Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.only(top:15),
+            margin: const EdgeInsets.only(top:2),
             height: MediaQuery.of(ctx).size.height * .3,
             child: Center(
               child: Consumer<Identities>(builder: (context, curr, _) {
