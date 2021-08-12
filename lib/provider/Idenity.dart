@@ -66,7 +66,7 @@ class Identities with ChangeNotifier {
       notifyListeners();
       if (!success) throw HttpException("BAD REQUEST");
     } catch (e) {
-      throw e;
+      throw Exception(e.toString());
     }
   }
 

@@ -78,7 +78,7 @@ class ChatLobby with ChangeNotifier {
           inviteList: inviteList, anonymous: anonymous, public: public);
       if (success) fetchAndUpdate();
     } catch (e) {
-      throw e;
+      throw Exception(e.toString());
     }
   }
 }
