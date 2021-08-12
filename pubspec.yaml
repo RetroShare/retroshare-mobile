@@ -26,21 +26,17 @@ dependencies:
   http: ^0.12.0+2
   qr_flutter: ^4.0.0
   tuple: ^1.0.2
-  flutter_redux: ^0.8.2
   image_picker: ^0.6.6+4
   sliding_up_panel: ^0.3.4
-  file_picker: ^2.1.1
   flutter_barcode_scanner: ^1.0.1
   qrscan: ^0.3.2
   # Toast
   oktoast: ^2.1.8
-  flutter_spinkit: "^4.1.2"
   image_gallery_saver: ^1.6.9
   emoji_picker: ^0.0.3
-  transparent_image: ^1.0.0
   cached_network_image: ^2.4.1
   flutter_image_compress: ^0.7.0
-  
+  #permission_handler: ^5.1.0
   
 
 
@@ -48,6 +44,7 @@ dependencies:
   eventsource:
     path: "../retroshare-dart-see"
 
+  # https://github.com/Kumaravinash9/Retroshare-Wrapper
   retroshare_api_wrapper:
     path: "../retroshare_api_wrapper"
 

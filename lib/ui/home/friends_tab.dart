@@ -36,7 +36,6 @@ class _FriendsTabState extends State<FriendsTab> {
         return  Consumer<FriendsIdentity>(builder: (context, friendsIdsList, _) {
           return Consumer<RoomChatLobby>(
             builder: (context, roomChat, _) {
-             
               Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
                   friendsDistantAndIdsTuple =
                   Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(

@@ -73,10 +73,24 @@ class _QRScannerState extends State<QRScanner>
     if (!check)
       ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll("\n", "");
     else
-      ownCert = (await RsPeers. getShortInvite(authToken)).replaceAll("\n", "");
+      ownCert = (await RsPeers.getShortInvite(authToken)).replaceAll("\n", "");
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }
+
+  /*Future<bool> requestCameraPermission() async {
+    if (await Permission.camera.isUndetermined) {
+      final status = await Permission.camera.request();
+      if (status.isDenied) return false;
+    }
+    return true;
+  }
+
+  void checkServiceStatus(BuildContext context) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Access Denied!"),
+    ));
+  }*/
 
   Widget getHeaderBuilder() {
     return Container(
@@ -125,17 +139,14 @@ class _QRScannerState extends State<QRScanner>
           });
           showToast('Friend has successfully added');
         });
-      }
-      else {
+      } else {
         showToast('An error occurred while adding your friend.');
       }
-      
-    }on HttpException catch(e){
-          setState(() {
-            _requestQR = false;
-          });
-          showToast('An error occurred while adding your friend.');
-        
+    } on HttpException catch (e) {
+      setState(() {
+        _requestQR = false;
+      });
+      showToast('An error occurred while adding your friend.');
     } catch (e) {
       setState(() {
         _requestQR = false;
@@ -378,7 +389,9 @@ class _QRScannerState extends State<QRScanner>
             _requestQR = true;
           });
           await _scan();
-        },
+          },
+          
+        
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
