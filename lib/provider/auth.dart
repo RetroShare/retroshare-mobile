@@ -48,7 +48,7 @@ class AccountCredentials with ChangeNotifier {
         if (account.locationId == currAccount) return account;
       }
     } catch (e) {
-      throw HttpException(e);
+      throw HttpException(e.toString());
     }
     return null;
   }
