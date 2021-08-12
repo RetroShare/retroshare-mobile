@@ -14,19 +14,20 @@
 #### Flutter installation
 1. Download and install any flafour of git for windows.
    (see: https://flutter.dev/docs/get-started/install/windows#system-requirements)
-1. Download Flutte stabler: https://flutter.dev/docs/get-started/install/windows#get-the-flutter-sdk
-2. Open the zip-package and copy the contained flutter-Dir to FlutterRoot.
+2. Download Flutte stabler: https://flutter.dev/docs/get-started/install/windows#get-the-flutter-sdk
+3. Open the zip-package and copy the contained flutter-Dir to FlutterRoot.
 This results in the FlutterDir.
-3. Add in environment variables for your account to the PATH-variable of USER context separated by ';' the explicit full path to flutter\bin: $(FlutterDir)\bin
+4. Add in environment variables for your account to the PATH-variable of USER context separated by ';' the explicit full path to flutter\bin: $(FlutterDir)\bin
    1. Test:   
      Start a cmd console  (in START/RUN type: cmd)
-   1. type: flutter -h <return>'   
+   2. type: flutter -h <return>'   
       fluuter should show you its help text if all is well until now.
-1. in cmd type:  flutter doctor <return>
+5. in cmd type:  flutter doctor <return>
    - flutter chechs its environment and will most likely tell you, that
      - Android SDK is missing
      - Android Studio is missing
      - it may also query for chrome but this is not needed
+
 #### Android Studio installation
 1. install Android Studio for windows: https://developer.android.com/studio
    - follow the default setting and ensure the installation is done to  AndroidStudioDir
@@ -35,41 +36,46 @@ This results in the FlutterDir.
 3. press FINISH and folloow until finish
 4. On Wellcome-Page go into plugins and
   - install dart and flutter and let AS restart
-1. On Welcome page select projects: More Action/SDK Manager and than Tab SDK-Tools.
+5. On Welcome page select projects: More Action/SDK Manager and than Tab SDK-Tools.
    - Ensure alls "Android SDK"* Entries are installed and especially
    - ensure "Android SDK command line tools" to be installed
-1. Close the SDK Dialog
-2. If you wish to use simulated mobiles you may later select in "more actions" AVD Manager and create emulated devices as you need.
+6. Close the SDK Dialog
+7. If you wish to use simulated mobiles you may later select in "more actions" AVD Manager and create emulated devices as you need.
+
 #### Associate Flutter and Android Studio
-3. tell Flutter wher to find AS:    
+1. tell Flutter wher to find AS:    
    in cmd console type:  
    flutter config --android-studio-dir "$(AndroidStudioDir)".  
    The quotes are mandatory if the path conataisn for exc. BLANKs
-1. now you need to acceps the sdk licenses:  
+2. now you need to acceps the sdk licenses:  
    in md type:  
    flutter doctor --android-licenses  
    and accept all.
+
 #### final check of flutter installation
-1. In new cmd-console type:  
+- In new cmd-console type:  
 flutter doctor   
 it should now tell all (but maybe chrome) is OK.
+
 # RS mobile: Prepare project
-2. Git: clone RS mobile locally as RSMobileDir  
+1. Git: clone RS mobile locally as RSMobileDir  
 (https://github.com/RetroShare/retroshare-mobile)
-3. Open a cmd window (type cmd in START)
-4. change directory into RS mobile dir
-5. type:  
+2. Open a cmd window (type cmd in START)
+3. change directory into RS mobile dir
+4. type:  
 flutter pub get<return>
 to update the flutter package dependancies as need in the project.
-6. maybe: open the RSMobileDir  in Android Studio
+5. maybe: open the RSMobileDir  in Android Studio
+
 # Activate USB Debug Mode of the mobile
-7. in settings type usb in search
-8. select usb-debugging
-9. activate it
-10. plug the mobile with usb to the pc
-11. if this is the frist time a dialog appears to accepts the key
-12. check in cmd console if the device is available
-    1. cmd: flutter devices<return> should no list your mobile as availabel 
+1. in settings type usb in search
+2. select usb-debugging
+3. activate it
+4. plug the mobile with usb to the pc
+5. if this is the frist time a dialog appears to accepts the key
+6. check in cmd console if the device is available
+    - cmd: flutter devices<return> should no list your mobile as availabel 
+
 # Run the apk on mobile
 1. load the service apk to the mobile and start it
 2. cmd: flutter run [[--release]]<return>  
