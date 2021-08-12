@@ -85,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "Auth Failed", 'Something went wrong', context);
     } catch (e) {
       errorShowDialog('Retroshare Service Down',
-          'Please ensure retroshare dervice is not down!', context);
+          'Please ensure retroshare service is not down!', context);
 
     }
   }
