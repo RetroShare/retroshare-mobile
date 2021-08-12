@@ -57,9 +57,9 @@ class _SplashState extends State<SplashScreen> {
         connectedToBackend = false;
       }
     } while (!connectedToBackend);
-    final provider = Provider.of<AccountCredentials>(context, listen: false);
-    bool isTokenValid = await provider.checkisvalidAuthToken();
-    if (isLoggedIn && isTokenValid && provider.loggedinAccount != null) {
+    final auth = Provider.of<AccountCredentials>(context, listen: false);
+    bool isTokenValid = await auth.checkisvalidAuthToken();
+    if (isLoggedIn && isTokenValid && auth.loggedinAccount != null) {
       _setStatusText("Logging in...");
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {
@@ -71,8 +71,8 @@ class _SplashState extends State<SplashScreen> {
       });
     } else {
       _setStatusText("Get locations...");
-      await provider.fetchAuthAccountList();
-      if (provider.accountList.isEmpty)
+      await auth.fetchAuthAccountList();
+      if (auth.accountList.isEmpty)
         // Create or import an account
         Navigator.pushReplacementNamed(context, '/launch_transition');
       else
