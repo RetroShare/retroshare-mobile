@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/HelperFunction/chat.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/subscribed.dart';
-
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/services/chat.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/person_delegate.dart';
+
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SearchScreen extends StatefulWidget {
   final int initialTab;

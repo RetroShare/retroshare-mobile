@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/model/http_exception.dart';
-import 'package:retroshare/model/location.dart';
-import 'package:retroshare/services/account.dart';
-import 'package:retroshare/services/identity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class FriendLocations with ChangeNotifier {
   List<Location> _friendlist = [];
@@ -14,19 +11,25 @@ class FriendLocations with ChangeNotifier {
   }
 
   Future<void> fetchfriendLocation() async {
-    _friendlist = await getFriendsAccounts(_authToken);
+    final sslIds = await RsPeers.getFriendList(_authToken);
+    List<Location> locations = [];
+    for (int i = 0; i < sslIds.length; i++) {
+      locations.add(await RsPeers.getPeerDetails(sslIds[i], _authToken));
+    }
     notifyListeners();
   }
 
-  Future<void> addFriendLocation(String name) async {
+  Future<void> addFriendLocation(String base64Payload) async {
     bool isAdded = false;
-    if (name != null && name.length < 100)
-      isAdded = await parseShortInvite(name, _authToken);
+    if (base64Payload != null && base64Payload.length < 100)
+      isAdded = await RsPeers.acceptShortInvite(_authToken, base64Payload);
     else
-      isAdded = await addCert(name, _authToken);
+      isAdded = await RsPeers.acceptInvite( _authToken,
+       base64Payload,
+      );
 
     if (!isAdded) throw HttpException("WRONG Certi");
-    setAutoAddFriendIdsAsContact(true, _authToken);
+    RsIdentity.setAutoAddFriendIdsAsContact(true, _authToken);
     fetchfriendLocation();
   }
 }

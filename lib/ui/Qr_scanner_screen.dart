@@ -14,7 +14,7 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friend_location.dart';
-import 'package:retroshare/services/account.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:share/share.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
@@ -71,9 +71,9 @@ class _QRScannerState extends State<QRScanner>
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
     if (!check)
-      ownCert = (await getOwnCert(authToken)).replaceAll("\n", "");
+      ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll("\n", "");
     else
-      ownCert = (await getShortInvite(authToken)).replaceAll("\n", "");
+      ownCert = (await RsPeers. getShortInvite(authToken)).replaceAll("\n", "");
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }

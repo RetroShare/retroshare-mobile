@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/provider/friends_identity.dart';
@@ -11,7 +10,6 @@ import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/routes.dart';
 import 'model/app_life_cycle_state.dart';
-import 'model/auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +18,6 @@ void main() async {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });*/
-  openapi = DefaultApi();
 
   runApp(App());
 }
@@ -76,7 +73,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Retroshare',
-              //home: AddFriendScreen()
               initialRoute: '/profile',
               onGenerateRoute: RouteGenerator.generateRoute,
             ),

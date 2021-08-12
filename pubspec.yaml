@@ -48,9 +48,9 @@ dependencies:
   eventsource:
     path: "../retroshare-dart-see"
 
-  # https://gitlab.com/jpascualsana/openapi-dart-retroshare-api-wrapper
-  openapi:
-    path: "../openapi-dart-retroshare-api-wrapper"
+  retroshare_api_wrapper:
+    path: "../retroshare_api_wrapper"
+
 
   # Used to render chat messages
   flutter_html: ^0.11.1
@@ -69,8 +69,6 @@ dependencies:
   shared_preferences: ^0.5.4+1
   google_fonts: ^1.1.0
   font_awesome_flutter: '>= 4.7.0'
-  step_progress_indicator: ^1.0.1
-  liquid_progress_indicator: ^0.4.0
   cool_alert: ^1.1.0
   shimmer: ^2.0.0
 dev_dependencies:

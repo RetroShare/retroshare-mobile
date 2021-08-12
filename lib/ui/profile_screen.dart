@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/model/account.dart';
-import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/auth.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key key, this.curr}) : super(key: key);

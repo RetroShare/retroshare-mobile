@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/services/account.dart';
-import 'package:retroshare/model/account.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 import '../common/color_loader_3.dart';
 
@@ -51,7 +50,7 @@ class _SplashState extends State<SplashScreen> {
     bool isLoggedIn;
     do {
       try {
-        isLoggedIn = await checkLoggedIn();
+        isLoggedIn = await RsLoginHelper.checkLoggedIn();
         connectedToBackend = true;
       } catch (e) {
         if (connectedToBackend == true) _setStatusText("Can't connect...");

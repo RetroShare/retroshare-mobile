@@ -7,8 +7,8 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'dart:convert';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
-import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import '../common/color_loader_3.dart';
 
 class UpdateIdentityScreen extends StatefulWidget {

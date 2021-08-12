@@ -1,9 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:openapi/api.dart';
-import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/location.dart';
-import 'package:retroshare/services/chat.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class ChatLobby with ChangeNotifier {
   List<Chat> _listchat = [];
@@ -17,21 +13,58 @@ class ChatLobby with ChangeNotifier {
   }
 
   List<VisibleChatLobbyRecord> get unSubscribedlist => _unsubscribedlist;
+
   Future<void> fetchAndUpdate() async {
-    _listchat = await getSubscribedChatLobbies(_authToken);
+    var list = await RsMsgs.getSubscribedChatLobbies(_authToken);
+    List<Chat> chatsList = [];
+    for (int i = 0; i < list.length; i++) {
+      final chatItem =
+          await RsMsgs.getChatLobbyInfo(list[i]['xstr64'], _authToken);
+
+      chatsList.add(Chat(
+          chatId: chatItem['lobby_id']['xstr64'],
+          chatName: chatItem['lobby_name'],
+          lobbyTopic: chatItem['lobby_topic'],
+          ownIdToUse: chatItem['gxs_id'],
+          autoSubscribe: await RsMsgs.getLobbyAutoSubscribe(
+              chatItem['lobby_id']['xstr64'], _authToken),
+          lobbyFlags: chatItem['lobby_flags'],
+          isPublic:
+              chatItem['lobby_flags'] == 4 || chatItem['lobby_flags'] == 20
+                  ? true
+                  : false));
+    }
+    _listchat = chatsList;
     notifyListeners();
   }
 
   Future<void> fetchAndUpdateUnsubscribed() async {
-    _unsubscribedlist = await getUnsubscribedChatLobbies();
+    _unsubscribedlist = await RsMsgs.getUnsubscribedChatLobbies(_authToken);
     notifyListeners();
   }
 
   Future<void> unsubscribed(String lobbyId) async {
-    await unsubscribeChatLobby(lobbyId);
-    _listchat = await getSubscribedChatLobbies(_authToken);
-    _unsubscribedlist = await getUnsubscribedChatLobbies();
-    notifyListeners();
+    await RsMsgs.unsubscribeChatLobby(lobbyId, _authToken);
+    var list = await RsMsgs.getSubscribedChatLobbies(_authToken);
+    List<Chat> chatsList = [];
+    for (int i = 0; i < list.length; i++) {
+      final chatItem =
+          await RsMsgs.getChatLobbyInfo(list[i]['xstr64'], _authToken);
+      chatsList.add(Chat(
+          chatId: chatItem['lobby_id']['xstr64'],
+          chatName: chatItem['lobby_name'],
+          lobbyTopic: chatItem['lobby_topic'],
+          ownIdToUse: chatItem['gxs_id'],
+          autoSubscribe: await RsMsgs.getLobbyAutoSubscribe(
+              chatItem['lobby_id']['xstr64'], _authToken),
+          lobbyFlags: chatItem['lobby_flags'],
+          isPublic:
+              chatItem['lobby_flags'] == 4 || chatItem['lobby_flags'] == 20
+                  ? true
+                  : false));
+    }
+    _listchat = chatsList;
+    fetchAndUpdateUnsubscribed();
   }
 
   Future<void> createChatlobby(
@@ -40,7 +73,8 @@ class ChatLobby with ChangeNotifier {
       bool public = true,
       bool anonymous = true}) async {
     try {
-      bool success = await createChatLobby(lobbyName, idToUse, lobbyTopic,
+      bool success = await RsMsgs.createChatLobby(
+          _authToken, lobbyName, idToUse, lobbyTopic,
           inviteList: inviteList, anonymous: anonymous, public: public);
       if (success) fetchAndUpdate();
     } catch (e) {

@@ -5,8 +5,9 @@ import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/identity.dart';
+
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SignedIdenityTab extends StatefulWidget {
   final isFirstId;

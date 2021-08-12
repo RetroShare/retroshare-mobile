@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/auth.dart';
+import 'package:retroshare/HelperFunction/identity.dart';
+
 import 'package:retroshare/model/http_exception.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/identity.dart';
+
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:tuple/tuple.dart';
 
 class FriendsIdentity with ChangeNotifier {
@@ -15,6 +16,7 @@ class FriendsIdentity with ChangeNotifier {
   List<Identity> get friendsIdsList => [..._friendsIdsList];
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
+
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;
     notifyListeners();
@@ -23,31 +25,31 @@ class FriendsIdentity with ChangeNotifier {
   Future<void> fetchAndUpdate() async {
     Tuple3<List<Identity>, List<Identity>, List<Identity>> tupleIds =
         await getAllIdentities(_authToken);
-    _friendsSignedIdsList = tupleIds.item1;
-    _friendsIdsList = tupleIds.item2;
-    _notContactIds = tupleIds.item3;
+     _friendsSignedIdsList = tupleIds.item1;
+     _friendsIdsList = tupleIds.item2;
+     _notContactIds = tupleIds.item3;
 
-    _allIds = Map.fromIterable(
+     _allIds = Map.fromIterable(
         [tupleIds.item1, tupleIds.item2, tupleIds.item3]
             .expand((x) => x)
             .toList(),
         key: (id) => id.mId,
         value: (id) => id);
 
-    notifyListeners();
+     notifyListeners();
   }
 
-  Future<void> setAllIds(Map<String, Identity> allIDS) {
+  void  setAllIds(Map<String, Identity> allIDS) {
     _allIds = Map.from(allIDS);
     notifyListeners();
   }
 
   Future<void> toggleContacts(String gxsId, bool type) async {
     try {
-      bool success = await setContact(gxsId, false, _authToken);
+      bool success = await RsIdentity.setContact(gxsId, false, _authToken);
       await fetchAndUpdate();
       if (!success) throw HttpException("CHECK CONNECTIVITY");
-    } catch (e) {
+     } catch (e) {
       throw e;
     }
   }

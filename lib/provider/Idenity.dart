@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/auth.dart';
+import 'package:retroshare/HelperFunction/identity.dart';
+
 import 'package:retroshare/model/http_exception.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/identity.dart';
+
+
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class Identities with ChangeNotifier {
   List<Identity> _ownidentities = [];
@@ -43,16 +45,18 @@ class Identities with ChangeNotifier {
   }
 
   Future<void> createnewIdenity(Identity id, RsGxsImage image) async {
-    Identity newId = await createIdentity(id, image, _authToken);
-    _ownidentities.add(newId);
-    _currentIdentity = newId;
+    Identity newIdentity =
+        await RsIdentity.createIdentity(id, image, _authToken);
+    _ownidentities.add(newIdentity);
+    _currentIdentity = newIdentity;
     _selected = _currentIdentity;
     notifyListeners();
   }
 
   Future<void> deleteIdentityfunc() async {
     try {
-      bool success = await deleteIdentity(_currentIdentity, _authToken);
+      bool success =
+          await RsIdentity.deleteIdentity(_currentIdentity, _authToken);
       // ignore: unrelated_type_equality_checks
       _ownidentities.removeWhere((element) => element.mId == _currentIdentity);
       Random random = new Random();
@@ -67,10 +71,8 @@ class Identities with ChangeNotifier {
   }
 
   Future<void> updateIdentity(Identity id, RsGxsImage avatar) async {
-    bool success = await updateApiIdentity(id, avatar, _authToken);
-
+    bool success = await RsIdentity.updateIdentity(id, avatar, _authToken);
     if (!success) throw "Try Again";
-
     for (var i in _ownidentities) {
       if (i.mId == id.mId) {
         i = id;
@@ -83,7 +85,7 @@ class Identities with ChangeNotifier {
   }
 
   Future<void> callrequestIdentity(Identity unknownId) async {
-    await requestIdentity(unknownId.mId);
+    await RsIdentity.requestIdentity(unknownId.mId, _authToken);
     notifyListeners();
   }
 }

@@ -7,10 +7,10 @@ import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/services/chat.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
-import 'package:retroshare/model/chat.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
+
 
 class RoomScreen extends StatefulWidget {
   final bool isRoom;
@@ -49,7 +49,6 @@ class _RoomScreenState extends State<RoomScreen>
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat.chatId);
-        await getMessagesApi(widget.chat.chatId, authToken);
       }
     });
   }

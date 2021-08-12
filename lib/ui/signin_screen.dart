@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/show_dialog.dart';
-import 'package:retroshare/model/account.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SignInScreen extends StatefulWidget {
   @override

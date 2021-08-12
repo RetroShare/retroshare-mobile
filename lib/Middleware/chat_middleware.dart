@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/common_methods.dart';
 import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/model/app_life_cycle_state.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 void chatMiddleware(ChatMessage message, BuildContext context) {
   if (message != null && message.msg.isNotEmpty && message.incoming) {
@@ -73,13 +73,11 @@ void chatMiddleware(ChatMessage message, BuildContext context) {
                     (chat) => chat.chatId == message.chat_id.lobbyId.xstr64,
                   )
                   .chatName
-              : message.getChatSenderName(
-                  context,
-                ),
+              : getChatSenderName(context, message),
           // Message notification
           message.isLobbyMessage()
-              ? message.getChatSenderName(
-                    context,
+              ? getChatSenderName(
+                    context,message
                   ) +
                   ": " +
                   parsedMsg

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/chat.dart';
+import 'package:retroshare/HelperFunction/identity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
+import 'package:tuple/tuple.dart';
 
 class RoomChatLobby with ChangeNotifier {
   Map<String, List<Identity>> _lobbyParticipants;
@@ -33,8 +32,20 @@ class RoomChatLobby with ChangeNotifier {
   }
 
   Future<void> updateParticipants(String lobbyId) async {
-    List<Identity> participants =
-        await getLobbyParticipants(lobbyId, _authToken);
+    List<Identity> participants = [];
+    var gxsIds = await RsMsgs.getLobbyParticipants(lobbyId, _authToken);
+    for (int i = 0; i < gxsIds.length; i++) {
+      bool success = true;
+      Identity id;
+      do {
+        Tuple2<bool, Identity> tuple =
+            await getIdDetails(gxsIds[i]['key'], authToken);
+        success = tuple.item1;
+        id = tuple.item2;
+      } while (!success);
+
+      participants.add(id);
+    }
     await fetchAndUpdateParticipants(lobbyId, participants);
   }
 

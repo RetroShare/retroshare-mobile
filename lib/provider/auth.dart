@@ -1,11 +1,8 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/account.dart';
-import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/services/account.dart';
-import 'package:retroshare/services/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class AccountCredentials with ChangeNotifier {
   List<Account> _accountsList = [];
@@ -25,21 +22,30 @@ class AccountCredentials with ChangeNotifier {
 
   fetchAuthAccountList() async {
     try {
-      _accountsList = await getLocations();
+      final resp = await RsLoginHelper.getLocations();
+      List<Account> accountsList = [];
+      resp.forEach((location) {
+        if (location != null)
+          accountsList.add(Account(location['mLocationId'], location['mPgpId'],
+              location['mLocationName'], location['mPgpName']));
+      });
+      _accountsList = accountsList;
+      notifyListeners();
+
+      _lastAccountUsed = await setlastAccountUsed();
     } catch (e) {
       throw HttpException(e);
     }
-    _lastAccountUsed = await setlastAccountUsed();
-    notifyListeners();
   }
 
   get getlastAccountUsed => _lastAccountUsed;
 
   Future<Account> setlastAccountUsed() async {
     try {
-      var currAccount = await openapi.rsAccountsGetCurrentAccountId();
+      var currAccount = await RsAccounts.getCurrentAccountId(_authToken);
+
       for (Account account in _accountsList) {
-        if (account.locationId == currAccount.id) return account;
+        if (account.locationId == currAccount) return account;
       }
     } catch (e) {
       throw HttpException(e);
@@ -50,7 +56,7 @@ class AccountCredentials with ChangeNotifier {
   Future<bool> getinitializeAuth(String locationId, String password) async {
     _authToken = AuthToken(locationId, password);
     bool success = false;
-    success = await checkExistingAuthTokens(locationId, password, _authToken);
+    success = await RsJsonApi.checkExistingAuthTokens(locationId, password, _authToken);
 
     if (success) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -61,12 +67,12 @@ class AccountCredentials with ChangeNotifier {
   }
 
   Future<bool> checkisvalidAuthToken() {
-    return isAuthTokenValid(_authToken);
+    return RsJsonApi.isAuthTokenValid(_authToken);
   }
 
   Future<void> login(Account currentAccount, String password) async {
     try {
-      int resp = await requestLogIn(currentAccount, password);
+      int resp = await RsLoginHelper.requestLogIn(currentAccount, password);
       setLogginAccount(currentAccount);
       // Login success 0, already logged in 1
       if (resp == 0 || resp == 1) {
@@ -84,23 +90,23 @@ class AccountCredentials with ChangeNotifier {
   }
 
   Future<void> signup(String username, String password, String nodename) async {
-    final map = {"auth": false, "account": false};
-
-    Tuple2<bool, Account> account_create;
     try {
-      account_create = await requestAccountCreation(username, password);
+      final resp = await RsLoginHelper.requestAccountCreation(username, password);
+      Account account =
+          Account(resp['locationId'], resp['pgpId'], username, username);
+      Tuple2<bool, Account> account_create = Tuple2<bool, Account>(
+          resp["retval"]["errorNumber"] != 0 ? false : true, account);
       if (account_create != null && account_create.item1) {
         _accountsList.add(account_create.item2);
         setLogginAccount(account_create.item2);
-        bool isAuthTokenValid =
-            await getinitializeAuth(account_create.item2.locationName, password);
+        bool isAuthTokenValid = await getinitializeAuth(
+            account_create.item2.locationName, password);
         if (!isAuthTokenValid) throw HttpException("AUTHTOKEN FAILED");
         notifyListeners();
       } else
         throw HttpException("DATA INSUFFICIENT");
-      notifyListeners();
     } catch (e) {
-      throw e;
+      throw Exception(e);
     }
   }
 }

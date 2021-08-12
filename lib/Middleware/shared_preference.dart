@@ -1,4 +1,5 @@
-import 'package:retroshare/model/auth.dart';
+
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<AuthToken> authcheck() async {

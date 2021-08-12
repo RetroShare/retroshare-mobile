@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/common_methods.dart';
 
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/model/location.dart';
+
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class PersonDelegateData {
   const PersonDelegateData({

@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import "package:eventsource/eventsource.dart";
-import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/events.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
+
+Map<RsEventType, StreamSubscription<Event>> rsEventsSubscriptions;
 /// Register event specifically for chat messages
 ///
 /// This function add code to deserialization of the message, automatizing the process.

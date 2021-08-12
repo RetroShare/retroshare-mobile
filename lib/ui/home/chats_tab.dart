@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/HelperFunction/chat.dart';
 import 'package:retroshare/provider/subscribed.dart';
-import 'package:retroshare/services/chat.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ChatsTab extends StatelessWidget {
-  void _unsubscribeChatLobby(String lobbyId, context) async {
+  void _unsubscribeChatLobby(lobbyId, context) async {
     Provider.of<ChatLobby>(context, listen: false).unsubscribed(lobbyId); 
   }
 

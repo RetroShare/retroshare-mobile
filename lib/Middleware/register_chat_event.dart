@@ -1,32 +1,20 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/HelperFunction/events.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
-import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/model/chat.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/services/events.dart';
-
-Future<DistantChatPeerInfo> _getDistantChatStatus(
-    String pid, ChatMessage aaa) async {
-  var req = ReqGetDistantChatStatus();
-  req.pid = pid;
-  var resp =
-      await openapi.rsMsgsGetDistantChatStatus(reqGetDistantChatStatus: req);
-  if (resp.retval != true) {
-    throw ("Error on getDistantChatStatus()");
-  }
-  return resp.info;
-}
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 Future<void> registerChatEvent(
     BuildContext context, AuthToken authToken) async {
   await eventsRegisterChatMessage(
       listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
         if (msg != null) {
+          AuthToken authToken = Provider.of<RoomChatLobby>(context, listen: false)
+                  .authToken;
           // Check if is a lobby chat
           if (msg.chat_id.lobbyId.xstr64 != "0") {
             chatMiddleware(msg, context);
@@ -42,7 +30,8 @@ Future<void> registerChatEvent(
                     msg.chat_id.distantChatId,
                     Provider.of<RoomChatLobby>(context, listen: false)
                         .distanceChat)
-                ? _getDistantChatStatus(msg.chat_id.distantChatId, msg)
+                ? RsMsgs. getDistantChatStatus(
+                        authToken,msg.chat_id.distantChatId, msg)
                     .then((DistantChatPeerInfo res) {
                     // Create the chat and add it to the store
                     Chat chat = Chat(

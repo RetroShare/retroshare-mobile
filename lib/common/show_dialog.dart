@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/http_exception.dart';
-import 'package:retroshare/model/identity.dart';
+
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 errorShowDialog(String title, String text, BuildContext context) {
   return CoolAlert.show(
