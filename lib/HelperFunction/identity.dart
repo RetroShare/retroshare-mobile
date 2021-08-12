@@ -10,7 +10,7 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
 
   respSigned
     ..toSet().forEach((id) {
-      if (id != null) {
+      if (id != null && id != '00000000000000000000000000000000') {
         ownIdsList.add(Identity(id, true));
       }
     });
@@ -19,7 +19,7 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
       await RsIdentity.getOwnPseudonimousIds(authToken);
   respPseudonymous
     ..toSet().forEach((id) {
-      if (id != null) {
+      if (id != null && id != '00000000000000000000000000000000') {
         ownIdsList.add(Identity(id, false));
       }
     });
