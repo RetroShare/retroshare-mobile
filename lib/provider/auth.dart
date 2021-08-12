@@ -34,7 +34,7 @@ class AccountCredentials with ChangeNotifier {
 
       _lastAccountUsed = await setlastAccountUsed();
     } catch (e) {
-      throw HttpException(e);
+      throw HttpException(e.toString());
     }
   }
 
@@ -85,7 +85,7 @@ class AccountCredentials with ChangeNotifier {
       } else
         throw HttpException("WRONG PASSWORD");
     } catch (e) {
-      throw (e);
+      throw (e.toString());
     }
   }
 
@@ -106,7 +106,7 @@ class AccountCredentials with ChangeNotifier {
       } else
         throw HttpException("DATA INSUFFICIENT");
     } catch (e) {
-      throw Exception(e);
+      throw Exception(e.toString());
     }
   }
 }
