@@ -18,7 +18,7 @@ void chatMiddleware(ChatMessage message, BuildContext context) {
 
     final distantChats =
         Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
-    final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIds;
+    final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
     final currentChat =
         Provider.of<RoomChatLobby>(context, listen: false).currentChat;
     final subscribedChats =
@@ -86,7 +86,7 @@ void chatMiddleware(ChatMessage message, BuildContext context) {
 }
 
 void chatActionMiddleware(Chat distantChat, BuildContext context) {
-  final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIds;
+  final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
   if (allIds[distantChat.interlocutorId] == null) {
     var identity = new Identity(distantChat.interlocutorId);
     identity.name = distantChat.chatName;

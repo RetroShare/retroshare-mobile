@@ -43,14 +43,14 @@ class _FriendsTabState extends State<FriendsTab> {
                       roomChat.distanceChat?.values
                               ?.toList()
                               ?.where((chat) =>
-                                  (friendsIdsList.allIds[chat.interlocutorId] ==
+                                  (friendsIdsList.allIdentity[chat.interlocutorId] ==
                                           null ||
-                                      friendsIdsList.allIds[chat.interlocutorId]
+                                      friendsIdsList.allIdentity[chat.interlocutorId]
                                               .isContact ==
                                           false))
                               ?.toList() ??
                           [],
-                      friendsIdsList.allIds);
+                      friendsIdsList.allIdentity);
               
               if (friendsDistantAndIdsTuple.item1?.isNotEmpty ??
                   false || friendsDistantAndIdsTuple.item2?.isNotEmpty ??

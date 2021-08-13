@@ -44,7 +44,7 @@ Future<void> registerChatEvent(
                     chatActionMiddleware(chat, context);
                     dynamic allIDs =
                         Provider.of<FriendsIdentity>(context, listen: false)
-                            .allIds;
+                            .allIdentity;
                     allIDs = Provider.of<RoomChatLobby>(context, listen: false)
                         .addDistanceChat(chat, allIDs);
                     Provider.of<FriendsIdentity>(context, listen: false)

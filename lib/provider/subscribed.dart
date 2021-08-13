@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class ChatLobby with ChangeNotifier {
-  List<Chat> _listchat = [];
+  List<Chat> _chatlist= [];
   List<VisibleChatLobbyRecord> _unsubscribedlist = [];
-  List<Chat> get subscribedlist => _listchat;
+  List<Chat> get subscribedlist => _chatlist;
   AuthToken _authToken;
 
   setAuthToken(AuthToken authToken) async {
@@ -34,7 +34,7 @@ class ChatLobby with ChangeNotifier {
                   ? true
                   : false));
     }
-    _listchat = chatsList;
+    _chatlist = chatsList;
     notifyListeners();
   }
 
@@ -63,7 +63,7 @@ class ChatLobby with ChangeNotifier {
                   ? true
                   : false));
     }
-    _listchat = chatsList;
+    _chatlist = chatsList;
     fetchAndUpdateUnsubscribed();
   }
 

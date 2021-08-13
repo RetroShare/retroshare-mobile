@@ -105,7 +105,7 @@ class _RoomScreenState extends State<RoomScreen>
                                   decoration: (widget.chat.interlocutorId ==
                                                   null ||
                                               friendIdentity
-                                                      .allIds[widget
+                                                      .allIdentity[widget
                                                           .chat.interlocutorId]
                                                       ?.avatar ==
                                                   null ??
@@ -120,7 +120,7 @@ class _RoomScreenState extends State<RoomScreen>
                                               fit: BoxFit.fitWidth,
                                               image: MemoryImage(base64Decode(
                                                   friendIdentity
-                                                      .allIds[widget
+                                                      .allIdentity[widget
                                                           .chat.interlocutorId]
                                                       .avatar))),
                                         ),
@@ -128,7 +128,7 @@ class _RoomScreenState extends State<RoomScreen>
                                     visible:
                                         (widget.chat.interlocutorId == null ||
                                                 friendIdentity
-                                                        .allIds[widget.chat
+                                                        .allIdentity[widget.chat
                                                             .interlocutorId]
                                                         ?.avatar ==
                                                     null ??
@@ -174,7 +174,7 @@ class _RoomScreenState extends State<RoomScreen>
                           widget.isRoom
                               ? widget.chat.chatName
                               : friendIdentity
-                                      .allIds[widget.chat.interlocutorId]
+                                      .allIdentity[widget.chat.interlocutorId]
                                       ?.name ??
                                   widget.chat.chatName ??
                                   "name",

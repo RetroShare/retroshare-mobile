@@ -49,7 +49,7 @@ Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
     Chat.addDistantChat(to, from, resp['pid']);
     await Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
     Map<String, Identity> allIDs =
-        Provider.of<FriendsIdentity>(context, listen: false).allIds;
+        Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
     chatActionMiddleware(chat, context);
     allIDs = Provider.of<RoomChatLobby>(context, listen: false)
         .addDistanceChat(chat, allIDs);

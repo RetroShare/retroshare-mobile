@@ -21,7 +21,7 @@ int getUnreadCount(context, Identity identity) {
 String getChatSenderName(dynamic context, ChatMessage message) {
   final distantChats =
       Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
-  final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIds;
+  final allIds = Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
   final lobbyParticipants =
       Provider.of<RoomChatLobby>(context, listen: false).lobbyParticipants;
   if (message.isLobbyMessage()) {
