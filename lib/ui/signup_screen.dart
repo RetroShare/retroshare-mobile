@@ -69,8 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
     try {
       final account_signup= Provider.of<AccountCredentials>(context, listen: false);
-      account_signup.signup(usernameController.text, passwordController.text,
-          nodeNameController.text);
+      await account_signup.signup(usernameController.text, passwordController.text,nodeNameController.text);
 
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {
