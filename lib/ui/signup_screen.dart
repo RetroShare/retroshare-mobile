@@ -69,8 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
     try {
       final account_signup= Provider.of<AccountCredentials>(context, listen: false);
-      account_signup.signup(usernameController.text, passwordController.text,
-          nodeNameController.text);
+      await account_signup.signup(usernameController.text, passwordController.text,nodeNameController.text);
 
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {
@@ -85,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "Auth Failed", 'Something went wrong', context);
     } catch (e) {
       errorShowDialog('Retroshare Service Down',
-          'Please ensure retroshare dervice is not down!', context);
+          'Please ensure retroshare service is not down!', context);
 
     }
   }
