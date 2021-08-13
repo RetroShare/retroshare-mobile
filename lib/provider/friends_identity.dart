@@ -10,7 +10,7 @@ class FriendsIdentity with ChangeNotifier {
   List<Identity> _notContactIds = [];
   List<Identity> _friendsSignedIdsList = [];
   AuthToken _authToken;
-  Map<String, Identity> get allIds => {..._allIdentity};
+  Map<String, Identity> get allIdentity => {..._allIdentity};
   List<Identity> get friendsIdsList => [..._friendsIdsList];
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
