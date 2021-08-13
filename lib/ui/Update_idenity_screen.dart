@@ -7,8 +7,8 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'dart:convert';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
-import 'package:retroshare/model/identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import '../common/color_loader_3.dart';
 
 class UpdateIdentityScreen extends StatefulWidget {
@@ -25,11 +25,10 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   bool _requestCreateIdentity = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     nameController = TextEditingController(text: widget.curr.name);
     if (widget.curr.avatar != null)
-      _image = new  RsGxsImage(base64.decode(widget.curr.avatar));
+      _image = new RsGxsImage(base64.decode(widget.curr.avatar));
   }
 
   @override
@@ -54,19 +53,17 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Request create identity
     void _updateIdentity() async {
-      bool success = await Provider.of<Identities>(context, listen: false)
+      try{
+      await Provider.of<Identities>(context, listen: false)
           .updateIdentity(
               Identity(widget.curr.mId, widget.curr.signed, nameController.text,
                   _image?.base64String),
-              _image);
-      if (success)
-        Navigator.pop(context);
-      else {
-        setState(() {
-          _requestCreateIdentity = false;
-        });
+              _image)
+          .then((value) {
+             Navigator.pop(context);
+          });
+      }catch(e){
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -80,14 +77,9 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
             );
           },
         );
-      }
-    }
-
-    return WillPopScope(
-      onWillPop: () {
-        return Future.value(true);
-      },
-      child: Scaffold(
+      }}
+    
+    return  Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
           top: true,
@@ -108,7 +100,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                             size: 25,
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.of(context).pop();
                           },
                         ),
                       ),
@@ -181,7 +173,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                     child: Container(
                                       height: 300 * 0.7,
                                       width: 300 * 0.7,
-                                      decoration: _image?.mData == null 
+                                      decoration: _image?.mData == null
                                           ? null
                                           : BoxDecoration(
                                               borderRadius:
@@ -339,7 +331,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

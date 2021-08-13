@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/input_chips/chips_input.dart';
-
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/location.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/common/person_delegate.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/chat.dart';
+import 'package:retroshare/HelperFunction/chat.dart';
+
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class CreateRoomScreen extends StatefulWidget {
   @override
@@ -152,22 +152,26 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
   }
 
   void _createChat() async {
-    //final store = StoreProvider.of<AppState>(context);
     if (_isRoomCreation && !_blockCreation) {
       _blockCreation = true;
       _doneButtonController.reverse();
       final id =
           Provider.of<Identities>(context, listen: false).currentIdentity.mId;
-      bool success = await Provider.of<ChatLobby>(context, listen: false)
-          .createChatlobby(
-              _roomNameController.text, id, _roomTopicController.text,
-              inviteList: _selectedLocations,
-              anonymous: isAnonymous,
-              public: isPublic);
-
-      if (success) {
-        Navigator.pop(context);
+      try {
+        Provider.of<ChatLobby>(context, listen: false)
+            .createChatlobby(
+                _roomNameController.text, id, _roomTopicController.text,
+                inviteList: _selectedLocations,
+                anonymous: isAnonymous,
+                public: isPublic)
+            .then((value) {
+          Navigator.of(context).pop();
+        });
+      } catch (e) {
+        errorShowDialog(
+            "Error", "Please ensure retroshare service is not down!", context);
       }
+
       _doneButtonController.forward();
       _blockCreation = false;
     }
@@ -437,6 +441,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                 .compareTo(b.locationName
                                                     .toLowerCase()
                                                     .indexOf(lowercaseQuery)));
+
+                                        
+
                                           return results;
                                         }
                                         // Otherwise the suggestions will be on friends list and showed on a
@@ -463,8 +470,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         return const <Location>[];
                                       }
                                     },
-                                    onChanged: (data) {
-                                 
+                                    onChanged: (data) {},
+                                    onChipTapped: (Location loc) {
+                                
+                                      if (!_selectedLocations.contains(loc))
+                                        _selectedLocations.add(loc);
                                     },
                                     chipBuilder:
                                         (context, state, Location profile) {
@@ -473,10 +483,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       return InputChip(
                                         key: ObjectKey(profile),
                                         label: Text(profile.accountName),
-                                       // avatar: CircleAvatar(
-                                         // backgroundImage: NetworkImage(profile.imageUrl),
-                                     //),
-                                       onDeleted: () {
+                                        // avatar: CircleAvatar(
+                                        // backgroundImage: NetworkImage(profile.imageUrl),
+                                        //),
+                                        onDeleted: () {
                                           _selectedLocations.removeWhere(
                                               (location) =>
                                                   location.rsPeerId ==
@@ -489,6 +499,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     },
                                     suggestionBuilder:
                                         (context, state, Location profile) {
+                                      if (!_selectedLocations.contains(profile))
+                                        _selectedLocations.add(profile);
                                       return PersonDelegate(
                                           data: PersonDelegateData.LocationData(
                                               profile));

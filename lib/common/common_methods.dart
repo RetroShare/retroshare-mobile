@@ -1,9 +1,9 @@
 import 'package:provider/provider.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/identity.dart';
+
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 int getUnreadCount(context, Identity identity) {
   return Provider.of<RoomChatLobby>(context, listen: false).distanceChat != null
@@ -31,10 +31,12 @@ String getChatSenderName(dynamic context, ChatMessage message) {
             ?.name ??
         message.lobby_peer_gxs_id;
   }
-  Identity id = allIds[distantChats[message.chat_id.distantChatId].interlocutorId];
+  Identity id =
+      allIds[distantChats[message.chat_id.distantChatId].interlocutorId];
   if (id == null) {
     Provider.of<Identities>(context, listen: false).callrequestIdentity(
-        new Identity(distantChats[message.chat_id.distantChatId].interlocutorId));
+        new Identity(
+            distantChats[message.chat_id.distantChatId].interlocutorId));
     return distantChats[message.chat_id.distantChatId].interlocutorId;
   }
   return id.name.isEmpty ? id.mId : id.name;

@@ -1,20 +1,23 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/services/identity.dart';
+import 'package:retroshare/HelperFunction/identity.dart';
+
+import 'package:retroshare/model/http_exception.dart';
+
+
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class Identities with ChangeNotifier {
   List<Identity> _ownidentities = [];
   Identity _selected;
- AuthToken _authToken;
+  AuthToken _authToken;
   setAuthToken(AuthToken authToken) async {
     _authToken = authToken;
   }
+
   List<Identity> get ownIdentity => _ownidentities;
   Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
-
 
   Future<void> fetchOwnidenities() async {
     _ownidentities = await getOwnIdentities(_authToken);
@@ -42,16 +45,18 @@ class Identities with ChangeNotifier {
   }
 
   Future<void> createnewIdenity(Identity id, RsGxsImage image) async {
-    Identity newId = await createIdentity(id, image, _authToken);
-    _ownidentities.add(newId);
-    _currentIdentity = newId;
+    Identity newIdentity =
+        await RsIdentity.createIdentity(id, image, _authToken);
+    _ownidentities.add(newIdentity);
+    _currentIdentity = newIdentity;
     _selected = _currentIdentity;
     notifyListeners();
   }
 
-  Future<bool> providerdeleteIdentity() async {
-    bool success = await deleteIdentity(_currentIdentity, _authToken);
-    if (success) {
+  Future<void> deleteIdentityfunc() async {
+    try {
+      bool success =
+          await RsIdentity.deleteIdentity(_currentIdentity, _authToken);
       // ignore: unrelated_type_equality_checks
       _ownidentities.removeWhere((element) => element.mId == _currentIdentity);
       Random random = new Random();
@@ -59,29 +64,28 @@ class Identities with ChangeNotifier {
       _currentIdentity = _ownidentities[randomNum];
       _selected = _currentIdentity;
       notifyListeners();
-      return true;
+      if (!success) throw HttpException("BAD REQUEST");
+    } catch (e) {
+      throw Exception(e.toString());
     }
-    return false;
   }
 
-  Future<bool> updateIdentity(Identity id, RsGxsImage avatar) async {
-    bool success = await updateApiIdentity(id,avatar, _authToken);
-    if (success) {
-      for (var i in _ownidentities) {
-        if (i.mId == id.mId) {
-          i = id;
-          break;
-        }
+  Future<void> updateIdentity(Identity id, RsGxsImage avatar) async {
+    bool success = await RsIdentity.updateIdentity(id, avatar, _authToken);
+    if (!success) throw "Try Again";
+    for (var i in _ownidentities) {
+      if (i.mId == id.mId) {
+        i = id;
+        break;
       }
-      _currentIdentity = id;
-      _selected = _currentIdentity;
-      //notifyListeners();
     }
-    return success;
+    _currentIdentity = id;
+    _selected = _currentIdentity;
+    notifyListeners();
   }
 
   Future<void> callrequestIdentity(Identity unknownId) async {
-    await requestIdentity(unknownId.mId);
+    await RsIdentity.requestIdentity(unknownId.mId, _authToken);
     notifyListeners();
   }
 }

@@ -7,10 +7,10 @@ import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/services/chat.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
-import 'package:retroshare/model/chat.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
+
 
 class RoomScreen extends StatefulWidget {
   final bool isRoom;
@@ -44,14 +44,11 @@ class _RoomScreenState extends State<RoomScreen>
       final authToken =
           Provider.of<AccountCredentials>(context, listen: false).authtoken;
       await registerChatEvent(context, authToken);
-      /*await Provider.of<FriendsIdentity>(context, listen: false)
-          .fetchAndUpdate();*/
       Provider.of<RoomChatLobby>(context, listen: false)
           .updateCurrentChat(widget.chat);
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat.chatId);
-        await getMessagesApi(widget.chat.chatId, authToken);
       }
     });
   }
@@ -128,7 +125,8 @@ class _RoomScreenState extends State<RoomScreen>
                                                       .avatar))),
                                         ),
                                   child: Visibility(
-                                    visible: (widget.chat.interlocutorId == null ||
+                                    visible:
+                                        (widget.chat.interlocutorId == null ||
                                                 friendIdentity
                                                         .allIds[widget.chat
                                                             .interlocutorId]
@@ -176,7 +174,10 @@ class _RoomScreenState extends State<RoomScreen>
                           widget.isRoom
                               ? widget.chat.chatName
                               : friendIdentity
-                                  .allIds[widget.chat.interlocutorId]?.name??widget.chat.chatName??"name",
+                                      .allIds[widget.chat.interlocutorId]
+                                      ?.name ??
+                                  widget.chat.chatName ??
+                                  "name",
                           style: Theme.of(context).textTheme.body2,
                         ),
                       ),

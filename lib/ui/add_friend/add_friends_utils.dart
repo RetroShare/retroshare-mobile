@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/notifications.dart';
 import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/services/account.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:share/share.dart';
 
 class GetInvite extends StatefulWidget {
@@ -59,9 +59,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
     if (!check)
-      ownCert = (await getOwnCert(authToken)).replaceAll("\n", "");
+      ownCert = (await RsPeers. getOwnCert(authToken)).replaceAll("\n", "");
     else
-      ownCert = (await getShortInvite(authToken));
+      ownCert = (await RsPeers. getShortInvite(authToken));
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }

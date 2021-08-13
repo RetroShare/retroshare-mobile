@@ -1,15 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:openapi/api.dart';
-import 'package:retroshare/model/auth.dart';
-import 'package:retroshare/services/chat.dart';
-import 'package:retroshare/services/init.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 //// tests for ChatId
 void main() {
   group('test distant Chat', () {
     String locationId = "814228577bc0c5da968c79272adcbfce";
     String password = "prueba";
-    openapi = DefaultApi();
     //initializeAuth(locationId, password);
 //
 //    test('to test instant chat initiation', () async {
@@ -97,11 +93,7 @@ void main() {
 //    });
 
     test('to test set autosubscribe', () async {
-      var resp = await getSubscribedChatLobbies();
-      print(resp);
-
-      setLobbyAutoSubscribe(resp[3].chatId);
-      resp = await getSubscribedChatLobbies();
+   
     });
   });
 }

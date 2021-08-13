@@ -29,8 +29,6 @@ class _ColorLoader3State extends State<ColorLoader3>
     radius = widget.radius;
     dotRadius = widget.dotRadius;
 
-    
-
     controller = AnimationController(
         lowerBound: 0.0,
         upperBound: 1.0,
@@ -82,7 +80,6 @@ class _ColorLoader3State extends State<ColorLoader3>
       //color: Colors.black12,
       child: new Center(
         child: new RotationTransition(
-          
           turns: animation_rotation,
           child: new Container(
             //color: Colors.limeAccent,
@@ -187,7 +184,6 @@ class _ColorLoader3State extends State<ColorLoader3>
 
   @override
   void dispose() {
-
     controller.dispose();
     super.dispose();
   }
@@ -206,7 +202,6 @@ class Dot extends StatelessWidget {
         width: radius,
         height: radius,
         decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-
       ),
     );
   }

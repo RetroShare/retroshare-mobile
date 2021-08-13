@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/Middleware/register_chat_event.dart';
+import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/friends_identity.dart';
-import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/provider/subscribed.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-import 'package:retroshare/ui/home/topbar.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
 import 'package:retroshare/ui/home/friends_tab.dart';
 import 'package:retroshare/common/styles.dart';
@@ -26,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Animation<Color> shadowColor;
   AnimationController _animationController;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -35,40 +32,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _leftIconAnimation =
         ColorTween(begin: Colors.lightBlueAccent, end: Colors.black12)
             .animate(_tabController.animation);
-
     _rightIconAnimation =
         ColorTween(begin: Colors.black12, end: Colors.lightBlueAccent)
             .animate(_tabController.animation);
-
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-
     shadowColor = ColorTween(
       begin: Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
-
-      Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
-      Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
-      final authToken = Provider.of<AccountCredentials>(context, listen: false).authtoken;
-        
-       registerChatEvent(context,authToken);
-
+    Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+
+    _animationController.dispose();
     super.dispose();
   }
 
   Widget getLeftIconBuilder(BuildContext context, Widget widget) {
-    return Icon(Icons.chat_bubble_outline,
+    return Icon(FontAwesomeIcons.facebookMessenger,
         color: _leftIconAnimation.value, size: 30);
   }
 
   Widget getRightIconBuilder(BuildContext context, Widget widget) {
-    return Icon(Icons.people_outline,
+    return Icon(FontAwesomeIcons.userFriends,
         color: _rightIconAnimation.value, size: 30);
   }
 
@@ -136,6 +126,87 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "Retroshare",
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
+                ),
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                            colors: <Color>[
+                              Color(0xFF00FFFF),
+                              Color(0xFF29ABE2),
+                            ],
+                            begin: Alignment(-1.0, -4.0),
+                            end: Alignment(1.0, 4.0),
+                          ),
+                          color: Theme.of(context).primaryColor,
+              ),
+              
+              height: height + 75,
+              width: MediaQuery.of(context).size.width,
+            ),
+            Container(), // Required some widget in between to float AppBar
+            Positioned(
+              // To take AppBar Size only
+              top: 100.0,
+              left: 20.0,
+              right: 20.0,
+              child: AppBar(
+                backgroundColor: Colors.white,
+                leading: InkWell(
+                  child: Icon(
+                    Icons.menu,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  onTap: () {
+                    _scaffoldKey.currentState.openDrawer();
+                  },
+                ),
+                
+                primary: false,
+                title: TextField(
+                  onTap: (){
+                    Future.delayed(const Duration(milliseconds: 100), () {
+                        Navigator.pushNamed(
+                          context,
+                          '/search',
+                          arguments: _tabController.index,
+                        );
+                      });
+                  },
+                    decoration: InputDecoration(
+                        hintText: "Search",
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.grey))),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.notifications,
+                        color: Theme.of(context).primaryColor),
+                    onPressed: () {},
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
@@ -148,49 +219,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         20;
 
     return Scaffold(
-      body: SafeArea(
-        top: true,
-        bottom: true,
-        child: SlidingUpPanel(
-          controller: _panelController,
-          maxHeight: appBarMaxHeight,
-          minHeight: kAppBarMinHeight,
-          parallaxEnabled: true,
-          parallaxOffset: .5,
-          body: _body(kAppBarMinHeight),
-          panel: TopBar(
-            maxHeight: appBarMaxHeight,
-            minHeight: kAppBarMinHeight,
-            tabController: _tabController,
-            panelAnimationValue: _animationController.value,
-            panelController: _panelController,
-          ),
-          slideDirection: SlideDirection.DOWN,
-          backdropEnabled: true,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: shadowColor.value,
-              blurRadius: 20.0,
-              spreadRadius: 5.0,
-              offset: Offset(
-                0.0,
-                15.0,
-              ),
-            ),
-          ],
-          padding: EdgeInsets.only(
-              bottom: _animationController.value * appBarHeight / 3),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(
-                  _animationController.value * appBarHeight / 3),
-              bottomRight: Radius.circular(
-                  _animationController.value * appBarHeight / 3)),
-          onPanelSlide: (double pos) => setState(
-            () {
-              _animationController.value = pos;
-            },
-          ),
-        ),
+      key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
+      drawer: drawerWidget(context),
+      appBar: _appBar(AppBar().preferredSize.height),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          ChatsTab(),
+          FriendsTab(),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Stack(

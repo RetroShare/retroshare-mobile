@@ -1,13 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:retroshare/model/chat.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
+
 class MessageDelegate extends StatelessWidget {
   const MessageDelegate({this.data, this.bubbleTitle});
 
-  final ChatMessage data;
   final String bubbleTitle;
+  final ChatMessage data;
 
   bool isMessageType(String msg) {
     final regexp =
@@ -15,7 +14,6 @@ class MessageDelegate extends StatelessWidget {
 
 // find the first match though you could also do `allMatches`
     final match = regexp.hasMatch(msg);
-    print(match);
     return match;
   }
 
@@ -47,36 +45,14 @@ class MessageDelegate extends StatelessWidget {
                 Stack(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
-                      child: isMessageType(data.msg)? Container(
-                              width: MediaQuery.of(context).size.width * .6,
-                              height: MediaQuery.of(context).size.height * .32,
-                              child:
-                                  Container(
-                                      padding: const EdgeInsets.all(3),
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(5.0),
-                                            bottomLeft: Radius.circular(10.0),
-                                            bottomRight: Radius.circular(5.0),
-                                          ),
-                                          image:DecorationImage(
-                                                fit: BoxFit.fitWidth,
-                                                image:
-                                                    MemoryImage(base64Decode(data.msg)),
-                                              ))
-                                          )
-                                ,
-                              
-                            )
-                          :
-                      Html(
-                          data: (data.msg) +
-                              "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
-                          ),
-                    ),
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
+                        child: Html(
+                            data: (isMessageType(data.msg)
+                                    ? "<img alt='Red dot (png)' src='data:image/png;base64,${data.msg}' />"
+                                    : data.msg) +
+                                "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
+                            )),
                     //real additionalInfo
                     Positioned(
                       child: Text(

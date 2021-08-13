@@ -14,9 +14,8 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friend_location.dart';
-import 'package:retroshare/services/account.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:share/share.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 enum QRoperation { save, refresh, share }
@@ -72,12 +71,26 @@ class _QRScannerState extends State<QRScanner>
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
     if (!check)
-      ownCert = (await getOwnCert(authToken)).replaceAll("\n", "");
+      ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll("\n", "");
     else
-      ownCert = (await getShortInvite(authToken)).replaceAll("\n", "");
+      ownCert = (await RsPeers.getShortInvite(authToken)).replaceAll("\n", "");
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }
+
+  /*Future<bool> requestCameraPermission() async {
+    if (await Permission.camera.isUndetermined) {
+      final status = await Permission.camera.request();
+      if (status.isDenied) return false;
+    }
+    return true;
+  }
+
+  void checkServiceStatus(BuildContext context) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Access Denied!"),
+    ));
+  }*/
 
   Widget getHeaderBuilder() {
     return Container(
@@ -117,24 +130,23 @@ class _QRScannerState extends State<QRScanner>
     try {
       barcode = await scanner.scan();
       if (barcode != null) {
-        bool success =
-            await Provider.of<FriendLocations>(context, listen: false)
-                .addFriendLocation(barcode);
-
-        if (success) {
+        bool success = false;
+        await Provider.of<FriendLocations>(context, listen: false)
+            .addFriendLocation(barcode)
+            .then((value) {
           setState(() {
             _requestQR = false;
           });
           showToast('Friend has successfully added');
-        } else {
-          setState(() {
-            _requestQR = false;
-          });
-          showToast('An error occurred while adding your friend.');
-        }
+        });
       } else {
         showToast('An error occurred while adding your friend.');
       }
+    } on HttpException catch (e) {
+      setState(() {
+        _requestQR = false;
+      });
+      showToast('An error occurred while adding your friend.');
     } catch (e) {
       setState(() {
         _requestQR = false;
@@ -279,7 +291,6 @@ class _QRScannerState extends State<QRScanner>
                                   key: _globalkey,
                                   child: QrImage(
                                     errorStateBuilder: (context, result) {
-                                      
                                       /*setState(() {
                                           _requestQR = false;
                                         });*/
@@ -378,7 +389,9 @@ class _QRScannerState extends State<QRScanner>
             _requestQR = true;
           });
           await _scan();
-        },
+          },
+          
+        
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(

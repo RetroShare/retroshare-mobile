@@ -1,13 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/identity.dart';
+
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SignedIdenityTab extends StatefulWidget {
   final isFirstId;
@@ -61,8 +61,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      if(_image!=null)
-                      imagePickerDialog(context, _setImage);
+                      if (_image != null) imagePickerDialog(context, _setImage);
                     },
                     child: Container(
                       height: 300 * 0.7,
@@ -78,8 +77,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                               ),
                             ),
                       child: Visibility(
-                        visible:
-                            _image != null ? _image?.mData?.isEmpty : true,
+                        visible: _image != null ? _image?.mData?.isEmpty : true,
                         child: Center(
                           child: Icon(
                             Icons.person,

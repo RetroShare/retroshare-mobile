@@ -16,10 +16,11 @@ Future imagePickerDialog(context, Function callback,
                   Button(
                       name: "Gallery",
                       buttonIcon: Icons.photo_library,
-                      onPressed: () async => callback(
-                          await ImagePicker.pickImage(
-                              source: ImageSource.gallery,
-                              maxHeight: 250,
+                      onPressed: () async =>
+                          callback(await ImagePicker.pickImage(
+                            source: ImageSource.gallery,
+                            maxHeight: 250,
+                            imageQuality: 10,
                             maxWidth: 250,
                           ))),
                   Padding(padding: EdgeInsets.all(8.0)),

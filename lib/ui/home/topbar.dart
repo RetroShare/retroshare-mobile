@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
@@ -236,40 +235,13 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                             ),
                             Visibility(
                               child: Button(
-                                name: 'About',
+                                name: 'Forum',
                                 buttonIcon: Icons.info_rounded,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/about');
+                                  Navigator.pushNamed(context, '/forum');
                                 },
                               ),
                             ),
-                            /*Visibility(
-                              child: Button(
-                                name: 'Export Account',
-                                buttonIcon: Icons.import_export,
-                                onPressed: () async {
-                                  bool success =
-                                      await exportIdentityFunc(context);
-                                  if (success)
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: const Text(
-                                          'Successfully! Exported your account'),
-                                      duration: const Duration(seconds: 1),
-                                      backgroundColor: Colors.lightBlue[200],
-                                    ));
-                                  else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: const Text(
-                                          'Oops ! Something went wrong '),
-                                      duration: const Duration(seconds: 1),
-                                      backgroundColor: Colors.red[200],
-                                    ));
-                                  }
-                                },
-                              ),
-                            ),*/
                           ],
                         ),
                       ),

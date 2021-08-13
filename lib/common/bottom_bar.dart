@@ -6,15 +6,18 @@ class BottomBar extends StatelessWidget {
   final double minHeight;
   final double maxHeight;
 
-  BottomBar({this.child, this.minHeight = appBarHeight, this.maxHeight = appBarHeight});
+  BottomBar(
+      {this.child,
+      this.minHeight = appBarHeight,
+      this.maxHeight = appBarHeight});
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: new BoxConstraints(
-        minHeight: minHeight,
-        maxHeight: maxHeight,
-      ),
+        constraints: new BoxConstraints(
+          minHeight: minHeight,
+          maxHeight: maxHeight,
+        ),
         child: new DecoratedBox(
           decoration: BoxDecoration(
             boxShadow: [
@@ -34,7 +37,6 @@ class BottomBar extends StatelessWidget {
             color: Colors.white,
           ),
           child: child,
-        )
-    );
+        ));
   }
 }

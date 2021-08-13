@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import 'package:openapi/api.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/common_methods.dart';
 
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/chat.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/model/location.dart';
+
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class PersonDelegateData {
   const PersonDelegateData({
@@ -82,9 +79,11 @@ class PersonDelegateData {
     return PersonDelegateData(
       name: identity.name,
       mId: identity.mId,
-      image: identity.avatar!=null?MemoryImage(base64Decode(identity.avatar)):null,
+      image: identity.avatar != null
+          ? MemoryImage(base64Decode(identity.avatar))
+          : null,
       isMessage: true,
-      isUnread: getUnreadCount(context,identity) > 0 ? true : false,
+      isUnread: getUnreadCount(context, identity) > 0 ? true : false,
     );
   }
 
@@ -293,8 +292,7 @@ class _PersonDelegateState extends State<PersonDelegate>
                           style: widget.data.isMessage
                               ? Theme.of(context).textTheme.body2
                               : Theme.of(context).textTheme.body1,
-                            overflow: TextOverflow.ellipsis,
-                              
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Spacer(),
@@ -303,9 +301,9 @@ class _PersonDelegateState extends State<PersonDelegate>
                             widget.isSelectable && _curvedAnimation.value == 1,
                         child: IconButton(
                             icon: Icon(Icons.navigate_next),
-                            onPressed: () => Navigator.of(context).pushReplacementNamed(
-                                "/profile",
-                                arguments: {'id': id})),
+                            onPressed: () => Navigator.of(context)
+                                .pushReplacementNamed("/profile",
+                                    arguments: {'id': id})),
                       )
                     ]),
                     Visibility(

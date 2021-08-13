@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/color_loader_3.dart';
+import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/friend_location.dart';
 
 import '../Qr_scanner_screen.dart';
@@ -46,7 +47,8 @@ class _GetAddfriendState extends State<GetAddfriend> {
               setState(() {
                 _requestAddCert = true;
               });
-              Provider.of<FriendLocations>(context, listen: false)
+              try{
+               await Provider.of<FriendLocations>(context, listen: false)
                   .addFriendLocation(ownCertController.text)
                   .then((value) {
                 setState(() {
@@ -54,9 +56,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 });
                 Fluttertoast.cancel();
                 Fluttertoast.showToast(
-                    msg: value
-                        ? "Friend has been added"
-                        : 'something went Wrong',
+                    msg:"Friend has been added",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
@@ -64,6 +64,36 @@ class _GetAddfriendState extends State<GetAddfriend> {
                     textColor: Colors.white,
                     fontSize: 16.0);
               });
+              } on HttpException catch(e){
+                setState(() {
+                  _requestAddCert = false;
+                });
+                Fluttertoast.cancel();
+                Fluttertoast.showToast(
+                    msg:  'Invalid certi',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+
+              
+              } catch(e){
+                setState(() {
+                  _requestAddCert = false;
+                });
+                Fluttertoast.cancel();
+                Fluttertoast.showToast(
+                    msg:  'something went Wrong',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+
+              }
             },
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),

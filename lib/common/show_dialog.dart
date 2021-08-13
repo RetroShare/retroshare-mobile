@@ -1,9 +1,50 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/model/identity.dart';
-import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/model/http_exception.dart';
 
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
+
+errorShowDialog(String title, String text, BuildContext context) {
+  return CoolAlert.show(
+    context: context,
+    type: CoolAlertType.error,
+    onConfirmBtnTap: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+    title: title,
+    text: text,
+  );
+}
+
+successShowDialog(String title, String text, BuildContext context) {
+  return CoolAlert.show(
+    context: context,
+    type: CoolAlertType.success,
+    onConfirmBtnTap: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+    title: title,
+    text: text,
+  );
+}
+
+warningShowDialog(String title, String text, BuildContext context) {
+  return CoolAlert.show(
+    context: context,
+    type: CoolAlertType.warning,
+    onConfirmBtnTap: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+    title: title,
+    text: text,
+  );
+}
 
 contentBox(context) {
   return Stack(
@@ -66,9 +107,6 @@ contentBox(context) {
   );
 }
 
-
-
-
 // delete dialog Box
 
 void showdeleteDialog(context) {
@@ -95,11 +133,18 @@ void showdeleteDialog(context) {
             FlatButton(
               child: Text('Delete'),
               onPressed: () async {
-                bool success =
-                    await Provider.of<Identities>(context, listen: false)
-                        .providerdeleteIdentity();
-                if (success) {
-                  Navigator.pushReplacementNamed(context, '/change_identity');
+                try {
+                  Provider.of<Identities>(context, listen: false)
+                      .deleteIdentityfunc();
+                } on HttpException catch (err) {
+                  warningShowDialog(
+                    "Retro Service is Down",
+                  "Please ensure retroshare service is not down",
+                  context
+                  );
+                } catch (e) {
+                  warningShowDialog("Try Again",
+                      "Something wrong happens!", context);
                 }
               },
             ),
