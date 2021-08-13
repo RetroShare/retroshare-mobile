@@ -41,6 +41,7 @@ Widget drawerWidget(BuildContext ctx) {
             alignment: Alignment.center,
             margin: const EdgeInsets.only(top:2),
             height: MediaQuery.of(ctx).size.height * .3,
+             decoration: BoxDecoration(color: Colors.blueAccent[300]),
             child: Center(
               child: Consumer<Identities>(builder: (context, curr, _) {
                 return Column(

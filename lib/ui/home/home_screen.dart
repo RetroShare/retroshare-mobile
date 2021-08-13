@@ -17,10 +17,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   TabController _tabController;
   PanelController _panelController;
-
   Animation<Color> _leftIconAnimation;
   Animation<Color> _rightIconAnimation;
-
   Animation<Color> shadowColor;
   AnimationController _animationController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -62,70 +60,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         color: _rightIconAnimation.value, size: 30);
   }
 
-  Widget _body(double topBarMinHeight) {
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          height: topBarMinHeight,
-        ),
-        Material(
-          color: Colors.white,
-          child: GestureDetector(
-            onTap: () {
-              Future.delayed(const Duration(milliseconds: 100), () {
-                Navigator.pushNamed(
-                  context,
-                  '/search',
-                  arguments: _tabController.index,
-                );
-              });
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Color(0xFFF5F5F5),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              margin: EdgeInsets.symmetric(horizontal: 8),
-              height: 40,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.search,
-                        color: Theme.of(context).textTheme.body1.color),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Type text...',
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .copyWith(color: Theme.of(context).hintColor),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        //),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              ChatsTab(),
-              FriendsTab(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
         child: Stack(
@@ -137,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   "Retroshare",
                   style: TextStyle(
                       fontSize: 25.0,
+                      fontFamily: "Vollkorn",
                       fontWeight: FontWeight.w600,
                       color: Colors.white),
                 ),

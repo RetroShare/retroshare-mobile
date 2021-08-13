@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:retroshare/ui/Update_idenity_screen.dart';
+import 'package:retroshare/ui/update_idenity_screen.dart';
 import 'package:retroshare/ui/about_screen.dart';
 import 'package:retroshare/ui/forum_screen.dart';
 import 'package:retroshare/ui/profile_screen.dart';

@@ -25,10 +25,8 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
     });
 
   for (int x = 0; x < ownIdsList.length; x++) {
-    if (ownIdsList[x].mId != '00000000000000000000000000000000') {
       var resp = await getIdDetails(ownIdsList[x].mId, authToken);
       if (resp.item1) ownIdsList[x] = resp.item2;
-    }
   }
 
   return ownIdsList;
@@ -51,13 +49,8 @@ Future<Tuple2<bool, Identity>> getIdDetails(
 
     return Tuple2<bool, Identity>(true, identity);
   }
-
-  throw Exception('Failed to load response');
+    return Tuple2<bool, Identity>(false, Identity(''));
 }
-
-
-
-
 
 // Identities that are not contacts do not have loaded avatars
 dynamic getAllIdentities(AuthToken authToken) async {
@@ -134,4 +127,3 @@ dynamic getAllIdentities(AuthToken authToken) async {
   } else
     throw Exception('Failed to load response');
 }
-

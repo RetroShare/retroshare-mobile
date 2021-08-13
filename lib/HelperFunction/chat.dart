@@ -111,7 +111,6 @@ Chat getChat(
   } else if (to != null && (to is Chat)) {
     chat = to;
     // Ugly way to initialize lobby participants
-    //store.dispatch(UpdateLobbyParticipantsAction(to.chatId, []));
     Provider.of<RoomChatLobby>(context, listen: false)
         .fetchAndUpdateParticipants(to.chatId, []);
     chatMiddleware(null, context);
