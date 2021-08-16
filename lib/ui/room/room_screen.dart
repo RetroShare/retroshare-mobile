@@ -123,7 +123,7 @@ class _RoomScreenState extends State<RoomScreen>
                                         ),
                                   child: Visibility(
                                     visible:
-                                        (widget.chat.interlocutorId == null ||
+                                        (widget.chat?.interlocutorId == null ||
                                                 friendIdentity
                                                         .allIdentity[widget.chat
                                                             ?.interlocutorId]
