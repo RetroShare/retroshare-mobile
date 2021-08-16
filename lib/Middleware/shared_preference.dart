@@ -32,10 +32,8 @@ Future<StreamSubscription<Event>> registerEventsHandlers(
     );
 
     streamSubscription = eventSource.listen((Event event) {
-    
       // Deserialize the message
       var jsonData = event.data != null ? jsonDecode(event.data) : null;
-      print(jsonData);
     });
     streamSubscription.onError(onError);
   } on EventSourceSubscriptionException catch (e) {

@@ -38,7 +38,6 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
                 allIds[distantChats[message.chat_id.distantChatId]
                         .interlocutorId]
                     .name)) {
-      print(distantChats[message.chat_id.distantChatId].interlocutorId);
       Provider.of<Identities>(context, listen: false).callrequestIdentity(
           new Identity(
               distantChats[message.chat_id.distantChatId].interlocutorId));

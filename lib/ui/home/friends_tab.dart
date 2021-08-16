@@ -17,11 +17,11 @@ class FriendsTab extends StatefulWidget {
 
 class _FriendsTabState extends State<FriendsTab> {
   void _removeFromContacts(String gxsId) {
-     Provider.of<FriendsIdentity>(context, listen: false)
+    Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, false);
   }
 
-  void _addToContacts(String gxsId)  {
+  void _addToContacts(String gxsId) {
     Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, true);
   }
@@ -31,9 +31,8 @@ class _FriendsTabState extends State<FriendsTab> {
     return SafeArea(
       top: false,
       bottom: false,
-      child: FutureBuilder(
-        builder: (context,snapshot){
-        return  Consumer<FriendsIdentity>(builder: (context, friendsIdsList, _) {
+      child: FutureBuilder(builder: (context, snapshot) {
+        return Consumer<FriendsIdentity>(builder: (context, friendsIdsList, _) {
           return Consumer<RoomChatLobby>(
             builder: (context, roomChat, _) {
               Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
@@ -42,16 +41,17 @@ class _FriendsTabState extends State<FriendsTab> {
                       friendsIdsList.friendsIdsList,
                       roomChat.distanceChat?.values
                               ?.toList()
-                              ?.where((chat) =>
-                                  (friendsIdsList.allIdentity[chat.interlocutorId] ==
-                                          null ||
-                                      friendsIdsList.allIdentity[chat.interlocutorId]
-                                              .isContact ==
-                                          false))
+                              ?.where((chat) => (friendsIdsList
+                                          .allIdentity[chat.interlocutorId] ==
+                                      null ||
+                                  friendsIdsList
+                                          .allIdentity[chat.interlocutorId]
+                                          .isContact ==
+                                      false))
                               ?.toList() ??
                           [],
                       friendsIdsList.allIdentity);
-              
+
               if (friendsDistantAndIdsTuple.item1?.isNotEmpty ??
                   false || friendsDistantAndIdsTuple.item2?.isNotEmpty ??
                   false)
@@ -97,8 +97,10 @@ class _FriendsTabState extends State<FriendsTab> {
                                     '/room',
                                     arguments: {
                                       'isRoom': false,
-                                      'chatData': getChat(context,
-                                          friendsDistantAndIdsTuple.item1[index]),
+                                      'chatData': getChat(
+                                          context,
+                                          friendsDistantAndIdsTuple
+                                              .item1[index]),
                                     },
                                   );
                                 },
@@ -150,6 +152,8 @@ class _FriendsTabState extends State<FriendsTab> {
                                       context);
                                 },
                                 onPressed: () {
+                           
+                                 
                                   Navigator.pushNamed(
                                     context,
                                     '/room',
@@ -159,7 +163,8 @@ class _FriendsTabState extends State<FriendsTab> {
                                           context,
                                           friendsDistantAndIdsTuple.item3[
                                               friendsDistantAndIdsTuple
-                                                  .item2[index].interlocutorId]),
+                                                  .item2[index]
+                                                  .interlocutorId]),
                                     },
                                   );
                                 },
@@ -172,7 +177,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     ),
                   ],
                 );
-      
+
               return Center(
                 child: SizedBox(
                   width: 200,
@@ -209,8 +214,7 @@ class _FriendsTabState extends State<FriendsTab> {
             },
           );
         });
-        }
-      ),
+      }),
     );
   }
 }

@@ -21,7 +21,7 @@ errorShowDialog(String title, String text, BuildContext context) {
 }
 
 loading(BuildContext context) {
-  return CoolAlert.show(context: context, type: CoolAlertType.loading );
+  return CoolAlert.show(context: context, type: CoolAlertType.loading);
 }
 
 successShowDialog(String title, String text, BuildContext context) {
