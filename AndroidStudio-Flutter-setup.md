@@ -71,7 +71,7 @@ RS-mobile depends on the following packages to be avail on path-level parallel t
   2. ensure the folder is named different to the repo name as "retroshare_api_wrapper" as actual awaited in pubspec.yaml of rs-mobile
   3. call for exc. by cmd-console in this path: flutter pub get.
 
-##Main package
+## Main package
 1. Git: clone RS mobile locally as RSMobileDir  
 (https://github.com/RetroShare/retroshare-mobile)
 2. Open a cmd window (type cmd in START)
@@ -112,7 +112,7 @@ You may filter the content of trace.txt than by "restroshare" to get only the li
 TBD; actual not knwon how to setup a debug-environment fort it.  
 Hints in context: https://gitlab.com/elRepo.io/elRepo.io-android/-/issues/43
 
-##Tracing RS-Service in the context of the android-activities
+## Tracing RS-Service in the context of the android-activities
 As above with the adb.exe tool.
 If you want manually check the communicatio  interface of the servcice 
 
