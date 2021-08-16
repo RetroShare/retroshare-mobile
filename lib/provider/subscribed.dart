@@ -64,7 +64,7 @@ class ChatLobby with ChangeNotifier {
                   : false));
     }
     _chatlist = chatsList;
-    fetchAndUpdateUnsubscribed();
+    await fetchAndUpdateUnsubscribed();
   }
 
   Future<void> createChatlobby(

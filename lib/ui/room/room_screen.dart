@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/auth.dart';
@@ -39,11 +38,10 @@ class _RoomScreenState extends State<RoomScreen>
         ColorTween(begin: Colors.black, end: Colors.lightBlueAccent)
             .animate(_tabController.animation);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+             WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.chat.unreadCount = 0;
       final authToken =
           Provider.of<AccountCredentials>(context, listen: false).authtoken;
-      await registerChatEvent(context, authToken);
       Provider.of<RoomChatLobby>(context, listen: false)
           .updateCurrentChat(widget.chat);
       if (widget.isRoom) {

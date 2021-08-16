@@ -20,6 +20,10 @@ errorShowDialog(String title, String text, BuildContext context) {
   );
 }
 
+loading(BuildContext context) {
+  return CoolAlert.show(context: context, type: CoolAlertType.loading );
+}
+
 successShowDialog(String title, String text, BuildContext context) {
   return CoolAlert.show(
     context: context,
@@ -137,14 +141,11 @@ void showdeleteDialog(context) {
                   Provider.of<Identities>(context, listen: false)
                       .deleteIdentityfunc();
                 } on HttpException catch (err) {
-                  warningShowDialog(
-                    "Retro Service is Down",
-                  "Please ensure retroshare service is not down",
-                  context
-                  );
+                  warningShowDialog("Retro Service is Down",
+                      "Please ensure retroshare service is not down", context);
                 } catch (e) {
-                  warningShowDialog("Try Again",
-                      "Something wrong happens!", context);
+                  warningShowDialog(
+                      "Try Again", "Something wrong happens!", context);
                 }
               },
             ),

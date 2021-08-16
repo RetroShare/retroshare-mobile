@@ -1,4 +1,4 @@
-import 'dart:collection';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +11,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 Future<void> registerChatEvent(
     BuildContext context, AuthToken authToken) async {
   await eventsRegisterChatMessage(
-      listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
+      listenCb: (var json, ChatMessage msg) {
         if (msg != null) {
           AuthToken authToken = Provider.of<RoomChatLobby>(context, listen: false)
                   .authToken;

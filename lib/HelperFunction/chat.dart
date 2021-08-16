@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
+import 'package:retroshare/common/show_dialog.dart';
 
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
@@ -17,8 +18,9 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 ///		4 TYPE_BROADCAST           // message to/from all connected peers
 Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
     [ChatIdType type = ChatIdType.number2_]) async {
-  final authToken= Provider.of<RoomChatLobby>(context, listen: false).authToken;
-  RsMsgs.sendMessage(chatId, msgTxt, authToken).then((bool res) {
+  final authToken =
+      Provider.of<RoomChatLobby>(context, listen: false).authToken;
+  RsMsgs.sendMessage(chatId, msgTxt, authToken, type).then((bool res) {
     if (res) {
       //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
@@ -32,6 +34,8 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
       chatMiddleware(message, context);
       Provider.of<RoomChatLobby>(context, listen: false)
           .addChatMessage(message, chatId);
+    } else {
+      errorShowDialog("Something went Wrong!", null, context);
     }
   });
 }
@@ -42,7 +46,8 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
 Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
   String to = chat.interlocutorId;
   String from = chat.ownIdToUse;
-  AuthToken authToken = Provider.of<RoomChatLobby>(context).authToken;
+  AuthToken authToken =
+      Provider.of<RoomChatLobby>(context, listen: false).authToken;
   final resp = await RsMsgs.c(chat, authToken);
   if (resp['retval'] == true) {
     chat.chatId = resp['pid'];

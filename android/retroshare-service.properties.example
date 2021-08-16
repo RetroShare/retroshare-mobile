@@ -1,0 +1,5 @@
+// Qt for Android install path
+qt.installdir=/opt/Qt-5.12.7/5.12.7/
+
+// Paths of retroshare-service APKs separated by ':' to extract the native libraries
+retroshare.servicepackages=/home/gio/Builds/RetroShare-Android_for_armeabi_v7a_Clang_Qt_5_12_7_android_armv7-Release/android-build/build/outputs/apk/debug/android-build-debug.apk:/home/gio/Builds/RetroShare-Android_for_arm64_v8a_Clang_Qt_5_12_7_android_arm64_v8a-Debug/android-build/build/outputs/apk/debug/android-build-debug.apk

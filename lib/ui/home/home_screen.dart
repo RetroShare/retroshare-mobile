@@ -1,9 +1,14 @@
+import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/Middleware/register_chat_event.dart';
+import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:retroshare/common/drawer.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
 import 'package:retroshare/ui/home/friends_tab.dart';
@@ -40,6 +45,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       end: Colors.black12,
     ).animate(_animationController);
     Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
+    final authToken =
+        Provider.of<AccountCredentials>(context, listen: false).authtoken;
+       registerChatEvent(context, authToken);
+       registerEventsHandlers( RsEventType.NETWORK, (Event event){}, authToken);
   }
 
   @override

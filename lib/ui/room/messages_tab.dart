@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/HelperFunction/chat.dart';
+import 'package:retroshare/common/common_methods.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/message_delegate.dart';
@@ -81,7 +82,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                   (msgList[index] != null) &&
                                   (msgList[index]
                                       .incoming) // Why msgList[index]?.incoming ?? false is not working??
-                              ? msgList[index].getChatSenderName(context)
+                              ?getChatSenderName(context, msgList[index])
                               : null,
                         );
                       },

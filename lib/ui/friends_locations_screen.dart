@@ -10,6 +10,13 @@ class FriendsLocationsScreen extends StatefulWidget {
 }
 
 class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
+
+    @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -42,9 +49,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
       body: SafeArea(
         top: true,
         bottom: true,
-        child:
-            Expanded(
-              child: FutureBuilder(
+        child: FutureBuilder(
                   future: _getFriendsAccounts(),
                   builder: (context, snapshot) {
                     return snapshot.connectionState == ConnectionState.done
@@ -190,7 +195,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                   }),
             ),
           
-      ),
+      
     );
   }
 }
