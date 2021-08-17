@@ -36,16 +36,13 @@ class _RoomScreenState extends State<RoomScreen>
     _iconAnimation =
         ColorTween(begin: Colors.black, end: Colors.lightBlueAccent)
             .animate(_tabController.animation);
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      widget.chat.unreadCount = 0;
+      widget.chat?.unreadCount = 0;
       final authToken =
           Provider.of<AccountCredentials>(context, listen: false).authtoken;
-      Provider.of<RoomChatLobby>(context, listen: false)
-          .updateCurrentChat(widget.chat);
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
-            .updateParticipants(widget.chat.chatId);
+            .updateParticipants(widget.chat?.chatId);
       }
     });
   }
@@ -58,15 +55,12 @@ class _RoomScreenState extends State<RoomScreen>
 
   @override
   Widget build(BuildContext context) {
+    var friendIdentity  = Provider.of<FriendsIdentity>(context,listen: false);
     return Scaffold(
       body: SafeArea(
         top: true,
         bottom: true,
-        child: Consumer<FriendsIdentity>(
-          builder: (context, friendIdentity, _) {
-            
-
-            return Column(
+        child: friendIdentity!=null? Column(
               children: <Widget>[
                 Container(
                   height: appBarHeight,
@@ -169,7 +163,7 @@ class _RoomScreenState extends State<RoomScreen>
                       Expanded(
                         child: Text(
                           widget.isRoom
-                              ? widget.chat.chatName
+                              ? widget.chat?.chatName
                               : friendIdentity
                                       .allIdentity[widget.chat?.interlocutorId]
                                       ?.name ??
@@ -215,9 +209,9 @@ class _RoomScreenState extends State<RoomScreen>
                   ),
                 ),
               ],
-            );
-          },
-        ),
+            ):Center(child: CircularProgressIndicator()),
+          
+        
       ),
     );
   }

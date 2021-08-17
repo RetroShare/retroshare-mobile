@@ -16,6 +16,7 @@ class FriendLocations with ChangeNotifier {
     for (int i = 0; i < sslIds.length; i++) {
       locations.add(await RsPeers.getPeerDetails(sslIds[i], _authToken));
     }
+    _friendlist = locations;
     notifyListeners();
   }
 
@@ -24,8 +25,9 @@ class FriendLocations with ChangeNotifier {
     if (base64Payload != null && base64Payload.length < 100)
       isAdded = await RsPeers.acceptShortInvite(_authToken, base64Payload);
     else
-      isAdded = await RsPeers.acceptInvite( _authToken,
-       base64Payload,
+      isAdded = await RsPeers.acceptInvite(
+        _authToken,
+        base64Payload,
       );
 
     if (!isAdded) throw HttpException("WRONG Certi");

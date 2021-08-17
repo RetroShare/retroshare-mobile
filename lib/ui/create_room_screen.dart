@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chips_input/flutter_chips_input.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/input_chips/chips_input.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friends_identity.dart';
@@ -471,13 +471,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       }
                                     },
                                     onChanged: (data) {},
-                                    onChipTapped: (Location loc) {
-                                
-                                      if (!_selectedLocations.contains(loc))
-                                        _selectedLocations.add(loc);
-                                    },
+                                    
+                                    
+                                    
                                     chipBuilder:
-                                        (context, state, Location profile) {
+                                        (context, state,  profile) {
                                       if (!_selectedLocations.contains(profile))
                                         _selectedLocations.add(profile);
                                       return InputChip(
@@ -498,7 +496,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       );
                                     },
                                     suggestionBuilder:
-                                        (context, state, Location profile) {
+                                        (context, state, profile) {
                                       if (!_selectedLocations.contains(profile))
                                         _selectedLocations.add(profile);
                                       return PersonDelegate(

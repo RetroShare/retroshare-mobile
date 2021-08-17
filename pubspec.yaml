@@ -51,7 +51,7 @@ dependencies:
 
   # Used to render chat messages
   flutter_html: ^0.11.1
-
+  flutter_chips_input: ^1.10.0
   # For notifications
   flutter_local_notifications: ^1.4.3
   rxdart: ^0.23.1

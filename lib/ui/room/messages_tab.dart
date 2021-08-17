@@ -63,11 +63,11 @@ class _MessagesTabState extends State<MessagesTab> {
           Expanded(
             child: Consumer<RoomChatLobby>(
               builder: (context, messagesList, _) {
-                dynamic msgList = (widget.chat.chatId == null ||
+                dynamic msgList = (widget.chat?.chatId == null ||
                         messagesList.messagesList == null ||
-                        messagesList.messagesList[widget.chat.chatId] == null)
+                        messagesList.messagesList[widget.chat?.chatId] == null)
                     ? []
-                    : messagesList.messagesList[widget.chat.chatId].reversed
+                    : messagesList.messagesList[widget.chat?.chatId].reversed
                         .toList();
                 return Stack(
                   children: <Widget>[
@@ -183,7 +183,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                 "<img alt='Red dot (png)' src='data:image/png;base64,$text' />";
                             sendMessage(
                                 context,
-                                widget.chat.chatId,
+                                widget.chat?.chatId,
                                 text,
                                 (widget.isRoom
                                     ? ChatIdType.number3_
@@ -209,7 +209,7 @@ class _MessagesTabState extends State<MessagesTab> {
                     onPressed: () {
                       sendMessage(
                           context,
-                          widget.chat.chatId,
+                          widget.chat?.chatId,
                           msgController.text,
                           (widget.isRoom
                               ? ChatIdType.number3_

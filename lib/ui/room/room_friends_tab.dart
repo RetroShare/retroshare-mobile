@@ -31,7 +31,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
     super.didChangeDependencies();
     precacheImage(myImage.image, context);
       Provider.of<RoomChatLobby>(context, listen: false)
-        .updateParticipants(widget.chat.chatId);
+        .updateParticipants(widget.chat?.chatId);
 
   }
   
@@ -49,18 +49,18 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: Provider.of<RoomChatLobby>(context, listen: false)
-            .updateParticipants(widget.chat.chatId),
+            .updateParticipants(widget.chat?.chatId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done)
             return Consumer<RoomChatLobby>(
                 builder: (context, lobbyParticipantsList, _) {
-              List<Identity> _lobbyParticipantsList = widget.chat.chatId !=
+              List<Identity> _lobbyParticipantsList = widget.chat?.chatId !=
                           null ||
                       lobbyParticipantsList.lobbyParticipants != null ||
                       lobbyParticipantsList
-                              .lobbyParticipants[widget.chat.chatId] !=
+                              .lobbyParticipants[widget.chat?.chatId] !=
                           null
-                  ? lobbyParticipantsList.lobbyParticipants[widget.chat.chatId]
+                  ? lobbyParticipantsList.lobbyParticipants[widget.chat?.chatId]
                   : null;
               return _lobbyParticipantsList.length > 0
                   ? ListView.builder(
