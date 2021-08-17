@@ -1,14 +1,11 @@
-import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/register_chat_event.dart';
-import 'package:retroshare/Middleware/shared_preference.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friends_identity.dart';
-import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
 import 'package:retroshare/ui/home/friends_tab.dart';
@@ -32,23 +29,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _panelController = PanelController();
-    _leftIconAnimation =
-        ColorTween(begin: Colors.lightBlueAccent, end: Colors.black12)
-            .animate(_tabController.animation);
-    _rightIconAnimation =
-        ColorTween(begin: Colors.black12, end: Colors.lightBlueAccent)
-            .animate(_tabController.animation);
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-    shadowColor = ColorTween(
-      begin: Color.fromRGBO(0, 0, 0, 0),
-      end: Colors.black12,
-    ).animate(_animationController);
     Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
-       registerChatEvent(context, authToken);
-       registerEventsHandlers( RsEventType.NETWORK, (Event event){}, authToken);
+    registerChatEvent(context, authToken);
   }
 
   @override
@@ -87,16 +71,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                            colors: <Color>[
-                              Color(0xFF00FFFF),
-                              Color(0xFF29ABE2),
-                            ],
-                            begin: Alignment(-1.0, -4.0),
-                            end: Alignment(1.0, 4.0),
-                          ),
-                          color: Theme.of(context).primaryColor,
+                  colors: <Color>[
+                    Color(0xFF00FFFF),
+                    Color(0xFF29ABE2),
+                  ],
+                  begin: Alignment(-1.0, -4.0),
+                  end: Alignment(1.0, 4.0),
+                ),
+                color: Theme.of(context).primaryColor,
               ),
-              
+
               height: height + 75,
               width: MediaQuery.of(context).size.width,
             ),
@@ -117,18 +101,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _scaffoldKey.currentState.openDrawer();
                   },
                 ),
-                
                 primary: false,
                 title: TextField(
-                  onTap: (){
-                    Future.delayed(const Duration(milliseconds: 100), () {
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 100), () {
                         Navigator.pushNamed(
                           context,
                           '/search',
                           arguments: _tabController.index,
                         );
                       });
-                  },
+                    },
                     decoration: InputDecoration(
                         hintText: "Search",
                         border: InputBorder.none,
@@ -153,15 +136,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQueryData = MediaQuery.of(context);
-    final double statusBarHeight = mediaQueryData.padding.top;
-    final double screenHeight = mediaQueryData.size.height;
-    final double appBarMinHeight = kAppBarMinHeight - statusBarHeight;
-    final double appBarMaxHeight = appBarMinHeight +
-        (screenHeight - statusBarHeight) * 0.15 +
-        5 * buttonHeight +
-        20;
-
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,

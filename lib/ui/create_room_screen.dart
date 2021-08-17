@@ -497,11 +497,12 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     },
                                     suggestionBuilder:
                                         (context, state, profile) {
-                                      if (!_selectedLocations.contains(profile))
-                                        _selectedLocations.add(profile);
-                                      return PersonDelegate(
-                                          data: PersonDelegateData.LocationData(
-                                              profile));
+                                      
+                                      return Expanded(
+                                        child: PersonDelegate(
+                                            data: PersonDelegateData.LocationData(
+                                                profile)),
+                                      );
                                     },
                                   )
                                 ],
