@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:retroshare/ui/update_idenity_screen.dart';
 import 'package:retroshare/ui/about_screen.dart';
-import 'package:retroshare/ui/forum_screen.dart';
 import 'package:retroshare/ui/profile_screen.dart';
 import 'package:retroshare/ui/splash_screen.dart';
 import 'package:retroshare/ui/home/home_screen.dart';
@@ -89,9 +88,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => FriendsLocationsScreen());
       case '/about':
         return MaterialPageRoute(builder: (_) => MyWebView());
-
-      case '/forum':
-        return MaterialPageRoute(builder: (_) => ForumScreen());
       default:
         return _errorRoute();
     }
