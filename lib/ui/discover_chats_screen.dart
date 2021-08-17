@@ -13,8 +13,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
   @override
   void initState() {
     super.initState();
-      Provider.of<ChatLobby>(context, listen: false)
-          .fetchAndUpdateUnsubscribed();
+    Provider.of<ChatLobby>(context, listen: false).fetchAndUpdateUnsubscribed();
   }
 
   void _goToChat(lobby) async {
@@ -59,14 +58,14 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                   ),
                   Expanded(
                     child: _chatsList.unSubscribedlist != null &&
-                            _chatsList.unSubscribedlist.length == 0
+                            _chatsList.unSubscribedlist.length >= 0
                         ? ListView.builder(
                             padding: EdgeInsets.all(8),
-                            itemCount:1,
+                            itemCount: 1,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: () {
-                                  /*_goToChat(_chatsList.unSubscribedlist[index]);*/
+                                  _goToChat(_chatsList.unSubscribedlist[index]);
                                 },
                                 child: Container(
                                   height: personDelegateHeight,
@@ -82,37 +81,36 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text("djsdb",
-                                                /*_chatsList
+                                              Text(
+                                                _chatsList
                                                     .unSubscribedlist[index]
-                                                    .lobbyName,*/
+                                                    .lobbyName,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .body2,
                                               ),
                                               Visibility(
-                                                visible: true,
-                                                /*_chatsList
+                                                visible: _chatsList
                                                     .unSubscribedlist[index]
                                                     .lobbyTopic
-                                                    .isNotEmpty*/
+                                                    .isNotEmpty,
                                                 child: Text(
-                                                  'Topic: ' ,
-                                                     /* _chatsList
+                                                  'Topic: ' +
+                                                      _chatsList
                                                           .unSubscribedlist[
                                                               index]
-                                                          .lobbyTopic,*/
+                                                          .lobbyTopic,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .body1,
                                                 ),
                                               ),
                                               Text(
-                                                'Number of participants: ' /*+
+                                                'Number of participants: ' +
                                                     _chatsList
                                                         .unSubscribedlist[index]
                                                         .totalNumberOfPeers
-                                                        .toString()*/,
+                                                        .toString(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .body1,
@@ -125,8 +123,8 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                         child: IconButton(
                                           icon: Icon(Icons.input),
                                           onPressed: () {
-                                           /* _goToChat(_chatsList
-                                                .unSubscribedlist[index]);*/
+                                            _goToChat(_chatsList
+                                                .unSubscribedlist[index]);
                                           },
                                         ),
                                       ),

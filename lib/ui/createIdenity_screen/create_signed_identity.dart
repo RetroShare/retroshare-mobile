@@ -63,13 +63,13 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                       if (_image != null) imagePickerDialog(context, _setImage);
                     },
                     child: Container(
-                      height: 300 * 0.7,
-                      width: 300 * 0.7,
+                      height: 200,
+                      width: 200,
                       decoration: _image?.mData == null
                           ? null
                           : BoxDecoration(
                               borderRadius:
-                                  BorderRadius.circular(300 * 0.7 * 0.33),
+                                  BorderRadius.circular(16),
                               image: DecorationImage(
                                 fit: BoxFit.fitWidth,
                                 image: MemoryImage(_image.mData),

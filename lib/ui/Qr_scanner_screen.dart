@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
@@ -16,7 +15,7 @@ import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:share/share.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
+//import 'package:qrscan/qrscan.dart' as scanner;
 
 enum QRoperation { save, refresh, share }
 
@@ -114,7 +113,7 @@ class _QRScannerState extends State<QRScanner>
   Future _scan() async {
     String barcode = null;
     try {
-      barcode = await scanner.scan();
+      barcode = null; //await scanner.scan();
       if (barcode != null) {
         bool success = false;
         await Provider.of<FriendLocations>(context, listen: false)
@@ -125,17 +124,14 @@ class _QRScannerState extends State<QRScanner>
           });
           showToast('Friend has successfully added');
         });
-      }
-      else {
+      } else {
         showToast('An error occurred while adding your friend.');
       }
-      
-    }on HttpException catch(e){
-          setState(() {
-            _requestQR = false;
-          });
-          showToast('An error occurred while adding your friend.');
-        
+    } on HttpException catch (e) {
+      setState(() {
+        _requestQR = false;
+      });
+      showToast('An error occurred while adding your friend.');
     } catch (e) {
       setState(() {
         _requestQR = false;
@@ -276,7 +272,7 @@ class _QRScannerState extends State<QRScanner>
                             if (snapshot.connectionState ==
                                     ConnectionState.done &&
                                 snapshot.hasData)
-                              return RepaintBoundary(
+                              return SizedBox(); /* RepaintBoundary(
                                   key: _globalkey,
                                   child: QrImage(
                                     errorStateBuilder: (context, result) {
@@ -297,7 +293,7 @@ class _QRScannerState extends State<QRScanner>
                                     data: snapshot.data,
                                     version: QrVersions.auto,
                                     size: 240,
-                                  ));
+                                  ));*/
                             return SizedBox(
                               width: 240,
                               height: 240,

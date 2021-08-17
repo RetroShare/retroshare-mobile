@@ -4,7 +4,6 @@ import 'package:retroshare/model/account.dart';
 import 'package:retroshare/model/auth.dart';
 import 'package:retroshare/services/account.dart';
 import 'package:retroshare/services/auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
 class AccountCredentials with ChangeNotifier {
@@ -52,11 +51,11 @@ class AccountCredentials with ChangeNotifier {
     bool success = false;
     success = await checkExistingAuthTokens(locationId, password, _authToken);
 
-    if (success) {
+    /*if (success) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("username", locationId);
       prefs.setString('password', password);
-    }
+    }*/
     return success;
   }
 

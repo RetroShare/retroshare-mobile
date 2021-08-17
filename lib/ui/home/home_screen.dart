@@ -138,21 +138,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   style: TextStyle(
                       fontSize: 25.0,
                       fontWeight: FontWeight.w600,
+                      fontFamily: 'Abel',
                       color: Colors.white),
                 ),
               ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                            colors: <Color>[
-                              Color(0xFF00FFFF),
-                              Color(0xFF29ABE2),
-                            ],
-                            begin: Alignment(-1.0, -4.0),
-                            end: Alignment(1.0, 4.0),
-                          ),
-                          color: Theme.of(context).primaryColor,
+                  colors: <Color>[
+                    Color(0xFF00FFFF),
+                    Color(0xFF29ABE2),
+                  ],
+                  begin: Alignment(-1.0, -4.0),
+                  end: Alignment(1.0, 4.0),
+                ),
+                color: Theme.of(context).primaryColor,
               ),
-              
+
               height: height + 75,
               width: MediaQuery.of(context).size.width,
             ),
@@ -173,18 +174,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _scaffoldKey.currentState.openDrawer();
                   },
                 ),
-                
                 primary: false,
                 title: TextField(
-                  onTap: (){
-                    Future.delayed(const Duration(milliseconds: 100), () {
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 100), () {
                         Navigator.pushNamed(
                           context,
                           '/search',
                           arguments: _tabController.index,
                         );
                       });
-                  },
+                    },
                     decoration: InputDecoration(
                         hintText: "Search",
                         border: InputBorder.none,

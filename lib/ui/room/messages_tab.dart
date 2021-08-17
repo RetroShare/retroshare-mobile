@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:emoji_picker/emoji_picker.dart';
+//import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -228,7 +228,8 @@ class _MessagesTabState extends State<MessagesTab> {
   }
 
   Widget buildSticker() {
-    return EmojiPicker(
+    return SizedBox();
+    /*EmojiPicker(
       rows: 3,
       columns: 7,
       buttonMode: ButtonMode.MATERIAL,
@@ -237,6 +238,6 @@ class _MessagesTabState extends State<MessagesTab> {
       onEmojiSelected: (emoji, category) {
         msgController.text += emoji.emoji;
       },
-    );
+    );*/
   }
 }

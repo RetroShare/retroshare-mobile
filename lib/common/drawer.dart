@@ -16,7 +16,7 @@ Widget drawerWidget(BuildContext ctx) {
           child: Row(children: [
             Icon(
               icon,
-              size: 30,
+              size: 25,
               color: Colors.black,
             ),
             SizedBox(
@@ -25,9 +25,9 @@ Widget drawerWidget(BuildContext ctx) {
             Text(
               title,
               style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Vollkorn',
-                  fontWeight: FontWeight.w500),
+                  fontSize: 16,
+                  fontFamily: 'Abel',
+                  fontWeight: FontWeight.w600),
             ),
           ]),
           onTap: changeState),
@@ -39,7 +39,7 @@ Widget drawerWidget(BuildContext ctx) {
       children: [
         Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.only(top:2),
+            margin: const EdgeInsets.only(top: 12),
             height: MediaQuery.of(ctx).size.height * .3,
             child: Center(
               child: Consumer<Identities>(builder: (context, curr, _) {
@@ -49,7 +49,7 @@ Widget drawerWidget(BuildContext ctx) {
                     Container(
                       height: 100,
                       width: 100,
-                      decoration:  (curr.currentIdentity.avatar == null)
+                      decoration: (curr.currentIdentity.avatar == null)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.black))
@@ -57,7 +57,7 @@ Widget drawerWidget(BuildContext ctx) {
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.black),
                               image: DecorationImage(
-                                fit: BoxFit.fitWidth,
+                                fit: BoxFit.cover,
                                 image: MemoryImage(
                                     base64.decode(curr.currentIdentity.avatar)),
                               ),
@@ -80,10 +80,10 @@ Widget drawerWidget(BuildContext ctx) {
                         curr.currentIdentity.name,
                         style: TextStyle(
                             fontFamily: "Vollkorn",
-                            fontSize: 25,
+                            fontSize: 20,
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
-                            overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Row(
@@ -103,7 +103,7 @@ Widget drawerWidget(BuildContext ctx) {
                             )),
                         IconButton(
                             onPressed: () {
-                             showdeleteDialog(context);
+                              showdeleteDialog(context);
                             },
                             icon: Icon(
                               FontAwesomeIcons.trash,
@@ -135,9 +135,9 @@ Widget drawerWidget(BuildContext ctx) {
               buildList(Icons.devices, 'Friends location', () {
                 Navigator.pushNamed(ctx, '/friends_locations');
               }),
-              buildList(Icons.emoji_symbols_rounded, 'Forum', () {
+              /* buildList(Icons.emoji_symbols_rounded, 'Forum', () {
                 Navigator.pushNamed(ctx, '/forum');
-              }),
+              }),*/
               buildList(Icons.info_rounded, 'About', () {
                 Navigator.pushNamed(ctx, '/about');
               })
@@ -148,9 +148,7 @@ Widget drawerWidget(BuildContext ctx) {
         Text(
           "V 1.0.1",
           style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.blueAccent),
+              fontSize: 13, fontWeight: FontWeight.w700, color: Colors.blue),
         ),
         SizedBox(
           height: 30,
