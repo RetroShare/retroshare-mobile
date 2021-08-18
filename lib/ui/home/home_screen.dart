@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,6 +30,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _panelController = PanelController();
+
+    _leftIconAnimation =
+        ColorTween(begin: Colors.lightBlueAccent, end: Colors.black12)
+            .animate(_tabController.animation);
+    _rightIconAnimation =
+        ColorTween(begin: Colors.black12, end: Colors.lightBlueAccent)
+            .animate(_tabController.animation);
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    shadowColor = ColorTween(
+      begin: Color.fromRGBO(0, 0, 0, 0),
+      end: Colors.black12,
+    ).animate(_animationController);
     Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
