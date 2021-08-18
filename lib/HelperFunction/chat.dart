@@ -1,9 +1,9 @@
+
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/common/show_dialog.dart';
-
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
@@ -125,3 +125,4 @@ Chat getChat(
   }
   return chat;
 }
+

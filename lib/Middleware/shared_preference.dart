@@ -1,17 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:eventsource/eventsource.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-Future<AuthToken> authcheck() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  return AuthToken(
-      prefs.containsKey('username') ? prefs.getString('username') : '',
-      prefs.containsKey('password') ? prefs.getString('password') : '');
-}
 
 Future<StreamSubscription<Event>> registerEventsHandlers(
     RsEventType eventType, Function callback, AuthToken authToken,
@@ -34,7 +25,10 @@ Future<StreamSubscription<Event>> registerEventsHandlers(
     streamSubscription = eventSource.listen((Event event) {
       // Deserialize the message
       var jsonData = event.data != null ? jsonDecode(event.data) : null;
+      print("hello");
+      print(jsonData);
     });
+
     streamSubscription.onError(onError);
   } on EventSourceSubscriptionException catch (e) {
     print('registerEventsHandler error: ' + e.message);

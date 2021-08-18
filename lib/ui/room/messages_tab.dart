@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:emoji_picker/emoji_picker.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,6 +35,20 @@ class _MessagesTabState extends State<MessagesTab> {
     msgController.dispose();
     super.dispose();
   }
+  _onEmojiSelected(Emoji emoji) {
+    msgController
+      ..text += emoji.emoji
+      ..selection = TextSelection.fromPosition(
+          TextPosition(offset: msgController.text.length));
+  }
+
+  _onBackspacePressed() {
+    msgController
+      ..text = msgController.text.characters.skipLast(1).toString()
+      ..selection = TextSelection.fromPosition(
+          TextPosition(offset: msgController.text.length));
+  }
+
 
   @override
   void initState() {
@@ -221,7 +235,13 @@ class _MessagesTabState extends State<MessagesTab> {
               ),
             ),
           ),
-          Visibility(visible: isShowSticker, child: buildSticker())
+          Offstage(
+            offstage: !isShowSticker,
+            child: SizedBox(
+              height: 250,
+              child: buildSticker(),
+            ),
+          ),
         ],
       ),
       onWillPop: onBackPress,
@@ -230,14 +250,28 @@ class _MessagesTabState extends State<MessagesTab> {
 
   Widget buildSticker() {
     return EmojiPicker(
-      rows: 3,
-      columns: 7,
-      buttonMode: ButtonMode.MATERIAL,
-      recommendKeywords: ["racing", "horse"],
-      numRecommended: 10,
-      onEmojiSelected: (emoji, category) {
-        msgController.text += emoji.emoji;
-      },
-    );
+                  onEmojiSelected: (Category category, Emoji emoji) {
+                    _onEmojiSelected(emoji);
+                  },
+                  onBackspacePressed: _onBackspacePressed,
+                  config: const Config(
+                      columns: 7,
+                      emojiSizeMax: 32.0,
+                      verticalSpacing: 0,
+                      horizontalSpacing: 0,
+                      initCategory: Category.RECENT,
+                      bgColor: Color(0xFFF2F2F2),
+                      indicatorColor: Colors.blue,
+                      iconColor: Colors.grey,
+                      iconColorSelected: Colors.blue,
+                      progressIndicatorColor: Colors.blue,
+                      backspaceColor: Colors.blue,
+                      showRecentsTab: true,
+                      recentsLimit: 28,
+                      noRecentsText: 'No Recents',
+                      noRecentsStyle:
+                          TextStyle(fontSize: 20, color: Colors.black26),
+                      categoryIcons: CategoryIcons(),
+                      buttonMode: ButtonMode.MATERIAL));
   }
 }
