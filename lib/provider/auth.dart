@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
@@ -43,7 +42,6 @@ class AccountCredentials with ChangeNotifier {
   Future<Account> setlastAccountUsed() async {
     try {
       var currAccount = await RsAccounts.getCurrentAccountId(_authToken);
-
       for (Account account in _accountsList) {
         if (account.locationId == currAccount) return account;
       }
@@ -56,13 +54,8 @@ class AccountCredentials with ChangeNotifier {
   Future<bool> getinitializeAuth(String locationId, String password) async {
     _authToken = AuthToken(locationId, password);
     bool success = false;
-    success = await RsJsonApi.checkExistingAuthTokens(locationId, password, _authToken);
-
-    if (success) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("username", locationId);
-      prefs.setString('password', password);
-    }
+    success = await RsJsonApi.checkExistingAuthTokens(
+        locationId, password, _authToken);
     return success;
   }
 
@@ -91,7 +84,8 @@ class AccountCredentials with ChangeNotifier {
 
   Future<void> signup(String username, String password, String nodename) async {
     try {
-      final resp = await RsLoginHelper.requestAccountCreation(username, password);
+      final resp =
+          await RsLoginHelper.requestAccountCreation(username, password);
       Account account =
           Account(resp['locationId'], resp['pgpId'], username, username);
       Tuple2<bool, Account> account_create = Tuple2<bool, Account>(

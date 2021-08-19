@@ -80,56 +80,6 @@ class MessageDelegate extends StatelessWidget {
             ),
           ),
         ),
-
-//      child: Padding(
-//        padding: EdgeInsets.symmetric(vertical: 8.0),
-//        child:
-//        FractionallySizedBox(
-//          alignment: !data.incoming ? Alignment.centerRight : Alignment.centerLeft,
-//          widthFactor: 0.7,
-//          child: Container(
-//            decoration: BoxDecoration(
-//              color: !data.incoming ? Colors.blue : Color(0xFFF5F5F5),
-//              borderRadius: BorderRadius.circular(80 / 3),
-//              gradient: !data.incoming
-//                  ? LinearGradient(
-//                      begin: Alignment.topLeft,
-//                      end: Alignment.bottomRight,
-//                      colors: [
-//                        Color(0xFF00FFFF),
-//                        Color(0xFF29ABE2),
-//                      ],
-//                    )
-//                  : null,
-//            ),
-//            child: Padding(
-//              padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 10.0, bottom: 10.0),
-//              child:
-//                Row(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  verticalDirection: VerticalDirection.up,
-//                  children: [
-//                    Flexible(
-//                      child: Html(
-//                        data: data.msg
-//                      ),
-//                    ),
-//                    Text(
-//                      DateTime.fromMillisecondsSinceEpoch( data.recvTime).hour.toString()
-//                      + ":" +
-//                      DateTime.fromMillisecondsSinceEpoch(data.sendTime ?? data.recvTime).minute.toString(),
-//                      style: TextStyle(
-//                        color: Colors.black,
-//                        fontSize: 11.0,
-//
-//                      ),
-//                    ),
-//                  ],
-//              )
-//            ),
-//          ),
-//        ),
-//      ),
       ),
     );
   }

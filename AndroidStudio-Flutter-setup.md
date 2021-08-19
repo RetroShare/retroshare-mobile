@@ -9,6 +9,7 @@
 - AndroidStudioRoot: c:\
 - AndroidStudioDir: $(AndroidStudioRoot)\AndroidStudio 
 - RSMobileDir: c:\RS-Mobile
+- RSPlatformTools: C:\Users\LOCALWINUSERNAME\AppData\Local\Android\Sdk\platform-tools
 
 ### Steps
 #### Flutter installation
@@ -71,7 +72,7 @@ RS-mobile depends on the following packages to be avail on path-level parallel t
   2. ensure the folder is named different to the repo name as "retroshare_api_wrapper" as actual awaited in pubspec.yaml of rs-mobile
   3. call for exc. by cmd-console in this path: flutter pub get.
 
-##Main package
+## Main package
 1. Git: clone RS mobile locally as RSMobileDir  
 (https://github.com/RetroShare/retroshare-mobile)
 2. Open a cmd window (type cmd in START)
@@ -79,7 +80,19 @@ RS-mobile depends on the following packages to be avail on path-level parallel t
 4. type:  
 flutter pub get<return>
 to update the flutter package dependancies as need in the project.
-5. maybe: open the RSMobileDir in Android Studio
+5. open the RSMobileDir in Android Studio 
+
+### Prepare your Project for use with emulated devices
+1. Within the opened Android Studio on the left side in the Project-Tab open the path:  
+   "retroshare-mobile/android/app/src/main/java/io/GeneratedPluginRegistrant.java"
+2. Start "GeneratedPluginRegistrant.java" by dobbleclick on it.
+3. On the rightside on top of the opened registrant:  
+   if you see a note "Module SDK is not defined",  
+   than click the button "Setup SDK" on the right side of this note.
+4. In the opened dialog select any android SDK and click OK.
+5. Restart Android Studio.
+
+Now your project - this is to do in any new project - is able to define and use emulated Phones.
 
 # Activate USB Debug Mode of the mobile
 1. in settings type usb in search
@@ -91,8 +104,23 @@ to update the flutter package dependancies as need in the project.
     - cmd: flutter devices<return> should no list your mobile as availabel 
 
 # Run the apk on mobile
-1. load the service apk to the mobile and start it
-2. cmd: flutter run [[--release]]<return>  
+## Install the service apk on the mobile
+### a) physical mobile
+1. plug in the USB of the phone
+2. activate: USB-usage file transfer
+3. load the service apk to the mobile and install it
+
+### b) emulated phone (but not only)
+1. For your convenience:  
+   Add in environment variables for your account to the PATH-variable of USER context separated by ';' the explicit full path to the command_tools: $(RSPlatformTools) where the adb.exe houses which we will need.
+2. Open a cmd-console within the directory of your service apk
+3. type in cmd:  
+   adb install "YOUR_SERVCIE_APK.apk" <return>
+
+## Run the RestroShare Mobile
+
+type in cmd console:  
+flutter run [[--release]]<return>  
 without release it gets run in debug mode
 
 # Debugging and Tracing
@@ -112,7 +140,7 @@ You may filter the content of trace.txt than by "restroshare" to get only the li
 TBD; actual not knwon how to setup a debug-environment fort it.  
 Hints in context: https://gitlab.com/elRepo.io/elRepo.io-android/-/issues/43
 
-##Tracing RS-Service in the context of the android-activities
+## Tracing RS-Service in the context of the android-activities
 As above with the adb.exe tool.
 If you want manually check the communicatio  interface of the servcice 
 

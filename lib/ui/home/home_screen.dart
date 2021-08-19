@@ -1,8 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/common/drawer.dart';
+import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
@@ -17,10 +20,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   TabController _tabController;
   PanelController _panelController;
-
   Animation<Color> _leftIconAnimation;
   Animation<Color> _rightIconAnimation;
-
   Animation<Color> shadowColor;
   AnimationController _animationController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _panelController = PanelController();
+
     _leftIconAnimation =
         ColorTween(begin: Colors.lightBlueAccent, end: Colors.black12)
             .animate(_tabController.animation);
@@ -42,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       end: Colors.black12,
     ).animate(_animationController);
     Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
+    final authToken =
+        Provider.of<AccountCredentials>(context, listen: false).authtoken;
+    registerChatEvent(context, authToken);
   }
 
   @override
@@ -62,70 +67,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         color: _rightIconAnimation.value, size: 30);
   }
 
-  Widget _body(double topBarMinHeight) {
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          height: topBarMinHeight,
-        ),
-        Material(
-          color: Colors.white,
-          child: GestureDetector(
-            onTap: () {
-              Future.delayed(const Duration(milliseconds: 100), () {
-                Navigator.pushNamed(
-                  context,
-                  '/search',
-                  arguments: _tabController.index,
-                );
-              });
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Color(0xFFF5F5F5),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              margin: EdgeInsets.symmetric(horizontal: 8),
-              height: 40,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.search,
-                        color: Theme.of(context).textTheme.body1.color),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Type text...',
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .copyWith(color: Theme.of(context).hintColor),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        //),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              ChatsTab(),
-              FriendsTab(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
         child: Stack(
@@ -137,22 +78,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   "Retroshare",
                   style: TextStyle(
                       fontSize: 25.0,
+                      fontFamily: "Vollkorn",
                       fontWeight: FontWeight.w600,
                       color: Colors.white),
                 ),
               ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                            colors: <Color>[
-                              Color(0xFF00FFFF),
-                              Color(0xFF29ABE2),
-                            ],
-                            begin: Alignment(-1.0, -4.0),
-                            end: Alignment(1.0, 4.0),
-                          ),
-                          color: Theme.of(context).primaryColor,
+                  colors: <Color>[
+                    Color(0xFF00FFFF),
+                    Color(0xFF29ABE2),
+                  ],
+                  begin: Alignment(-1.0, -4.0),
+                  end: Alignment(1.0, 4.0),
+                ),
+                color: Theme.of(context).primaryColor,
               ),
-              
+
               height: height + 75,
               width: MediaQuery.of(context).size.width,
             ),
@@ -173,18 +115,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _scaffoldKey.currentState.openDrawer();
                   },
                 ),
-                
                 primary: false,
                 title: TextField(
-                  onTap: (){
-                    Future.delayed(const Duration(milliseconds: 100), () {
+                    onTap: () {
+                      Future.delayed(const Duration(milliseconds: 100), () {
                         Navigator.pushNamed(
                           context,
                           '/search',
                           arguments: _tabController.index,
                         );
                       });
-                  },
+                    },
                     decoration: InputDecoration(
                         hintText: "Search",
                         border: InputBorder.none,
@@ -209,15 +150,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQueryData = MediaQuery.of(context);
-    final double statusBarHeight = mediaQueryData.padding.top;
-    final double screenHeight = mediaQueryData.size.height;
-    final double appBarMinHeight = kAppBarMinHeight - statusBarHeight;
-    final double appBarMaxHeight = appBarMinHeight +
-        (screenHeight - statusBarHeight) * 0.15 +
-        5 * buttonHeight +
-        20;
-
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,

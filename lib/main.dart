@@ -14,11 +14,6 @@ import 'model/app_life_cycle_state.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
-  /* LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString('google_fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-  });*/
-
   runApp(App());
 }
 

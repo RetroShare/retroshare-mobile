@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/HelperFunction/events.dart';
@@ -11,7 +9,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 Future<void> registerChatEvent(
     BuildContext context, AuthToken authToken) async {
   await eventsRegisterChatMessage(
-      listenCb: (LinkedHashMap<String, dynamic> json, ChatMessage msg) {
+      listenCb: (var json, ChatMessage msg) {
         if (msg != null) {
           AuthToken authToken = Provider.of<RoomChatLobby>(context, listen: false)
                   .authToken;
@@ -44,7 +42,7 @@ Future<void> registerChatEvent(
                     chatActionMiddleware(chat, context);
                     dynamic allIDs =
                         Provider.of<FriendsIdentity>(context, listen: false)
-                            .allIds;
+                            .allIdentity;
                     allIDs = Provider.of<RoomChatLobby>(context, listen: false)
                         .addDistanceChat(chat, allIDs);
                     Provider.of<FriendsIdentity>(context, listen: false)

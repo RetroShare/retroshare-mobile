@@ -6,7 +6,6 @@ import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
-
 class RoomFriendsTab extends StatefulWidget {
   final Chat chat;
 
@@ -25,19 +24,19 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
     myImage = Image.asset('assets/icons8/participant_list.jpg');
     // TODO: implement initState
     super.initState();
- 
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     precacheImage(myImage.image, context);
-    Provider.of<RoomChatLobby>(context, listen: false)
-        .updateParticipants(widget.chat.chatId);
+      Provider.of<RoomChatLobby>(context, listen: false)
+        .updateParticipants(widget.chat?.chatId);
+
   }
+  
 
-  void _addToContacts(String gxsId)  {
-
+  void _addToContacts(String gxsId) {
     Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, true);
   }
@@ -50,18 +49,18 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: Provider.of<RoomChatLobby>(context, listen: false)
-            .updateParticipants(widget.chat.chatId),
+            .updateParticipants(widget.chat?.chatId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done)
             return Consumer<RoomChatLobby>(
                 builder: (context, lobbyParticipantsList, _) {
-              List<Identity> _lobbyParticipantsList = widget.chat.chatId !=
+              List<Identity> _lobbyParticipantsList = widget.chat?.chatId !=
                           null ||
                       lobbyParticipantsList.lobbyParticipants != null ||
                       lobbyParticipantsList
-                              .lobbyParticipants[widget.chat.chatId] !=
+                              .lobbyParticipants[widget.chat?.chatId] !=
                           null
-                  ? lobbyParticipantsList.lobbyParticipants[widget.chat.chatId]
+                  ? lobbyParticipantsList.lobbyParticipants[widget.chat?.chatId]
                   : null;
               return _lobbyParticipantsList.length > 0
                   ? ListView.builder(
@@ -89,15 +88,16 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                   context);
                             },
                             onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/room',
-                                arguments: {
-                                  'isRoom': false,
-                                  'chatData': getChat(
-                                      context, _lobbyParticipantsList[index]),
-                                },
-                              );
+                       
+                                Navigator.pushNamed(
+                                  context,
+                                  '/room',
+                                  arguments: {
+                                    'isRoom': false,
+                                    'chatData': getChat(
+                                        context, _lobbyParticipantsList[index]),
+                                
+                              });
                             },
                           ),
                         );

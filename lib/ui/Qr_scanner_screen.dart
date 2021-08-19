@@ -72,8 +72,10 @@ class _QRScannerState extends State<QRScanner>
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
     if (!check)
       ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll("\n", "");
-    else
-      ownCert = (await RsPeers.getShortInvite(authToken)).replaceAll("\n", "");
+    else {
+      
+      ownCert = (await RsPeers.getShortInvite(authToken,sslId: Provider.of<AccountCredentials>(context).lastAccountUsed.locationId));
+    }
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }
@@ -389,9 +391,7 @@ class _QRScannerState extends State<QRScanner>
             _requestQR = true;
           });
           await _scan();
-          },
-          
-        
+        },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(

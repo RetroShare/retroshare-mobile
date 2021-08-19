@@ -1,8 +1,9 @@
+
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
-
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
@@ -17,8 +18,9 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 ///		4 TYPE_BROADCAST           // message to/from all connected peers
 Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
     [ChatIdType type = ChatIdType.number2_]) async {
-  final authToken= Provider.of<RoomChatLobby>(context, listen: false).authToken;
-  RsMsgs.sendMessage(chatId, msgTxt, authToken).then((bool res) {
+  final authToken =
+      Provider.of<RoomChatLobby>(context, listen: false).authToken;
+  RsMsgs.sendMessage(chatId, msgTxt, authToken, type).then((bool res) {
     if (res) {
       //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
@@ -32,6 +34,8 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
       chatMiddleware(message, context);
       Provider.of<RoomChatLobby>(context, listen: false)
           .addChatMessage(message, chatId);
+    } else {
+      errorShowDialog("Something went Wrong!", null, context);
     }
   });
 }
@@ -42,14 +46,15 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
 Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
   String to = chat.interlocutorId;
   String from = chat.ownIdToUse;
-  AuthToken authToken = Provider.of<RoomChatLobby>(context).authToken;
+  AuthToken authToken =
+      Provider.of<RoomChatLobby>(context, listen: false).authToken;
   final resp = await RsMsgs.c(chat, authToken);
   if (resp['retval'] == true) {
     chat.chatId = resp['pid'];
     Chat.addDistantChat(to, from, resp['pid']);
     await Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
     Map<String, Identity> allIDs =
-        Provider.of<FriendsIdentity>(context, listen: false).allIds;
+        Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
     chatActionMiddleware(chat, context);
     allIDs = Provider.of<RoomChatLobby>(context, listen: false)
         .addDistanceChat(chat, allIDs);
@@ -90,6 +95,7 @@ Chat getChat(
           interlocutorId: to.mId,
           isPublic: false,
           chatName: to.name,
+          unreadCount: 0,
           numberOfParticipants: 1,
           ownIdToUse: currentId);
       _initiateDistantChat(chat, context);
@@ -111,7 +117,6 @@ Chat getChat(
   } else if (to != null && (to is Chat)) {
     chat = to;
     // Ugly way to initialize lobby participants
-    //store.dispatch(UpdateLobbyParticipantsAction(to.chatId, []));
     Provider.of<RoomChatLobby>(context, listen: false)
         .fetchAndUpdateParticipants(to.chatId, []);
     chatMiddleware(null, context);
@@ -120,3 +125,4 @@ Chat getChat(
   }
   return chat;
 }
+
