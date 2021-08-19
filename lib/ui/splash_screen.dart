@@ -4,7 +4,7 @@ import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
-
+import 'package:retroshare/common/RsServiceControl/rscontrol.dart' as rsControl;
 import '../common/color_loader_3.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -48,15 +48,21 @@ class _SplashState extends State<SplashScreen> {
   void checkBackendState(BuildContext context) async {
     bool connectedToBackend = true;
     bool isLoggedIn;
-    do {
-      try {
-        isLoggedIn = await RsLoginHelper.checkLoggedIn();
-        connectedToBackend = true;
-      } catch (e) {
-        if (connectedToBackend == true) _setStatusText("Can't connect...");
-        connectedToBackend = false;
-      }
-    } while (!connectedToBackend);
+    try {
+      await Future.delayed(Duration(seconds: 2));
+      rsControl.RsServiceControl.initialize().then((value) {
+        rsControl.RsServiceControl.startRetroshareLoop().then((isRunning) {
+          if (isRunning) {
+            isLoggedIn = true;
+          } else {
+          _setStatusText("Can't connect...");
+          }
+        });
+      });
+    } catch (err) {
+      if (connectedToBackend == true) _setStatusText("Can't connect...");
+    }
+
     final auth = Provider.of<AccountCredentials>(context, listen: false);
     bool isTokenValid = await auth.checkisvalidAuthToken();
     if (isLoggedIn && isTokenValid && auth.loggedinAccount != null) {
