@@ -72,8 +72,8 @@ class RetroShareServiceAndroid : QtService() {
                 // todo(kon) : this don't work if you try to use custom strings
 //                .setContentTitle(MainActivity.notificationTitle)
 //                .setContentText(MainActivity.notificationText)
-                .setContentTitle("elRepo.io")
-                .setContentText("This notification keeps elRepo.io alive")
+                .setContentTitle("retroshare mobile")
+                .setContentText("This notification keeps retroshare mobile alive")
                 .setSmallIcon(imageId)
                 .setContentIntent(pendingIntent)
                 .setPriority(MainActivity.notificationImportance ?: NotificationCompat.PRIORITY_DEFAULT)

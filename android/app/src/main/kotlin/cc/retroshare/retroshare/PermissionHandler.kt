@@ -53,7 +53,7 @@ class PermissionHandler(private val context: Context
                 }
                 context.checkSelfPermission(Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS) == PackageManager.PERMISSION_DENIED -> {
                     result.error(
-                            "elrepoIo.PermissionHandler",
+                            "retroshare mobile PermissionHandler",
                             "The app does not have the REQUEST_IGNORE_BATTERY_OPTIMIZATIONS permission required to ask the user for whitelisting. See the documentation on how to setup this plugin properly.",
                             null)
                 }

@@ -48,9 +48,9 @@ class FlutterRetroshareServiceAndroidConfig {
   const FlutterRetroshareServiceAndroidConfig(
       {
         // Not working, hardcoded on the android code
-        this.notificationTitle = 'elRepo.io', //todo(intl)
+        this.notificationTitle = 'retroshare mobile', //todo(intl)
         // Not working, hardcoded on the android code
-        this.notificationText = 'This notification keeps elRepo.io alive', //todo(intl)
+        this.notificationText = 'This notification keeps retroshare mobile alive', //todo(intl)
         this.notificationImportance = AndroidNotificationImportance.Default,
         this.notificationIcon =
             const AndroidResource('ic_launcher', defType: 'mipmap')
