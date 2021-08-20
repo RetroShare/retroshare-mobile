@@ -26,6 +26,7 @@ class _FriendsTabState extends State<FriendsTab> {
         .toggleContacts(gxsId, true);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -152,19 +153,12 @@ class _FriendsTabState extends State<FriendsTab> {
                                       context);
                                 },
                                 onPressed: () {
-                           
-                                 
                                   Navigator.pushNamed(
                                     context,
                                     '/room',
                                     arguments: {
                                       'isRoom': false,
-                                      'chatData': getChat(
-                                          context,
-                                          friendsDistantAndIdsTuple.item3[
-                                              friendsDistantAndIdsTuple
-                                                  .item2[index]
-                                                  .interlocutorId]),
+                                      'chatData': getChat(context, actualId),
                                     },
                                   );
                                 },

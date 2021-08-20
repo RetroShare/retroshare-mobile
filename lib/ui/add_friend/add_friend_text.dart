@@ -47,52 +47,51 @@ class _GetAddfriendState extends State<GetAddfriend> {
               setState(() {
                 _requestAddCert = true;
               });
-              try{
-               await Provider.of<FriendLocations>(context, listen: false)
-                  .addFriendLocation(ownCertController.text)
-                  .then((value) {
+              try {
+                await Provider.of<FriendLocations>(context, listen: false)
+                    .addFriendLocation(ownCertController.text)
+                    .then((value) {
+                  setState(() {
+                    _requestAddCert = false;
+                  });
+                  Fluttertoast.cancel();
+                  Fluttertoast.showToast(
+                      msg: "Friend has been added",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                });
+                Navigator.of(context)
+                    .pushReplacementNamed('/friends_locations');
+              } on HttpException catch (e) {
                 setState(() {
                   _requestAddCert = false;
                 });
                 Fluttertoast.cancel();
                 Fluttertoast.showToast(
-                    msg:"Friend has been added",
+                    msg: 'Invalid certi',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
                     fontSize: 16.0);
-              });
-              } on HttpException catch(e){
+              } catch (e) {
                 setState(() {
                   _requestAddCert = false;
                 });
                 Fluttertoast.cancel();
                 Fluttertoast.showToast(
-                    msg:  'Invalid certi',
+                    msg: 'something went Wrong',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
                     fontSize: 16.0);
-
-              
-              } catch(e){
-                setState(() {
-                  _requestAddCert = false;
-                });
-                Fluttertoast.cancel();
-                Fluttertoast.showToast(
-                    msg:  'something went Wrong',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-
               }
             },
             textColor: Colors.white,
