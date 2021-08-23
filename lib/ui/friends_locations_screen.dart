@@ -1,5 +1,5 @@
-import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/common/person_delegate.dart';
@@ -11,7 +11,7 @@ class FriendsLocationsScreen extends StatefulWidget {
 }
 
 class _FriendsLocationsScreenState extends State<FriendsLocationsScreen>
-    with AfterLayoutMixin<FriendsLocationsScreen> {
+     {
   @override
   void setState(fn) {
     if (mounted) {
@@ -19,17 +19,13 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen>
     }
   }
 
-  @override
-  void afterFirstLayout(BuildContext context) {
-          _getFriendsAccounts();
-  }
-
+  
   @override
   void initState() {
     super.initState();
-   /* WidgetsBinding.instance.addPostFrameCallback((_) {
+   SchedulerBinding.instance.addPostFrameCallback((_) {
       _getFriendsAccounts();
-    });*/
+    });
   }
 
   Future<void> _getFriendsAccounts() async {

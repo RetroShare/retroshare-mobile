@@ -189,12 +189,10 @@ class _MessagesTabState extends State<MessagesTab> {
                       final bytes = image.readAsBytesSync().lengthInBytes;
                       final kb = bytes / 1024;
                       final mb = kb / 1024;
-                      if (mb < 3) {
-                        setState(() {
-                          if (image != null) {
+                      if (mb < 3 && image != null) {
                             var text = base64.encode(image.readAsBytesSync());
                             text =
-                                "<img alt='Red dot (png)' src='data:image/png;base64,$text' />";
+                                "<img alt='Red dot (png)' src='data:image/png;base64,$text'/>";
                             sendMessage(
                                 context,
                                 widget.chat?.chatId,
@@ -202,8 +200,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                 (widget.isRoom
                                     ? ChatIdType.number3_
                                     : ChatIdType.number2_));
-                          }
-                        });
+                          
                       } else {
                         Fluttertoast.showToast(
                             msg: "Image Size is too large !",
@@ -221,6 +218,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       Icons.send,
                     ),
                     onPressed: () {
+                      if(msgController.text.length>0)
                       sendMessage(
                           context,
                           widget.chat?.chatId,

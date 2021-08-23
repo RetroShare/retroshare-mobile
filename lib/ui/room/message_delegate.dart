@@ -17,6 +17,7 @@ class MessageDelegate extends StatelessWidget {
     return match;
   }
 
+ 
   @override
   Widget build(BuildContext context) {
     return Visibility(

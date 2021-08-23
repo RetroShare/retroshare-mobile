@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/show_dialog.dart';
@@ -13,7 +13,7 @@ class SignInScreen extends StatefulWidget {
   _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> with AfterLayoutMixin<SignInScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   TextEditingController passwordController = new TextEditingController();
 
   List<DropdownMenuItem<Account>> accountsDropdown;
@@ -26,15 +26,11 @@ class _SignInScreenState extends State<SignInScreen> with AfterLayoutMixin<SignI
     super.initState();
     hideLocations = true;
     wrongPassword = false;
-  }
-  
-   @override
-  void afterFirstLayout(BuildContext context) {
-   
-    accountsDropdown = getDropDownMenuItems();
-
-    currentAccount = Provider.of<AccountCredentials>(context, listen: false)
-        .getlastAccountUsed;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      accountsDropdown = getDropDownMenuItems();
+      currentAccount = Provider.of<AccountCredentials>(context, listen: false)
+          .getlastAccountUsed;
+    });
   }
 
   @override
@@ -83,7 +79,8 @@ class _SignInScreenState extends State<SignInScreen> with AfterLayoutMixin<SignI
   List<DropdownMenuItem<Account>> getDropDownMenuItems() {
     List<DropdownMenuItem<Account>> items = [];
     for (Account account
-        in Provider.of<AccountCredentials>(context, listen: false).accountList) {
+        in Provider.of<AccountCredentials>(context, listen: false)
+            .accountList) {
       items.add(DropdownMenuItem(
         value: account,
         child: Row(

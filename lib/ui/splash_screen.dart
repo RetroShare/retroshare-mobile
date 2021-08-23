@@ -1,5 +1,5 @@
-import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
@@ -24,22 +24,24 @@ class SplashScreen extends StatefulWidget {
   _SplashState createState() => new _SplashState();
 }
 
-class _SplashState extends State<SplashScreen> with AfterLayoutMixin<SplashScreen> {
+class _SplashState extends State<SplashScreen> {
   bool _spinner = false;
   String _statusText;
 
   @override
-  void afterFirstLayout(BuildContext context) {
-    // Calling the same function "after layout" to resolve the issue.
-      if (!widget.isLoading) {
+  void initState() {
+
+    super.initState();
+    if (!widget.isLoading) {
       _statusText = "Loading...";
-      checkBackendState(context);
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        checkBackendState(context);
+      });
     } else {
       _statusText = widget.statusText;
       _spinner = widget.spinner;
     }
   }
-
 
   void _setStatusText(String txt) {
     setState(() {
