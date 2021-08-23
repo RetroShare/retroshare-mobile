@@ -50,7 +50,7 @@ class Identities with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteIdentityfunc() async {
+  Future<void> deleteIdentity() async {
     try {
       bool success =
           await RsIdentity.deleteIdentity(_currentIdentity, _authToken);

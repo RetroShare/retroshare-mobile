@@ -138,12 +138,14 @@ void showdeleteDialog(context) {
               child: Text('Delete'),
               onPressed: () async {
                 try {
-                  Provider.of<Identities>(context, listen: false)
-                      .deleteIdentityfunc();
+                  await Provider.of<Identities>(context, listen: false)
+                      .deleteIdentity();
+                  Navigator.of(context).pop();
                 } on HttpException catch (err) {
                   warningShowDialog("Retro Service is Down",
                       "Please ensure retroshare service is not down", context);
                 } catch (e) {
+                  print(e.toString());
                   warningShowDialog(
                       "Try Again", "Something wrong happens!", context);
                 }
