@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,7 @@ class SignInScreen extends StatefulWidget {
   _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<SignInScreen> with AfterLayoutMixin<SignInScreen> {
   TextEditingController passwordController = new TextEditingController();
 
   List<DropdownMenuItem<Account>> accountsDropdown;
@@ -26,40 +27,10 @@ class _SignInScreenState extends State<SignInScreen> {
     hideLocations = true;
     wrongPassword = false;
   }
-
-  /*Future<bool> importAccountFunc(BuildContext context) async {
-    // FilePickerResult result = await FilePicker.platform.pickFiles();
-    final result = 'abc';
-    if (result != null) {
-      File pgpFile = File(
-          '/data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt');
-      try {
-        final file = pgpFile;
-        final contents = await file.readAsString();
-        final pgpId = await importIdentity(contents);
-      } catch (e) {
-        final snackBar = SnackBar(
-          content: Text('Oops! Something went wrong'),
-          duration: Duration(milliseconds: 200),
-          backgroundColor: Colors.red[200],
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    } else {
-      final snackBar = SnackBar(
-        content: Text('Oops! Please pick up the file'),
-        duration: Duration(milliseconds: 200),
-        backgroundColor: Colors.red[200],
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  }*/
-
-  ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
+  
+   @override
+  void afterFirstLayout(BuildContext context) {
+   
     accountsDropdown = getDropDownMenuItems();
 
     currentAccount = Provider.of<AccountCredentials>(context, listen: false)
@@ -112,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
   List<DropdownMenuItem<Account>> getDropDownMenuItems() {
     List<DropdownMenuItem<Account>> items = [];
     for (Account account
-        in Provider.of<AccountCredentials>(context, listen: true).accountList) {
+        in Provider.of<AccountCredentials>(context, listen: false).accountList) {
       items.add(DropdownMenuItem(
         value: account,
         child: Row(
@@ -340,3 +311,35 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
+
+////
+///
+  /*Future<bool> importAccountFunc(BuildContext context) async {
+    // FilePickerResult result = await FilePicker.platform.pickFiles();
+    final result = 'abc';
+    if (result != null) {
+      File pgpFile = File(
+          '/data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt');
+      try {
+        final file = pgpFile;
+        final contents = await file.readAsString();
+        final pgpId = await importIdentity(contents);
+      } catch (e) {
+        final snackBar = SnackBar(
+          content: Text('Oops! Something went wrong'),
+          duration: Duration(milliseconds: 200),
+          backgroundColor: Colors.red[200],
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Oops! Please pick up the file'),
+        duration: Duration(milliseconds: 200),
+        backgroundColor: Colors.red[200],
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }*/
+
+  ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt

@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
@@ -23,14 +24,14 @@ class SplashScreen extends StatefulWidget {
   _SplashState createState() => new _SplashState();
 }
 
-class _SplashState extends State<SplashScreen> {
+class _SplashState extends State<SplashScreen> with AfterLayoutMixin<SplashScreen> {
   bool _spinner = false;
   String _statusText;
 
   @override
-  void initState() {
-    super.initState();
-    if (!widget.isLoading) {
+  void afterFirstLayout(BuildContext context) {
+    // Calling the same function "after layout" to resolve the issue.
+      if (!widget.isLoading) {
       _statusText = "Loading...";
       checkBackendState(context);
     } else {
@@ -38,6 +39,7 @@ class _SplashState extends State<SplashScreen> {
       _spinner = widget.spinner;
     }
   }
+
 
   void _setStatusText(String txt) {
     setState(() {

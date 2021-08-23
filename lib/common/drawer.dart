@@ -136,9 +136,7 @@ Widget drawerWidget(BuildContext ctx) {
               buildList(Icons.devices, 'Friends location', () {
                 Navigator.pushNamed(ctx, '/friends_locations');
               }),
-              buildList(Icons.emoji_symbols_rounded, 'Forum', () {
-                Navigator.pushNamed(ctx, '/forum');
-              }),
+            
               buildList(Icons.info_rounded, 'About', () {
                 Navigator.pushNamed(ctx, '/about');
               })

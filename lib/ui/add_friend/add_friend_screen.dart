@@ -31,8 +31,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
             child: Expanded(
                 child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: SingleChildScrollView(
-                child: Column(
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GetAddfriend(),
@@ -43,6 +42,6 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                   ],
                 ),
               ),
-            ))));
+            )));
   }
 }
