@@ -44,6 +44,7 @@ class _RoomScreenState extends State<RoomScreen>
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat?.chatId);
       }
+    
     });
   }
 
@@ -55,163 +56,164 @@ class _RoomScreenState extends State<RoomScreen>
 
   @override
   Widget build(BuildContext context) {
-    var friendIdentity  = Provider.of<FriendsIdentity>(context,listen: false);
+    var friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         top: true,
         bottom: true,
-        child: friendIdentity!=null? Column(
-              children: <Widget>[
-                Container(
-                  height: appBarHeight,
-                  padding: const EdgeInsets.fromLTRB(8.0, 0.0, 16.0, 0.0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        width: personDelegateHeight,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            size: 25,
+        child: friendIdentity != null
+            ? Column(
+                children: <Widget>[
+                  Container(
+                    height: appBarHeight,
+                    padding: const EdgeInsets.fromLTRB(8.0, 0.0, 16.0, 0.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: personDelegateHeight,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_back,
+                              size: 25,
+                            ),
+                            onPressed: () {
+                              Future.delayed(Duration.zero, () async {
+                                Navigator.pop(context);
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            Future.delayed(Duration.zero, () async {
-                              Navigator.pop(context);
-                            });
-                          },
                         ),
-                      ),
-                      Visibility(
-                        visible: !widget.isRoom,
-                        child: Container(
-                          width: appBarHeight,
-                          height: appBarHeight,
-                          child: Stack(
-                            alignment: Alignment(-1.0, 0.0),
-                            children: <Widget>[
-                              Center(
-                                child: Container(
-                                  height: appBarHeight * 0.70,
-                                  width: appBarHeight * 0.70,
-                                  decoration: (widget.chat?.interlocutorId ==
+                        Visibility(
+                          visible: !widget.isRoom,
+                          child: Container(
+                            width: appBarHeight,
+                            height: appBarHeight,
+                            child: Stack(
+                              alignment: Alignment(-1.0, 0.0),
+                              children: <Widget>[
+                                Center(
+                                  child: Container(
+                                    height: appBarHeight * 0.70,
+                                    width: appBarHeight * 0.70,
+                                    decoration: (widget.chat?.interlocutorId ==
+                                                    null ||
+                                                friendIdentity
+                                                        .allIdentity[widget.chat
+                                                            ?.interlocutorId]
+                                                        ?.avatar ==
+                                                    null ??
+                                            false)
+                                        ? null
+                                        : BoxDecoration(
+                                            border: null,
+                                            color: Colors.lightBlueAccent,
+                                            borderRadius: BorderRadius.circular(
+                                                appBarHeight * 0.70 * 0.33),
+                                            image: DecorationImage(
+                                                fit: BoxFit.fitWidth,
+                                                image: MemoryImage(base64Decode(
+                                                    friendIdentity
+                                                        .allIdentity[widget.chat
+                                                            ?.interlocutorId]
+                                                        .avatar))),
+                                          ),
+                                    child: Visibility(
+                                      visible: (widget.chat?.interlocutorId ==
                                                   null ||
                                               friendIdentity
                                                       .allIdentity[widget
                                                           .chat?.interlocutorId]
                                                       ?.avatar ==
                                                   null ??
-                                          false)
-                                      ? null
-                                      : BoxDecoration(
-                                          border: null,
-                                          color: Colors.lightBlueAccent,
-                                          borderRadius: BorderRadius.circular(
-                                              appBarHeight * 0.70 * 0.33),
-                                          image: DecorationImage(
-                                              fit: BoxFit.fitWidth,
-                                              image: MemoryImage(base64Decode(
-                                                  friendIdentity
-                                                      .allIdentity[widget
-                                                          .chat?.interlocutorId]
-                                                      .avatar))),
+                                          false),
+                                      child: Center(
+                                        child: Icon(
+                                          (widget.chat?.isPublic == null ||
+                                                  widget.chat?.isPublic)
+                                              ? Icons.people
+                                              : Icons.person,
+                                          size: 40,
                                         ),
-                                  child: Visibility(
-                                    visible:
-                                        (widget.chat?.interlocutorId == null ||
-                                                friendIdentity
-                                                        .allIdentity[widget.chat
-                                                            ?.interlocutorId]
-                                                        ?.avatar ==
-                                                    null ??
-                                            false),
-                                    child: Center(
-                                      child: Icon(
-                                        (widget.chat?.isPublic == null ||
-                                                widget.chat?.isPublic)
-                                            ? Icons.people
-                                            : Icons.person,
-                                        size: 40,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Visibility(
-                                visible: isOnline,
-                                child: Positioned(
-                                  bottom: appBarHeight * 0.63,
-                                  left: appBarHeight * 0.63,
-                                  child: Container(
-                                    height: appBarHeight * 0.25,
-                                    width: appBarHeight * 0.25,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.white,
-                                          width: appBarHeight * 0.03),
-                                      color: Colors.lightGreenAccent,
-                                      borderRadius: BorderRadius.circular(
-                                          appBarHeight * 0.3 * 0.5),
+                                Visibility(
+                                  visible: isOnline,
+                                  child: Positioned(
+                                    bottom: appBarHeight * 0.63,
+                                    left: appBarHeight * 0.63,
+                                    child: Container(
+                                      height: appBarHeight * 0.25,
+                                      width: appBarHeight * 0.25,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.white,
+                                            width: appBarHeight * 0.03),
+                                        color: Colors.lightGreenAccent,
+                                        borderRadius: BorderRadius.circular(
+                                            appBarHeight * 0.3 * 0.5),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 8.0),
-                      Expanded(
-                        child: Text(
-                          widget.isRoom
-                              ? widget.chat?.chatName
-                              : friendIdentity
-                                      .allIdentity[widget.chat?.interlocutorId]
-                                      ?.name ??
-                                  widget.chat?.chatName ??
-                                  "name",
-                          style: Theme.of(context).textTheme.body2,
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: Text(
+                            widget.isRoom
+                                ? widget.chat?.chatName
+                                : friendIdentity
+                                        .allIdentity[
+                                            widget.chat?.interlocutorId]
+                                        ?.name ??
+                                    widget.chat?.chatName ??
+                                    widget.chat?.interlocutorId??'Name',
+                            style: Theme.of(context).textTheme.body2,
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: widget.isRoom,
-                        child: AnimatedBuilder(
-                          animation: _tabController.animation,
-                          builder: (BuildContext context, Widget widget) {
-                            return IconButton(
-                              icon: Icon(
-                                Icons.people,
-                                size: 25,
-                              ),
-                              color: _iconAnimation.value,
-                              onPressed: () {
-                                _tabController
-                                    .animateTo(1 - _tabController.index);
-                              },
-                            );
-                          },
+                        Visibility(
+                          visible: widget.isRoom,
+                          child: AnimatedBuilder(
+                            animation: _tabController.animation,
+                            builder: (BuildContext context, Widget widget) {
+                              return IconButton(
+                                icon: Icon(
+                                  Icons.people,
+                                  size: 25,
+                                ),
+                                color: _iconAnimation.value,
+                                onPressed: () {
+                                  _tabController
+                                      .animateTo(1 - _tabController.index);
+                                },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: List<Widget>.generate(widget.isRoom ? 2 : 1,
-                        (int index) {
-                      return index == 0
-                          ? MessagesTab(
-                              chat: widget.chat,
-                              isRoom: widget.isRoom,
-                            )
-                          : RoomFriendsTab(chat: widget.chat);
-                    }),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: List<Widget>.generate(widget.isRoom ? 2 : 1,
+                          (int index) {
+                        return index == 0
+                            ? MessagesTab(
+                                chat: widget.chat,
+                                isRoom: widget.isRoom,
+                              )
+                            : RoomFriendsTab(chat: widget.chat);
+                      }),
+                    ),
                   ),
-                ),
-              ],
-            ):Center(child: CircularProgressIndicator()),
-          
-        
+                ],
+              )
+            : Center(child: CircularProgressIndicator()),
       ),
     );
   }
