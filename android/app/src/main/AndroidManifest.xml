@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cc.retroshare.retroshare">
+    package="cc.retroshare.retroshare">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -7,101 +7,40 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-            android:label="Retroshare"
-            android:icon="@mipmap/ic_launcher"
-            android:usesCleartextTraffic="true"
-            android:requestLegacyExternalStorage="true">
+        android:name="io.flutter.app.FlutterApplication"
+        android:label="Retroshare"
+        android:icon="@mipmap/ic_launcher">
         <activity
-                android:name=".MainActivity"
-                android:launchMode="singleTask"
-                android:theme="@style/LaunchTheme"
-                android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-                android:hardwareAccelerated="true"
-                android:windowSoftInputMode="adjustResize">
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
                  there is no splash screen (such as the default splash screen
                  defined in @style/LaunchTheme). -->
-            <meta-data
-                    android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                    android:resource="@drawable/launch_background" />
-            <meta-data
-                    android:name="flutterEmbedding"
-                    android:value="2" />
+            <!--<meta-data
+                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
+                android:value="true" />-->
+          
+
+              <meta-data 
+              android:name='io.flutter.embedding.android.SplashScreenDrawable'
+              android:resource="@drawable/launch_background"
+              />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- Deep linking -->
-            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
         </activity>
-
-        <!-- For adding service(s) please check:
-          ++ https://wiki.qt.io/AndroidServices -->
-        <service android:name=".RetroShareServiceAndroid" android:label="RetroShare Service" android:process=":rs"> <!-- android:exported="true" android:process=":rs"  -->
-            <!-- android:exported="true" must be added to be able to run the service
-              ++ from adb shell
-              ++ android:process=":rs" is needed to force the service to run on
-              ++ a separate process than the Activity -->
-
-            <!-- Qt Application to launch -->
-            <meta-data android:name="android.app.lib_name" android:value="retroshare-service"/>
-
-            <!-- Ministro -->
-            <meta-data android:name="android.app.qt_sources_resource_id" android:resource="@array/qt_sources"/>
-            <meta-data android:name="android.app.repository" android:value="default"/>
-            <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
-            <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
-            <!-- Deploy Qt libs as part of package -->
-            <meta-data android:name="android.app.bundle_local_qt_libs" android:value="1"/>
-            <meta-data android:name="android.app.bundled_in_lib_resource_id" android:resource="@array/bundled_in_lib"/>
-            <meta-data android:name="android.app.bundled_in_assets_resource_id" android:resource="@array/bundled_in_assets"/>
-            <!-- Run with local libs -->
-            <meta-data android:name="android.app.use_local_qt_libs" android:value="1"/>
-            <meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/>
-            <meta-data android:name="android.app.load_local_libs" android:value="plugins/platforms/android/libqtforandroid.so:plugins/bearer/libqandroidbearer.so"/>
-            <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid.jar:jar/QtAndroidExtras.jar:jar/QtAndroidBearer.jar"/>
-            <meta-data android:name="android.app.static_init_classes" android:value=""/>
-            <!--  Messages maps -->
-            <meta-data android:value="@string/ministro_not_found_msg" android:name="android.app.ministro_not_found_msg"/>
-            <meta-data android:value="@string/ministro_needed_msg" android:name="android.app.ministro_needed_msg"/>
-            <meta-data android:value="@string/fatal_error_msg" android:name="android.app.fatal_error_msg"/>
-            <!-- Messages maps -->
-
-            <!-- Background running -->
-            <meta-data android:name="android.app.background_running" android:value="true"/>
-            <!-- Background running -->
-        </service>
-
+        <meta-data 
+            android:name="flutterEmbedding"
+            android:value="2"/>
     </application>
-
-
-    <uses-sdk android:targetSdkVersion="21"/>
-    <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
-
-    <!-- Needed permission for autostart at boot -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!-- Used to access files shared by other apps -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!-- Needed permission for network usage -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- Location-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- /end From example app -->
-
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-
-    <!--    Add by kon trying to mantain RS service up -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-
+    <uses-permission android:name='android.permission.WRITE_EXTERNAL_STORAGE'/>
+      <uses-permission android:name='android.permission.READ_EXTERNAL_STORAGE'/>
 </manifest>
