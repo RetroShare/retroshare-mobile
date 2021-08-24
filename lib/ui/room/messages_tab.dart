@@ -92,6 +92,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       itemBuilder: (BuildContext context, int index) {
                         return MessageDelegate(
                           data: msgList[index],
+                          key: UniqueKey(),
                           bubbleTitle: widget.isRoom &&
                                   (msgList[index] != null) &&
                                   (msgList[index]

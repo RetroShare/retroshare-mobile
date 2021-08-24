@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +73,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                 onTap: () {
                                   _goToChat(_chatsList.unSubscribedlist[index]);
                                 },
+                                key: UniqueKey() ,
                                 child: Container(
                                   height: personDelegateHeight,
                                   child: Row(
