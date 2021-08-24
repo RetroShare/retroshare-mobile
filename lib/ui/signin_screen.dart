@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/show_dialog.dart';
@@ -20,17 +19,24 @@ class _SignInScreenState extends State<SignInScreen> {
   Account currentAccount;
   bool hideLocations;
   bool wrongPassword;
+  bool intialize = false;
 
   @override
   void initState() {
     super.initState();
     hideLocations = true;
     wrongPassword = false;
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      accountsDropdown = getDropDownMenuItems();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!intialize) {
+      accountsDropdown = getDropDownMenuItems(context);
       currentAccount = Provider.of<AccountCredentials>(context, listen: false)
           .getlastAccountUsed;
-    });
+      intialize = true;
+    }
   }
 
   @override
@@ -76,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  List<DropdownMenuItem<Account>> getDropDownMenuItems() {
+  List<DropdownMenuItem<Account>> getDropDownMenuItems(BuildContext context) {
     List<DropdownMenuItem<Account>> items = [];
     for (Account account
         in Provider.of<AccountCredentials>(context, listen: false)
@@ -103,20 +109,22 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  void revealLocations() {
+  void revealLocations(BuildContext context) {
     if (hideLocations) {
       setState(() {
         hideLocations = false;
-        accountsDropdown = getDropDownMenuItems();
+        accountsDropdown = getDropDownMenuItems(context);
       });
 
       showToast('Locations revealed');
     }
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -152,7 +160,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   height: 40,
                                   child: GestureDetector(
                                     onLongPress: () {
-                                      revealLocations();
+                                      revealLocations(context);
                                     },
                                     child: Row(
                                       children: <Widget>[

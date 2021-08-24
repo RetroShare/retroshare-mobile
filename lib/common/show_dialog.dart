@@ -145,7 +145,6 @@ void showdeleteDialog(context) {
                   warningShowDialog("Retro Service is Down",
                       "Please ensure retroshare service is not down", context);
                 } catch (e) {
-                  print(e.toString());
                   warningShowDialog(
                       "Try Again", "Something wrong happens!", context);
                 }

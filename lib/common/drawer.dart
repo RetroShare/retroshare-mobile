@@ -93,7 +93,7 @@ Widget drawerWidget(BuildContext ctx) {
                       children: [
                         IconButton(
                             onPressed: () {
-                              Navigator.of(context).pushReplacementNamed(
+                              Navigator.of(context).pushNamed(
                                   '/updateIdentity',
                                   arguments: {'id': curr.currentIdentity});
                             },
