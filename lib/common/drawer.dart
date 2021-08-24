@@ -17,7 +17,10 @@ Widget drawerWidget(BuildContext ctx) {
             Icon(
               icon,
               size: 30,
-              color: Colors.black,
+              color:Theme.of(ctx)
+                                        .textTheme
+                                        .body2
+                                        .color,
             ),
             SizedBox(
               width: 15,
@@ -136,6 +139,9 @@ Widget drawerWidget(BuildContext ctx) {
               buildList(Icons.devices, 'Friends location', () {
                 Navigator.pushNamed(ctx, '/friends_locations');
               }),
+              buildList(Icons.language
+                                  ,'Discover public chats',(){
+                                    Navigator.pushNamed(ctx, '/discover_chats');}),
             
               buildList(Icons.info_rounded, 'About', () {
                 Navigator.pushNamed(ctx, '/about');

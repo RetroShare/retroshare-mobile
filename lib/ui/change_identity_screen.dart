@@ -14,7 +14,6 @@ class ChangeIdentityScreen extends StatefulWidget {
 }
 
 class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
-  void _undoChangesOnExit(BuildContext context) {}
 
   @override
   void initState() {

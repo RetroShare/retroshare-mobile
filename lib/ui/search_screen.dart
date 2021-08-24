@@ -68,19 +68,21 @@ class _SearchScreenState extends State<SearchScreen>
         .animate(_tabController.animation);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<FriendsIdentity>(context, listen: false)
+      var friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
+      var chatLobby =  Provider.of<ChatLobby>(context, listen: false);
+      await friendIdentity
           .fetchAndUpdate();
-      await Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
-      await Provider.of<ChatLobby>(context, listen: false)
+      await chatLobby.fetchAndUpdate();
+      await chatLobby
           .fetchAndUpdateUnsubscribed();
       allIds =
-          Provider.of<FriendsIdentity>(context, listen: false).notContactIds;
+          friendIdentity.notContactIds;
       contactsIds =
-          Provider.of<FriendsIdentity>(context, listen: false).friendsIdsList;
+          friendIdentity.friendsIdsList;
       subscribedChats =
-          Provider.of<ChatLobby>(context, listen: false).subscribedlist;
+         chatLobby.subscribedlist;
       publicChats =
-          Provider.of<ChatLobby>(context, listen: false).unSubscribedlist;
+        chatLobby.unSubscribedlist;
     });
   }
 
@@ -391,8 +393,8 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  void _toggleContacts(String gxsId, bool type)  {
-     Provider.of<FriendsIdentity>(context, listen: false)
+  void _toggleContacts(String gxsId, bool type) {
+    Provider.of<FriendsIdentity>(context, listen: false)
         .toggleContacts(gxsId, type);
   }
 
