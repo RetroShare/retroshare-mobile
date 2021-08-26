@@ -31,7 +31,7 @@ retroshare-service backend.
 
 ## Installing on Local Machine:
 
-* Download recent release [here](https://github.com/RetroShare/retroshare-mobile/tree/master/android/retroshare-service).
+* Download recent release of retroshare service [here](https://github.com/RetroShare/retroshare-mobile/tree/master/android/retroshare-service).
 * Debug: using adb to use a retroshare-service installed on your computer:
 
 ```bash
