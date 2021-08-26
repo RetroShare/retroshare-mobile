@@ -85,7 +85,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 });
                 Fluttertoast.cancel();
                 Fluttertoast.showToast(
-                    msg: 'something went Wrong',
+                    msg: 'something went wrong',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,

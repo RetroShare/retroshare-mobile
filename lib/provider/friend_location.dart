@@ -16,7 +16,7 @@ class FriendLocations with ChangeNotifier {
     final sslIds = await RsPeers.getFriendList(_authToken);
     List<Location> locations = [];
     for (int i = 0; i < sslIds.length; i++) {
-      locations.add(await RsPeers.getPeerDetails(sslIds[i], _authToken));
+      locations.add(await RsPeers.getPeerFriendDetails(sslIds[i], _authToken));
     }
     _friendlist = locations;
     notifyListeners();

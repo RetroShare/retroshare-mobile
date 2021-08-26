@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +14,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) async{
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ChatLobby>(context, listen: false)
           .fetchAndUpdateUnsubscribed();
     });
@@ -34,8 +32,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
         body: SafeArea(
             top: true,
             bottom: true,
-            child: Consumer<ChatLobby>(builder: (context, _chatsList, _) {
-              return Column(
+            child:  Column(
                 children: <Widget>[
                   Container(
                     height: appBarHeight,
@@ -62,8 +59,14 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: _chatsList.unSubscribedlist != null &&
+                  Expanded(child: FutureBuilder(
+                    future: Provider.of<ChatLobby>(context, listen: false)
+                            .fetchAndUpdateUnsubscribed(),
+                    builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.done && !snapshot.hasError?
+                     Consumer<ChatLobby>(builder: (context, _chatsList, _) {
+              return
+                    _chatsList.unSubscribedlist != null &&
                             _chatsList.unSubscribedlist.length > 0
                         ? ListView.builder(
                             padding: EdgeInsets.all(8),
@@ -73,7 +76,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                 onTap: () {
                                   _goToChat(_chatsList.unSubscribedlist[index]);
                                 },
-                                key: UniqueKey() ,
+                                key: UniqueKey(),
                                 child: Container(
                                   height: personDelegateHeight,
                                   child: Row(
@@ -158,10 +161,13 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                 ],
                               ),
                             ),
-                          ),
-                  ),
+                          );}):Center(
+                            child: CircularProgressIndicator(),
+                          )
+                          ;
+                  })),
                 ],
-              );
-            })));
+              )
+            ));
   }
 }

@@ -13,7 +13,6 @@ import 'package:retroshare/ui/room/message_delegate.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
-
 class MessagesTab extends StatefulWidget {
   final Chat chat;
   final bool isRoom;
@@ -35,6 +34,7 @@ class _MessagesTabState extends State<MessagesTab> {
     msgController.dispose();
     super.dispose();
   }
+
   _onEmojiSelected(Emoji emoji) {
     msgController
       ..text += emoji.emoji
@@ -49,6 +49,31 @@ class _MessagesTabState extends State<MessagesTab> {
           TextPosition(offset: msgController.text.length));
   }
 
+  _sendImage() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 40,
+        maxWidth: 250,
+        maxHeight: 250);
+    final bytes = image.readAsBytesSync().lengthInBytes;
+    final kb = bytes / 1024;
+    final mb = kb / 1024;
+    if (mb < 3 && image != null) {
+      var text = base64.encode(image.readAsBytesSync());
+      text = "<img alt='Red dot (png)' src='data:image/png;base64,$text'/>";
+      sendMessage(context, widget.chat?.chatId, text,
+          (widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_));
+    } else {
+      Fluttertoast.showToast(
+          msg: "Image Size is too large !",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
 
   @override
   void initState() {
@@ -97,7 +122,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                   (msgList[index] != null) &&
                                   (msgList[index]
                                       .incoming) // Why msgList[index]?.incoming ?? false is not working??
-                              ?getChatSenderName(context, msgList[index])
+                              ? getChatSenderName(context, msgList[index])
                               : null,
                         );
                       },
@@ -182,36 +207,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       Icons.image,
                     ),
                     onPressed: () async {
-                      File image = await ImagePicker.pickImage(
-                          source: ImageSource.gallery,
-                          imageQuality: 40,
-                          maxWidth: 250,
-                          maxHeight: 250);
-                      final bytes = image.readAsBytesSync().lengthInBytes;
-                      final kb = bytes / 1024;
-                      final mb = kb / 1024;
-                      if (mb < 3 && image != null) {
-                            var text = base64.encode(image.readAsBytesSync());
-                            text =
-                                "<img alt='Red dot (png)' src='data:image/png;base64,$text'/>";
-                            sendMessage(
-                                context,
-                                widget.chat?.chatId,
-                                text,
-                                (widget.isRoom
-                                    ? ChatIdType.number3_
-                                    : ChatIdType.number2_));
-                          
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Image Size is too large !",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
+                     await  _sendImage();
                     },
                   ),
                   IconButton(
@@ -219,14 +215,14 @@ class _MessagesTabState extends State<MessagesTab> {
                       Icons.send,
                     ),
                     onPressed: () {
-                      if(msgController.text.length>0)
-                      sendMessage(
-                          context,
-                          widget.chat?.chatId,
-                          msgController.text,
-                          (widget.isRoom
-                              ? ChatIdType.number3_
-                              : ChatIdType.number2_));
+                      if (msgController.text.length > 0)
+                        sendMessage(
+                            context,
+                            widget.chat?.chatId,
+                            msgController.text,
+                            (widget.isRoom
+                                ? ChatIdType.number3_
+                                : ChatIdType.number2_));
                       msgController.clear();
                     },
                   ),
@@ -249,28 +245,27 @@ class _MessagesTabState extends State<MessagesTab> {
 
   Widget buildSticker() {
     return EmojiPicker(
-                  onEmojiSelected: (Category category, Emoji emoji) {
-                    _onEmojiSelected(emoji);
-                  },
-                  onBackspacePressed: _onBackspacePressed,
-                  config: const Config(
-                      columns: 7,
-                      emojiSizeMax: 32.0,
-                      verticalSpacing: 0,
-                      horizontalSpacing: 0,
-                      initCategory: Category.RECENT,
-                      bgColor: Color(0xFFF2F2F2),
-                      indicatorColor: Colors.blue,
-                      iconColor: Colors.grey,
-                      iconColorSelected: Colors.blue,
-                      progressIndicatorColor: Colors.blue,
-                      backspaceColor: Colors.blue,
-                      showRecentsTab: true,
-                      recentsLimit: 28,
-                      noRecentsText: 'No Recents',
-                      noRecentsStyle:
-                          TextStyle(fontSize: 20, color: Colors.black26),
-                      categoryIcons: CategoryIcons(),
-                      buttonMode: ButtonMode.MATERIAL));
+        onEmojiSelected: (Category category, Emoji emoji) {
+          _onEmojiSelected(emoji);
+        },
+        onBackspacePressed: _onBackspacePressed,
+        config: const Config(
+            columns: 7,
+            emojiSizeMax: 32.0,
+            verticalSpacing: 0,
+            horizontalSpacing: 0,
+            initCategory: Category.RECENT,
+            bgColor: Color(0xFFF2F2F2),
+            indicatorColor: Colors.blue,
+            iconColor: Colors.grey,
+            iconColorSelected: Colors.blue,
+            progressIndicatorColor: Colors.blue,
+            backspaceColor: Colors.blue,
+            showRecentsTab: true,
+            recentsLimit: 28,
+            noRecentsText: 'No Recents',
+            noRecentsStyle: TextStyle(fontSize: 20, color: Colors.black26),
+            categoryIcons: CategoryIcons(),
+            buttonMode: ButtonMode.MATERIAL));
   }
 }

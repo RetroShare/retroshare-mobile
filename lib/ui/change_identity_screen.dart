@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
@@ -14,30 +15,19 @@ class ChangeIdentityScreen extends StatefulWidget {
 }
 
 class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
-
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) async{
-        await Provider.of<Identities>(context, listen: false).fetchOwnidenities();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<Identities>(context, listen: false).fetchOwnidenities();
     });
-  
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        title: Text(
-          "Change Identity",
-          style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 16, fontFamily: "Oxygen"),
-        ),
-        automaticallyImplyLeading: true,
-      ),
+      appBar: appBar('Change Identity', context),
       body: SafeArea(
           top: true,
           bottom: true,

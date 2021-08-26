@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:shimmer/shimmer.dart';
@@ -10,8 +11,7 @@ class FriendsLocationsScreen extends StatefulWidget {
   _FriendsLocationsScreenState createState() => _FriendsLocationsScreenState();
 }
 
-class _FriendsLocationsScreenState extends State<FriendsLocationsScreen>
-     {
+class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
   @override
   void setState(fn) {
     if (mounted) {
@@ -19,11 +19,10 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen>
     }
   }
 
-  
   @override
   void initState() {
     super.initState();
-   SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       _getFriendsAccounts();
     });
   }
@@ -42,18 +41,9 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        title: Text(
-          "Friend Location",
-          style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 16, fontFamily: "Oxygen"),
-        ),
-        automaticallyImplyLeading: true,
-      ),
+      appBar: appBar('Friend Location', context),
       body: SafeArea(
-        top: true,
+        //top: true,
         bottom: true,
         child: FutureBuilder(
             future: _getFriendsAccounts(),
@@ -142,8 +132,8 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen>
                           itemBuilder: (_, __) => Container(
                               padding: const EdgeInsets.only(
                                   bottom: 8.0, left: 8, right: 8, top: 8),
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 8),
+                              margin: const EdgeInsets.only(
+                                  top: 8,bottom:10,left:8,right:8),
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.white),
                                   borderRadius: BorderRadius.circular(14)),

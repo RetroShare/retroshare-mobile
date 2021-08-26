@@ -73,8 +73,10 @@ class _QRScannerState extends State<QRScanner>
     if (!check)
       ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll("\n", "");
     else {
-      
-      ownCert = (await RsPeers.getShortInvite(authToken,sslId: Provider.of<AccountCredentials>(context).lastAccountUsed.locationId));
+      ownCert = (await RsPeers.getShortInvite(authToken,
+          sslId: Provider.of<AccountCredentials>(context)
+              .lastAccountUsed
+              .locationId));
     }
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
@@ -293,10 +295,6 @@ class _QRScannerState extends State<QRScanner>
                                   key: _globalkey,
                                   child: QrImage(
                                     errorStateBuilder: (context, result) {
-                                      /*setState(() {
-                                          _requestQR = false;
-                                        });*/
-
                                       return Dialog(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(

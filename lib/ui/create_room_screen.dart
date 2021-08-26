@@ -442,8 +442,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                     .toLowerCase()
                                                     .indexOf(lowercaseQuery)));
 
-                                        
-
                                           return results;
                                         }
                                         // Otherwise the suggestions will be on friends list and showed on a
@@ -471,11 +469,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       }
                                     },
                                     onChanged: (data) {},
-                                    
-                                    
-                                    
-                                    chipBuilder:
-                                        (context, state,  profile) {
+                                    chipBuilder: (context, state, profile) {
                                       if (!_selectedLocations.contains(profile))
                                         _selectedLocations.add(profile);
                                       return InputChip(
@@ -497,11 +491,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     },
                                     suggestionBuilder:
                                         (context, state, profile) {
-                                      
                                       return Expanded(
                                         child: PersonDelegate(
-                                            data: PersonDelegateData.LocationData(
-                                                profile)),
+                                            data:
+                                                PersonDelegateData.LocationData(
+                                                    profile)),
                                       );
                                     },
                                   )

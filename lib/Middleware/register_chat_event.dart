@@ -11,8 +11,8 @@ Future<void> registerChatEvent(
   await eventsRegisterChatMessage(
       listenCb: (var json, ChatMessage msg) {
         if (msg != null) {
-          AuthToken authToken = Provider.of<RoomChatLobby>(context, listen: false)
-                  .authToken;
+          AuthToken authToken =
+              Provider.of<RoomChatLobby>(context, listen: false).authToken;
           // Check if is a lobby chat
           if (msg.chat_id.lobbyId.xstr64 != "0") {
             chatMiddleware(msg, context);
@@ -28,8 +28,8 @@ Future<void> registerChatEvent(
                     msg.chat_id.distantChatId,
                     Provider.of<RoomChatLobby>(context, listen: false)
                         .distanceChat)
-                ? RsMsgs. getDistantChatStatus(
-                        authToken,msg.chat_id.distantChatId, msg)
+                ? RsMsgs.getDistantChatStatus(
+                        authToken, msg.chat_id.distantChatId, msg)
                     .then((DistantChatPeerInfo res) {
                     // Create the chat and add it to the store
                     Chat chat = Chat(

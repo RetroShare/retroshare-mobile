@@ -44,7 +44,6 @@ class _RoomScreenState extends State<RoomScreen>
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat?.chatId);
       }
-    
     });
   }
 
@@ -171,7 +170,8 @@ class _RoomScreenState extends State<RoomScreen>
                                             widget.chat?.interlocutorId]
                                         ?.name ??
                                     widget.chat?.chatName ??
-                                    widget.chat?.interlocutorId??'Name',
+                                    widget.chat?.interlocutorId ??
+                                    'Name',
                             style: Theme.of(context).textTheme.body2,
                           ),
                         ),

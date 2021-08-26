@@ -43,7 +43,6 @@ class RoomChatLobby with ChangeNotifier {
         success = tuple.item1;
         id = tuple.item2;
       } while (!success);
-
       participants.add(id);
     }
     await fetchAndUpdateParticipants(lobbyId, participants);

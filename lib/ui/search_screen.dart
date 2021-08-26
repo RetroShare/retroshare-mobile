@@ -69,20 +69,14 @@ class _SearchScreenState extends State<SearchScreen>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
-      var chatLobby =  Provider.of<ChatLobby>(context, listen: false);
-      await friendIdentity
-          .fetchAndUpdate();
+      var chatLobby = Provider.of<ChatLobby>(context, listen: false);
+      await friendIdentity.fetchAndUpdate();
       await chatLobby.fetchAndUpdate();
-      await chatLobby
-          .fetchAndUpdateUnsubscribed();
-      allIds =
-          friendIdentity.notContactIds;
-      contactsIds =
-          friendIdentity.friendsIdsList;
-      subscribedChats =
-         chatLobby.subscribedlist;
-      publicChats =
-        chatLobby.unSubscribedlist;
+      await chatLobby.fetchAndUpdateUnsubscribed();
+      allIds = friendIdentity.notContactIds;
+      contactsIds = friendIdentity.friendsIdsList;
+      subscribedChats = chatLobby.subscribedlist;
+      publicChats = chatLobby.unSubscribedlist;
     });
   }
 
