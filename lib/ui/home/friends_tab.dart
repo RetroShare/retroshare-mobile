@@ -26,7 +26,6 @@ class _FriendsTabState extends State<FriendsTab> {
         .toggleContacts(gxsId, true);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

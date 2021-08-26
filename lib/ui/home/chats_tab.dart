@@ -37,6 +37,7 @@ class ChatsTab extends StatelessWidget {
                                   (BuildContext context, int index) {
                                     // Todo: DRY
                                     return PersonDelegate(
+                                      
                                       data: PersonDelegateData.ChatData(
                                           chatsList.subscribedlist[index]),
                                       onPressed: () {
