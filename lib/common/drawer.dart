@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/button.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
@@ -43,82 +41,94 @@ Widget drawerWidget(BuildContext ctx) {
         Container(
             alignment: Alignment.center,
             margin: const EdgeInsets.only(top: 2),
-            height: MediaQuery.of(ctx).size.height * .3,
-            decoration: BoxDecoration(color: Colors.blueAccent[300]),
-            child: Center(
-              child: Consumer<Identities>(builder: (context, curr, _) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      decoration: (curr.currentIdentity.avatar == null)
-                          ? BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.black))
-                          : BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.black),
-                              image: DecorationImage(
-                                fit: BoxFit.fitWidth,
-                                image: MemoryImage(
-                                    base64.decode(curr.currentIdentity.avatar)),
+            height: MediaQuery.of(ctx).size.height * .35,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: <Color>[
+                    
+                  Color(0xFF29ABE2),
+                  Color(0xFF00FFFF),
+                ],
+                begin: Alignment(-1.0, -1.0),
+                end: Alignment(0.1, 0.2),
+              ),
+            ),
+            child: Stack(
+              children:[ Center(
+                child: Consumer<Identities>(builder: (context, curr, _) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: (curr.currentIdentity.avatar == null)
+                            ? BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.black))
+                            : BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.black),
+                                image: DecorationImage(
+                                  fit: BoxFit.fitWidth,
+                                  image: MemoryImage(
+                                      base64.decode(curr.currentIdentity.avatar)),
+                                ),
                               ),
+                        child: Visibility(
+                          visible: (curr.currentIdentity?.avatar == null),
+                          child: Center(
+                            child: Icon(
+                              Icons.person,
+                              size: 80,
                             ),
-                      child: Visibility(
-                        visible: (curr.currentIdentity?.avatar == null),
-                        child: Center(
-                          child: Icon(
-                            Icons.person,
-                            size: 80,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    FittedBox(
-                      child: Text(
-                        curr.currentIdentity.name,
-                        style: TextStyle(
-                            fontFamily: "Vollkorn",
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
-                        overflow: TextOverflow.ellipsis,
+                      SizedBox(
+                        height: 6,
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pushNamed('/updateIdentity',
-                                  arguments: {'id': curr.currentIdentity});
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.userEdit,
-                              size: 18,
-                              color: Colors.blue,
-                            )),
-                        IconButton(
-                            onPressed: () {
-                              showdeleteDialog(context);
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.trash,
-                              size: 18,
-                              color: Colors.red,
-                            ))
-                      ],
-                    )
-                  ],
-                );
-              }),
-            )),
+                      FittedBox(
+                        child: Text(
+                          curr.currentIdentity.name,
+                          style: TextStyle(
+                              fontFamily: "Vollkorn",
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed('/updateIdentity',
+                                    arguments: {'id': curr.currentIdentity});
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.userEdit,
+                                size: 18,
+                                color: Colors.blue,
+                              )),
+                          IconButton(
+                              onPressed: () {
+                                showdeleteDialog(context);
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.trash,
+                                size: 18,
+                                color: Colors.red,
+                              ))
+                        ],
+                      )
+                    ],
+                  );
+                }),
+              ),
+               ] )),
         Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -206,7 +216,7 @@ class _NotificationIconState extends State<NotificationIcon> {
           child: FutureBuilder(
             future: _inviteList(),
           builder: (context, snapshot) {
-            return snapshot.connectionState == ConnectionState.done
+            return snapshot.connectionState == ConnectionState.done && snapshot.hasData
                 ? FittedBox(child: Text(snapshot.data.length.toString(),style: TextStyle(fontSize: 8),))
                 : FittedBox(child:Text('0',
                             style: TextStyle(fontSize: 8)));

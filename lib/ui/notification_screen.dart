@@ -66,121 +66,119 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ? snapshot.data.length>0?ListView.builder(
                               itemCount: snapshot.data.length,
                               itemBuilder: (context, index) {
-                                return  Container(
-                                    height: 100,
-                                    margin: const EdgeInsets.symmetric(horizontal: 8,vertical: 6),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 6),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),border: Border.all(width: 1,color: Colors.black)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.language,
-                                          size: 35,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                            child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            RichText(
-                                              text: TextSpan(
-                                                text:
-                                                    '${snapshot.data[index]['location'].accountName}',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Oxygen',
-                                                    fontSize: 14.5,
-                                                    color: Colors.black),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text:
-                                                          ' sent you the invite to join the chatlobby ',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .body2),
-                                                  TextSpan(
-                                                      text:
-                                                          '${snapshot.data[index]['lobby_name']}.',
-                                                      style: TextStyle(
-                                                          fontSize: 14.5,
-                                                          fontFamily: 'Oxygen',
-                                                          fontWeight:
-                                                              FontWeight.bold))
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  FlatButton(
-                                                      onPressed: () async {
-                                                        await RsMsgs.denyLobbyInvite(
-                                                            snapshot.data[index]
-                                                                    ['lobby_id']
-                                                                ['xstr64'],
-                                                            snapshot.data[index]
-                                                                ['authtoken']);
-                                                        setState(() {});
-                                                      },
-                                                      child: Text(
-                                                        "cancel",
+                                return  Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                  margin: const EdgeInsets.symmetric(horizontal: 22,vertical: 8),
+                                  child: Container(
+                                      height: 100,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 6),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          
+                                          Expanded(
+                                              child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              RichText(
+                                                text: TextSpan(
+                                                  text:
+                                                      '${snapshot.data[index]['location'].accountName}',
+                                                  style: TextStyle(
+                                                      
+                                                      fontFamily: "Oxygen",
+                                                      fontSize: 16,
+                                                      color: Colors.black),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                        text:
+                                                            ' sent you the invite to join the chatlobby ',
                                                         style: TextStyle(
-                                                            color: Colors.red),
-                                                      )),
-                                                  FlatButton(
-                                                      onPressed: () async {
-                                                        final mId = Provider.of<
-                                                                    Identities>(
-                                                                context,
-                                                                listen: false)
-                                                            .currentIdentity
-                                                            .mId;
-                                                        RsMsgs.acceptLobbyInvite(
-                                                                snapshot.data[
-                                                                            index]
-                                                                        [
-                                                                        'lobby_id']
-                                                                    ['xstr64'],
-                                                                mId,
-                                                                snapshot.data[
-                                                                        index][
-                                                                    'authtoken'])
-                                                            .then((value) {
-                                                          if (value) {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushNamed(
-                                                                    '/home');
-                                                          }
-                                                        });
-                                                      },
-                                                      child: Text(
-                                                        "Accept",
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  "Oxygen")),
+                                                    TextSpan(
+                                                        text:
+                                                            '${snapshot.data[index]['lobby_name']}.',
                                                         style: TextStyle(
-                                                            color: Colors
-                                                                .blueAccent),
-                                                      ))
-                                                ],
+                                                            fontSize: 15,
+                                                            fontFamily: 'Oxygen',
+                                                            ))
+                                                  ],
+                                                ),
                                               ),
-                                            )
-                                          ],
-                                        ))
-                                      ],
-                                    ),
-                                  
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    FlatButton(
+                                                        onPressed: () async {
+                                                          await RsMsgs.denyLobbyInvite(
+                                                              snapshot.data[index]
+                                                                      ['lobby_id']
+                                                                  ['xstr64'],
+                                                              snapshot.data[index]
+                                                                  ['authtoken']);
+                                                          setState(() {});
+                                                        },
+                                                        child: Text(
+                                                          "Cancel",
+                                                          style: TextStyle(
+                                                              color: Colors.red),
+                                                        )),
+                                                    FlatButton(
+                                                        onPressed: () async {
+                                                          final mId = Provider.of<
+                                                                      Identities>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .currentIdentity
+                                                              .mId;
+                                                          RsMsgs.acceptLobbyInvite(
+                                                                  snapshot.data[
+                                                                              index]
+                                                                          [
+                                                                          'lobby_id']
+                                                                      ['xstr64'],
+                                                                  mId,
+                                                                  snapshot.data[
+                                                                          index][
+                                                                      'authtoken'])
+                                                              .then((value) {
+                                                            if (value) {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pushNamed(
+                                                                      '/home');
+                                                            }
+                                                          });
+                                                        },
+                                                        child: Text(
+                                                          "Accept",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .blueAccent),
+                                                        ))
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ))
+                                        ],
+                                      ),
+                                    
+                                  ),
                                 );
                               }):
                               Center(
@@ -201,9 +199,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ],
                             ),
                           ),
-                        )
-                      
-                              
+                        ) 
                           : Center(child: CircularProgressIndicator());
                     }),
               )

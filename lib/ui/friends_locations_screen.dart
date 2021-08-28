@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/drawer.dart';
+import 'package:retroshare/common/shimmer.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/common/person_delegate.dart';
-import 'package:shimmer/shimmer.dart';
 
 class FriendsLocationsScreen extends StatefulWidget {
   @override
@@ -53,22 +53,27 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                       return idsTuple.friendlist != null &&
                               idsTuple.friendlist.length > 0
                           ? ListView.builder(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8),
                               itemCount: idsTuple.friendlist.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return PersonDelegate(
-                                  data: PersonDelegateData(
-                                    name: idsTuple
-                                            .friendlist[index].accountName +
-                                        ':' +
-                                        idsTuple.friendlist[index].locationName,
-                                    message:
-                                        idsTuple.friendlist[index].rsGpgId +
-                                            ':' +
-                                            idsTuple.friendlist[index].rsPeerId,
-                                    isOnline:
-                                        idsTuple.friendlist[index].isOnline,
-                                    isMessage: true,
+                                return Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: PersonDelegate(
+                                    data: PersonDelegateData(
+                                      name: idsTuple
+                                              .friendlist[index].accountName +
+                                          ':' +
+                                          idsTuple.friendlist[index].locationName,
+                                      message:
+                                          idsTuple.friendlist[index].rsGpgId +
+                                              ':' +
+                                              idsTuple.friendlist[index].rsPeerId,
+                                      isOnline:
+                                          idsTuple.friendlist[index].isOnline,
+                                      isMessage: true,
+                                    ),
                                   ),
                                 );
                               },
@@ -107,78 +112,10 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                               ),
                             );
                     })
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 0),
-                      child: Shimmer(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFEBEBF4),
-                            Color(0xFFF4F4F4),
-                            Color(0xFFEBEBF4),
-                          ],
-                          stops: [
-                            0.1,
-                            0.3,
-                            0.4,
-                          ],
-                          begin: Alignment(-1.0, -0.3),
-                          end: Alignment(1.0, 0.3),
-                          tileMode: TileMode.clamp,
-                        ),
-                        enabled: true,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          itemBuilder: (_, __) => Container(
-                              padding: const EdgeInsets.only(
-                                  bottom: 8.0, left: 8, right: 8, top: 8),
-                              margin: const EdgeInsets.only(
-                                  top: 8,bottom:10,left:8,right:8),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(14)),
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      alignment: Alignment.topCenter,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15))),
-                                    ),
-                                    Padding(padding: const EdgeInsets.all(8)),
-                                    Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: 60,
-                                            height: 8,
-                                            color: Colors.white,
-                                          ),
-                                          Container(
-                                            margin:
-                                                const EdgeInsets.only(top: 4),
-                                            width: 210,
-                                            height: 18,
-                                            color: Colors.white,
-                                          ),
-                                        ])
-                                  ])),
-                          itemCount: 6,
-                        ),
-                      ),
-                    );
+                  : friendLocationShimmer();
             }),
       ),
     );
   }
 }
+
