@@ -92,8 +92,6 @@ void main() {
 //
 //    });
 
-    test('to test set autosubscribe', () async {
-   
-    });
+    test('to test set autosubscribe', () async {});
   });
 }

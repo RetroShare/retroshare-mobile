@@ -23,22 +23,22 @@ class FriendsIdentity with ChangeNotifier {
   Future<void> fetchAndUpdate() async {
     Tuple3<List<Identity>, List<Identity>, List<Identity>> tupleIds =
         await getAllIdentities(_authToken);
-     _friendsSignedIdsList = tupleIds.item1;
-     _friendsIdsList = tupleIds.item2;
-     _notContactIds = tupleIds.item3;
+    _friendsSignedIdsList = tupleIds.item1;
+    _friendsIdsList = tupleIds.item2;
+    _notContactIds = tupleIds.item3;
 
-     _allIdentity = Map.fromIterable(
+    _allIdentity = Map.fromIterable(
         [tupleIds.item1, tupleIds.item2, tupleIds.item3]
             .expand((x) => x)
             .toList(),
         key: (id) => id.mId,
         value: (id) => id);
 
-     notifyListeners();
+    notifyListeners();
   }
 
-  void  setAllIds(Map<String, Identity> allIDS) {
-     _allIdentity = Map.from(allIDS);
+  void setAllIds(Map<String, Identity> allIDS) {
+    _allIdentity = Map.from(allIDS);
     notifyListeners();
   }
 
@@ -47,7 +47,7 @@ class FriendsIdentity with ChangeNotifier {
       bool success = await RsIdentity.setContact(gxsId, false, _authToken);
       await fetchAndUpdate();
       if (!success) throw HttpException("CHECK CONNECTIVITY");
-     } catch (e) {
+    } catch (e) {
       throw e;
     }
   }

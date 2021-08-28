@@ -7,6 +7,7 @@ import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
 import 'package:retroshare/ui/home/friends_tab.dart';
@@ -48,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
       final authToken =
           Provider.of<AccountCredentials>(context, listen: false).authtoken;
+      RsMsgs.getPendingChatLobbyInvites(authToken);
       registerChatEvent(context, authToken);
     });
   }
@@ -139,10 +141,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         color: Theme.of(context).primaryColor),
                     onPressed: () {},
                   ),
-                  IconButton(
-                    icon: Icon(Icons.notifications,
-                        color: Theme.of(context).primaryColor),
-                    onPressed: () {},
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 14),
+                    child: InkWell(
+                      onTap: (){
+                          Navigator.of(context).pushNamed('/notification');
+                        },
+                      child: NotificationIcon()),
                   )
                 ],
               ),

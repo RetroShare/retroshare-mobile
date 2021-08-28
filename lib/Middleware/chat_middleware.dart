@@ -86,7 +86,6 @@ void chatActionMiddleware(Chat distantChat, BuildContext context) {
   final allIds =
       Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
   if (allIds[distantChat?.interlocutorId] == null) {
-   
     var identity = new Identity(distantChat?.interlocutorId);
     identity?.name = distantChat?.chatName;
     Provider.of<Identities>(context, listen: false)

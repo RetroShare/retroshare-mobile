@@ -54,7 +54,7 @@ class Identities with ChangeNotifier {
     try {
       bool success =
           await RsIdentity.deleteIdentity(_currentIdentity, _authToken);
-            if (!success) throw HttpException("BAD REQUEST");
+      if (!success) throw HttpException("BAD REQUEST");
       // ignore: unrelated_type_equality_checks
       _ownidentities.removeWhere((element) => element.mId == _currentIdentity);
       Random random = new Random();
@@ -62,7 +62,6 @@ class Identities with ChangeNotifier {
       _currentIdentity = _ownidentities[randomNum];
       _selected = _currentIdentity;
       notifyListeners();
-    
     } catch (e) {
       throw Exception(e.toString());
     }

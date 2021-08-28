@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class ChatLobby with ChangeNotifier {
-  List<Chat> _chatlist= [];
+  List<Chat> _chatlist = [];
   List<VisibleChatLobbyRecord> _unsubscribedlist = [];
   List<Chat> get subscribedlist => _chatlist;
   AuthToken _authToken;

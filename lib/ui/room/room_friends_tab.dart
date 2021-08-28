@@ -22,7 +22,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   Image myImage;
   @override
   void initState() {
-    myImage = Image.asset('assets/icons8/participant_list.jpg');
+    myImage = Image.asset('assets/icons8/friends_together.png');
     // TODO: implement initState
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {

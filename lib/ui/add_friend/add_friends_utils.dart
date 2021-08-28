@@ -59,9 +59,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
     if (!check)
-      ownCert = (await RsPeers. getOwnCert(authToken)).replaceAll("\n", "");
+      ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll("\n", "");
     else
-      ownCert = (await RsPeers. getShortInvite(authToken));
+      ownCert = (await RsPeers.getShortInvite(authToken));
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }
@@ -77,7 +77,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
               child: Container(
                 child: Text(
                   'Short Invite',
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(fontSize: 15, fontFamily: "Oxygen"),
                 ),
               ),
             ),
@@ -152,7 +152,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                     Text(
                       "Tap to copy",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold, fontFamily: "Oxygen",
                           color: Colors.blueAccent),
                     ),
                   ],
@@ -225,7 +225,14 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 14),
+        Text('Retroshare Invite :' ,style: TextStyle(fontSize: 16,fontFamily: "Oxygen"),),
+        SizedBox(height: 8),
+        getinvitelink(),
+        SizedBox(height:6),
         SwitchListTile(
           value: check,
           title: getHeaderBuilder(),
@@ -236,39 +243,47 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             check ? tabController.animateTo(0) : tabController.animateTo(1);
           },
         ),
-        SizedBox(height: 10),
-        getinvitelink(),
-        SizedBox(height: 20),
         FlatButton(
           onPressed: () async {
             Share.share(ownCertController.text);
           },
           textColor: Colors.white,
           padding: const EdgeInsets.all(0.0),
-          child: SizedBox(
-            width: double.infinity,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                  colors: <Color>[
-                    Color(0xFF00FFFF),
-                    Color(0xFF29ABE2),
-                  ],
-                  begin: Alignment(-1.0, -4.0),
-                  end: Alignment(1.0, 4.0),
+          child: Center(
+            child: SizedBox(
+              width: 120,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      Color(0xFF00FFFF),
+                      Color(0xFF29ABE2),
+                    ],
+                    begin: Alignment(-1.0, -4.0),
+                    end: Alignment(1.0, 4.0),
+                  ),
                 ),
-              ),
-              padding: const EdgeInsets.all(10.0),
-              child: const Text(
-                'Tap to Share',
-                style: TextStyle(fontSize: 13),
-                textAlign: TextAlign.center,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.share,size: 17),
+                    SizedBox(width: 3,),
+                    
+                    const Text(
+                      'Tap to Share',
+                      style: TextStyle(fontSize: 13),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         )
+        
       ],
     );
+    
   }
 }

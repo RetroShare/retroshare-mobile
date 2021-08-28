@@ -35,6 +35,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 prefix: SizedBox(
                   width: 10,
                 ),
+                hintStyle: TextStyle(fontSize: 16,fontFamily: "Oxygen"),
                 labelStyle: TextStyle(fontSize: 12),
                 hintText: 'Paste your friend\'s invite here',
                 border: OutlineInputBorder(
@@ -85,7 +86,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 });
                 Fluttertoast.cancel();
                 Fluttertoast.showToast(
-                    msg: 'something went Wrong',
+                    msg: 'something went wrong',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
@@ -139,8 +140,8 @@ class _GetAddfriendState extends State<GetAddfriend> {
                   borderRadius: BorderRadius.circular(8),
                   gradient: LinearGradient(
                     colors: <Color>[
-                      Color(0xFF00FFFF),
-                      Color(0xFF29ABE2),
+                     Colors.purple,
+                     Colors.purpleAccent
                     ],
                     begin: Alignment(-1.0, -4.0),
                     end: Alignment(1.0, 4.0),

@@ -61,7 +61,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      if (_image != null) imagePickerDialog(context, _setImage);
+                      imagePickerDialog(context, _setImage);
                     },
                     child: Container(
                       height: 300 * 0.7,

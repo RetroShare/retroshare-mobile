@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-
 
 class LaunchTransitionScreen extends StatefulWidget {
   @override
@@ -8,8 +6,6 @@ class LaunchTransitionScreen extends StatefulWidget {
 }
 
 class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,8 +114,7 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
   }
 }
 
-
-  /*Future<bool> importAccountFunc(BuildContext context) async {
+/*Future<bool> importAccountFunc(BuildContext context) async {
     FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result != null) {
       File pgpFile = File(result.files.single.path);

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +20,7 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
   final authToken =
       Provider.of<RoomChatLobby>(context, listen: false).authToken;
   RsMsgs.sendMessage(chatId, msgTxt, authToken, type).then((bool res) {
+    print(res);
     if (res) {
       //final store = StoreProvider.of<AppState>(context);
       ChatMessage message = new ChatMessage()
@@ -35,7 +35,8 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
       Provider.of<RoomChatLobby>(context, listen: false)
           .addChatMessage(message, chatId);
     } else {
-      errorShowDialog("Something went Wrong!", null, context);
+      errorShowDialog(
+          "Error", "You are not the member of the chat Lobby", context);
     }
   });
 }
@@ -119,10 +120,11 @@ Chat getChat(
     // Ugly way to initialize lobby participants
     Provider.of<RoomChatLobby>(context, listen: false)
         .fetchAndUpdateParticipants(to.chatId, []);
-    chatMiddleware(null, context);
+    final authToken =
+        Provider.of<RoomChatLobby>(context, listen: false).authToken;
+    RsMsgs.joinChatLobby(to.chatId, currentIdentity.mId, authToken);
     Provider.of<RoomChatLobby>(context, listen: false)
         .addChatMessage(null, to.chatId);
   }
   return chat;
 }
-

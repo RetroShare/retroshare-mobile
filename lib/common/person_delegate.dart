@@ -277,13 +277,6 @@ class _PersonDelegateState extends State<PersonDelegate>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    /*Text(
-                      widget.data.name,
-                      style: widget.data.isMessage
-                          ? Theme.of(context).textTheme.body2
-                          : Theme.of(context).textTheme.body1,
-                    ),*/
-
                     Row(children: [
                       SizedBox(
                         width: 200,
@@ -333,6 +326,7 @@ class _PersonDelegateState extends State<PersonDelegate>
   Widget build(BuildContext context) {
     if (widget.isSelectable) {
       return Consumer<Identities>(
+        key: UniqueKey(),
         builder: (context, id, _) {
           if (id.selectedIdentity.mId == widget.data.mId)
             _animationController.value = 1;
@@ -342,8 +336,9 @@ class _PersonDelegateState extends State<PersonDelegate>
           return _build(context, id.selectedIdentity);
         },
       );
-    } else
-      return _build(context);
+    }
+
+    return _build(context);
   }
 }
 

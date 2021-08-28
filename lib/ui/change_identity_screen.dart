@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/drawer.dart';
+import 'package:retroshare/common/shimmer.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ChangeIdentityScreen extends StatefulWidget {
   @override
@@ -14,30 +15,19 @@ class ChangeIdentityScreen extends StatefulWidget {
 }
 
 class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
-
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) async{
-        await Provider.of<Identities>(context, listen: false).fetchOwnidenities();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<Identities>(context, listen: false).fetchOwnidenities();
     });
-  
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        title: Text(
-          "Change Identity",
-          style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 16, fontFamily: "Oxygen"),
-        ),
-        automaticallyImplyLeading: true,
-      ),
+      appBar: appBar('Change Identity', context),
       body: SafeArea(
           top: true,
           bottom: true,
@@ -71,78 +61,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                             },
                           );
                         })
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 0),
-                          child: Shimmer(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFFEBEBF4),
-                                Color(0xFFF4F4F4),
-                                Color(0xFFEBEBF4),
-                              ],
-                              stops: [
-                                0.1,
-                                0.3,
-                                0.4,
-                              ],
-                              begin: Alignment(-1.0, -0.3),
-                              end: Alignment(1.0, 0.3),
-                              tileMode: TileMode.clamp,
-                            ),
-                            enabled: true,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              itemBuilder: (_, __) => Container(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 8.0, left: 8, right: 8, top: 8),
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white),
-                                      borderRadius: BorderRadius.circular(14)),
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          width: 60,
-                                          height: 60,
-                                          alignment: Alignment.topCenter,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(15))),
-                                        ),
-                                        Padding(
-                                            padding: const EdgeInsets.all(8)),
-                                        Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 60,
-                                                height: 8,
-                                                color: Colors.white,
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 4),
-                                                width: 210,
-                                                height: 18,
-                                                color: Colors.white,
-                                              ),
-                                            ])
-                                      ])),
-                              itemCount: 6,
-                            ),
-                          ),
-                        );
+                      : ChangeIdentityShimmer();
                 }),
           )),
       bottomNavigationBar: BottomBar(
@@ -188,3 +107,5 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
     );
   }
 }
+
+

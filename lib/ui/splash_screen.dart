@@ -30,7 +30,6 @@ class _SplashState extends State<SplashScreen> {
 
   @override
   void initState() {
-
     super.initState();
     if (!widget.isLoading) {
       _statusText = "Loading...";
@@ -83,12 +82,13 @@ class _SplashState extends State<SplashScreen> {
         Navigator.pushReplacementNamed(context, '/signin');
     }
   }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     statusBarHeight = MediaQuery.of(context).padding.top;
-    
+
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
