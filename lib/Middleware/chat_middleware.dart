@@ -31,16 +31,16 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
       await Provider.of<Identities>(context, listen: false)
           .callrequestIdentity(new Identity(message.lobby_peer_gxs_id));
     } else if (!message.isLobbyMessage() &&
-        (allIds[distantChats[message.chat_id.distantChatId].interlocutorId] ==
+        (allIds[distantChats[message.chat_id.distantChatId]?.interlocutorId] ==
                 null ||
-            allIds[distantChats[message.chat_id.distantChatId].interlocutorId]
-                    .mId ==
+            allIds[distantChats[message.chat_id.distantChatId]?.interlocutorId]
+                    ?.mId ==
                 allIds[distantChats[message.chat_id.distantChatId]
-                        .interlocutorId]
-                    .name)) {
+                        ?.interlocutorId]
+                    ?.name)) {
       Provider.of<Identities>(context, listen: false).callrequestIdentity(
           new Identity(
-              distantChats[message.chat_id.distantChatId].interlocutorId));
+              distantChats[message.chat_id.distantChatId]?.interlocutorId));
     }
 
     String parsedMsg;
@@ -59,7 +59,7 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
               (chat) => chat.chatId == message.chat_id.lobbyId.xstr64,
             )
           : distantChats[message.chat_id.distantChatId];
-      chat.unreadCount++;
+      chat?.unreadCount++;
     }
 
     // Show notification
@@ -85,9 +85,10 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
 void chatActionMiddleware(Chat distantChat, BuildContext context) {
   final allIds =
       Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
-  if (allIds[distantChat.interlocutorId] == null) {
-    var identity = new Identity(distantChat.interlocutorId);
-    identity.name = distantChat.chatName;
+  if (allIds[distantChat?.interlocutorId] == null) {
+   
+    var identity = new Identity(distantChat?.interlocutorId);
+    identity?.name = distantChat?.chatName;
     Provider.of<Identities>(context, listen: false)
         .callrequestIdentity(identity);
   }

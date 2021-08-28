@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/subscribed.dart';
@@ -13,8 +14,10 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
   @override
   void initState() {
     super.initState();
-      Provider.of<ChatLobby>(context, listen: false)
+    SchedulerBinding.instance.addPostFrameCallback((_) async{
+      await Provider.of<ChatLobby>(context, listen: false)
           .fetchAndUpdateUnsubscribed();
+    });
   }
 
   void _goToChat(lobby) async {
@@ -62,12 +65,13 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                             _chatsList.unSubscribedlist.length > 0
                         ? ListView.builder(
                             padding: EdgeInsets.all(8),
-                            itemCount:_chatsList.unSubscribedlist.length,
+                            itemCount: _chatsList.unSubscribedlist.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: () {
                                   _goToChat(_chatsList.unSubscribedlist[index]);
                                 },
+                                key: UniqueKey() ,
                                 child: Container(
                                   height: personDelegateHeight,
                                   child: Row(
@@ -91,14 +95,13 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                                     .body2,
                                               ),
                                               Visibility(
-                                                visible: 
-                                                _chatsList
+                                                visible: _chatsList
                                                     .unSubscribedlist[index]
                                                     .lobbyTopic
                                                     .isNotEmpty,
                                                 child: Text(
                                                   'Topic: ' +
-                                                     _chatsList
+                                                      _chatsList
                                                           .unSubscribedlist[
                                                               index]
                                                           .lobbyTopic,

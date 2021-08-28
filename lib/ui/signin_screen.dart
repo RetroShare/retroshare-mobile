@@ -19,6 +19,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Account currentAccount;
   bool hideLocations;
   bool wrongPassword;
+  bool intialize = false;
 
   @override
   void initState() {
@@ -27,43 +28,15 @@ class _SignInScreenState extends State<SignInScreen> {
     wrongPassword = false;
   }
 
-  /*Future<bool> importAccountFunc(BuildContext context) async {
-    // FilePickerResult result = await FilePicker.platform.pickFiles();
-    final result = 'abc';
-    if (result != null) {
-      File pgpFile = File(
-          '/data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt');
-      try {
-        final file = pgpFile;
-        final contents = await file.readAsString();
-        final pgpId = await importIdentity(contents);
-      } catch (e) {
-        final snackBar = SnackBar(
-          content: Text('Oops! Something went wrong'),
-          duration: Duration(milliseconds: 200),
-          backgroundColor: Colors.red[200],
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    } else {
-      final snackBar = SnackBar(
-        content: Text('Oops! Please pick up the file'),
-        duration: Duration(milliseconds: 200),
-        backgroundColor: Colors.red[200],
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  }*/
-
-  ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    accountsDropdown = getDropDownMenuItems();
-
-    currentAccount = Provider.of<AccountCredentials>(context, listen: false)
-        .getlastAccountUsed;
+    if (!intialize) {
+      accountsDropdown = getDropDownMenuItems(context);
+      currentAccount = Provider.of<AccountCredentials>(context, listen: false)
+          .getlastAccountUsed;
+      intialize = true;
+    }
   }
 
   @override
@@ -109,10 +82,11 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  List<DropdownMenuItem<Account>> getDropDownMenuItems() {
+  List<DropdownMenuItem<Account>> getDropDownMenuItems(BuildContext context) {
     List<DropdownMenuItem<Account>> items = [];
     for (Account account
-        in Provider.of<AccountCredentials>(context, listen: true).accountList) {
+        in Provider.of<AccountCredentials>(context, listen: false)
+            .accountList) {
       items.add(DropdownMenuItem(
         value: account,
         child: Row(
@@ -135,20 +109,22 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  void revealLocations() {
+  void revealLocations(BuildContext context) {
     if (hideLocations) {
       setState(() {
         hideLocations = false;
-        accountsDropdown = getDropDownMenuItems();
+        accountsDropdown = getDropDownMenuItems(context);
       });
 
       showToast('Locations revealed');
     }
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -184,7 +160,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   height: 40,
                                   child: GestureDetector(
                                     onLongPress: () {
-                                      revealLocations();
+                                      revealLocations(context);
                                     },
                                     child: Row(
                                       children: <Widget>[
@@ -340,3 +316,35 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
+
+////
+///
+  /*Future<bool> importAccountFunc(BuildContext context) async {
+    // FilePickerResult result = await FilePicker.platform.pickFiles();
+    final result = 'abc';
+    if (result != null) {
+      File pgpFile = File(
+          '/data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt');
+      try {
+        final file = pgpFile;
+        final contents = await file.readAsString();
+        final pgpId = await importIdentity(contents);
+      } catch (e) {
+        final snackBar = SnackBar(
+          content: Text('Oops! Something went wrong'),
+          duration: Duration(milliseconds: 200),
+          backgroundColor: Colors.red[200],
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Oops! Please pick up the file'),
+        duration: Duration(milliseconds: 200),
+        backgroundColor: Colors.red[200],
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }*/
+
+  ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt

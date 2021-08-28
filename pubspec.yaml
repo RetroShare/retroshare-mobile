@@ -37,7 +37,7 @@ dependencies:
   cached_network_image: ^2.4.1
   flutter_image_compress: ^0.7.0
   #permission_handler: ^5.1.0
-  
+  after_layout: ^1.1.0
 
 
   # https://gitlab.com/b1rdG/retroshare-dart-see
@@ -59,7 +59,7 @@ dependencies:
   provider: ^5.0.0
   path_provider: ^2.0.2
   flutter_custom_dialog: ^1.0.20
-  fluttertoast: ^8.0.7
+  fluttertoast: ^8.0.8
   webview_flutter: ^1.0.7
   # Share RetroShare Invite
   share: ^2.0.4

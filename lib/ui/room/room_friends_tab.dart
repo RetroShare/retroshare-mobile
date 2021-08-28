@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/HelperFunction/chat.dart';
 import 'package:retroshare/provider/friends_identity.dart';
@@ -24,17 +25,12 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
     myImage = Image.asset('assets/icons8/participant_list.jpg');
     // TODO: implement initState
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    precacheImage(myImage.image, context);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      precacheImage(myImage.image, context);
       Provider.of<RoomChatLobby>(context, listen: false)
-        .updateParticipants(widget.chat?.chatId);
-
+          .updateParticipants(widget.chat?.chatId);
+    });
   }
-  
 
   void _addToContacts(String gxsId) {
     Provider.of<FriendsIdentity>(context, listen: false)
@@ -88,15 +84,10 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                   context);
                             },
                             onPressed: () {
-                       
-                                Navigator.pushNamed(
-                                  context,
-                                  '/room',
-                                  arguments: {
-                                    'isRoom': false,
-                                    'chatData': getChat(
-                                        context, _lobbyParticipantsList[index]),
-                                
+                              Navigator.pushNamed(context, '/room', arguments: {
+                                'isRoom': false,
+                                'chatData': getChat(
+                                    context, _lobbyParticipantsList[index]),
                               });
                             },
                           ),

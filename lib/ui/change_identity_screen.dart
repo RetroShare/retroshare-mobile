@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/common/styles.dart';
@@ -13,11 +14,14 @@ class ChangeIdentityScreen extends StatefulWidget {
 }
 
 class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
-  void _undoChangesOnExit(BuildContext context) {}
 
   @override
   void initState() {
-    Provider.of<Identities>(context, listen: false).fetchOwnidenities();
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) async{
+        await Provider.of<Identities>(context, listen: false).fetchOwnidenities();
+    });
+  
   }
 
   @override
@@ -45,9 +49,10 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.done
                       ? Consumer<Identities>(builder: (ctx, idsTuple, _) {
-                          List<Identity>ownIdentity = idsTuple.ownIdentity
-                              .where(
-                                  (element) => element.mId != '00000000000000000000000000000000')
+                          List<Identity> ownIdentity = idsTuple.ownIdentity
+                              .where((element) =>
+                                  element.mId !=
+                                  '00000000000000000000000000000000')
                               .toList();
                           return ListView.builder(
                             padding:

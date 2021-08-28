@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class MessageDelegate extends StatelessWidget {
-  const MessageDelegate({this.data, this.bubbleTitle});
-
+  const MessageDelegate({this.data, this.bubbleTitle, this.key});
+  final key;
   final String bubbleTitle;
   final ChatMessage data;
 
@@ -17,9 +19,12 @@ class MessageDelegate extends StatelessWidget {
     return match;
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Visibility(
+      key: key,
       visible: data != null,
       child: GestureDetector(
         child: FractionallySizedBox(
@@ -45,14 +50,25 @@ class MessageDelegate extends StatelessWidget {
                 Stack(
                   children: <Widget>[
                     Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
-                        child: Html(
-                            data: (isMessageType(data.msg)
-                                    ? "<img alt='Red dot (png)' src='data:image/png;base64,${data.msg}' />"
-                                    : data.msg) +
-                                "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
-                            )),
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
+                      child:!(isMessageType(data.msg))? Html(
+          
+          data: 
+                  (data.msg) +
+              "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
+          ):FadeInImage(
+                       alignment: Alignment.centerLeft,
+                        imageErrorBuilder: (BuildContext context,
+                            Object exception, StackTrace stackTrace) {
+                          print('Error Handler');
+                          return Align( alignment: Alignment.centerLeft ,child: Text(data.msg,textAlign: TextAlign.left,));
+                        },
+                        placeholder: NetworkImage('http://via.placeholder.com/10x10'),
+                        image: MemoryImage(base64.decode(data.msg)),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                     //real additionalInfo
                     Positioned(
                       child: Text(

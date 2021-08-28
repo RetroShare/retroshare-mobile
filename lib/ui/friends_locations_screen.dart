@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/HelperFunction/chat.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:shimmer/shimmer.dart';
@@ -10,7 +10,8 @@ class FriendsLocationsScreen extends StatefulWidget {
   _FriendsLocationsScreenState createState() => _FriendsLocationsScreenState();
 }
 
-class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
+class _FriendsLocationsScreenState extends State<FriendsLocationsScreen>
+     {
   @override
   void setState(fn) {
     if (mounted) {
@@ -18,16 +19,16 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
     }
   }
 
+  
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+   SchedulerBinding.instance.addPostFrameCallback((_) {
       _getFriendsAccounts();
     });
   }
 
   Future<void> _getFriendsAccounts() async {
-    await Future.delayed(Duration(seconds: 3));
     await Provider.of<FriendLocations>(context, listen: false)
         .fetchfriendLocation();
   }

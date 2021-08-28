@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/register_chat_event.dart';
@@ -43,10 +43,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       begin: Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
-    Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
-    final authToken =
-        Provider.of<AccountCredentials>(context, listen: false).authtoken;
-    registerChatEvent(context, authToken);
+
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
+      final authToken =
+          Provider.of<AccountCredentials>(context, listen: false).authtoken;
+      registerChatEvent(context, authToken);
+    });
   }
 
   @override

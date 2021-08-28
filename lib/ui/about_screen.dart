@@ -27,10 +27,7 @@ class _MyWebViewState extends State<MyWebView> {
         title: Text("About",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,fontFamily: "Oxygen"),),
         centerTitle: true,
       ),
-        body: SafeArea(
-      child: 
-        Expanded(
-          child: IndexedStack(
+        body:  IndexedStack(
             index: _stackToView,
             children: [
               WebView(
@@ -49,8 +46,6 @@ class _MyWebViewState extends State<MyWebView> {
               ),
             ],
           ),
-        ),
-    
-    ));
+    );
   }
 }
