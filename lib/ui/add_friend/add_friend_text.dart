@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/color_loader_3.dart';
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/friend_location.dart';
 
@@ -56,14 +57,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                     _requestAddCert = false;
                   });
                   Fluttertoast.cancel();
-                  Fluttertoast.showToast(
-                      msg: "Friend has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  showFlutterToast("Friend has been added", Colors.red);
                 });
                 Navigator.of(context)
                     .pushReplacementNamed('/friends_locations');
@@ -72,27 +66,13 @@ class _GetAddfriendState extends State<GetAddfriend> {
                   _requestAddCert = false;
                 });
                 Fluttertoast.cancel();
-                Fluttertoast.showToast(
-                    msg: 'Invalid certi',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
+                showFlutterToast('Invalid certi', Colors.red);
               } catch (e) {
                 setState(() {
                   _requestAddCert = false;
                 });
                 Fluttertoast.cancel();
-                Fluttertoast.showToast(
-                    msg: 'something went wrong',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
+                showFlutterToast('something went wrong', Colors.red);
               }
             },
             textColor: Colors.white,

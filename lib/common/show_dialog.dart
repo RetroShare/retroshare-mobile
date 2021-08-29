@@ -1,5 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/http_exception.dart';
@@ -48,6 +49,17 @@ warningShowDialog(String title, String text, BuildContext context) {
     title: title,
     text: text,
   );
+}
+
+showFlutterToast(String title, Color color) {
+  return Fluttertoast.showToast(
+      msg: title,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0); 
 }
 
 contentBox(context) {
