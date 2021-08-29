@@ -44,7 +44,20 @@ class _RoomScreenState extends State<RoomScreen>
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat?.chatId);
       }
+      Provider.of<RoomChatLobby>(context, listen: false)
+          .updateCurrentChat(widget.chat);
     });
+  }
+
+
+  @override
+  void deactivate() {
+    Future.delayed(Duration.zero, () async {
+      if(mounted)
+      Provider.of<RoomChatLobby>(context, listen: false)
+          .updateCurrentChat(null);
+    });
+    super.deactivate();
   }
 
   @override

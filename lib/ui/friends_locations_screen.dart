@@ -12,17 +12,13 @@ class FriendsLocationsScreen extends StatefulWidget {
 }
 
 class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
-  @override
-  void setState(fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
-  }
+
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      if(mounted)
       _getFriendsAccounts();
     });
   }

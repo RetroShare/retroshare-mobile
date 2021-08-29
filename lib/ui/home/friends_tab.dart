@@ -53,7 +53,6 @@ class _FriendsTabState extends State<FriendsTab> {
                       friendsIdsList.allIdentity);
 
               if (friendsDistantAndIdsTuple.item1?.isNotEmpty ??
-                  false || friendsDistantAndIdsTuple.item2?.isNotEmpty ??
                   false)
                 return CustomScrollView(
                   slivers: <Widget>[

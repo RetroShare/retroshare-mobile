@@ -42,17 +42,7 @@ Widget drawerWidget(BuildContext ctx) {
             alignment: Alignment.center,
             margin: const EdgeInsets.only(top: 2),
             height: MediaQuery.of(ctx).size.height * .35,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: <Color>[
-                    
-                  Color(0xFF29ABE2),
-                  Color(0xFF00FFFF),
-                ],
-                begin: Alignment(-1.0, -1.0),
-                end: Alignment(0.1, 0.2),
-              ),
-            ),
+            
             child: Stack(
               children:[ Center(
                 child: Consumer<Identities>(builder: (context, curr, _) {
@@ -64,10 +54,12 @@ Widget drawerWidget(BuildContext ctx) {
                         width: 100,
                         decoration: (curr.currentIdentity.avatar == null)
                             ? BoxDecoration(
+                              
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(color: Colors.black))
                             : BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
+                          
                                 border: Border.all(color: Colors.black),
                                 image: DecorationImage(
                                   fit: BoxFit.fitWidth,
@@ -94,8 +86,7 @@ Widget drawerWidget(BuildContext ctx) {
                           style: TextStyle(
                               fontFamily: "Vollkorn",
                               fontSize: 25,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black),
+                              fontWeight: FontWeight.w600,),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -211,7 +202,7 @@ class _NotificationIconState extends State<NotificationIcon> {
           top: 1,
           right: 1,
           child: CircleAvatar(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.purple,
           radius: 7,
           child: FutureBuilder(
             future: _inviteList(),
