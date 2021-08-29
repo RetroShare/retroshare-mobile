@@ -42,9 +42,8 @@ Widget drawerWidget(BuildContext ctx) {
             alignment: Alignment.center,
             margin: const EdgeInsets.only(top: 2),
             height: MediaQuery.of(ctx).size.height * .35,
-            
-            child: Stack(
-              children:[ Center(
+            child: Stack(children: [
+              Center(
                 child: Consumer<Identities>(builder: (context, curr, _) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -54,17 +53,15 @@ Widget drawerWidget(BuildContext ctx) {
                         width: 100,
                         decoration: (curr.currentIdentity.avatar == null)
                             ? BoxDecoration(
-                              
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(color: Colors.black))
                             : BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                          
                                 border: Border.all(color: Colors.black),
                                 image: DecorationImage(
                                   fit: BoxFit.fitWidth,
-                                  image: MemoryImage(
-                                      base64.decode(curr.currentIdentity.avatar)),
+                                  image: MemoryImage(base64
+                                      .decode(curr.currentIdentity.avatar)),
                                 ),
                               ),
                         child: Visibility(
@@ -84,9 +81,10 @@ Widget drawerWidget(BuildContext ctx) {
                         child: Text(
                           curr.currentIdentity.name,
                           style: TextStyle(
-                              fontFamily: "Vollkorn",
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,),
+                            fontFamily: "Vollkorn",
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -96,7 +94,8 @@ Widget drawerWidget(BuildContext ctx) {
                         children: [
                           IconButton(
                               onPressed: () {
-                                Navigator.of(context).pushNamed('/updateIdentity',
+                                Navigator.of(context).pushNamed(
+                                    '/updateIdentity',
                                     arguments: {'id': curr.currentIdentity});
                               },
                               icon: Icon(
@@ -119,7 +118,7 @@ Widget drawerWidget(BuildContext ctx) {
                   );
                 }),
               ),
-               ] )),
+            ])),
         Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -187,32 +186,38 @@ class NotificationIcon extends StatefulWidget {
 }
 
 class _NotificationIconState extends State<NotificationIcon> {
-
-  Future<dynamic> _inviteList() async{
+  Future<dynamic> _inviteList() async {
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
     return await RsMsgs.getPendingChatLobbyInvites(authToken);
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Icon(Icons.notifications,color: Theme.of(context).primaryColor,size:28),
+        Icon(Icons.notifications,
+            color: Theme.of(context).primaryColor, size: 28),
         Positioned(
-          top: 1,
-          right: 1,
-          child: CircleAvatar(
-          backgroundColor: Colors.purple,
-          radius: 7,
-          child: FutureBuilder(
-            future: _inviteList(),
-          builder: (context, snapshot) {
-            return snapshot.connectionState == ConnectionState.done && snapshot.hasData
-                ? FittedBox(child: Text(snapshot.data.length.toString(),style: TextStyle(fontSize: 8),))
-                : FittedBox(child:Text('0',
-                            style: TextStyle(fontSize: 8)));
-          },
-        ))),
+            top: 1,
+            right: 1,
+            child: CircleAvatar(
+                backgroundColor: Colors.purple,
+                radius: 7,
+                child: FutureBuilder(
+                  future: _inviteList(),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData
+                        ? FittedBox(
+                            child: Text(
+                            snapshot.data.length.toString(),
+                            style: TextStyle(fontSize: 8),
+                          ))
+                        : FittedBox(
+                            child: Text('0', style: TextStyle(fontSize: 8)));
+                  },
+                ))),
       ],
     );
   }

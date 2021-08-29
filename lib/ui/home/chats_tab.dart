@@ -96,4 +96,3 @@ class ChatsTab extends StatelessWidget {
             }));
   }
 }
-

@@ -79,22 +79,19 @@ class AccountCredentials with ChangeNotifier {
   }
 
   Future<void> signup(String username, String password, String nodename) async {
-   
-      final resp =
-          await RsLoginHelper.requestAccountCreation(username, password);
-      Account account =
-          Account(resp['locationId'], resp['pgpId'], username, username);
-      final Tuple2<bool, Account> account_create = Tuple2<bool, Account>(
-          resp["retval"]["errorNumber"] != 0 ? false : true, account);
-      if (account_create != null && account_create.item1) {
-        _accountsList.add(account_create.item2);
-        setLogginAccount(account_create.item2);
-        bool isAuthTokenValid = await getinitializeAuth(
-            account_create.item2.locationName, password);
-        if (!isAuthTokenValid) throw HttpException("AUTHTOKEN FAILED");
-        notifyListeners();
-      } else
-        throw HttpException("DATA INSUFFICIENT");
-    
+    final resp = await RsLoginHelper.requestAccountCreation(username, password);
+    Account account =
+        Account(resp['locationId'], resp['pgpId'], username, username);
+    final Tuple2<bool, Account> account_create = Tuple2<bool, Account>(
+        resp["retval"]["errorNumber"] != 0 ? false : true, account);
+    if (account_create != null && account_create.item1) {
+      _accountsList.add(account_create.item2);
+      setLogginAccount(account_create.item2);
+      bool isAuthTokenValid =
+          await getinitializeAuth(account_create.item2.locationName, password);
+      if (!isAuthTokenValid) throw HttpException("AUTHTOKEN FAILED");
+      notifyListeners();
+    } else
+      throw HttpException("DATA INSUFFICIENT");
   }
 }

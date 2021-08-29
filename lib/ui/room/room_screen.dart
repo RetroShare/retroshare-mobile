@@ -49,13 +49,12 @@ class _RoomScreenState extends State<RoomScreen>
     });
   }
 
-
   @override
   void deactivate() {
     Future.delayed(Duration.zero, () async {
-      if(mounted)
-      Provider.of<RoomChatLobby>(context, listen: false)
-          .updateCurrentChat(null);
+      if (mounted)
+        Provider.of<RoomChatLobby>(context, listen: false)
+            .updateCurrentChat(null);
     });
     super.deactivate();
   }

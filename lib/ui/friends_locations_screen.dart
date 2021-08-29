@@ -12,14 +12,11 @@ class FriendsLocationsScreen extends StatefulWidget {
 }
 
 class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
-
-
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      if(mounted)
-      _getFriendsAccounts();
+      if (mounted) _getFriendsAccounts();
     });
   }
 
@@ -49,7 +46,8 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                       return idsTuple.friendlist != null &&
                               idsTuple.friendlist.length > 0
                           ? ListView.builder(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 8),
                               itemCount: idsTuple.friendlist.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
@@ -61,11 +59,12 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                                       name: idsTuple
                                               .friendlist[index].accountName +
                                           ':' +
-                                          idsTuple.friendlist[index].locationName,
-                                      message:
-                                          idsTuple.friendlist[index].rsGpgId +
-                                              ':' +
-                                              idsTuple.friendlist[index].rsPeerId,
+                                          idsTuple
+                                              .friendlist[index].locationName,
+                                      message: idsTuple
+                                              .friendlist[index].rsGpgId +
+                                          ':' +
+                                          idsTuple.friendlist[index].rsPeerId,
                                       isOnline:
                                           idsTuple.friendlist[index].isOnline,
                                       isMessage: true,
@@ -114,4 +113,3 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
     );
   }
 }
-

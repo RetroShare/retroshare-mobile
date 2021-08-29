@@ -22,7 +22,8 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length:widget.isFirstId ? 1:2, initialIndex: 0);
+    _tabController = TabController(
+        vsync: this, length: widget.isFirstId ? 1 : 2, initialIndex: 0);
     _leftTabIconColor = ColorTween(begin: Color(0xFFF5F5F5), end: Colors.white)
         .animate(_tabController.animation);
     _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
@@ -34,7 +35,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: appBar('Create Identity',context),
+      appBar: appBar('Create Identity', context),
       body: SafeArea(
         top: true,
         bottom: true,
@@ -68,9 +69,8 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                               child: Center(
                                 child: Text(
                                   'Signed Identity',
-                                   overflow: TextOverflow.ellipsis,
+                                  overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.body2,
-                                 
                                 ),
                               ),
                             ),
@@ -114,11 +114,10 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
               ),
             ),
             Expanded(
-             
                 child: TabBarView(controller: _tabController, children: [
-                    SignedIdenityTab(widget.isFirstId, UniqueKey()),
-                   if(!widget.isFirstId)PseudoSignedIdenityTab(widget.isFirstId, UniqueKey()),
-            
+              SignedIdenityTab(widget.isFirstId, UniqueKey()),
+              if (!widget.isFirstId)
+                PseudoSignedIdenityTab(widget.isFirstId, UniqueKey()),
             ])),
           ],
         ),

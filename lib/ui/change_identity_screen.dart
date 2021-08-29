@@ -107,5 +107,3 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
     );
   }
 }
-
-

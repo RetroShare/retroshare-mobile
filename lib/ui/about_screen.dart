@@ -23,7 +23,7 @@ class _MyWebViewState extends State<MyWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar("About",context),
+      appBar: appBar("About", context),
       body: IndexedStack(
         index: _stackToView,
         children: [

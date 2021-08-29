@@ -152,7 +152,8 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                     Text(
                       "Tap to copy",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontFamily: "Oxygen",
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Oxygen",
                           color: Colors.blueAccent),
                     ),
                   ],
@@ -229,10 +230,13 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 14),
-        Text('Retroshare Invite :' ,style: TextStyle(fontSize: 16,fontFamily: "Oxygen"),),
+        Text(
+          'Retroshare Invite :',
+          style: TextStyle(fontSize: 16, fontFamily: "Oxygen"),
+        ),
         SizedBox(height: 8),
         getinvitelink(),
-        SizedBox(height:6),
+        SizedBox(height: 6),
         SwitchListTile(
           value: check,
           title: getHeaderBuilder(),
@@ -267,9 +271,10 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Icon(Icons.share,size: 17),
-                    SizedBox(width: 3,),
-                    
+                    Icon(Icons.share, size: 17),
+                    SizedBox(
+                      width: 3,
+                    ),
                     const Text(
                       'Tap to Share',
                       style: TextStyle(fontSize: 13),
@@ -281,9 +286,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             ),
           ),
         )
-        
       ],
     );
-    
   }
 }

@@ -207,7 +207,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       Icons.image,
                     ),
                     onPressed: () async {
-                     await  _sendImage();
+                      await _sendImage();
                     },
                   ),
                   IconButton(

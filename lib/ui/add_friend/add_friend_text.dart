@@ -35,7 +35,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 prefix: SizedBox(
                   width: 10,
                 ),
-                hintStyle: TextStyle(fontSize: 16,fontFamily: "Oxygen"),
+                hintStyle: TextStyle(fontSize: 16, fontFamily: "Oxygen"),
                 labelStyle: TextStyle(fontSize: 12),
                 hintText: 'Paste your friend\'s invite here',
                 border: OutlineInputBorder(
@@ -139,10 +139,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   gradient: LinearGradient(
-                    colors: <Color>[
-                     Colors.purple,
-                     Colors.purpleAccent
-                    ],
+                    colors: <Color>[Colors.purple, Colors.purpleAccent],
                     begin: Alignment(-1.0, -4.0),
                     end: Alignment(1.0, 4.0),
                   ),

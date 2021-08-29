@@ -138,15 +138,18 @@ class _QRScannerState extends State<QRScanner>
         Provider.of<FriendLocations>(context, listen: false)
             .addFriendLocation(barcode)
             .then((value) {
-          showToast('Friend has successfully added',position: ToastPosition.bottom);
+          showToast('Friend has successfully added',
+              position: ToastPosition.bottom);
         });
       } else {
-        showToast('An error occurred while adding your friend.',position: ToastPosition.bottom);
+        showToast('An error occurred while adding your friend.',
+            position: ToastPosition.bottom);
       }
     } on HttpException catch (e) {
-      showToast('An error occurred while adding your friend.',position: ToastPosition.bottom);
+      showToast('An error occurred while adding your friend.',
+          position: ToastPosition.bottom);
     } catch (e) {
-       showToast('An error occurred while adding your friend.',
+      showToast('An error occurred while adding your friend.',
           position: ToastPosition.bottom);
     }
   }
@@ -184,7 +187,8 @@ class _QRScannerState extends State<QRScanner>
         //await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
 
         final file = new File('${appDir.path}/retroshare_qr_code.png').create();
-        showToast("Hey there! QR Image has successfully saved.",position: ToastPosition.bottom);
+        showToast("Hey there! QR Image has successfully saved.",
+            position: ToastPosition.bottom);
       } catch (e) {
         showToast("Oops! something went wrong.",
             position: ToastPosition.bottom);
