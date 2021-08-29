@@ -64,31 +64,27 @@ class AccountCredentials with ChangeNotifier {
   }
 
   Future<void> login(Account currentAccount, String password) async {
-    try {
-      int resp = await RsLoginHelper.requestLogIn(currentAccount, password);
-      setLogginAccount(currentAccount);
-      // Login success 0, already logged in 1
-      if (resp == 0 || resp == 1) {
-        bool isAuthTokenValid =
-            await getinitializeAuth(currentAccount.locationName, password);
-        if (!isAuthTokenValid) {
-          throw HttpException("AUTHTOKEN FAILED");
-        }
-        notifyListeners();
-      } else
-        throw HttpException("WRONG PASSWORD");
-    } catch (e) {
-      throw (e.toString());
-    }
+    int resp = await RsLoginHelper.requestLogIn(currentAccount, password);
+    setLogginAccount(currentAccount);
+    // Login success 0, already logged in 1
+    if (resp == 0 || resp == 1) {
+      bool isAuthTokenValid =
+          await getinitializeAuth(currentAccount.locationName, password);
+      if (!isAuthTokenValid) {
+        throw HttpException("AUTHTOKEN FAILED");
+      }
+      notifyListeners();
+    } else
+      throw HttpException("WRONG PASSWORD");
   }
 
   Future<void> signup(String username, String password, String nodename) async {
-    try {
+   
       final resp =
           await RsLoginHelper.requestAccountCreation(username, password);
       Account account =
           Account(resp['locationId'], resp['pgpId'], username, username);
-      Tuple2<bool, Account> account_create = Tuple2<bool, Account>(
+      final Tuple2<bool, Account> account_create = Tuple2<bool, Account>(
           resp["retval"]["errorNumber"] != 0 ? false : true, account);
       if (account_create != null && account_create.item1) {
         _accountsList.add(account_create.item2);
@@ -99,8 +95,6 @@ class AccountCredentials with ChangeNotifier {
         notifyListeners();
       } else
         throw HttpException("DATA INSUFFICIENT");
-    } catch (e) {
-      throw Exception(e.toString());
-    }
+    
   }
 }

@@ -19,7 +19,6 @@ class _SignInScreenState extends State<SignInScreen> {
   Account currentAccount;
   bool hideLocations;
   bool wrongPassword;
-  bool intialize = false;
 
   @override
   void initState() {
@@ -31,12 +30,9 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!intialize) {
-      accountsDropdown = getDropDownMenuItems(context);
-      currentAccount = Provider.of<AccountCredentials>(context, listen: false)
-          .getlastAccountUsed;
-      intialize = true;
-    }
+
+    currentAccount = Provider.of<AccountCredentials>(context, listen: false)
+        .getlastAccountUsed;
   }
 
   @override
@@ -63,7 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
       });
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
-      if (error.toString().contains('WRONG PASSWORD')) {
+      if (error.message.contains('WRONG PASSWORD')) {
         errorMessage = 'Your Password is wrong';
         errorShowDialog('WRONG PASSWORD', errorMessage, context);
       } else
@@ -113,9 +109,7 @@ class _SignInScreenState extends State<SignInScreen> {
     if (hideLocations) {
       setState(() {
         hideLocations = false;
-        accountsDropdown = getDropDownMenuItems(context);
       });
-
       showToast('Locations revealed');
     }
   }
@@ -176,7 +170,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                           child: DropdownButtonHideUnderline(
                                             child: DropdownButton(
                                               value: currentAccount,
-                                              items: accountsDropdown,
+                                              items:
+                                                  getDropDownMenuItems(context),
                                               onChanged: changedDropDownItem,
                                               disabledHint: Text('Login'),
                                             ),

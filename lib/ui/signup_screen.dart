@@ -82,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
     } on HttpException catch (err) {
       var errorMessage = 'Authentication failed';
-      errorShowDialog("Auth Failed", 'Something went wrong', context);
+      errorShowDialog(errorMessage, 'Something went wrong', context);
     } catch (e) {
       errorShowDialog('Retroshare Service Down',
           'Please ensure retroshare service is not down!', context);

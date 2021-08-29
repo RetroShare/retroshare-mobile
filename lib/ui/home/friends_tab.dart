@@ -35,25 +35,27 @@ class _FriendsTabState extends State<FriendsTab> {
         return Consumer<FriendsIdentity>(builder: (context, friendsIdsList, _) {
           return Consumer<RoomChatLobby>(
             builder: (context, roomChat, _) {
-              Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
-                  friendsDistantAndIdsTuple =
-                  Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(
-                      friendsIdsList.friendsIdsList,
-                      roomChat.distanceChat?.values
-                              ?.toList()
-                              ?.where((chat) => (friendsIdsList
-                                          .allIdentity[chat.interlocutorId] ==
-                                      null ||
-                                  friendsIdsList
-                                          .allIdentity[chat.interlocutorId]
-                                          .isContact ==
-                                      false))
-                              ?.toList() ??
-                          [],
-                      friendsIdsList.allIdentity);
+             
+                
 
-              if (friendsDistantAndIdsTuple.item1?.isNotEmpty ??
-                  false)
+                Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
+                    friendsDistantAndIdsTuple =
+                    Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(
+                        friendsIdsList.friendsIdsList,
+                        roomChat.distanceChat?.values
+                                ?.toList()
+                                ?.where((chat) => (friendsIdsList
+                                            .allIdentity[chat.interlocutorId] ==
+                                        null ||
+                                    friendsIdsList
+                                            .allIdentity[chat.interlocutorId]
+                                            .isContact ==
+                                        false))?.toSet()
+                                ?.toList() ??
+                            [],
+                        friendsIdsList.allIdentity);
+
+              if (friendsDistantAndIdsTuple.item1?.isNotEmpty ?? false)
                 return CustomScrollView(
                   slivers: <Widget>[
                     sliverPersistentHeader('Contacts', context),
@@ -113,7 +115,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     SliverOpacity(
                       opacity: (friendsDistantAndIdsTuple.item2?.isNotEmpty ??
                                   false) &&
-                              (friendsDistantAndIdsTuple.item2?.length > 0 ??
+                              (friendsDistantAndIdsTuple.item2.length > 0 ??
                                   false)
                           ? 1.0
                           : 0.0,

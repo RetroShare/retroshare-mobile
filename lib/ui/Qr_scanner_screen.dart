@@ -135,39 +135,19 @@ class _QRScannerState extends State<QRScanner>
       barcode = await scanner.scan();
       if (barcode != null) {
         bool success = false;
-        await Provider.of<FriendLocations>(context, listen: false)
+        Provider.of<FriendLocations>(context, listen: false)
             .addFriendLocation(barcode)
             .then((value) {
-          setState(() {
-            _requestQR = false;
-          });
-          showToast('Friend has successfully added');
+          showToast('Friend has successfully added',position: ToastPosition.bottom);
         });
       } else {
-        showToast('An error occurred while adding your friend.');
+        showToast('An error occurred while adding your friend.',position: ToastPosition.bottom);
       }
     } on HttpException catch (e) {
-      setState(() {
-        _requestQR = false;
-      });
-      showToast('An error occurred while adding your friend.');
+      showToast('An error occurred while adding your friend.',position: ToastPosition.bottom);
     } catch (e) {
-      setState(() {
-        _requestQR = false;
-      });
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Constants.padding),
-            ),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            child: contentBox(context),
-          );
-        },
-      );
+       showToast('An error occurred while adding your friend.',
+          position: ToastPosition.bottom);
     }
   }
 
@@ -204,9 +184,10 @@ class _QRScannerState extends State<QRScanner>
         //await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
 
         final file = new File('${appDir.path}/retroshare_qr_code.png').create();
-        showToast("Hey there! QR Image has successfully saved.");
+        showToast("Hey there! QR Image has successfully saved.",position: ToastPosition.bottom);
       } catch (e) {
-        showToast("Oops! something went wrong.");
+        showToast("Oops! something went wrong.",
+            position: ToastPosition.bottom);
       }
     } else if (val == QRoperation.share) {
       final appDir = await getApplicationDocumentsDirectory();
@@ -385,9 +366,6 @@ class _QRScannerState extends State<QRScanner>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          setState(() {
-            _requestQR = true;
-          });
           await _scan();
         },
         child: Padding(

@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/HelperFunction/events.dart';
 import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/auth.dart';
@@ -51,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Provider.of<AccountCredentials>(context, listen: false).authtoken;
       RsMsgs.getPendingChatLobbyInvites(authToken);
       registerChatEvent(context, authToken);
+      
     });
   }
 
@@ -142,12 +146,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     onPressed: () {},
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 14),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
                     child: InkWell(
-                      onTap: (){
+                        onTap: () {
                           Navigator.of(context).pushNamed('/notification');
                         },
-                      child: NotificationIcon()),
+                        child: NotificationIcon()),
                   )
                 ],
               ),
