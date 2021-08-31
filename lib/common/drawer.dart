@@ -53,11 +53,11 @@ Widget drawerWidget(BuildContext ctx) {
                         width: 100,
                         decoration: (curr.currentIdentity.avatar == null)
                             ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.black))
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(color: Colors.black38))
                             : BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(color: Colors.black38),
                                 image: DecorationImage(
                                   fit: BoxFit.fitWidth,
                                   image: MemoryImage(base64

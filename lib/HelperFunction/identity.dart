@@ -6,6 +6,8 @@ import 'package:tuple/tuple.dart';
 
 Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
   List<Identity> ownIdsList = [];
+
+  /// fetch the signed Identity
   List<dynamic> respSigned = await RsIdentity.getOwnSignedIdentity(authToken);
 
   respSigned
@@ -15,6 +17,7 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
       }
     });
 
+  /// fetch the Unsigned Identity
   List<dynamic> respPseudonymous =
       await RsIdentity.getOwnPseudonimousIds(authToken);
   respPseudonymous
@@ -37,11 +40,16 @@ Future<Tuple2<bool, Identity>> getIdDetails(
   final response = await RsIdentity.getIdDetails(id, authToken);
 
   if (response['retval']) {
-    Identity identity = Identity(id);
+    Identity identity = new Identity(id);
+    //print(response);
     identity.name = response['details']['mNickname'];
     identity.avatar =
-        response['mAvatar'] != null && response['mAvatar']['mData'] != null
-            ? response['mAvatar']['mData']['base64']
+        response['details']['mAvatar']['mData']['base64'] != null &&
+                response['details']['mAvatar']['mData']['base64']
+                        .toString()
+                        .length >
+                    0
+            ? response['details']['mAvatar']['mData']['base64'].toString()
             : null;
 
     identity.signed =
