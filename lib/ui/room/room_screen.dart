@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friends_identity.dart';
-import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
@@ -38,8 +37,6 @@ class _RoomScreenState extends State<RoomScreen>
             .animate(_tabController.animation);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.chat?.unreadCount = 0;
-      final authToken =
-          Provider.of<AccountCredentials>(context, listen: false).authtoken;
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat?.chatId);

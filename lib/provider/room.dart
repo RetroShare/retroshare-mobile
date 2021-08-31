@@ -8,7 +8,7 @@ class RoomChatLobby with ChangeNotifier {
   Map<String, Chat> _distanceChat = {};
   Chat _currentChat;
   Map<String, Chat> get distanceChat => {..._distanceChat};
-  Map<String, List<ChatMessage>> _messagesList;
+  Map<String, List<ChatMessage>> _messagesList = {};
   Map<String, List<ChatMessage>> get messagesList => {..._messagesList};
   Map<String, List<Identity>> get lobbyParticipants => {..._lobbyParticipants};
 
@@ -21,15 +21,6 @@ class RoomChatLobby with ChangeNotifier {
   }
 
   get authToken => _authToken;
-
-  Future<void> fetchAndUpdateParticipants(
-      String lobbyId, List<Identity> participants) async {
-    _lobbyParticipants =
-        Map.from(_lobbyParticipants ?? Map<String, List<Identity>>())
-          ..putIfAbsent(lobbyId, () => [])
-          ..[lobbyId] = participants;
-    notifyListeners();
-  }
 
   Future<void> updateParticipants(String lobbyId) async {
     List<Identity> participants = [];
@@ -45,7 +36,11 @@ class RoomChatLobby with ChangeNotifier {
       } while (!success);
       participants.add(id);
     }
-    await fetchAndUpdateParticipants(lobbyId, participants);
+    _lobbyParticipants =
+        Map.from(_lobbyParticipants ?? Map<String, List<Identity>>())
+          ..putIfAbsent(lobbyId, () => [])
+          ..[lobbyId] = participants;
+    notifyListeners();
   }
 
   Future<void> updateCurrentChat(Chat chat) {
@@ -53,22 +48,13 @@ class RoomChatLobby with ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, Identity> addDistanceChat(
-      Chat distantChat, Map<String, Identity> allIDs) {
-    Map<String, Identity> allIds;
-    if (allIDs[distantChat.interlocutorId] == null) {
-      allIds = Map.from(allIDs)
-        ..[distantChat.interlocutorId] =
-            new Identity(distantChat.interlocutorId);
-    }
-
+  void addDistanceChat(Chat distantChat) {
     _distanceChat = Map.from(_distanceChat ?? Map<String, Chat>())
       ..addAll({distantChat.chatId: distantChat});
     _messagesList = Map.from(_messagesList ?? Map<String, List<ChatMessage>>())
       ..addAll({
         distantChat.chatId: [],
       });
-    return allIds != null ? allIds : allIDs;
   }
 
   void addChatMessage(ChatMessage message, String chatId) {
@@ -76,5 +62,9 @@ class RoomChatLobby with ChangeNotifier {
       ..putIfAbsent(chatId, () => []);
     if (message != null) _messagesList[chatId].add(message);
     notifyListeners();
+  }
+
+  Future<void> joinChatLobby(Chat lobby, String idTouse) async {
+    await RsMsgs.joinChatLobby(lobby.chatId, idTouse, _authToken);
   }
 }

@@ -51,7 +51,6 @@ class _SearchScreenState extends State<SearchScreen>
             filteredAllIds = allIds;
             filteredContactsIds = contactsIds;
             filteredSubscribedChats = subscribedChats;
-            //Provider.of<ChatLobby>(context, listen: false).subscribedlist;
             filteredPublicChats = publicChats;
           });
       } else {

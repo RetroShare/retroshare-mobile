@@ -65,39 +65,7 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              FlatButton(
-                                onPressed: () async {
-                                  //await importAccountFunc(context);
-                                  // todo: implement import account
-                                },
-                                textColor: Colors.white,
-                                padding: const EdgeInsets.all(0.0),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      gradient: LinearGradient(
-                                        colors: <Color>[
-                                          Color(0xFF00FFFF),
-                                          Color(0xFF29ABE2),
-                                        ],
-                                        begin: Alignment(-1.0, -4.0),
-                                        end: Alignment(1.0, 4.0),
-                                      ),
-                                    ),
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: const Text(
-                                      'Import account',
-                                      style: TextStyle(fontSize: 18),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
-                              ),
+
                             ],
                           ),
                         ),
@@ -114,7 +82,10 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
   }
 }
 
-/*Future<bool> importAccountFunc(BuildContext context) async {
+/** WIP Import Identity Feature
+  
+
+Future<bool> importAccountFunc(BuildContext context) async {
     FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result != null) {
       File pgpFile = File(result.files.single.path);

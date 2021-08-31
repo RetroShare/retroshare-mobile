@@ -40,14 +40,10 @@ Future<void> registerChatEvent(
                         chatId: msg.chat_id.distantChatId);
                     Chat.addDistantChat(res.toId, res.ownId, res.peerId);
                     chatActionMiddleware(chat, context);
-                    dynamic allIDs =
-                        Provider.of<FriendsIdentity>(context, listen: false)
-                            .allIdentity;
-                    allIDs = Provider.of<RoomChatLobby>(context, listen: false)
-                        .addDistanceChat(chat, allIDs);
+                    Provider.of<RoomChatLobby>(context, listen: false)
+                        .addDistanceChat(chat);
                     Provider.of<FriendsIdentity>(context, listen: false)
-                        .setAllIds(allIDs);
-
+                        .setAllIds(chat);
                     // Finally send AddChatMessageAction
 
                     Provider.of<RoomChatLobby>(context, listen: false)

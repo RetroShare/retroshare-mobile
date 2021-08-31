@@ -59,7 +59,7 @@ showFlutterToast(String title, Color color) {
       timeInSecForIosWeb: 1,
       backgroundColor: color,
       textColor: Colors.white,
-      fontSize: 16.0); 
+      fontSize: 16.0);
 }
 
 contentBox(context) {

@@ -6,7 +6,6 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 /// Send a message of chat [type].
@@ -53,13 +52,9 @@ Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
   if (resp['retval'] == true) {
     chat.chatId = resp['pid'];
     Chat.addDistantChat(to, from, resp['pid']);
-    await Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
-    Map<String, Identity> allIDs =
-        Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
     chatActionMiddleware(chat, context);
-    allIDs = Provider.of<RoomChatLobby>(context, listen: false)
-        .addDistanceChat(chat, allIDs);
-    Provider.of<FriendsIdentity>(context, listen: false).setAllIds(allIDs);
+    Provider.of<FriendsIdentity>(context, listen: false).setAllIds(chat);
+    Provider.of<RoomChatLobby>(context, listen: false).addDistanceChat(chat);
   } else
     throw ("Error on initiateDistantChat()");
 }
@@ -104,27 +99,11 @@ Chat getChat(
   } else if (to != null && (to is VisibleChatLobbyRecord)) {
     chat = Chat.fromVisibleChatLobbyRecord(to);
     Provider.of<RoomChatLobby>(context, listen: false)
-        .addChatMessage(null, to.lobbyId.xstr64);
-    final authToken =
-        Provider.of<RoomChatLobby>(context, listen: false).authToken;
-    RsMsgs.joinChatLobby(to.lobbyId.xstr64, currentIdentity.mId, authToken)
-        .then((success) {
-      if (success) {
-        Provider.of<ChatLobby>(context, listen: false)
-            .fetchAndUpdateUnsubscribed();
-        Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
-      }
-    });
+        .joinChatLobby(chat, currentIdentity.mId);
   } else if (to != null && (to is Chat)) {
     chat = to;
-    // Ugly way to initialize lobby participants
     Provider.of<RoomChatLobby>(context, listen: false)
-        .fetchAndUpdateParticipants(to.chatId, []);
-    final authToken =
-        Provider.of<RoomChatLobby>(context, listen: false).authToken;
-    RsMsgs.joinChatLobby(to.chatId, currentIdentity.mId, authToken);
-    Provider.of<RoomChatLobby>(context, listen: false)
-        .addChatMessage(null, to.chatId);
+        .joinChatLobby(to, currentIdentity.mId);
   }
   return chat;
 }

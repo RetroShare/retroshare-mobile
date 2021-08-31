@@ -60,7 +60,6 @@ class _SignInScreenState extends State<SignInScreen> {
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
       if (error.message.contains('WRONG PASSWORD')) {
-        errorMessage = 'Your Password is wrong';
         errorShowDialog('WRONG PASSWORD', errorMessage, context);
       } else
         errorShowDialog(
@@ -234,7 +233,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: wrongPassword ? 10 : 30),
+                              SizedBox(height: wrongPassword ? 8 : 24),
                               FlatButton(
                                 onPressed: () {
                                   attemptLogIn(
@@ -246,7 +245,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   width: double.infinity,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(10),
                                       gradient: LinearGradient(
                                         colors: <Color>[
                                           Color(0xFF00FFFF),
@@ -256,10 +255,51 @@ class _SignInScreenState extends State<SignInScreen> {
                                         end: Alignment(1.0, 4.0),
                                       ),
                                     ),
-                                    padding: const EdgeInsets.all(10.0),
+                                    padding: const EdgeInsets.all(7.0),
                                     child: const Text(
                                       'Login',
-                                      style: TextStyle(fontSize: 20),
+                                      style: TextStyle(fontSize: 17),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 6,
+                              ),
+                              Text("OR",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Oxygen',
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center),
+                              SizedBox(
+                                height: 6,
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/signup');
+                                },
+                                textColor: Colors.white,
+                                padding: const EdgeInsets.all(0.0),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: LinearGradient(
+                                        colors: <Color>[
+                                          Color(0xFF00FFFF),
+                                          Color(0xFF29ABE2),
+                                        ],
+                                        begin: Alignment(-1.0, -4.0),
+                                        end: Alignment(1.0, 4.0),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(7.0),
+                                    child: const Text(
+                                      'Create Account',
+                                      style: TextStyle(fontSize: 17),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -268,37 +308,6 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              FlatButton(
-                                onPressed: () async {
-                                  //await importAccountFunc(context);
-                                },
-                                textColor: Color(0xFF9E9E9E),
-                                padding: const EdgeInsets.all(0.0),
-                                child: Text(
-                                  'Import account',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/signup');
-                                },
-                                textColor: Color(0xFF9E9E9E),
-                                padding: const EdgeInsets.all(0.0),
-                                child: Text(
-                                  'Create account',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 30),
                       ],
                     ),
                   ),
@@ -312,9 +321,10 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-////
-///
-/*Future<bool> importAccountFunc(BuildContext context) async {
+/// WIP : Import Identity Functionlity
+/** 
+
+Future<bool> importAccountFunc(BuildContext context) async {
     // FilePickerResult result = await FilePicker.platform.pickFiles();
     final result = 'abc';
     if (result != null) {
@@ -340,6 +350,7 @@ class _SignInScreenState extends State<SignInScreen> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }*/
+  }
+  **/
 
 ///data/user/0/cc.retroshare.retroshare/app_flutter/A154FAA45930DB66.txt

@@ -37,8 +37,11 @@ class FriendsIdentity with ChangeNotifier {
     notifyListeners();
   }
 
-  void setAllIds(Map<String, Identity> allIDS) {
-    _allIdentity = Map.from(allIDS);
+  void setAllIds(Chat chat) {
+    if (_allIdentity[chat.interlocutorId] == null) {
+      _allIdentity = Map.from(_allIdentity)
+        ..[chat.interlocutorId] = new Identity(chat.interlocutorId);
+    }
     notifyListeners();
   }
 
