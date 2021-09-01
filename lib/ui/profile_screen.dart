@@ -6,7 +6,7 @@ import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key key, this.curr}) : super(key: key);
+  const ProfileScreen({Key key, this.curr}) : super(key: key);
 
   final Identity curr;
 
@@ -40,8 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
             child: Visibility(
-              visible: (widget.curr?.avatar == null),
-              child: Center(
+              visible: widget.curr?.avatar == null,
+              child: const Center(
                 child: Icon(
                   Icons.person,
                   size: 80,
@@ -49,23 +49,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
             child: Form(
                 child: Column(children: [
-              textField(widget.curr.name, "Identity Name"),
-              SizedBox(height: 20),
+              textField(widget.curr.name, 'Identity Name'),
+              const SizedBox(height: 20),
               textField(widget.curr.mId, 'Identity ID'),
-              SizedBox(height: 20),
-              textField(widget.curr.signed ? "signed" : "unsigned", "Type"),
-              SizedBox(height: 20),
-              textField(lastAccount.pgpName, "Node Name"),
-              SizedBox(height: 20),
-              textField(lastAccount.locationId, "Node ID"),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
+              textField(widget.curr.signed ? 'signed' : 'unsigned', 'Type'),
+              const SizedBox(height: 20),
+              textField(lastAccount.pgpName, 'Node Name'),
+              const SizedBox(height: 20),
+              textField(lastAccount.locationId, 'Node ID'),
+              const SizedBox(height: 20),
               InkWell(
                 onTap: () async {
                   Navigator.of(context).pushReplacementNamed('/updateIdentity',
@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: <Color>[
                         Color(0xFF00FFFF),
                         Color(0xFF29ABE2),
@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const EdgeInsets.symmetric(vertical: 10.0, horizontal: 6),
                   child: const Text(
                     'Edit Identity',
-                    style: TextStyle(fontSize: 15, fontFamily: "Vollkorn"),
+                    style: TextStyle(fontSize: 15, fontFamily: 'Vollkorn'),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -108,21 +108,21 @@ Widget textField(String text, String label) {
     children: [
       Text(
         label,
-        style: TextStyle(
-            fontFamily: "Vollkorn", fontSize: 16, fontWeight: FontWeight.w600),
+        style: const TextStyle(
+            fontFamily: 'Vollkorn', fontSize: 16, fontWeight: FontWeight.w600),
       ),
       TextFormField(
         readOnly: true,
         initialValue: text,
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Oxygen'),
         decoration: InputDecoration(
-            prefix: SizedBox(
+            prefix: const SizedBox(
               width: 10,
             ),
-            labelStyle: TextStyle(fontSize: 12),
+            labelStyle: const TextStyle(fontSize: 12),
             border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2),
+                borderSide: const BorderSide(width: 2),
                 borderRadius: BorderRadius.circular(12))),
       ),
     ],

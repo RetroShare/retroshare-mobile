@@ -11,7 +11,7 @@ import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/routes.dart';
 import 'model/app_life_cycle_state.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeNotifications();
   runApp(App());
@@ -19,6 +19,7 @@ void main() async {
 
 class App extends StatefulWidget {
   @override
+  // ignore: unnecessary_new
   _AppState createState() => new _AppState();
 }
 
@@ -28,7 +29,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     // Used for notifications to open specific Navigator path
     configureSelectNotificationSubject(context);
     // Used to check when the app is on background
-    WidgetsBinding.instance.addObserver(new LifecycleEventHandler());
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler());
+    super.initState();
   }
 
   @override
@@ -64,7 +66,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       ],
       child: Builder(
         builder: (context) {
-          return OKToast(
+          return const OKToast(
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Retroshare',

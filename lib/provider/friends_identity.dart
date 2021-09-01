@@ -15,7 +15,7 @@ class FriendsIdentity with ChangeNotifier {
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
 
-  setAuthToken(AuthToken authToken) async {
+  setAuthToken(AuthToken authToken) {
     _authToken = authToken;
     notifyListeners();
   }
@@ -27,6 +27,7 @@ class FriendsIdentity with ChangeNotifier {
     _friendsIdsList = tupleIds.item2;
     _notContactIds = tupleIds.item3;
 
+    // ignore: prefer_for_elements_to_map_fromiterable
     _allIdentity = Map.fromIterable(
         [tupleIds.item1, tupleIds.item2, tupleIds.item3]
             .expand((x) => x)
@@ -47,11 +48,12 @@ class FriendsIdentity with ChangeNotifier {
 
   Future<void> toggleContacts(String gxsId, bool type) async {
     try {
-      bool success = await RsIdentity.setContact(gxsId, false, _authToken);
+      final bool success =
+          await RsIdentity.setContact(gxsId, false, _authToken);
       await fetchAndUpdate();
-      if (!success) throw HttpException("CHECK CONNECTIVITY");
+      if (!success) throw HttpException('CHECK CONNECTIVITY');
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

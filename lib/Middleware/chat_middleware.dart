@@ -10,10 +10,11 @@ import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
-void chatMiddleware(ChatMessage message, BuildContext context) async {
+Future<void> chatMiddleware(ChatMessage message, BuildContext context) async {
   if (message != null && message.msg.isNotEmpty && message.incoming) {
     // Check if the sender exists, if not request the identity
-    // Also a dummy identity could be added when distant chat connection is started (id where name and mId are the same)
+    // Also a dummy identity could be added when distant chat
+    // connection is started (id where name and mId are the same)
     // To dispatch the action, check if is dummy identity.
 
     final distantChats =
@@ -29,7 +30,7 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
             allIds[message.lobby_peer_gxs_id].mId ==
                 allIds[message.lobby_peer_gxs_id].name)) {
       await Provider.of<Identities>(context, listen: false)
-          .callrequestIdentity(new Identity(message.lobby_peer_gxs_id));
+          .callrequestIdentity(Identity(message.lobby_peer_gxs_id));
     } else if (!message.isLobbyMessage() &&
         (allIds[distantChats[message.chat_id.distantChatId]?.interlocutorId] ==
                 null ||
@@ -39,12 +40,12 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
                         ?.interlocutorId]
                     ?.name)) {
       Provider.of<Identities>(context, listen: false).callrequestIdentity(
-          new Identity(
+          Identity(
               distantChats[message.chat_id.distantChatId]?.interlocutorId));
     }
 
     String parsedMsg;
-    var parsed = parse(message.msg).getElementsByTagName("span");
+    var parsed = parse(message.msg).getElementsByTagName('span');
     parsed.length > 0 ? parsedMsg = parsed[0].text : parsedMsg = message.msg;
 
     // Check if current chat is focused, to notify unread count
@@ -63,7 +64,7 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
     }
 
     // Show notification
-    if (actuaApplState != AppLifecycleState.resumed)
+    if (actuaApplState != AppLifecycleState.resumed) {
       showChatNotification(
           // Id of notification
           message.chat_id.peerId,
@@ -77,8 +78,9 @@ void chatMiddleware(ChatMessage message, BuildContext context) async {
               : getChatSenderName(context, message),
           // Message notification
           message.isLobbyMessage()
-              ? getChatSenderName(context, message) + ": " + parsedMsg
+              ? getChatSenderName(context, message) + ': ' + parsedMsg
               : parsedMsg);
+    }
   }
 }
 
@@ -86,7 +88,7 @@ void chatActionMiddleware(Chat distantChat, BuildContext context) {
   final allIds =
       Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
   if (allIds[distantChat?.interlocutorId] == null) {
-    var identity = new Identity(distantChat?.interlocutorId);
+    var identity = Identity(distantChat?.interlocutorId);
     identity?.name = distantChat?.chatName;
     Provider.of<Identities>(context, listen: false)
         .callrequestIdentity(identity);

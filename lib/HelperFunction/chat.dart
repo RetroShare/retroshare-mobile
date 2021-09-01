@@ -19,11 +19,10 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
   final authToken =
       Provider.of<RoomChatLobby>(context, listen: false).authToken;
   RsMsgs.sendMessage(chatId, msgTxt, authToken, type).then((bool res) {
-    print(res);
     if (res) {
       //final store = StoreProvider.of<AppState>(context);
-      ChatMessage message = new ChatMessage()
-        ..chat_id = new ChatId()
+      final ChatMessage message = ChatMessage()
+        ..chat_id = ChatId()
         ..chat_id.distantChatId = chatId
         ..chat_id.type = type
         ..msg = msgTxt
@@ -35,7 +34,7 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
           .addChatMessage(message, chatId);
     } else {
       errorShowDialog(
-          "Error", "You are not the member of the chat Lobby", context);
+          'Error', 'You are not the member of the chat Lobby', context);
     }
   });
 }
@@ -44,19 +43,23 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
 
 /// This function initate a distant chat if not exists and store it.
 Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
-  String to = chat.interlocutorId;
-  String from = chat.ownIdToUse;
-  AuthToken authToken =
+  final String to = chat.interlocutorId;
+  final String from = chat.ownIdToUse;
+  final AuthToken authToken =
       Provider.of<RoomChatLobby>(context, listen: false).authToken;
   final resp = await RsMsgs.c(chat, authToken);
   if (resp['retval'] == true) {
     chat.chatId = resp['pid'];
     Chat.addDistantChat(to, from, resp['pid']);
+    // ignore: use_build_context_synchronously
     chatActionMiddleware(chat, context);
+    // ignore: use_build_context_synchronously
     Provider.of<FriendsIdentity>(context, listen: false).setAllIds(chat);
+    // ignore: use_build_context_synchronously
     Provider.of<RoomChatLobby>(context, listen: false).addDistanceChat(chat);
-  } else
-    throw ("Error on initiateDistantChat()");
+  } else {
+    throw Exception('Error on initiateDistantChat()');
+  }
 }
 
 /// Get the chat status from [pid]
@@ -72,17 +75,18 @@ Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
 /// return: [Chat] object
 Chat getChat(
   BuildContext context,
+  // ignore: type_annotate_public_apis
   to, {
   String from,
 }) {
   Chat chat;
   final currentIdentity =
       Provider.of<Identities>(context, listen: false).currentIdentity;
-  String currentId = from ?? currentIdentity.mId;
+  final String currentId = from ?? currentIdentity.mId;
   if (to != null && to is Identity) {
     final distanceChat =
         Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
-    String distantChatId = Chat.getDistantChatId(to.mId, currentId);
+    final String distantChatId = Chat.getDistantChatId(to.mId, currentId);
     if (Chat.distantChatExistsStore(distantChatId, distanceChat)) {
       chat = Provider.of<RoomChatLobby>(context, listen: false)
           .distanceChat[distantChatId];

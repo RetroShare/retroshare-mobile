@@ -39,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void createAccount() async {
+  Future<void> createAccount() async {
     bool success = true;
     if (usernameController.text.length < 3) {
       setState(() {
@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!success) return;
 
     Navigator.pushNamed(context, '/', arguments: {
-      'statusText': "Creating account...\nThis could take minutes",
+      'statusText': 'Creating account...\nThis could take minutes',
       'isLoading': true,
       'spinner': true
     });
@@ -110,13 +110,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFF5F5F5),
+                      color: const Color(0xFFF5F5F5),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     height: 40,
                     child: TextField(
                       controller: usernameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.person_outline,
@@ -134,12 +134,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           width: 52,
                         ),
                         Container(
                           height: 25,
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.centerRight,
                             child: Text(
                               'Username is too short',
@@ -163,13 +163,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFF5F5F5),
+                      color: const Color(0xFFF5F5F5),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     height: 40,
                     child: TextField(
                       controller: passwordController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.lock_outline,
@@ -188,12 +188,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           width: 52,
                         ),
                         Container(
                           height: 25,
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.centerRight,
                             child: Text(
                               'Password is too short',
@@ -217,13 +217,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFF5F5F5),
+                      color: const Color(0xFFF5F5F5),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     height: 40,
                     child: TextField(
                       controller: repeatPasswordController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.lock_outline,
@@ -242,12 +242,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           width: 52,
                         ),
                         Container(
                           height: 25,
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.centerRight,
                             child: Text(
                               'Passwords do not match',
@@ -291,7 +291,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                             },
                           ),
-                          SizedBox(width: 3),
+                          const SizedBox(width: 3),
                           Text(
                             'Advanced option',
                             style: Theme.of(context).textTheme.body1,
@@ -318,7 +318,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 40,
                       child: TextField(
                         controller: nodeNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.smartphone,
@@ -334,7 +334,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Visibility(
                   visible: advancedOption,
-                  child: SizedBox(height: 10),
+                  child: const SizedBox(height: 10),
                 ),
                 Visibility(
                   visible: advancedOption,
@@ -353,7 +353,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               // todo: implement Tor/I2p Hidden node
                               value: false, onChanged: (bool value) {},
                             ),
-                            SizedBox(width: 3),
+                            const SizedBox(width: 3),
                             Text(
                               'Tor/I2p Hidden node',
                               style: Theme.of(context).textTheme.body1,
@@ -368,13 +368,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     await createAccount();
                   },
                   textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
+                  padding: EdgeInsets.zero,
                   child: SizedBox(
                     width: double.infinity,
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: <Color>[
                             Color(0xFF00FFFF),
                             Color(0xFF29ABE2),

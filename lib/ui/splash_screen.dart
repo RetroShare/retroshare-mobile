@@ -12,11 +12,11 @@ class SplashScreen extends StatefulWidget {
   SplashScreen(
       {Key key,
       this.isLoading = false,
-      this.statusText = "",
+      this.statusText = '',
       this.spinner = false})
       : super(key: key);
 
-  final isLoading;
+  final bool isLoading;
   bool spinner;
   String statusText;
 
@@ -31,8 +31,8 @@ class _SplashState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    if (!widget.isLoading) {
-      _statusText = "Loading...";
+    if (widget.isLoading == false) {
+      _statusText = 'Loading...';
       SchedulerBinding.instance.addPostFrameCallback((_) {
         checkBackendState(context);
       });
@@ -48,7 +48,7 @@ class _SplashState extends State<SplashScreen> {
     });
   }
 
-  void checkBackendState(BuildContext context) async {
+  Future<void> checkBackendState(BuildContext context) async {
     bool connectedToBackend = true;
     bool isLoggedIn;
     do {
@@ -60,26 +60,31 @@ class _SplashState extends State<SplashScreen> {
         connectedToBackend = false;
       }
     } while (!connectedToBackend);
+    // ignore: use_build_context_synchronously
     final auth = Provider.of<AccountCredentials>(context, listen: false);
-    bool isTokenValid = await auth.checkisvalidAuthToken();
+    final bool isTokenValid = await auth.checkisvalidAuthToken();
     if (isLoggedIn && isTokenValid && auth.loggedinAccount != null) {
-      _setStatusText("Logging in...");
+      _setStatusText('Logging in...');
+      // ignore: use_build_context_synchronously
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {
-        if (ids.ownIdentity != null && ids.ownIdentity.length == 0)
+        if (ids.ownIdentity != null && ids.ownIdentity.length == 0) {
           Navigator.pushReplacementNamed(context, '/create_identity',
               arguments: true);
-        else
+        } else {
           Navigator.pushReplacementNamed(context, '/home');
+        }
       });
     } else {
-      _setStatusText("Get locations...");
+      _setStatusText('Get locations...');
       await auth.fetchAuthAccountList();
-      if (auth.accountList.isEmpty)
-        // Create or import an account
+      if (auth.accountList.isEmpty) {
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/launch_transition');
-      else
+      } else {
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/signin');
+      }
     }
   }
 
@@ -105,13 +110,13 @@ class _SplashState extends State<SplashScreen> {
                 ),
               ),
               Text(
-                '$_statusText',
+                _statusText,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
               Visibility(
                 visible: _spinner,
-                child: ColorLoader3(
+                child: const ColorLoader3(
                   radius: 15.0,
                   dotRadius: 6.0,
                 ),

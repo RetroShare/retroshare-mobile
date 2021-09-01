@@ -14,15 +14,16 @@ Future<void> registerChatEvent(
           AuthToken authToken =
               Provider.of<RoomChatLobby>(context, listen: false).authToken;
           // Check if is a lobby chat
-          if (msg.chat_id.lobbyId.xstr64 != "0") {
+          if (msg.chat_id.lobbyId.xstr64 != '0') {
             chatMiddleware(msg, context);
             Provider.of<RoomChatLobby>(context, listen: false)
                 .addChatMessage(msg, msg.chat_id.lobbyId.xstr64);
           }
           // Check if is distant chat message
           else if (msg.chat_id.distantChatId !=
-              "00000000000000000000000000000000") {
-            // First check if the recieved message is from an already registered chat
+              '00000000000000000000000000000000') {
+            // First check if the recieved message
+            //is from an already registered chat
             chatMiddleware(msg, context);
             !Chat.distantChatExistsStore(
                     msg.chat_id.distantChatId,

@@ -10,9 +10,10 @@ import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class PseudoSignedIdenityTab extends StatefulWidget {
-  final isFirstId;
-  final key;
-  PseudoSignedIdenityTab(this.isFirstId, this.key);
+  const PseudoSignedIdenityTab(this.isFirstId, this.key);
+  final bool isFirstId;
+  final Key key;
+
   @override
   _PseudoSignedIdenityTabState createState() => _PseudoSignedIdenityTabState();
 }
@@ -23,11 +24,11 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
   RsGxsImage _image;
 
   bool _showError = false;
-  _setImage(File image) {
+  void _setImage(File image) {
     Navigator.pop(context);
     setState(() {
       if (image != null) {
-        _image = new RsGxsImage(image.readAsBytesSync());
+        _image = RsGxsImage(image.readAsBytesSync());
       }
     });
   }
@@ -36,14 +37,17 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
     return pseudosignednameController.text.length < 3 ? false : true;
   }
 
-  void _createIdentity() async {
-    await Provider.of<Identities>(context, listen: false).createnewIdenity(
-        Identity(
-            '', false, pseudosignednameController.text, _image?.base64String),
-        _image);
-    widget.isFirstId
-        ? Navigator.pushReplacementNamed(context, '/home')
-        : Navigator.pop(context);
+  Future<void> _createIdentity() async {
+    await Provider.of<Identities>(context, listen: false)
+        .createnewIdenity(
+            Identity('', false, pseudosignednameController.text,
+                _image?.base64String),
+            _image)
+        .then((value) {
+      widget.isFirstId
+          ? Navigator.pushReplacementNamed(context, '/home')
+          : Navigator.pop(context);
+    });
   }
 
   @override
@@ -58,7 +62,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     GestureDetector(
@@ -81,7 +85,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                         child: Visibility(
                           visible:
                               _image != null ? _image?.mData?.isEmpty : true,
-                          child: Center(
+                          child: const Center(
                             child: Icon(
                               Icons.person,
                               size: 300 * 0.7,
@@ -90,7 +94,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     SizedBox(
@@ -98,7 +102,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Color(0xFFF5F5F5),
+                          color: const Color(0xFFF5F5F5),
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         height: 40,
@@ -110,7 +114,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                               _showError = !_validate(text);
                             });
                           },
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 Icons.person_outline,
@@ -128,12 +132,12 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                         width: double.infinity,
                         child: Row(
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               width: 52,
                             ),
                             Container(
                               height: 25,
-                              child: Align(
+                              child: const Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
                                   'Name too short',
@@ -148,7 +152,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                   ],
@@ -184,7 +188,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: <Color>[
                                 Color(0xFF00FFFF),
                                 Color(0xFF29ABE2),

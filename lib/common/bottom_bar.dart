@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:retroshare/common/styles.dart';
 
 class BottomBar extends StatelessWidget {
+  const BottomBar(
+      {this.child,
+      this.minHeight = appBarHeight,
+      this.maxHeight = appBarHeight});
   final Widget child;
   final double minHeight;
   final double maxHeight;
 
-  BottomBar(
-      {this.child,
-      this.minHeight = appBarHeight,
-      this.maxHeight = appBarHeight});
-
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-        constraints: new BoxConstraints(
+        constraints: BoxConstraints(
           minHeight: minHeight,
           maxHeight: maxHeight,
         ),
-        child: new DecoratedBox(
-          decoration: BoxDecoration(
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
             boxShadow: [
               BoxShadow(
                 color: Colors.black12,

@@ -27,23 +27,22 @@ class _GetAddfriendState extends State<GetAddfriend> {
             maxLines: 10,
             minLines: 6,
             controller: ownCertController,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
             textAlign: TextAlign.center,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
-                prefix: SizedBox(
+                prefix: const SizedBox(
                   width: 10,
                 ),
-                hintStyle: TextStyle(fontSize: 16, fontFamily: "Oxygen"),
-                labelStyle: TextStyle(fontSize: 12),
+                hintStyle: const TextStyle(fontSize: 16, fontFamily: 'Oxygen'),
+                labelStyle: const TextStyle(fontSize: 12),
                 hintText: 'Paste your friend\'s invite here',
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(6))),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(6))),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           FlatButton(
             onPressed: () async {
               setState(() {
@@ -57,7 +56,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                     _requestAddCert = false;
                   });
                   Fluttertoast.cancel();
-                  showFlutterToast("Friend has been added", Colors.red);
+                  showFlutterToast('Friend has been added', Colors.red);
                 });
                 Navigator.of(context)
                     .pushReplacementNamed('/friends_locations');
@@ -82,7 +81,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: <Color>[
                       Color(0xFF00FFFF),
                       Color(0xFF29ABE2),
@@ -100,25 +99,25 @@ class _GetAddfriendState extends State<GetAddfriend> {
               ),
             ),
           ),
-          Align(
+          const Align(
               alignment: Alignment.center,
               child: Text(
-                "OR",
+                'OR',
                 style: TextStyle(fontWeight: FontWeight.bold),
               )),
           FlatButton(
             onPressed: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (_) => QRScanner()));
+                  .push(MaterialPageRoute(builder: (_) => QRScanner()));
             },
             textColor: Colors.white,
-            padding: const EdgeInsets.all(0.0),
+            padding: EdgeInsets.zero,
             child: SizedBox(
               width: double.infinity,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: <Color>[Colors.purple, Colors.purpleAccent],
                     begin: Alignment(-1.0, -4.0),
                     end: Alignment(1.0, 4.0),
@@ -138,7 +137,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
       Center(
         child: Visibility(
           visible: _requestAddCert,
-          child: ColorLoader3(
+          child: const ColorLoader3(
             radius: 15.0,
             dotRadius: 6.0,
           ),

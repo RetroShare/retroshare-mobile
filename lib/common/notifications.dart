@@ -12,9 +12,9 @@ Future<void> initializeNotifications() async {
   notificationAppLaunchDetails =
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  var initializationSettingsAndroid =
+  const initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_notification');
-  var initializationSettings =
+  const initializationSettings =
       InitializationSettings(initializationSettingsAndroid, null);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: (String payload) async {
@@ -38,18 +38,18 @@ Future<void> showChatNotification(
   //  var largeIconPath = await _downloadAndSaveFile(
   //      'http://via.placeholder.com/128x128/00FF00/000000', 'largeIcon');
 
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  const androidPlatformChannelSpecifics = AndroidNotificationDetails(
     'RetroshareFlutter', 'RetroshareFlutter', 'Retroshare flutter app',
     importance: Importance.Max,
     priority: Priority.High,
     ticker: 'ticker',
-    color: const Color.fromARGB(255, 35, 144, 191),
-    ledColor: const Color.fromARGB(255, 35, 144, 191),
+    color: Color.fromARGB(255, 35, 144, 191),
+    ledColor: Color.fromARGB(255, 35, 144, 191),
     ledOnMs: 1000,
     ledOffMs: 500,
 //      largeIcon: FilePathAndroidBitmap(largeIconPath),
   );
-  var platformChannelSpecifics =
+  const platformChannelSpecifics =
       NotificationDetails(androidPlatformChannelSpecifics, null);
   await flutterLocalNotificationsPlugin.show(
       int.parse(chatId), title, body, platformChannelSpecifics,
@@ -57,17 +57,17 @@ Future<void> showChatNotification(
 }
 
 Future<void> showInviteCopyNotification() async {
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  const androidPlatformChannelSpecifics = AndroidNotificationDetails(
     'RetroshareFlutter',
     'RetroshareFlutter',
     'Retroshare flutter app',
     ticker: 'ticker',
   );
-  var platformChannelSpecifics =
+  const platformChannelSpecifics =
       NotificationDetails(androidPlatformChannelSpecifics, null);
   await flutterLocalNotificationsPlugin.show(
       1111,
-      "Invite copied!",
-      "Your RetroShare invite was copied to your clipboard",
+      'Invite copied!',
+      'Your RetroShare invite was copied to your clipboard',
       platformChannelSpecifics);
 }

@@ -82,7 +82,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: <Color>[
                           Color(0xFF00FFFF),
                           Color(0xFF29ABE2),

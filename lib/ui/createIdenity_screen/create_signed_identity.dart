@@ -10,9 +10,10 @@ import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SignedIdenityTab extends StatefulWidget {
-  final isFirstId;
-  final key;
-  SignedIdenityTab(this.isFirstId, this.key);
+  const SignedIdenityTab(this.isFirstId, this.key);
+  final bool isFirstId;
+  final Key key;
+
   @override
   _SignedIdenityTabState createState() => _SignedIdenityTabState();
 }
@@ -23,26 +24,33 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
   RsGxsImage _image;
 
   bool _showError = false;
-  _setImage(File image) {
+  void _setImage(File image) {
     Navigator.pop(context);
     setState(() {
       if (image != null) {
-        _image = new RsGxsImage(image.readAsBytesSync());
+        _image = RsGxsImage(image.readAsBytesSync());
       }
     });
   }
 
   bool _validate(text) {
-    return signednameController.text.length < 3 ? false : true;
+    if (signednameController.text.length < 3) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
-  void _createIdentity() async {
-    await Provider.of<Identities>(context, listen: false).createnewIdenity(
-        Identity('', true, signednameController.text, _image?.base64String),
-        _image);
-    widget.isFirstId
-        ? Navigator.pushReplacementNamed(context, '/home')
-        : Navigator.pop(context);
+  Future<void> _createIdentity() async {
+    await Provider.of<Identities>(context, listen: false)
+        .createnewIdenity(
+            Identity('', true, signednameController.text, _image?.base64String),
+            _image)
+        .then((value) {
+          widget.isFirstId
+          ? Navigator.pushReplacementNamed(context, '/home')
+          : Navigator.pop(context);
+        });
   }
 
   @override
@@ -56,7 +64,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
@@ -77,8 +85,9 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                               ),
                             ),
                       child: Visibility(
+                        // ignore: avoid_bool_literals_in_conditional_expressions
                         visible: _image != null ? _image?.mData?.isEmpty : true,
-                        child: Center(
+                        child: const Center(
                           child: Icon(
                             Icons.person,
                             size: 300 * 0.7,
@@ -87,7 +96,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   SizedBox(

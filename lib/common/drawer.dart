@@ -14,24 +14,27 @@ Widget drawerWidget(BuildContext ctx) {
       height: 60,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: InkWell(
-          child: Row(children: [
-            Icon(
-              icon,
-              size: 30,
-              color: Theme.of(ctx).textTheme.body2.color,
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Vollkorn',
-                  fontWeight: FontWeight.w500),
-            ),
-          ]),
-          onTap: changeState),
+        onTap: () {
+          changeState();
+        },
+        child: Row(children: <Widget>[
+          Icon(
+            icon,
+            size: 30,
+            color: Theme.of(ctx).textTheme.body2.color,
+          ),
+          const SizedBox(
+            width: 15.0,
+          ),
+          Text(
+            title,
+            style: const TextStyle(
+                fontFamily: 'Vollkorn',
+                fontSize: 17,
+                fontWeight: FontWeight.w500),
+          ),
+        ]),
+      ),
     );
   }
 
@@ -66,7 +69,7 @@ Widget drawerWidget(BuildContext ctx) {
                               ),
                         child: Visibility(
                           visible: (curr.currentIdentity?.avatar == null),
-                          child: Center(
+                          child: const Center(
                             child: Icon(
                               Icons.person,
                               size: 80,
@@ -74,14 +77,14 @@ Widget drawerWidget(BuildContext ctx) {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       FittedBox(
                         child: Text(
                           curr.currentIdentity.name,
-                          style: TextStyle(
-                            fontFamily: "Vollkorn",
+                          style: const TextStyle(
+                            fontFamily: 'Vollkorn',
                             fontSize: 25,
                             fontWeight: FontWeight.w600,
                           ),
@@ -98,7 +101,7 @@ Widget drawerWidget(BuildContext ctx) {
                                     '/updateIdentity',
                                     arguments: {'id': curr.currentIdentity});
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 FontAwesomeIcons.userEdit,
                                 size: 18,
                                 color: Colors.blue,
@@ -107,7 +110,7 @@ Widget drawerWidget(BuildContext ctx) {
                               onPressed: () {
                                 showdeleteDialog(context);
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 FontAwesomeIcons.trash,
                                 size: 18,
                                 color: Colors.red,
@@ -148,14 +151,14 @@ Widget drawerWidget(BuildContext ctx) {
           ),
         ),
         Spacer(),
-        Text(
-          "V 1.0.1",
+        const Text(
+          'V 1.0.1',
           style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.blueAccent),
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         )
       ],
@@ -169,7 +172,7 @@ AppBar appBar(String title, BuildContext context) {
     shadowColor: Colors.transparent,
     title: Text(
       title,
-      style: TextStyle(color: Colors.black, fontSize: 14.5),
+      style: const TextStyle(color: Colors.black, fontSize: 14.5),
     ),
     leading: BackButton(
       color: Colors.black,
@@ -187,9 +190,9 @@ class NotificationIcon extends StatefulWidget {
 
 class _NotificationIconState extends State<NotificationIcon> {
   Future<dynamic> _inviteList() async {
-    final authToken =
+    final AuthToken authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
-    return await RsMsgs.getPendingChatLobbyInvites(authToken);
+    return RsMsgs.getPendingChatLobbyInvites(authToken);
   }
 
   @override
@@ -212,9 +215,9 @@ class _NotificationIconState extends State<NotificationIcon> {
                         ? FittedBox(
                             child: Text(
                             snapshot.data.length.toString(),
-                            style: TextStyle(fontSize: 8),
+                            style: const TextStyle(fontSize: 8),
                           ))
-                        : FittedBox(
+                        : const FittedBox(
                             child: Text('0', style: TextStyle(fontSize: 8)));
                   },
                 ))),

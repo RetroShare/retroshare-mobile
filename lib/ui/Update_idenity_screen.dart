@@ -1,10 +1,10 @@
-import 'dart:ui';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/show_dialog.dart';
-import 'dart:convert';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/provider/Idenity.dart';
@@ -12,8 +12,9 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 import '../common/color_loader_3.dart';
 
 class UpdateIdentityScreen extends StatefulWidget {
+  const UpdateIdentityScreen({this.curr});
   final curr;
-  UpdateIdentityScreen({this.curr});
+
   @override
   _UpdateIdentityScreenState createState() => _UpdateIdentityScreenState();
 }
@@ -37,7 +38,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     super.dispose();
   }
 
-  _setImage(File image) async {
+  Future<void> _setImage(File image) async {
     Navigator.pop(context);
     setState(() {
       if (image != null) {
@@ -53,7 +54,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void _updateIdentity() async {
+    Future<void> _updateIdentity() async {
       try {
         await Provider.of<Identities>(context, listen: false)
             .updateIdentity(
@@ -96,7 +97,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                     child: Container(
                       width: personDelegateHeight,
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           size: 25,
                         ),
@@ -108,14 +109,14 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 0.0),
+                      padding: EdgeInsets.zero,
                       child: Text(
                         'Update identity',
                         style: Theme.of(context).textTheme.body2,
                       ),
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   PopupMenuButton(
                     onSelected: (val) {
                       showdeleteDialog(context);
@@ -126,14 +127,14 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                         PopupMenuItem(
                           value: 'delete',
                           child: Row(children: [
-                            Icon(
+                            const Icon(
                               Icons.delete,
                               size: 20,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 7,
                             ),
-                            Text(
+                            const Text(
                               'Delete',
                               style: TextStyle(
                                 fontSize: 12,
@@ -144,7 +145,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                       ];
                     },
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                 ],
               ),
             ),
@@ -164,7 +165,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 GestureDetector(
@@ -188,7 +189,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                       visible: _image != null
                                           ? _image?.mData?.isEmpty
                                           : true,
-                                      child: Center(
+                                      child: const Center(
                                         child: Icon(
                                           Icons.person,
                                           size: 300 * 0.7,
@@ -197,7 +198,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 50,
                                 ),
                                 SizedBox(
@@ -205,7 +206,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
-                                      color: Color(0xFFF5F5F5),
+                                      color: const Color(0xFFF5F5F5),
                                     ),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 15),
@@ -218,7 +219,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                           _showError = !_validate(text);
                                         });
                                       },
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           icon: Icon(
                                             Icons.person_outline,
@@ -236,12 +237,12 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                     width: double.infinity,
                                     child: Row(
                                       children: <Widget>[
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 52,
                                         ),
                                         Container(
                                           height: 25,
-                                          child: Align(
+                                          child: const Align(
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               'Name too short',
@@ -256,7 +257,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                               ],
@@ -296,7 +297,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 colors: <Color>[
                                   Color(0xFF00FFFF),
                                   Color(0xFF29ABE2),
@@ -321,7 +322,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
             ),
             Visibility(
               visible: _requestCreateIdentity,
-              child: ColorLoader3(
+              child: const ColorLoader3(
                 radius: 15.0,
                 dotRadius: 6.0,
               ),

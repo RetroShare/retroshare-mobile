@@ -41,9 +41,9 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
-  void attemptLogIn(Account currentAccount, String password) async {
+  Future<void> attemptLogIn(Account currentAccount, String password) async {
     Navigator.pushNamed(context, '/', arguments: {
-      'statusText': "Attempt login...\nCrypto in course",
+      'statusText': 'Attempt login...\nCrypto in course',
       'isLoading': true,
       'spinner': true
     });
@@ -52,18 +52,19 @@ class _SignInScreenState extends State<SignInScreen> {
           .login(currentAccount, password);
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {
-        ids.ownIdentity != null && ids.ownIdentity.length == 0
+        ids.ownIdentity != null && ids.ownIdentity.isEmpty
             ? Navigator.pushReplacementNamed(context, '/create_identity',
                 arguments: true)
             : Navigator.pushReplacementNamed(context, '/home');
       });
     } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed';
+      const errorMessage = 'Authentication failed';
       if (error.message.contains('WRONG PASSWORD')) {
-        errorShowDialog('WRONG PASSWORD', errorMessage, context);
-      } else
+        _isWrongPassword();
+      } else {
         errorShowDialog(
             errorMessage, 'Please input your valid credentials', context);
+      }
     } catch (e) {
       errorShowDialog('Retroshare Service Down',
           'Please ensure retroshare service is not down!', context);
@@ -78,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   List<DropdownMenuItem<Account>> getDropDownMenuItems(BuildContext context) {
-    List<DropdownMenuItem<Account>> items = [];
+    final List<DropdownMenuItem<Account>> items = [];
     for (Account account
         in Provider.of<AccountCredentials>(context, listen: false)
             .accountList) {
@@ -89,7 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
             Text(account.pgpName),
             Visibility(
               visible: !hideLocations,
-              child: Text(':' + account.locationName),
+              child: Text(':${account.locationName}'),
             )
           ],
         ),
@@ -157,12 +158,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                     },
                                     child: Row(
                                       children: <Widget>[
-                                        Icon(
+                                        const Icon(
                                           Icons.person_outline,
                                           color: Color(0xFF9E9E9E),
                                           size: 22.0,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 15,
                                         ),
                                         Expanded(
@@ -172,7 +173,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                               items:
                                                   getDropDownMenuItems(context),
                                               onChanged: changedDropDownItem,
-                                              disabledHint: Text('Login'),
+                                              disabledHint: const Text('Login'),
                                             ),
                                           ),
                                         ),
@@ -187,14 +188,14 @@ class _SignInScreenState extends State<SignInScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    color: Color(0xFFF5F5F5),
+                                    color: const Color(0xFFF5F5F5),
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   height: 40,
                                   child: TextField(
                                     controller: passwordController,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       icon: Icon(
                                         Icons.lock_outline,
@@ -213,12 +214,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                   width: double.infinity,
                                   child: Row(
                                     children: <Widget>[
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 52,
                                       ),
                                       Container(
                                         height: 25,
-                                        child: Align(
+                                        child: const Align(
                                           alignment: Alignment.centerRight,
                                           child: Text(
                                             'Wrong password',
@@ -246,7 +247,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      gradient: LinearGradient(
+                                      gradient: const LinearGradient(
                                         colors: <Color>[
                                           Color(0xFF00FFFF),
                                           Color(0xFF29ABE2),
@@ -264,16 +265,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 6,
                               ),
-                              Text("OR",
+                              const Text('OR',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontFamily: 'Oxygen',
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center),
-                              SizedBox(
+                              const SizedBox(
                                 height: 6,
                               ),
                               FlatButton(
@@ -281,13 +282,13 @@ class _SignInScreenState extends State<SignInScreen> {
                                   Navigator.pushNamed(context, '/signup');
                                 },
                                 textColor: Colors.white,
-                                padding: const EdgeInsets.all(0.0),
+                                padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      gradient: LinearGradient(
+                                      gradient: const LinearGradient(
                                         colors: <Color>[
                                           Color(0xFF00FFFF),
                                           Color(0xFF29ABE2),

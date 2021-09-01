@@ -20,7 +20,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
     });
   }
 
-  void _goToChat(lobby) async {
+  Future<void> _goToChat(lobby) async {
     Navigator.pushNamed(context, '/room',
         arguments: {'isRoom': true, 'chatData': getChat(context, lobby)});
   }
@@ -30,8 +30,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
-            top: true,
-            bottom: true,
+            
             child: Column(
               children: <Widget>[
                 Container(
@@ -41,7 +40,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                       Container(
                         width: personDelegateHeight,
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,
                             size: 25,
                           ),
@@ -89,7 +88,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                                   children: <Widget>[
                                                     Expanded(
                                                       child: Padding(
-                                                        padding: EdgeInsets
+                                                        padding: const EdgeInsets
                                                             .symmetric(
                                                                 horizontal: 8),
                                                         child: Column(

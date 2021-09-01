@@ -77,19 +77,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         child: Stack(
           children: <Widget>[
             Container(
-              // Background
-              child: Center(
-                child: Text(
-                  "Retroshare",
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      fontFamily: "Vollkorn",
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-              ),
+              height: height + 75,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: <Color>[
                     Color(0xFF00FFFF),
                     Color(0xFF29ABE2),
@@ -99,9 +90,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 color: Theme.of(context).primaryColor,
               ),
-
-              height: height + 75,
-              width: MediaQuery.of(context).size.width,
+              // Background
+              child: const Center(
+                child: Text(
+                  'Retroshare',
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontFamily: 'Vollkorn',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
+                ),
+              ),
             ),
             Container(), // Required some widget in between to float AppBar
             Positioned(
@@ -112,13 +111,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               child: AppBar(
                 backgroundColor: Colors.white,
                 leading: InkWell(
+                  onTap: () {
+                    _scaffoldKey.currentState.openDrawer();
+                  },
                   child: Icon(
                     Icons.menu,
                     color: Theme.of(context).primaryColor,
                   ),
-                  onTap: () {
-                    _scaffoldKey.currentState.openDrawer();
-                  },
                 ),
                 primary: false,
                 title: TextField(
@@ -131,8 +130,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         );
                       });
                     },
-                    decoration: InputDecoration(
-                        hintText: "Search",
+                    decoration: const InputDecoration(
+                        hintText: 'Search',
                         border: InputBorder.none,
                         hintStyle: TextStyle(color: Colors.grey))),
                 actions: <Widget>[
@@ -172,12 +171,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 7,
         child: Stack(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: homeScreenBottomBarHeight,
               child: Row(
-                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Expanded(
@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  SizedBox(width: 74),
+                  const SizedBox(width: 74),
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
@@ -237,23 +237,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ],
         ),
-        shape: CircularNotchedRectangle(),
-        notchMargin: 7,
       ),
       floatingActionButton: Container(
         height: 60,
         width: 60,
         child: FittedBox(
           child: FloatingActionButton(
+            backgroundColor: Colors.lightBlueAccent,
             onPressed: () {
               Navigator.pushNamed(context, '/create_room');
             },
-            child: Icon(
+            child: const Icon(
               Icons.add,
               size: 35,
               color: Colors.white,
             ),
-            backgroundColor: Colors.lightBlueAccent,
           ),
         ),
       ),

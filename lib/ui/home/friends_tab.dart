@@ -35,25 +35,26 @@ class _FriendsTabState extends State<FriendsTab> {
         return Consumer<FriendsIdentity>(builder: (context, friendsIdsList, _) {
           return Consumer<RoomChatLobby>(
             builder: (context, roomChat, _) {
-              Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
+              final Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
                   friendsDistantAndIdsTuple =
                   Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(
                       friendsIdsList.friendsIdsList,
                       roomChat.distanceChat?.values
                               ?.toList()
-                              ?.where((chat) => (friendsIdsList
+                              ?.where((chat) =>
+                                  friendsIdsList
                                           .allIdentity[chat.interlocutorId] ==
                                       null ||
                                   friendsIdsList
                                           .allIdentity[chat.interlocutorId]
                                           .isContact ==
-                                      false))
+                                      false)
                               ?.toSet()
                               ?.toList() ??
                           [],
                       friendsIdsList.allIdentity);
 
-              if (friendsDistantAndIdsTuple.item1?.isNotEmpty ?? false)
+              if (friendsDistantAndIdsTuple.item1?.isNotEmpty ?? false) {
                 return CustomScrollView(
                   slivers: <Widget>[
                     sliverPersistentHeader('Contacts', context),
@@ -79,8 +80,8 @@ class _FriendsTabState extends State<FriendsTab> {
                                     context),
                                 onLongPress: (Offset tapPosition) {
                                   showCustomMenu(
-                                      "Remove from contacts",
-                                      Icon(
+                                      'Remove from contacts',
+                                      const Icon(
                                         Icons.delete,
                                         color: Colors.black,
                                       ),
@@ -141,8 +142,8 @@ class _FriendsTabState extends State<FriendsTab> {
                                     actualId, context),
                                 onLongPress: (Offset tapPosition) {
                                   showCustomMenu(
-                                      "Add to contacts",
-                                      Icon(
+                                      'Add to contacts',
+                                      const Icon(
                                         Icons.add,
                                         color: Colors.black,
                                       ),
@@ -169,6 +170,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     ),
                   ],
                 );
+              }
 
               return Center(
                 child: SizedBox(
@@ -177,7 +179,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Image.asset('assets/icons8/list-is-empty-3.png'),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Padding(
@@ -196,7 +198,7 @@ class _FriendsTabState extends State<FriendsTab> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                     ],

@@ -41,13 +41,13 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
                                   Navigator.pushNamed(context, '/signup');
                                 },
                                 textColor: Colors.white,
-                                padding: const EdgeInsets.all(0.0),
+                                padding:  EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
-                                      gradient: LinearGradient(
+                                      gradient: const LinearGradient(
                                         colors: <Color>[
                                           Color(0xFF00FFFF),
                                           Color(0xFF29ABE2),
@@ -65,7 +65,6 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
                                   ),
                                 ),
                               ),
-
                             ],
                           ),
                         ),

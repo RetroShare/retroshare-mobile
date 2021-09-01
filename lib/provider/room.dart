@@ -15,16 +15,16 @@ class RoomChatLobby with ChangeNotifier {
   Chat get currentChat => _currentChat;
 
   AuthToken _authToken;
-  setAuthToken(AuthToken authToken) async {
+  void setAuthToken(AuthToken authToken) {
     _authToken = authToken;
     notifyListeners();
   }
 
-  get authToken => _authToken;
+  AuthToken get authToken => _authToken;
 
   Future<void> updateParticipants(String lobbyId) async {
     List<Identity> participants = [];
-    var gxsIds = await RsMsgs.getLobbyParticipants(lobbyId, _authToken);
+    var  gxsIds = await RsMsgs.getLobbyParticipants(lobbyId, _authToken);
     for (int i = 0; i < gxsIds.length; i++) {
       bool success = true;
       Identity id;
@@ -43,7 +43,7 @@ class RoomChatLobby with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateCurrentChat(Chat chat) {
+  void updateCurrentChat(Chat chat) {
     _currentChat = chat;
     notifyListeners();
   }

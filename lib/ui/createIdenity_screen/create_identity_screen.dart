@@ -6,8 +6,9 @@ import 'package:retroshare/ui/createIdenity_screen/create_signed_identity.dart';
 import 'package:retroshare/ui/createIdenity_screen/pseudo_identity.dart';
 
 class CreateIdentityScreen extends StatefulWidget {
-  CreateIdentityScreen({Key key, this.isFirstId = false}) : super(key: key);
-  final isFirstId;
+  const CreateIdentityScreen({Key key, this.isFirstId = false})
+      : super(key: key);
+  final bool isFirstId;
 
   @override
   _CreateIdentityScreenState createState() => _CreateIdentityScreenState();
@@ -37,13 +38,11 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
       backgroundColor: Colors.white,
       appBar: appBar('Create Identity', context),
       body: SafeArea(
-        top: true,
-        bottom: true,
         child: Column(
           children: <Widget>[
             Container(
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   bottom: (appBarHeight - 40) / 2,
                   top: 20,
                 ),
@@ -78,7 +77,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                         );
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     AnimatedBuilder(

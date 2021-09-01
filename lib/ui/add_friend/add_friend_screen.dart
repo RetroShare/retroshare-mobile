@@ -13,7 +13,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: appBar("Add Friend", context),
+        appBar: appBar('Add Friend', context),
         backgroundColor: Colors.white,
         body: SafeArea(
           top: true,
@@ -24,8 +24,8 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GetAddfriend(),
-                GetInvite(),
-                SizedBox(
+                const GetInvite(),
+                const SizedBox(
                   height: 20,
                 ),
               ],

@@ -37,14 +37,14 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
       appBar: appBar('Friend Location', context),
       body: SafeArea(
         //top: true,
-        bottom: true,
+        
         child: FutureBuilder(
             future: _getFriendsAccounts(),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.done
                   ? Consumer<FriendLocations>(builder: (ctx, idsTuple, _) {
                       return idsTuple.friendlist != null &&
-                              idsTuple.friendlist.length > 0
+                              idsTuple.friendlist.isNotEmpty
                           ? ListView.builder(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16.0, vertical: 8),
@@ -56,15 +56,10 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                                       borderRadius: BorderRadius.circular(8)),
                                   child: PersonDelegate(
                                     data: PersonDelegateData(
-                                      name: idsTuple
-                                              .friendlist[index].accountName +
-                                          ':' +
-                                          idsTuple
-                                              .friendlist[index].locationName,
-                                      message: idsTuple
-                                              .friendlist[index].rsGpgId +
-                                          ':' +
-                                          idsTuple.friendlist[index].rsPeerId,
+                                      name:
+                                          '${idsTuple.friendlist[index].accountName}:${idsTuple.friendlist[index].locationName}',
+                                      message:
+                                          '${idsTuple.friendlist[index].rsGpgId}:${idsTuple.friendlist[index].rsPeerId}',
                                       isOnline:
                                           idsTuple.friendlist[index].isOnline,
                                       isMessage: true,
@@ -82,11 +77,11 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                                     children: <Widget>[
                                       Image.asset(
                                           'assets/icons8/pluto-children-parent-relationships-petting-animal.png'),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20,
                                       ),
                                       Text(
-                                        "woof woof",
+                                        'woof woof',
                                         style:
                                             Theme.of(context).textTheme.body2,
                                         textAlign: TextAlign.center,
@@ -95,7 +90,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                                         padding:
                                             EdgeInsets.symmetric(vertical: 5),
                                         child: Text(
-                                          "You can add friends in the menu",
+                                          'You can add friends in the menu',
                                           style:
                                               Theme.of(context).textTheme.body1,
                                           textAlign: TextAlign.center,
