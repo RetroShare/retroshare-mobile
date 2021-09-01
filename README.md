@@ -3,7 +3,9 @@
 </div> 
 
 
-# RetroShare Mobile App
+# RetroShare Mobile App.
+
+[![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
 
 RetroShare mobile client written in Flutter.
 
