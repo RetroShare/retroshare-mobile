@@ -27,6 +27,9 @@ linter:
 
     avoid_bool_literals_in_conditional_expressions: false
 
+
+
+# lint Analyzer
 analyzer:
   errors:
     argument_type_not_assignable: ignore
@@ -39,7 +42,8 @@ analyzer:
     file_names: ignore
     avoid_void_async: error
     sized_box_for_whitespace: warning
-    lines_longer_than_80_chars: warning
+    lines_longer_than_80_chars: info
     unused_local_variable: error
     prefer_const_literals_to_create_immutables: ignore
+    avoid_redundant_argument_values: error
     
