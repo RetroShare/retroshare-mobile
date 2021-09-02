@@ -28,16 +28,13 @@ dependencies:
   tuple: ^1.0.2
   image_picker: ^0.6.6+4
   sliding_up_panel: ^0.3.4
-  flutter_barcode_scanner: ^1.0.1
   qrscan: ^0.3.2
   # Toast
   oktoast: ^2.1.8
   image_gallery_saver: ^1.6.9
   emoji_picker_flutter: ^1.0.6
-  cached_network_image: ^2.4.1
-  flutter_image_compress: ^0.7.0
   #permission_handler: ^5.1.0
-  after_layout: ^1.1.0
+ 
 
 
   # https://gitlab.com/b1rdG/retroshare-dart-see
@@ -68,9 +65,10 @@ dependencies:
   cool_alert: ^1.1.0
   shimmer: ^2.0.0
 dev_dependencies:
-  lint: ^1.0.0
   flutter_test:
     sdk: flutter
+  lint: ^1.0.0
+ 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
