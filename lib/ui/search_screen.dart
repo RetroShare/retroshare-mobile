@@ -10,7 +10,7 @@ import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SearchScreen extends StatefulWidget {
- const  SearchScreen({Key key, this.initialTab}) : super(key: key);
+  const SearchScreen({Key key, this.initialTab}) : super(key: key);
   final int initialTab;
 
   @override
@@ -96,8 +96,6 @@ class _SearchScreenState extends State<SearchScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        top: true,
-        bottom: true,
         child: Column(
           children: <Widget>[
             SizedBox(
@@ -243,7 +241,7 @@ class _SearchScreenState extends State<SearchScreen>
                             true,
                         child: Center(
                           child: SingleChildScrollView(
-                            child: Container(
+                            child: SizedBox(
                               width: 200,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -425,7 +423,8 @@ class _SearchScreenState extends State<SearchScreen>
     }
 
     return Visibility(
-//      visible: (filteredAllIds?.isNotEmpty ?? false || filteredContactsIds.isNotEmpty ),
+//      visible: (filteredAllIds?.isNotEmpty
+//?? false || filteredContactsIds.isNotEmpty ),
       visible: (filteredAllIds != null && filteredAllIds.isNotEmpty) ||
           (filteredContactsIds != null && filteredContactsIds.isNotEmpty),
       child: CustomScrollView(

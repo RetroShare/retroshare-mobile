@@ -38,10 +38,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _rightIconAnimation =
         ColorTween(begin: Colors.black12, end: Colors.lightBlueAccent)
             .animate(_tabController.animation);
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
     shadowColor = ColorTween(
-      begin: Color.fromRGBO(0, 0, 0, 0),
+      begin: const Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
 
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         color: _rightIconAnimation.value, size: 30);
   }
 
-  _appBar(height) => PreferredSize(
+  Widget _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
         child: Stack(
           children: <Widget>[
@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         height: 60,
         width: 60,
         child: FittedBox(

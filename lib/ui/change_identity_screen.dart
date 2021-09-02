@@ -29,41 +29,37 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
       backgroundColor: Colors.white,
       appBar: appBar('Change Identity', context),
       body: SafeArea(
-          top: true,
-          bottom: true,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FutureBuilder(
-                future: Provider.of<Identities>(context, listen: false)
-                    .fetchOwnidenities(),
-                builder: (context, snapshot) {
-                  return snapshot.connectionState == ConnectionState.done
-                      ? Consumer<Identities>(builder: (ctx, idsTuple, _) {
-                          List<Identity> ownIdentity = idsTuple.ownIdentity
-                              .where((element) =>
-                                  element.mId !=
-                                  '00000000000000000000000000000000')
-                              .toList();
-                          return ListView.builder(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            itemCount: ownIdentity?.length ?? 0,
-                            itemBuilder: (BuildContext context, int index) {
-                              return PersonDelegate(
-                                data: PersonDelegateData.IdentityData(
-                                    ownIdentity[index], context),
-                                isSelectable: true,
-                                onPressed: () {
-                                  final id = ownIdentity[index];
-                                  idsTuple.updateSelectedIdentity(id);
-                                },
-                              );
+        padding: const EdgeInsets.all(8.0),
+        child: FutureBuilder(
+            future: Provider.of<Identities>(context, listen: false)
+                .fetchOwnidenities(),
+            builder: (context, snapshot) {
+              return snapshot.connectionState == ConnectionState.done
+                  ? Consumer<Identities>(builder: (ctx, idsTuple, _) {
+                      List<Identity> ownIdentity = idsTuple.ownIdentity
+                          .where((element) =>
+                              element.mId != '00000000000000000000000000000000')
+                          .toList();
+                      return ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        itemCount: ownIdentity?.length ?? 0,
+                        itemBuilder: (BuildContext context, int index) {
+                          return PersonDelegate(
+                            data: PersonDelegateData.IdentityData(
+                                ownIdentity[index], context),
+                            isSelectable: true,
+                            onPressed: () {
+                              final id = ownIdentity[index];
+                              idsTuple.updateSelectedIdentity(id);
                             },
                           );
-                        })
-                      : ChangeIdentityShimmer();
-                }),
-          )),
+                        },
+                      );
+                    })
+                  : ChangeIdentityShimmer();
+            }),
+      )),
       bottomNavigationBar: BottomBar(
         child: Center(
           child: SizedBox(

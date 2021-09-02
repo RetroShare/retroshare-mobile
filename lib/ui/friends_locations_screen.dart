@@ -37,7 +37,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
       appBar: appBar('Friend Location', context),
       body: SafeArea(
         //top: true,
-        
+
         child: FutureBuilder(
             future: _getFriendsAccounts(),
             builder: (context, snapshot) {

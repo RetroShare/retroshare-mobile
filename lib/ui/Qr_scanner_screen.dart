@@ -29,7 +29,7 @@ class QRScanner extends StatefulWidget {
 class _QRScannerState extends State<QRScanner>
     with SingleTickerProviderStateMixin {
   bool check;
-  final GlobalKey _globalkey =  GlobalKey();
+  final GlobalKey _globalkey = GlobalKey();
   TextEditingController ownCertController = TextEditingController();
   TabController tabController;
 
@@ -216,7 +216,6 @@ class _QRScannerState extends State<QRScanner>
               child: Row(
                 children: <Widget>[
                   Visibility(
-                    visible: true,
                     child: SizedBox(
                       width: personDelegateHeight,
                       child: IconButton(
@@ -255,108 +254,104 @@ class _QRScannerState extends State<QRScanner>
             ),
             Expanded(
                 child: SizedBox(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                  const SizedBox(
-                    height: 20,
+                    child: Column(children: <Widget>[
+              const SizedBox(
+                height: 20,
+              ),
+              Card(
+                elevation: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(20) //         <--- border radius here
+                        ),
                   ),
-                  Card(
-                    elevation: 20,
-                    child: Container(
-                      padding: const EdgeInsets.all(25),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(
-                                20) //         <--- border radius here
-                            ),
-                      ),
-                      child: FutureBuilder(
-                          future: _getCert(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                snapshot.hasData) {
-                              return RepaintBoundary(
-                                  key: _globalkey,
-                                  child: QrImage(
-                                    errorStateBuilder: (context, result) {
-                                      return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              Constants.padding),
-                                        ),
-                                        elevation: 0,
-                                        backgroundColor: Colors.transparent,
-                                        child: contentBox(context),
-                                      );
-                                    },
-                                    data: snapshot.data,
-                                    version: QrVersions.auto,
-                                    size: 240,
-                                  ));
-                            }
-                            return SizedBox(
-                              width: 240,
-                              height: 240,
-                              child: Center(
-                                child: snapshot.connectionState ==
-                                        ConnectionState.waiting
-                                    ? Container(
-                                        child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                              onPressed: () async {},
-                                              icon: Icon(Icons.refresh)),
-                                          const Text(
-                                            'Loading',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.blueAccent),
-                                          ),
-                                        ],
-                                      ))
-                                    : Container(
-                                        child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                              onPressed: () async {},
-                                              icon: const Icon(
-                                                Icons.error,
-                                                color: Colors.grey,
-                                              )),
-                                          const Text('something went wrong !',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey)),
-                                        ],
-                                      )),
-                              ),
-                            );
-                          }),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14.0, vertical: 10),
-                    child: SwitchListTile(
-                      value: check,
-                      title: getHeaderBuilder(),
-                      onChanged: (newval) {
-                        setState(() {
-                          check = newval;
-                        });
-                        if (check)
-                          tabController.animateTo(0);
-                        else
-                          tabController.animateTo(1);
-                      },
-                    ),
-                  ),
-                  Qrinfo()
-                ]))),
+                  child: FutureBuilder(
+                      future: _getCert(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData) {
+                          return RepaintBoundary(
+                              key: _globalkey,
+                              child: QrImage(
+                                errorStateBuilder: (context, result) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          Constants.padding),
+                                    ),
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    child: contentBox(context),
+                                  );
+                                },
+                                data: snapshot.data,
+                                size: 240,
+                              ));
+                        }
+                        return SizedBox(
+                          width: 240,
+                          height: 240,
+                          child: Center(
+                            child: snapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? Container(
+                                    child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () async {},
+                                          icon: Icon(Icons.refresh)),
+                                      const Text(
+                                        'Loading',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blueAccent),
+                                      ),
+                                    ],
+                                  ))
+                                : Container(
+                                    child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () async {},
+                                          icon: const Icon(
+                                            Icons.error,
+                                            color: Colors.grey,
+                                          )),
+                                      const Text('something went wrong !',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey)),
+                                    ],
+                                  )),
+                          ),
+                        );
+                      }),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10),
+                child: SwitchListTile(
+                  value: check,
+                  title: getHeaderBuilder(),
+                  onChanged: (newval) {
+                    setState(() {
+                      check = newval;
+                    });
+                    if (check)
+                      tabController.animateTo(0);
+                    else
+                      tabController.animateTo(1);
+                  },
+                ),
+              ),
+              Qrinfo()
+            ]))),
           ]),
           Visibility(
             visible: _requestQR,
@@ -398,9 +393,10 @@ Widget Qrinfo() {
               textStyle:
                   const TextStyle(fontWeight: FontWeight.w700, fontSize: 20)),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
-          'Use Long invite when you want to connect with computers running a retroshare version <0.6.6. Otherwise you can use Short invite',
+          '''
+Use Long invite when you want to connect with computers running a retroshare version <0.6.6. Otherwise you can use Short invite''',
           style: GoogleFonts.oxygen(),
         )
       ],

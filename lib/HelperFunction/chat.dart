@@ -95,7 +95,6 @@ Chat getChat(
           interlocutorId: to.mId,
           isPublic: false,
           chatName: to.name,
-          unreadCount: 0,
           numberOfParticipants: 1,
           ownIdToUse: currentId);
       _initiateDistantChat(chat, context);

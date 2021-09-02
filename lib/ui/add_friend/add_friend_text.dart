@@ -100,11 +100,10 @@ class _GetAddfriendState extends State<GetAddfriend> {
             ),
           ),
           const Align(
-              alignment: Alignment.center,
               child: Text(
-                'OR',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )),
+            'OR',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
           FlatButton(
             onPressed: () {
               Navigator.of(context)

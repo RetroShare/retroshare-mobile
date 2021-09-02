@@ -6,7 +6,7 @@ class FriendLocations with ChangeNotifier {
   List<Location> _friendlist = [];
   List<Location> get friendlist => _friendlist;
   AuthToken _authToken;
-  setAuthToken(AuthToken authToken) {
+  void setAuthToken(AuthToken authToken) {
     _authToken = authToken;
     notifyListeners();
   }

@@ -215,11 +215,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: Row(
                                     children: <Widget>[
                                       const SizedBox(
-                                        width: 52,
-                                      ),
-                                      Container(
                                         height: 25,
-                                        child: const Align(
+                                        width: 52,
+                                        child: Align(
                                           alignment: Alignment.centerRight,
                                           child: Text(
                                             'Wrong password',

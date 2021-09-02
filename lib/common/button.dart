@@ -20,7 +20,7 @@ class Button extends StatelessWidget {
         height: buttonHeight,
         child: Row(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: personDelegateHeight,
               width: personDelegateHeight,
               child: Center(

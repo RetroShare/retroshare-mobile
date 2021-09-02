@@ -32,7 +32,6 @@ class MessageDelegate extends StatelessWidget {
           child: Card(
             color: !data.incoming ? Colors.white : Colors.white70,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Visibility(
                   visible: bubbleTitle?.isNotEmpty ?? false,
@@ -42,7 +41,7 @@ class MessageDelegate extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8.0, top: 6.0),
                           child: Text(
                             bubbleTitle ?? '',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ))),
                 ),
                 Stack(

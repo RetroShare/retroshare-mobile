@@ -50,11 +50,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     isAnonymous = true;
     _blockCreation = false;
 
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
 
-    _doneButtonController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _doneButtonController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
 
     _roomNameController.addListener(() {
       if (_isRoomCreation && _roomNameController.text.length > 2) {
@@ -103,7 +103,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Interval(
+        curve: const Interval(
           0.0,
           0.75,
           curve: Curves.easeInOut,
@@ -112,7 +112,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     );
 
     _doneButtonColor =
-        ColorTween(begin: Color(0xFF9E9E9E), end: Colors.black).animate(
+        ColorTween(begin: const Color(0xFF9E9E9E), end: Colors.black).animate(
       CurvedAnimation(
         parent: _doneButtonController,
         curve: Curves.easeInOut,
@@ -194,8 +194,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       },
       child: Scaffold(
         body: SafeArea(
-          top: true,
-          bottom: true,
           child: Column(
             children: <Widget>[
               Container(
@@ -291,7 +289,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(15),
-                                                  color: Color(0xFFF5F5F5),
+                                                  color:
+                                                      const Color(0xFFF5F5F5),
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -539,7 +538,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                     },
                     child: Container(
                       padding: const EdgeInsets.only(
-                          left: 8, top: 0, right: 16, bottom: 0),
+                        left: 8,
+                        right: 16,
+                      ),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
@@ -548,7 +549,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                         opacity: _buttonFadeAnimation,
                         child: Row(
                           children: <Widget>[
-                            Container(
+                            SizedBox(
                               height: _buttonHeightAnimation.value,
                               width: personDelegateHeight,
                               child: Center(
@@ -580,8 +581,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                 child: Stack(
                   children: <Widget>[
                     ListView.builder(
-                      padding: const EdgeInsets.only(
-                          left: 8, top: 0, right: 16, bottom: 8),
+                      padding:
+                          const EdgeInsets.only(left: 8, right: 16, bottom: 8),
 //                            itemCount: friendsSignedIdsList.length + 1,
                       itemCount: (_suggestionsList == null)
                           ? 1

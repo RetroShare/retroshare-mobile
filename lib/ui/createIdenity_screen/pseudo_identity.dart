@@ -135,9 +135,9 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                             const SizedBox(
                               width: 52,
                             ),
-                            Container(
+                            const SizedBox(
                               height: 25,
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
                                   'Name too short',
@@ -217,7 +217,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
       ),
       Visibility(
         visible: _pseduorequestCreateIdentity,
-        child: Center(
+        child: const Center(
           child: ColorLoader3(
             radius: 15.0,
             dotRadius: 6.0,

@@ -30,10 +30,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: (widget.curr.avatar == null)
                 ? BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.black))
+                    border: Border.all())
                 : BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(),
                     image: DecorationImage(
                       fit: BoxFit.fitWidth,
                       image: MemoryImage(base64.decode(widget.curr.avatar)),

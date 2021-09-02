@@ -23,10 +23,11 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(
-        vsync: this, length: widget.isFirstId ? 1 : 2, initialIndex: 0);
-    _leftTabIconColor = ColorTween(begin: Color(0xFFF5F5F5), end: Colors.white)
-        .animate(_tabController.animation);
+    _tabController =
+        TabController(vsync: this, length: widget.isFirstId ? 1 : 2);
+    _leftTabIconColor =
+        ColorTween(begin: const Color(0xFFF5F5F5), end: Colors.white)
+            .animate(_tabController.animation);
     _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
         .animate(_tabController.animation);
   }

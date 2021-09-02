@@ -24,7 +24,7 @@ class RoomChatLobby with ChangeNotifier {
 
   Future<void> updateParticipants(String lobbyId) async {
     List<Identity> participants = [];
-    var  gxsIds = await RsMsgs.getLobbyParticipants(lobbyId, _authToken);
+    var gxsIds = await RsMsgs.getLobbyParticipants(lobbyId, _authToken);
     for (int i = 0; i < gxsIds.length; i++) {
       bool success = true;
       Identity id;
@@ -37,7 +37,7 @@ class RoomChatLobby with ChangeNotifier {
       participants.add(id);
     }
     _lobbyParticipants =
-        Map.from(_lobbyParticipants ?? Map<String, List<Identity>>())
+        Map.from(_lobbyParticipants ?? <String, List<Identity>>{})
           ..putIfAbsent(lobbyId, () => [])
           ..[lobbyId] = participants;
     notifyListeners();
@@ -49,9 +49,9 @@ class RoomChatLobby with ChangeNotifier {
   }
 
   void addDistanceChat(Chat distantChat) {
-    _distanceChat = Map.from(_distanceChat ?? Map<String, Chat>())
+    _distanceChat = Map.from(_distanceChat ?? <String, Chat>{})
       ..addAll({distantChat.chatId: distantChat});
-    _messagesList = Map.from(_messagesList ?? Map<String, List<ChatMessage>>())
+    _messagesList = Map.from(_messagesList ?? <String, List<ChatMessage>>{})
       ..addAll({
         distantChat.chatId: [],
       });

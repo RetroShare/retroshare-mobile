@@ -9,7 +9,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:share/share.dart';
 
 class GetInvite extends StatefulWidget {
- const  GetInvite({Key key, this.settype}) : super(key: key);
+  const GetInvite({Key key, this.settype}) : super(key: key);
 
   final settype;
 
@@ -75,11 +75,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             scale: _leftHeaderScaleAnimation,
             child: FadeTransition(
               opacity: _leftHeaderFadeAnimation,
-              child:
-                 const Text(
-                  'Short Invite',
-                  style: TextStyle(fontSize: 15, fontFamily: 'Oxygen'),
-                
+              child: const Text(
+                'Short Invite',
+                style: TextStyle(fontSize: 15, fontFamily: 'Oxygen'),
               ),
             ),
           ),
@@ -88,9 +86,8 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             child: FadeTransition(
               opacity: _rightHeaderFadeAnimation,
               child: const Text(
-                  'Long Invite',
-                  style: TextStyle(fontSize: 15),
-                
+                'Long Invite',
+                style: TextStyle(fontSize: 15),
               ),
             ),
           ),
@@ -148,7 +145,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                           Icons.copy,
                           color: Colors.blueAccent[200],
                         )),
-                   const  Text(
+                    const Text(
                       'Tap to copy',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -182,7 +179,6 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                       ),
                       labelStyle: TextStyle(fontSize: 12),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(6))),
                 ),
               ),
@@ -193,8 +189,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                            onPressed: () async {}, icon: const Icon(Icons.refresh)),
-                       const Text(
+                            onPressed: () async {},
+                            icon: const Icon(Icons.refresh)),
+                        const Text(
                           'Loading',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -208,7 +205,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                       children: [
                         IconButton(
                             onPressed: () async {},
-                            icon:const Icon(
+                            icon: const Icon(
                               Icons.error,
                               color: Colors.grey,
                             )),
@@ -226,7 +223,6 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 14),
@@ -234,7 +230,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
           'Retroshare Invite :',
           style: TextStyle(fontSize: 16, fontFamily: 'Oxygen'),
         ),
-       const SizedBox(height: 8),
+        const SizedBox(height: 8),
         getinvitelink(),
         const SizedBox(height: 6),
         SwitchListTile(
@@ -269,15 +265,13 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                   ),
                 ),
                 padding: const EdgeInsets.all(8.0),
-                child: 
-              
-                Row(
+                child: Row(
                   children: [
                     const Icon(Icons.share, size: 17),
-                     const SizedBox(
+                    const SizedBox(
                       width: 3,
                     ),
-                   const Text(
+                    const Text(
                       'Tap to Share',
                       style: TextStyle(fontSize: 13),
                       textAlign: TextAlign.center,

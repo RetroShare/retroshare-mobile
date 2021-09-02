@@ -68,7 +68,7 @@ Widget drawerWidget(BuildContext ctx) {
                                 ),
                               ),
                         child: Visibility(
-                          visible: (curr.currentIdentity?.avatar == null),
+                          visible: curr.currentIdentity?.avatar == null,
                           child: const Center(
                             child: Icon(
                               Icons.person,
@@ -93,7 +93,6 @@ Widget drawerWidget(BuildContext ctx) {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           IconButton(
                               onPressed: () {
@@ -122,7 +121,7 @@ Widget drawerWidget(BuildContext ctx) {
                 }),
               ),
             ])),
-        Divider(),
+        const Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -150,7 +149,7 @@ Widget drawerWidget(BuildContext ctx) {
             ],
           ),
         ),
-        Spacer(),
+        const Spacer(),
         const Text(
           'V 1.0.1',
           style: TextStyle(

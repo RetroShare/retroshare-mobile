@@ -8,7 +8,7 @@ import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
- errorShowDialog(String title, String text, BuildContext context) {
+errorShowDialog(String title, String text, BuildContext context) {
   return CoolAlert.show(
     context: context,
     type: CoolAlertType.error,

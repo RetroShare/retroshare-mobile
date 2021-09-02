@@ -47,10 +47,10 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
             Identity('', true, signednameController.text, _image?.base64String),
             _image)
         .then((value) {
-          widget.isFirstId
+      widget.isFirstId
           ? Navigator.pushReplacementNamed(context, '/home')
           : Navigator.pop(context);
-        });
+    });
   }
 
   @override
@@ -104,7 +104,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Color(0xFFF5F5F5),
+                        color: const Color(0xFFF5F5F5),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       height: 40,
@@ -116,7 +116,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                             _showError = !_validate(text);
                           });
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
                               Icons.person_outline,
@@ -134,10 +134,10 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                       width: double.infinity,
                       child: Row(
                         children: <Widget>[
-                          SizedBox(
+                          const SizedBox(
                             width: 52,
                           ),
-                          Container(
+                          const SizedBox(
                             height: 25,
                             child: Align(
                               alignment: Alignment.centerRight,
@@ -154,14 +154,14 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Visibility(
             visible: !_requestCreateIdentity,
             child: BottomBar(
@@ -188,7 +188,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: <Color>[
                                 Color(0xFF00FFFF),
                                 Color(0xFF29ABE2),
@@ -217,7 +217,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
       ),
       Visibility(
         visible: _requestCreateIdentity,
-        child: Center(
+        child: const Center(
           child: ColorLoader3(
             radius: 15.0,
             dotRadius: 6.0,

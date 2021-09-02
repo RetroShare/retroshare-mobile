@@ -13,10 +13,10 @@ class SignUpScreen extends StatefulWidget {
 enum PasswordError { correct, notTheSame, tooShort }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController usernameController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  TextEditingController repeatPasswordController = new TextEditingController();
-  TextEditingController nodeNameController = new TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatPasswordController = TextEditingController();
+  TextEditingController nodeNameController = TextEditingController();
 
   bool advancedOption;
   bool isUsernameCorrect;
@@ -135,11 +135,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       children: <Widget>[
                         const SizedBox(
-                          width: 52,
-                        ),
-                        Container(
                           height: 25,
-                          child: const Align(
+                          width: 52,
+                          child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
                               'Username is too short',
@@ -189,11 +187,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       children: <Widget>[
                         const SizedBox(
-                          width: 52,
-                        ),
-                        Container(
                           height: 25,
-                          child: const Align(
+                          width: 52,
+                          child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
                               'Password is too short',
@@ -243,11 +239,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       children: <Widget>[
                         const SizedBox(
-                          width: 52,
-                        ),
-                        Container(
                           height: 25,
-                          child: const Align(
+                          width: 52,
+                          child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
                               'Passwords do not match',
@@ -303,7 +297,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Visibility(
                   visible: advancedOption,
-                  child: SizedBox(height: 10),
+                  child: const SizedBox(height: 10),
                 ),
                 Visibility(
                   visible: advancedOption,
@@ -312,7 +306,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Color(0xFFF5F5F5),
+                        color: const Color(0xFFF5F5F5),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       height: 40,

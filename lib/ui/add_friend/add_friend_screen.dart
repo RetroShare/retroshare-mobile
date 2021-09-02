@@ -16,8 +16,6 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
         appBar: appBar('Add Friend', context),
         backgroundColor: Colors.white,
         body: SafeArea(
-          top: true,
-          bottom: true,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             child: Column(

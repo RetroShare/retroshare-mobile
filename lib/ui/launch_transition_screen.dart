@@ -41,7 +41,7 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
                                   Navigator.pushNamed(context, '/signup');
                                 },
                                 textColor: Colors.white,
-                                padding:  EdgeInsets.zero,
+                                padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(

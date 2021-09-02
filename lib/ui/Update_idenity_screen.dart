@@ -28,8 +28,9 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   void initState() {
     super.initState();
     nameController = TextEditingController(text: widget.curr.name);
-    if (widget.curr.avatar != null)
-      _image = new RsGxsImage(base64.decode(widget.curr.avatar));
+    if (widget.curr.avatar != null) {
+      _image = RsGxsImage(base64.decode(widget.curr.avatar));
+    }
   }
 
   @override
@@ -42,7 +43,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     Navigator.pop(context);
     setState(() {
       if (image != null) {
-        _image = new RsGxsImage(image.readAsBytesSync());
+        _image = RsGxsImage(image.readAsBytesSync());
       }
     });
   }
@@ -84,17 +85,14 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        top: true,
-        bottom: true,
         child: Column(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: appBarHeight,
               child: Row(
                 children: <Widget>[
                   Visibility(
-                    visible: true,
-                    child: Container(
+                    child: SizedBox(
                       width: personDelegateHeight,
                       child: IconButton(
                         icon: const Icon(
@@ -121,7 +119,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                     onSelected: (val) {
                       showdeleteDialog(context);
                     },
-                    icon: Icon(Icons.more_vert),
+                    icon: const Icon(Icons.more_vert),
                     itemBuilder: (BuildContext context) {
                       return [
                         PopupMenuItem(
@@ -240,9 +238,9 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                         const SizedBox(
                                           width: 52,
                                         ),
-                                        Container(
+                                        const SizedBox(
                                           height: 25,
-                                          child: const Align(
+                                          child: Align(
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               'Name too short',

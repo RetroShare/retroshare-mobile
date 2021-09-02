@@ -53,7 +53,7 @@ class PersonDelegateData {
 
   static PersonDelegateData PublicChatData(VisibleChatLobbyRecord chatData) {
     // ignore: prefer_interpolation_to_compose_strings
-    final String message = '${chatData.lobbyTopic}' +
+    final String message = chatData.lobbyTopic +
         (chatData.totalNumberOfPeers != null || chatData.totalNumberOfPeers != 0
             ? 'Total: ${chatData.totalNumberOfPeers}'
             : ' ') +
@@ -73,7 +73,7 @@ class PersonDelegateData {
     );
   }
 
-  static  PersonDelegateData IdentityData(
+  static PersonDelegateData IdentityData(
     Identity identity,
     BuildContext context,
   ) {
@@ -102,13 +102,14 @@ class PersonDelegateData {
 }
 
 class PersonDelegate extends StatefulWidget {
+    const PersonDelegate(
+      {this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
   final PersonDelegateData data;
   final Function onPressed;
   final Function onLongPress;
   final bool isSelectable;
 
-  const PersonDelegate(
-      {this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
+
 
   @override
   _PersonDelegateState createState() => _PersonDelegateState();
@@ -177,13 +178,13 @@ class _PersonDelegateState extends State<PersonDelegate>
       },
       onTapDown: _storePosition,
       child: AnimatedContainer(
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
         curve: Curves.fastOutSlowIn,
         height: delegateHeight,
         decoration: boxShadow.value,
         child: Row(
           children: <Widget>[
-            Container(
+            SizedBox(
               width: delegateHeight,
               height: delegateHeight,
               child: Stack(
@@ -271,7 +272,7 @@ class _PersonDelegateState extends State<PersonDelegate>
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: const  EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -34,7 +34,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             height: appBarHeight,
             child: Row(
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: personDelegateHeight,
                   child: IconButton(
                     icon: const Icon(

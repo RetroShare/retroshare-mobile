@@ -4,8 +4,6 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 //// tests for ChatId
 void main() {
   group('test distant Chat', () {
-    String locationId = "814228577bc0c5da968c79272adcbfce";
-    String password = "prueba";
     //initializeAuth(locationId, password);
 //
 //    test('to test instant chat initiation', () async {

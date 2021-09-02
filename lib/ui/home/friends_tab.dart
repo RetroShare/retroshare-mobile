@@ -114,7 +114,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     SliverOpacity(
                       opacity: (friendsDistantAndIdsTuple.item2?.isNotEmpty ??
                                   false) &&
-                              (friendsDistantAndIdsTuple.item2.length > 0 ??
+                              (friendsDistantAndIdsTuple.item2.isNotEmpty ??
                                   false)
                           ? 1.0
                           : 0.0,
@@ -130,7 +130,8 @@ class _FriendsTabState extends State<FriendsTab> {
                         itemExtent: personDelegateHeight,
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                            Identity actualId = friendsDistantAndIdsTuple.item3[
+                            final Identity actualId =
+                             friendsDistantAndIdsTuple.item3[
                                     friendsDistantAndIdsTuple
                                         .item2[index]?.interlocutorId] ??
                                 Identity(friendsDistantAndIdsTuple
@@ -164,7 +165,8 @@ class _FriendsTabState extends State<FriendsTab> {
                               ),
                             );
                           },
-                          childCount: friendsDistantAndIdsTuple.item2.length,
+                          childCount: friendsDistantAndIdsTuple.item2.
+                          toSet().length,
                         ),
                       ),
                     ),
@@ -183,7 +185,7 @@ class _FriendsTabState extends State<FriendsTab> {
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           'Looks like an empty space',
                           style: Theme.of(context).textTheme.body2,
@@ -191,7 +193,7 @@ class _FriendsTabState extends State<FriendsTab> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           'You can add friends in the menu',
                           style: Theme.of(context).textTheme.body1,

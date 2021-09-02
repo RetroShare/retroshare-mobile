@@ -2,7 +2,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-
 class ColorLoader3 extends StatefulWidget {
   const ColorLoader3({this.radius = 30.0, this.dotRadius = 3.0});
   final double radius;
@@ -29,8 +28,7 @@ class _ColorLoader3State extends State<ColorLoader3>
     dotRadius = widget.dotRadius;
 
     controller = AnimationController(
-        duration: const Duration(milliseconds: 3000),
-        vsync: this);
+        duration: const Duration(milliseconds: 3000), vsync: this);
 
     animation_rotation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -72,19 +70,19 @@ class _ColorLoader3State extends State<ColorLoader3>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 100.0,
       height: 100.0,
       //color: Colors.black12,
       child: Center(
-        child:  RotationTransition(
+        child: RotationTransition(
           turns: animation_rotation,
-          child:  Container(
+          child: Container(
             //color: Colors.limeAccent,
-            child:  Center(
+            child: Center(
               child: Stack(
                 children: <Widget>[
-                   Transform.translate(
+                  Transform.translate(
                     offset: Offset(0.0, 0.0),
                     child: Dot(
                       radius: radius,
@@ -100,10 +98,9 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.amber,
                     ),
-                    
                   ),
-                   Transform.translate(
-                     offset: Offset(
+                  Transform.translate(
+                    offset: Offset(
                       radius * cos(0.0 + 1 * pi / 4),
                       radius * sin(0.0 + 1 * pi / 4),
                     ),
@@ -111,10 +108,9 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.deepOrangeAccent,
                     ),
-                    
                   ),
-                   Transform.translate(
-                     offset: Offset(
+                  Transform.translate(
+                    offset: Offset(
                       radius * cos(0.0 + 2 * pi / 4),
                       radius * sin(0.0 + 2 * pi / 4),
                     ),
@@ -122,10 +118,9 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.pinkAccent,
                     ),
-                   
                   ),
-                   Transform.translate(
-                      offset: Offset(
+                  Transform.translate(
+                    offset: Offset(
                       radius * cos(0.0 + 3 * pi / 4),
                       radius * sin(0.0 + 3 * pi / 4),
                     ),
@@ -133,9 +128,8 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.purple,
                     ),
-                   
                   ),
-                   Transform.translate(
+                  Transform.translate(
                     offset: Offset(
                       radius * cos(0.0 + 4 * pi / 4),
                       radius * sin(0.0 + 4 * pi / 4),
@@ -144,10 +138,9 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.yellow,
                     ),
-                    
                   ),
                   Transform.translate(
-                     offset: Offset(
+                    offset: Offset(
                       radius * cos(0.0 + 5 * pi / 4),
                       radius * sin(0.0 + 5 * pi / 4),
                     ),
@@ -155,7 +148,6 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.lightGreen,
                     ),
-                   
                   ),
                   Transform.translate(
                     offset: Offset(
@@ -166,7 +158,6 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.orangeAccent,
                     ),
-                    
                   ),
                   Transform.translate(
                     offset: Offset(
@@ -177,7 +168,6 @@ class _ColorLoader3State extends State<ColorLoader3>
                       radius: dotRadius,
                       color: Colors.blueAccent,
                     ),
-                    
                   ),
                 ],
               ),
@@ -203,7 +193,7 @@ class Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
+    return Center(
       child: Container(
         width: radius,
         height: radius,

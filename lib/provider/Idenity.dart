@@ -1,4 +1,3 @@
-
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:retroshare/HelperFunction/identity.dart';
@@ -43,7 +42,7 @@ class Identities with ChangeNotifier {
   }
 
   Future<void> createnewIdenity(Identity id, RsGxsImage image) async {
-    Identity newIdentity =
+    final Identity newIdentity =
         await RsIdentity.createIdentity(id, image, _authToken);
     _ownidentities.add(newIdentity);
     _currentIdentity = newIdentity;
@@ -58,8 +57,8 @@ class Identities with ChangeNotifier {
       if (!success) throw HttpException('BAD REQUEST');
       // ignore: unrelated_type_equality_checks
       _ownidentities.removeWhere((element) => element.mId == _currentIdentity);
-      Random random = new Random();
-      int randomNum = random.nextInt(_ownidentities.length);
+      final Random random = Random();
+      final int randomNum = random.nextInt(_ownidentities.length);
       _currentIdentity = _ownidentities[randomNum];
       _selected = _currentIdentity;
       notifyListeners();
@@ -69,7 +68,8 @@ class Identities with ChangeNotifier {
   }
 
   Future<void> updateIdentity(Identity id, RsGxsImage avatar) async {
-    bool success = await RsIdentity.updateIdentity(id, avatar, _authToken);
+    final bool success =
+        await RsIdentity.updateIdentity(id, avatar, _authToken);
     if (!success) throw 'Try Again';
     for (var i in _ownidentities) {
       if (i.mId == id.mId) {

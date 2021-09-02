@@ -7,7 +7,7 @@ class ChatLobby with ChangeNotifier {
   List<Chat> get subscribedlist => _chatlist;
   AuthToken _authToken;
 
-  void setAuthToken(AuthToken authToken)  {
+  void setAuthToken(AuthToken authToken) {
     _authToken = authToken;
     notifyListeners();
   }
