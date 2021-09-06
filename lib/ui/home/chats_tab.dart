@@ -7,7 +7,7 @@ import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/common/styles.dart';
 
 class ChatsTab extends StatelessWidget {
-  void _unsubscribeChatLobby(lobbyId, context) async {
+  Future<void> _unsubscribeChatLobby(lobbyId, context) async {
     Provider.of<ChatLobby>(context, listen: false).unsubscribed(lobbyId);
   }
 
@@ -24,7 +24,7 @@ class ChatsTab extends StatelessWidget {
                   ? Consumer<ChatLobby>(
                       builder: (context, chatsList, _) {
                         if (chatsList.subscribedlist != null &&
-                            chatsList.subscribedlist?.isNotEmpty)
+                            chatsList.subscribedlist?.isNotEmpty) {
                           return CustomScrollView(
                             slivers: <Widget>[
                               SliverPadding(
@@ -48,8 +48,8 @@ class ChatsTab extends StatelessWidget {
                                         },
                                         onLongPress: (Offset tapPosition) {
                                           showCustomMenu(
-                                              "Unsubscribe chat lobby",
-                                              Icon(
+                                              'Unsubscribe chat lobby',
+                                              const Icon(
                                                 Icons.delete,
                                                 color: Colors.black,
                                               ),
@@ -70,6 +70,7 @@ class ChatsTab extends StatelessWidget {
                               )
                             ],
                           );
+                        }
 
                         return Center(
                           child: SizedBox(
@@ -96,4 +97,3 @@ class ChatsTab extends StatelessWidget {
             }));
   }
 }
-

@@ -6,8 +6,9 @@ import 'package:retroshare/ui/createIdenity_screen/create_signed_identity.dart';
 import 'package:retroshare/ui/createIdenity_screen/pseudo_identity.dart';
 
 class CreateIdentityScreen extends StatefulWidget {
-  CreateIdentityScreen({Key key, this.isFirstId = false}) : super(key: key);
-  final isFirstId;
+  const CreateIdentityScreen({Key key, this.isFirstId = false})
+      : super(key: key);
+  final bool isFirstId;
 
   @override
   _CreateIdentityScreenState createState() => _CreateIdentityScreenState();
@@ -22,9 +23,11 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: 2, initialIndex: 0);
-    _leftTabIconColor = ColorTween(begin: Color(0xFFF5F5F5), end: Colors.white)
-        .animate(_tabController.animation);
+    _tabController =
+        TabController(vsync: this, length: widget.isFirstId ? 1 : 2);
+    _leftTabIconColor =
+        ColorTween(begin: const Color(0xFFF5F5F5), end: Colors.white)
+            .animate(_tabController.animation);
     _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
         .animate(_tabController.animation);
   }
@@ -34,15 +37,13 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: appBar('Create Identity',context),
+      appBar: appBar('Create Identity', context),
       body: SafeArea(
-        top: true,
-        bottom: true,
         child: Column(
           children: <Widget>[
             Container(
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   bottom: (appBarHeight - 40) / 2,
                   top: 20,
                 ),
@@ -67,9 +68,9 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                               padding: EdgeInsets.all(8),
                               child: Center(
                                 child: Text(
-                                  'Pseudo Identity',
-                                  style: Theme.of(context).textTheme.body2,
+                                  'Signed Identity',
                                   overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.body2,
                                 ),
                               ),
                             ),
@@ -77,7 +78,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                         );
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     AnimatedBuilder(
@@ -98,7 +99,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                               padding: EdgeInsets.all(8),
                               child: Center(
                                 child: Text(
-                                  'Signed Identity',
+                                  ' Pseudo Identity',
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.body2,
                                 ),
@@ -114,8 +115,9 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
             ),
             Expanded(
                 child: TabBarView(controller: _tabController, children: [
-              PseudoSignedIdenityTab(widget.isFirstId, UniqueKey()),
-              SignedIdenityTab(widget.isFirstId, UniqueKey())
+              SignedIdenityTab(widget.isFirstId, UniqueKey()),
+              if (!widget.isFirstId)
+                PseudoSignedIdenityTab(widget.isFirstId, UniqueKey()),
             ])),
           ],
         ),

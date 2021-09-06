@@ -9,7 +9,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:share/share.dart';
 
 class GetInvite extends StatefulWidget {
-  GetInvite({Key key, this.settype}) : super(key: key);
+  const GetInvite({Key key, this.settype}) : super(key: key);
 
   final settype;
 
@@ -58,10 +58,11 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
     String ownCert;
     final authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
-    if (!check)
-      ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll("\n", "");
-    else
-      ownCert = (await RsPeers.getShortInvite(authToken));
+    if (!check) {
+      ownCert = (await RsPeers.getOwnCert(authToken)).replaceAll('\n', '');
+    } else {
+      ownCert = await RsPeers.getShortInvite(authToken);
+    }
     Future.delayed(Duration(milliseconds: 60));
     return ownCert;
   }
@@ -74,11 +75,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             scale: _leftHeaderScaleAnimation,
             child: FadeTransition(
               opacity: _leftHeaderFadeAnimation,
-              child: Container(
-                child: Text(
-                  'Short Invite',
-                  style: TextStyle(fontSize: 15, fontFamily: "Oxygen"),
-                ),
+              child: const Text(
+                'Short Invite',
+                style: TextStyle(fontSize: 15, fontFamily: 'Oxygen'),
               ),
             ),
           ),
@@ -86,11 +85,9 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             scale: _rightHeaderScaleAnimation,
             child: FadeTransition(
               opacity: _rightHeaderFadeAnimation,
-              child: Container(
-                child: Text(
-                  'Long Invite',
-                  style: TextStyle(fontSize: 15),
-                ),
+              child: const Text(
+                'Long Invite',
+                style: TextStyle(fontSize: 15),
               ),
             ),
           ),
@@ -124,14 +121,13 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                     textAlign: TextAlign.center,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
-                        prefix: SizedBox(
+                        prefix: const SizedBox(
                           width: 10,
                         ),
                         filled: true,
                         fillColor: Colors.black.withOpacity(.2),
-                        labelStyle: TextStyle(fontSize: 12),
+                        labelStyle: const TextStyle(fontSize: 12),
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(6))),
                   ),
                 ),
@@ -149,10 +145,11 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                           Icons.copy,
                           color: Colors.blueAccent[200],
                         )),
-                    Text(
-                      "Tap to copy",
+                    const Text(
+                      'Tap to copy',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontFamily: "Oxygen",
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Oxygen',
                           color: Colors.blueAccent),
                     ),
                   ],
@@ -171,30 +168,31 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                   maxLines: 10,
                   minLines: 10,
                   style: GoogleFonts.oxygen(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                     fontSize: 12,
                   )),
                   textAlign: TextAlign.center,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
-                      prefix: SizedBox(
+                      prefix: const SizedBox(
                         width: 10,
                       ),
                       labelStyle: TextStyle(fontSize: 12),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(6))),
                 ),
               ),
+              // ignore: prefer_if_elements_to_conditional_expressions
               snapshot.connectionState == ConnectionState.waiting
                   ? Container(
                       child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                            onPressed: () async {}, icon: Icon(Icons.refresh)),
-                        Text(
-                          "Loading",
+                            onPressed: () async {},
+                            icon: const Icon(Icons.refresh)),
+                        const Text(
+                          'Loading',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.blueAccent),
@@ -207,11 +205,11 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                       children: [
                         IconButton(
                             onPressed: () async {},
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.error,
                               color: Colors.grey,
                             )),
-                        Text("something went wrong !",
+                        const Text('something went wrong !',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey)),
@@ -225,14 +223,16 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 14),
-        Text('Retroshare Invite :' ,style: TextStyle(fontSize: 16,fontFamily: "Oxygen"),),
-        SizedBox(height: 8),
+        const SizedBox(height: 14),
+        const Text(
+          'Retroshare Invite :',
+          style: TextStyle(fontSize: 16, fontFamily: 'Oxygen'),
+        ),
+        const SizedBox(height: 8),
         getinvitelink(),
-        SizedBox(height:6),
+        const SizedBox(height: 6),
         SwitchListTile(
           value: check,
           title: getHeaderBuilder(),
@@ -248,14 +248,14 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             Share.share(ownCertController.text);
           },
           textColor: Colors.white,
-          padding: const EdgeInsets.all(0.0),
+          padding: EdgeInsets.zero,
           child: Center(
             child: SizedBox(
               width: 120,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: <Color>[
                       Color(0xFF00FFFF),
                       Color(0xFF29ABE2),
@@ -267,9 +267,10 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Icon(Icons.share,size: 17),
-                    SizedBox(width: 3,),
-                    
+                    const Icon(Icons.share, size: 17),
+                    const SizedBox(
+                      width: 3,
+                    ),
                     const Text(
                       'Tap to Share',
                       style: TextStyle(fontSize: 13),
@@ -281,9 +282,7 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             ),
           ),
         )
-        
       ],
     );
-    
   }
 }

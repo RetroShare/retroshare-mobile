@@ -32,7 +32,6 @@ class MessageDelegate extends StatelessWidget {
           child: Card(
             color: !data.incoming ? Colors.white : Colors.white70,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Visibility(
                   visible: bubbleTitle?.isNotEmpty ?? false,
@@ -41,8 +40,8 @@ class MessageDelegate extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.only(left: 8.0, top: 6.0),
                           child: Text(
-                            bubbleTitle == null ? "" : bubbleTitle,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            bubbleTitle ?? '',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ))),
                 ),
                 Stack(
@@ -50,16 +49,15 @@ class MessageDelegate extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 8.0, right: 8.0, bottom: 8.0, top: 4.0),
-                      child: !(isMessageType(data.msg))
+                      child: !isMessageType(data.msg)
                           ? Html(
-                              data: (data.msg) +
-                                  "<span> &nbsp;&nbsp;&nbsp;</span>" // Todo: add some white space to don't overlap the time
+                              data:
+                                  '${data.msg}<span> &nbsp;&nbsp;&nbsp;</span>' // Todo: add some white space to don't overlap the time
                               )
                           : FadeInImage(
                               alignment: Alignment.centerLeft,
                               imageErrorBuilder: (BuildContext context,
                                   Object exception, StackTrace stackTrace) {
-                                print('Error Handler');
                                 return Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -67,7 +65,7 @@ class MessageDelegate extends StatelessWidget {
                                       textAlign: TextAlign.left,
                                     ));
                               },
-                              placeholder: NetworkImage(
+                              placeholder: const NetworkImage(
                                   'http://via.placeholder.com/10x10'),
                               image: MemoryImage(base64.decode(data.msg)),
                               fit: BoxFit.fill,
@@ -75,24 +73,17 @@ class MessageDelegate extends StatelessWidget {
                     ),
                     //real additionalInfo
                     Positioned(
+                      right: 8.0,
+                      bottom: 4.0,
                       child: Text(
-                        DateTime.fromMillisecondsSinceEpoch(
-                                    (data.recvTime ?? data.recvTime) * 1000)
-                                .hour
-                                .toStringAsFixed(0) +
-                            ":" +
-                            DateTime.fromMillisecondsSinceEpoch(
-                                    (data.sendTime ?? data.recvTime) * 1000)
-                                .minute
-                                .toString()
-                                .padLeft(2, '0'),
-                        style: TextStyle(
+                        '${DateTime.fromMillisecondsSinceEpoch((data.recvTime ?? data.recvTime) * 1000).hour
+                            // ignore: lines_longer_than_80_chars
+                            .toStringAsFixed(0)}:${DateTime.fromMillisecondsSinceEpoch((data.sendTime ?? data.recvTime) * 1000).minute.toString().padLeft(2, '0')}',
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 11.0,
                         ),
                       ),
-                      right: 8.0,
-                      bottom: 4.0,
                     )
                   ],
                 ),

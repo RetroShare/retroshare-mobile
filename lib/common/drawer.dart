@@ -14,24 +14,27 @@ Widget drawerWidget(BuildContext ctx) {
       height: 60,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: InkWell(
-          child: Row(children: [
-            Icon(
-              icon,
-              size: 30,
-              color: Theme.of(ctx).textTheme.body2.color,
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 17,
-                  fontFamily: 'Vollkorn',
-                  fontWeight: FontWeight.w500),
-            ),
-          ]),
-          onTap: changeState),
+        onTap: () {
+          changeState();
+        },
+        child: Row(children: <Widget>[
+          Icon(
+            icon,
+            size: 30,
+            color: Theme.of(ctx).textTheme.body2.color,
+          ),
+          const SizedBox(
+            width: 15.0,
+          ),
+          Text(
+            title,
+            style: const TextStyle(
+                fontFamily: 'Vollkorn',
+                fontSize: 17,
+                fontWeight: FontWeight.w500),
+          ),
+        ]),
+      ),
     );
   }
 
@@ -42,19 +45,8 @@ Widget drawerWidget(BuildContext ctx) {
             alignment: Alignment.center,
             margin: const EdgeInsets.only(top: 2),
             height: MediaQuery.of(ctx).size.height * .35,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: <Color>[
-                    
-                  Color(0xFF29ABE2),
-                  Color(0xFF00FFFF),
-                ],
-                begin: Alignment(-1.0, -1.0),
-                end: Alignment(0.1, 0.2),
-              ),
-            ),
-            child: Stack(
-              children:[ Center(
+            child: Stack(children: [
+              Center(
                 child: Consumer<Identities>(builder: (context, curr, _) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -64,20 +56,20 @@ Widget drawerWidget(BuildContext ctx) {
                         width: 100,
                         decoration: (curr.currentIdentity.avatar == null)
                             ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.black))
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(color: Colors.black38))
                             : BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(color: Colors.black38),
                                 image: DecorationImage(
                                   fit: BoxFit.fitWidth,
-                                  image: MemoryImage(
-                                      base64.decode(curr.currentIdentity.avatar)),
+                                  image: MemoryImage(base64
+                                      .decode(curr.currentIdentity.avatar)),
                                 ),
                               ),
                         child: Visibility(
-                          visible: (curr.currentIdentity?.avatar == null),
-                          child: Center(
+                          visible: curr.currentIdentity?.avatar == null,
+                          child: const Center(
                             child: Icon(
                               Icons.person,
                               size: 80,
@@ -85,30 +77,30 @@ Widget drawerWidget(BuildContext ctx) {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       FittedBox(
                         child: Text(
                           curr.currentIdentity.name,
-                          style: TextStyle(
-                              fontFamily: "Vollkorn",
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black),
+                          style: const TextStyle(
+                            fontFamily: 'Vollkorn',
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           IconButton(
                               onPressed: () {
-                                Navigator.of(context).pushNamed('/updateIdentity',
+                                Navigator.of(context).pushNamed(
+                                    '/updateIdentity',
                                     arguments: {'id': curr.currentIdentity});
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 FontAwesomeIcons.userEdit,
                                 size: 18,
                                 color: Colors.blue,
@@ -117,7 +109,7 @@ Widget drawerWidget(BuildContext ctx) {
                               onPressed: () {
                                 showdeleteDialog(context);
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 FontAwesomeIcons.trash,
                                 size: 18,
                                 color: Colors.red,
@@ -128,8 +120,8 @@ Widget drawerWidget(BuildContext ctx) {
                   );
                 }),
               ),
-               ] )),
-        Divider(),
+            ])),
+        const Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -157,15 +149,15 @@ Widget drawerWidget(BuildContext ctx) {
             ],
           ),
         ),
-        Spacer(),
-        Text(
-          "V 1.0.1",
+        const Spacer(),
+        const Text(
+          'V 1.0.1',
           style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.blueAccent),
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         )
       ],
@@ -179,7 +171,7 @@ AppBar appBar(String title, BuildContext context) {
     shadowColor: Colors.transparent,
     title: Text(
       title,
-      style: TextStyle(color: Colors.black, fontSize: 14.5),
+      style: const TextStyle(color: Colors.black, fontSize: 14.5),
     ),
     leading: BackButton(
       color: Colors.black,
@@ -196,32 +188,38 @@ class NotificationIcon extends StatefulWidget {
 }
 
 class _NotificationIconState extends State<NotificationIcon> {
-
-  Future<dynamic> _inviteList() async{
-    final authToken =
+  Future<dynamic> _inviteList() async {
+    final AuthToken authToken =
         Provider.of<AccountCredentials>(context, listen: false).authtoken;
-    return await RsMsgs.getPendingChatLobbyInvites(authToken);
+    return RsMsgs.getPendingChatLobbyInvites(authToken);
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Icon(Icons.notifications,color: Theme.of(context).primaryColor,size:28),
+        Icon(Icons.notifications,
+            color: Theme.of(context).primaryColor, size: 28),
         Positioned(
-          top: 1,
-          right: 1,
-          child: CircleAvatar(
-          backgroundColor: Colors.red,
-          radius: 7,
-          child: FutureBuilder(
-            future: _inviteList(),
-          builder: (context, snapshot) {
-            return snapshot.connectionState == ConnectionState.done && snapshot.hasData
-                ? FittedBox(child: Text(snapshot.data.length.toString(),style: TextStyle(fontSize: 8),))
-                : FittedBox(child:Text('0',
-                            style: TextStyle(fontSize: 8)));
-          },
-        ))),
+            top: 1,
+            right: 1,
+            child: CircleAvatar(
+                backgroundColor: Colors.purple,
+                radius: 7,
+                child: FutureBuilder(
+                  future: _inviteList(),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData
+                        ? FittedBox(
+                            child: Text(
+                            snapshot.data.length.toString(),
+                            style: const TextStyle(fontSize: 8),
+                          ))
+                        : const FittedBox(
+                            child: Text('0', style: TextStyle(fontSize: 8)));
+                  },
+                ))),
       ],
     );
   }

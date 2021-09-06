@@ -8,17 +8,14 @@ import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class RoomFriendsTab extends StatefulWidget {
+  const RoomFriendsTab({this.chat});
   final Chat chat;
-
-  RoomFriendsTab({this.chat});
-
   @override
   _RoomFriendsTabState createState() => _RoomFriendsTabState();
 }
 
 class _RoomFriendsTabState extends State<RoomFriendsTab> {
 //  List<Identity> _lobbyParticipantsList = List<Identity>();
-  var _tapPosition;
   Image myImage;
   @override
   void initState() {
@@ -37,9 +34,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
         .toggleContacts(gxsId, true);
   }
 
-  void _storePosition(TapDownDetails details) {
-    _tapPosition = details.globalPosition;
-  }
+  void _storePosition(TapDownDetails details) {}
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +42,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
         future: Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat?.chatId),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done)
+          if (snapshot.connectionState == ConnectionState.done) {
             return Consumer<RoomChatLobby>(
                 builder: (context, lobbyParticipantsList, _) {
               List<Identity> _lobbyParticipantsList = widget.chat?.chatId !=
@@ -73,8 +68,8 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                 _lobbyParticipantsList[index], context),
                             onLongPress: (Offset tapPosition) {
                               showCustomMenu(
-                                  "Add to contacts",
-                                  Icon(
+                                  'Add to contacts',
+                                  const Icon(
                                     Icons.add,
                                     color: Colors.black,
                                   ),
@@ -101,7 +96,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             myImage,
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Padding(
@@ -120,7 +115,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 50,
                             ),
                           ],
@@ -128,7 +123,8 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                       ),
                     );
             });
-          return Center(child: CircularProgressIndicator());
+          }
+          return const Center(child: CircularProgressIndicator());
         });
   }
 }

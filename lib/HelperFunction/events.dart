@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import "package:eventsource/eventsource.dart";
+import 'package:eventsource/eventsource.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 Map<RsEventType, StreamSubscription<Event>> rsEventsSubscriptions;
 
 /// Register event specifically for chat messages
-/// This function add code to deserialization of the message, automatizing the process.
+/// This function add code to deserialization of
+/// the message, automatizing the process.
 Future<StreamSubscription<Event>> eventsRegisterChatMessage(
     {Function listenCb, Function onError, AuthToken authToken}) async {
-  return await registerEvent(RsEventType.CHAT_MESSAGE, (Event event) {
+  return registerEvent(RsEventType.CHAT_MESSAGE, (Event event) {
     // Deserialize the message
 
-    var jsonData = event.data != null ? jsonDecode(event.data) : null;
+    final jsonData = event.data != null ? jsonDecode(event.data) : null;
     ChatMessage chatMessage;
     if (jsonData['event'] != null) {
       chatMessage = ChatMessage.fromJson(jsonData['event']['mChatMessage']);
@@ -28,23 +29,24 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
 Future<StreamSubscription<Event>> registerEvent(
     RsEventType eventType, Function listenCb, AuthToken authToken,
     {Function onError}) async {
-  var body = {'eventType': eventType.index};
-  String url = "http://127.0.0.1:9092/rsEvents/registerEventsHandler";
-  EventSource eventSource = await EventSource.connect(
+  final body = {'eventType': eventType.index};
+  const String url = 'http://127.0.0.1:9092/rsEvents/registerEventsHandler';
+  final EventSource eventSource = await EventSource.connect(
     url,
-    method: "POST",
+    method: 'POST',
     body: body,
     headers: {
       HttpHeaders.authorizationHeader:
-          'Basic ' + base64.encode(utf8.encode('$authToken'))
+          'Basic ${base64.encode(utf8.encode('$authToken'))}'
     },
   );
 
-  StreamSubscription<Event> streamSubscription = eventSource.listen(listenCb);
+  final StreamSubscription<Event> streamSubscription =
+      eventSource.listen(listenCb);
   streamSubscription.onError(onError);
 
   // Store the subscription on a dictionary
-  rsEventsSubscriptions ??= Map();
+  rsEventsSubscriptions ??= {};
   rsEventsSubscriptions[eventType] = streamSubscription;
   return streamSubscription;
 }

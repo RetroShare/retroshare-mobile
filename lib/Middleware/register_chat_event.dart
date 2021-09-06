@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/HelperFunction/events.dart';
+import 'package:retroshare/HelperFunction/identity.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
@@ -14,15 +15,15 @@ Future<void> registerChatEvent(
           AuthToken authToken =
               Provider.of<RoomChatLobby>(context, listen: false).authToken;
           // Check if is a lobby chat
-          if (msg.chat_id.lobbyId.xstr64 != "0") {
+          if (msg.chat_id.lobbyId.xstr64 != '0') {
             chatMiddleware(msg, context);
             Provider.of<RoomChatLobby>(context, listen: false)
                 .addChatMessage(msg, msg.chat_id.lobbyId.xstr64);
           }
           // Check if is distant chat message
-          else if (msg.chat_id.distantChatId !=
-              "00000000000000000000000000000000") {
-            // First check if the recieved message is from an already registered chat
+          else if (isNullCheck(msg.chat_id.distantChatId)) {
+            // First check if the recieved message
+            //is from an already registered chat
             chatMiddleware(msg, context);
             !Chat.distantChatExistsStore(
                     msg.chat_id.distantChatId,
@@ -40,14 +41,10 @@ Future<void> registerChatEvent(
                         chatId: msg.chat_id.distantChatId);
                     Chat.addDistantChat(res.toId, res.ownId, res.peerId);
                     chatActionMiddleware(chat, context);
-                    dynamic allIDs =
-                        Provider.of<FriendsIdentity>(context, listen: false)
-                            .allIdentity;
-                    allIDs = Provider.of<RoomChatLobby>(context, listen: false)
-                        .addDistanceChat(chat, allIDs);
+                    Provider.of<RoomChatLobby>(context, listen: false)
+                        .addDistanceChat(chat);
                     Provider.of<FriendsIdentity>(context, listen: false)
-                        .setAllIds(allIDs);
-
+                        .setAllIds(chat);
                     // Finally send AddChatMessageAction
 
                     Provider.of<RoomChatLobby>(context, listen: false)

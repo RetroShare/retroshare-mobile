@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/friends_identity.dart';
-import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class RoomScreen extends StatefulWidget {
+  const RoomScreen({Key key, this.isRoom = false, this.chat}) : super(key: key);
   final bool isRoom;
   final Chat chat;
-  RoomScreen({Key key, this.isRoom = false, this.chat}) : super(key: key);
+
   @override
   _RoomScreenState createState() => _RoomScreenState();
 }
@@ -30,21 +30,31 @@ class _RoomScreenState extends State<RoomScreen>
   void initState() {
     super.initState();
 
-    _tabController =
-        new TabController(vsync: this, length: widget.isRoom ? 2 : 1);
+    _tabController = TabController(vsync: this, length: widget.isRoom ? 2 : 1);
 
     _iconAnimation =
         ColorTween(begin: Colors.black, end: Colors.lightBlueAccent)
             .animate(_tabController.animation);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.chat?.unreadCount = 0;
-      final authToken =
-          Provider.of<AccountCredentials>(context, listen: false).authtoken;
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
             .updateParticipants(widget.chat?.chatId);
       }
+      Provider.of<RoomChatLobby>(context, listen: false)
+          .updateCurrentChat(widget.chat);
     });
+  }
+
+  @override
+  void deactivate() {
+    Future.delayed(Duration.zero, () async {
+      if (mounted) {
+        Provider.of<RoomChatLobby>(context, listen: false)
+            .updateCurrentChat(null);
+      }
+    });
+    super.deactivate();
   }
 
   @override
@@ -55,11 +65,9 @@ class _RoomScreenState extends State<RoomScreen>
 
   @override
   Widget build(BuildContext context) {
-    var friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
+    final friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
     return Scaffold(
       body: SafeArea(
-        top: true,
-        bottom: true,
         child: friendIdentity != null
             ? Column(
                 children: <Widget>[
@@ -68,10 +76,10 @@ class _RoomScreenState extends State<RoomScreen>
                     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 16.0, 0.0),
                     child: Row(
                       children: <Widget>[
-                        Container(
+                        SizedBox(
                           width: personDelegateHeight,
                           child: IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.arrow_back,
                               size: 25,
                             ),
@@ -84,11 +92,11 @@ class _RoomScreenState extends State<RoomScreen>
                         ),
                         Visibility(
                           visible: !widget.isRoom,
-                          child: Container(
+                          child: SizedBox(
                             width: appBarHeight,
                             height: appBarHeight,
                             child: Stack(
-                              alignment: Alignment(-1.0, 0.0),
+                              alignment: Alignment.centerLeft,
                               children: <Widget>[
                                 Center(
                                   child: Container(
@@ -104,7 +112,6 @@ class _RoomScreenState extends State<RoomScreen>
                                             false)
                                         ? null
                                         : BoxDecoration(
-                                            border: null,
                                             color: Colors.lightBlueAccent,
                                             borderRadius: BorderRadius.circular(
                                                 appBarHeight * 0.70 * 0.33),
@@ -117,14 +124,15 @@ class _RoomScreenState extends State<RoomScreen>
                                                         .avatar))),
                                           ),
                                     child: Visibility(
-                                      visible: (widget.chat?.interlocutorId ==
-                                                  null ||
-                                              friendIdentity
-                                                      .allIdentity[widget
-                                                          .chat?.interlocutorId]
-                                                      ?.avatar ==
-                                                  null ??
-                                          false),
+                                      visible:
+                                          widget.chat?.interlocutorId == null ||
+                                                  friendIdentity
+                                                          .allIdentity[widget
+                                                              .chat
+                                                              ?.interlocutorId]
+                                                          ?.avatar ==
+                                                      null ??
+                                              false,
                                       child: Center(
                                         child: Icon(
                                           (widget.chat?.isPublic == null ||
@@ -160,7 +168,7 @@ class _RoomScreenState extends State<RoomScreen>
                             ),
                           ),
                         ),
-                        SizedBox(width: 8.0),
+                        const SizedBox(width: 8.0),
                         Expanded(
                           child: Text(
                             widget.isRoom
@@ -181,7 +189,7 @@ class _RoomScreenState extends State<RoomScreen>
                             animation: _tabController.animation,
                             builder: (BuildContext context, Widget widget) {
                               return IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.people,
                                   size: 25,
                                 ),
@@ -213,7 +221,7 @@ class _RoomScreenState extends State<RoomScreen>
                   ),
                 ],
               )
-            : Center(child: CircularProgressIndicator()),
+            : const Center(child: CircularProgressIndicator()),
       ),
     );
   }

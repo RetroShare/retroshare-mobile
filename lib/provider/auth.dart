@@ -17,16 +17,17 @@ class AccountCredentials with ChangeNotifier {
     _loggedinAccount = acc;
   }
 
-  get authtoken => _authToken;
+  AuthToken get authtoken => _authToken;
 
-  fetchAuthAccountList() async {
+  Future<void> fetchAuthAccountList() async {
     try {
       final resp = await RsLoginHelper.getLocations();
       List<Account> accountsList = [];
       resp.forEach((location) {
-        if (location != null)
+        if (location != null) {
           accountsList.add(Account(location['mLocationId'], location['mPgpId'],
               location['mLocationName'], location['mPgpName']));
+        }
       });
       _accountsList = accountsList;
       notifyListeners();
@@ -37,12 +38,12 @@ class AccountCredentials with ChangeNotifier {
     }
   }
 
-  get getlastAccountUsed => _lastAccountUsed;
+  Account get getlastAccountUsed => _lastAccountUsed;
 
   Future<Account> setlastAccountUsed() async {
     try {
-      var currAccount = await RsAccounts.getCurrentAccountId(_authToken);
-      for (Account account in _accountsList) {
+      final currAccount = await RsAccounts.getCurrentAccountId(_authToken);
+      for (final Account account in _accountsList) {
         if (account.locationId == currAccount) return account;
       }
     } catch (e) {
@@ -53,9 +54,9 @@ class AccountCredentials with ChangeNotifier {
 
   Future<bool> getinitializeAuth(String locationId, String password) async {
     _authToken = AuthToken(locationId, password);
-    bool success = false;
-    success = await RsJsonApi.checkExistingAuthTokens(
-        locationId, password, _authToken);
+    final bool success = await RsJsonApi.checkExistingAuthTokens(
+            locationId, password, _authToken) ??
+        false;
     return success;
   }
 
@@ -64,43 +65,36 @@ class AccountCredentials with ChangeNotifier {
   }
 
   Future<void> login(Account currentAccount, String password) async {
-    try {
-      int resp = await RsLoginHelper.requestLogIn(currentAccount, password);
-      setLogginAccount(currentAccount);
-      // Login success 0, already logged in 1
-      if (resp == 0 || resp == 1) {
-        bool isAuthTokenValid =
-            await getinitializeAuth(currentAccount.locationName, password);
-        if (!isAuthTokenValid) {
-          throw HttpException("AUTHTOKEN FAILED");
-        }
-        notifyListeners();
-      } else
-        throw HttpException("WRONG PASSWORD");
-    } catch (e) {
-      throw (e.toString());
+    final int resp = await RsLoginHelper.requestLogIn(currentAccount, password);
+    setLogginAccount(currentAccount);
+    // Login success 0, already logged in 1
+    if (resp == 0 || resp == 1) {
+      final bool isAuthTokenValid =
+          await getinitializeAuth(currentAccount.locationName, password);
+      if (!isAuthTokenValid) {
+        throw const HttpException('AUTHTOKEN FAILED');
+      }
+      notifyListeners();
+    } else {
+      throw const HttpException('WRONG PASSWORD');
     }
   }
 
   Future<void> signup(String username, String password, String nodename) async {
-    try {
-      final resp =
-          await RsLoginHelper.requestAccountCreation(username, password);
-      Account account =
-          Account(resp['locationId'], resp['pgpId'], username, username);
-      Tuple2<bool, Account> account_create = Tuple2<bool, Account>(
-          resp["retval"]["errorNumber"] != 0 ? false : true, account);
-      if (account_create != null && account_create.item1) {
-        _accountsList.add(account_create.item2);
-        setLogginAccount(account_create.item2);
-        bool isAuthTokenValid = await getinitializeAuth(
-            account_create.item2.locationName, password);
-        if (!isAuthTokenValid) throw HttpException("AUTHTOKEN FAILED");
-        notifyListeners();
-      } else
-        throw HttpException("DATA INSUFFICIENT");
-    } catch (e) {
-      throw Exception(e.toString());
+    final resp = await RsLoginHelper.requestAccountCreation(username, password);
+    final Account account =
+        Account(resp['locationId'], resp['pgpId'], username, username);
+    final Tuple2<bool, Account> accountCreate = Tuple2<bool, Account>(
+        resp['retval']['errorNumber'] != 0 ? false : true, account);
+    if (accountCreate != null && accountCreate.item1) {
+      _accountsList.add(accountCreate.item2);
+      setLogginAccount(accountCreate.item2);
+      final bool isAuthTokenValid =
+          await getinitializeAuth(accountCreate.item2.locationName, password);
+      if (!isAuthTokenValid) throw const HttpException('AUTHTOKEN FAILED');
+      notifyListeners();
+    } else {
+      throw const HttpException('DATA INSUFFICIENT');
     }
   }
 }

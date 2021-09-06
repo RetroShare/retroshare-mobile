@@ -6,7 +6,6 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 /// Send a message of chat [type].
@@ -20,11 +19,10 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
   final authToken =
       Provider.of<RoomChatLobby>(context, listen: false).authToken;
   RsMsgs.sendMessage(chatId, msgTxt, authToken, type).then((bool res) {
-    print(res);
     if (res) {
       //final store = StoreProvider.of<AppState>(context);
-      ChatMessage message = new ChatMessage()
-        ..chat_id = new ChatId()
+      final ChatMessage message = ChatMessage()
+        ..chat_id = ChatId()
         ..chat_id.distantChatId = chatId
         ..chat_id.type = type
         ..msg = msgTxt
@@ -36,7 +34,7 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
           .addChatMessage(message, chatId);
     } else {
       errorShowDialog(
-          "Error", "You are not the member of the chat Lobby", context);
+          'Error', 'You are not the member of the chat Lobby', context);
     }
   });
 }
@@ -45,23 +43,23 @@ Future<void> sendMessage(BuildContext context, String chatId, String msgTxt,
 
 /// This function initate a distant chat if not exists and store it.
 Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
-  String to = chat.interlocutorId;
-  String from = chat.ownIdToUse;
-  AuthToken authToken =
+  final String to = chat.interlocutorId;
+  final String from = chat.ownIdToUse;
+  final AuthToken authToken =
       Provider.of<RoomChatLobby>(context, listen: false).authToken;
   final resp = await RsMsgs.c(chat, authToken);
   if (resp['retval'] == true) {
     chat.chatId = resp['pid'];
     Chat.addDistantChat(to, from, resp['pid']);
-    await Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
-    Map<String, Identity> allIDs =
-        Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
+    // ignore: use_build_context_synchronously
     chatActionMiddleware(chat, context);
-    allIDs = Provider.of<RoomChatLobby>(context, listen: false)
-        .addDistanceChat(chat, allIDs);
-    Provider.of<FriendsIdentity>(context, listen: false).setAllIds(allIDs);
-  } else
-    throw ("Error on initiateDistantChat()");
+    // ignore: use_build_context_synchronously
+    Provider.of<FriendsIdentity>(context, listen: false).setAllIds(chat);
+    // ignore: use_build_context_synchronously
+    Provider.of<RoomChatLobby>(context, listen: false).addDistanceChat(chat);
+  } else {
+    throw Exception('Error on initiateDistantChat()');
+  }
 }
 
 /// Get the chat status from [pid]
@@ -77,17 +75,18 @@ Future<void> _initiateDistantChat(Chat chat, BuildContext context) async {
 /// return: [Chat] object
 Chat getChat(
   BuildContext context,
+  // ignore: type_annotate_public_apis
   to, {
   String from,
 }) {
   Chat chat;
   final currentIdentity =
       Provider.of<Identities>(context, listen: false).currentIdentity;
-  String currentId = from ?? currentIdentity.mId;
+  final String currentId = from ?? currentIdentity.mId;
   if (to != null && to is Identity) {
     final distanceChat =
         Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
-    String distantChatId = Chat.getDistantChatId(to.mId, currentId);
+    final String distantChatId = Chat.getDistantChatId(to.mId, currentId);
     if (Chat.distantChatExistsStore(distantChatId, distanceChat)) {
       chat = Provider.of<RoomChatLobby>(context, listen: false)
           .distanceChat[distantChatId];
@@ -96,7 +95,6 @@ Chat getChat(
           interlocutorId: to.mId,
           isPublic: false,
           chatName: to.name,
-          unreadCount: 0,
           numberOfParticipants: 1,
           ownIdToUse: currentId);
       _initiateDistantChat(chat, context);
@@ -104,27 +102,11 @@ Chat getChat(
   } else if (to != null && (to is VisibleChatLobbyRecord)) {
     chat = Chat.fromVisibleChatLobbyRecord(to);
     Provider.of<RoomChatLobby>(context, listen: false)
-        .addChatMessage(null, to.lobbyId.xstr64);
-    final authToken =
-        Provider.of<RoomChatLobby>(context, listen: false).authToken;
-    RsMsgs.joinChatLobby(to.lobbyId.xstr64, currentIdentity.mId, authToken)
-        .then((success) {
-      if (success) {
-        Provider.of<ChatLobby>(context, listen: false)
-            .fetchAndUpdateUnsubscribed();
-        Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate();
-      }
-    });
+        .joinChatLobby(chat, currentIdentity.mId);
   } else if (to != null && (to is Chat)) {
     chat = to;
-    // Ugly way to initialize lobby participants
     Provider.of<RoomChatLobby>(context, listen: false)
-        .fetchAndUpdateParticipants(to.chatId, []);
-    final authToken =
-        Provider.of<RoomChatLobby>(context, listen: false).authToken;
-    RsMsgs.joinChatLobby(to.chatId, currentIdentity.mId, authToken);
-    Provider.of<RoomChatLobby>(context, listen: false)
-        .addChatMessage(null, to.chatId);
+        .joinChatLobby(to, currentIdentity.mId);
   }
   return chat;
 }

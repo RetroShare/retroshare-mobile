@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/HelperFunction/chat.dart';
 import 'package:retroshare/common/common_methods.dart';
+import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/message_delegate.dart';
@@ -14,10 +14,9 @@ import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class MessagesTab extends StatefulWidget {
+  const MessagesTab({this.chat, this.isRoom});
   final Chat chat;
   final bool isRoom;
-
-  MessagesTab({this.chat, this.isRoom});
 
   @override
   _MessagesTabState createState() => _MessagesTabState();
@@ -25,7 +24,7 @@ class MessagesTab extends StatefulWidget {
 
 class _MessagesTabState extends State<MessagesTab> {
   TextEditingController msgController = TextEditingController();
-  double _bottomBarHeight = appBarHeight;
+  final double _bottomBarHeight = appBarHeight;
   FocusScopeNode _focusNode;
 
   bool isShowSticker = false;
@@ -35,21 +34,21 @@ class _MessagesTabState extends State<MessagesTab> {
     super.dispose();
   }
 
-  _onEmojiSelected(Emoji emoji) {
+  void _onEmojiSelected(Emoji emoji) {
     msgController
       ..text += emoji.emoji
       ..selection = TextSelection.fromPosition(
           TextPosition(offset: msgController.text.length));
   }
 
-  _onBackspacePressed() {
+  void _onBackspacePressed() {
     msgController
       ..text = msgController.text.characters.skipLast(1).toString()
       ..selection = TextSelection.fromPosition(
           TextPosition(offset: msgController.text.length));
   }
 
-  _sendImage() async {
+  Future<void> _sendImage() async {
     File image = await ImagePicker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 40,
@@ -61,17 +60,11 @@ class _MessagesTabState extends State<MessagesTab> {
     if (mb < 3 && image != null) {
       var text = base64.encode(image.readAsBytesSync());
       text = "<img alt='Red dot (png)' src='data:image/png;base64,$text'/>";
-      sendMessage(context, widget.chat?.chatId, text,
-          (widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_));
+      // ignore: use_build_context_synchronously
+      await sendMessage(context, widget.chat?.chatId, text,
+          widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_);
     } else {
-      Fluttertoast.showToast(
-          msg: "Image Size is too large !",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showFlutterToast('Image Size is too large !', Colors.red);
     }
   }
 
@@ -97,6 +90,7 @@ class _MessagesTabState extends State<MessagesTab> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: onBackPress,
       child: Column(
         children: <Widget>[
           Expanded(
@@ -120,8 +114,9 @@ class _MessagesTabState extends State<MessagesTab> {
                           key: UniqueKey(),
                           bubbleTitle: widget.isRoom &&
                                   (msgList[index] != null) &&
-                                  (msgList[index]
-                                      .incoming) // Why msgList[index]?.incoming ?? false is not working??
+                                  (msgList[index].incoming == true)
+                              // Why msgList[index]?.incoming ?? false is
+                              //not working??
                               ? getChatSenderName(context, msgList[index])
                               : null,
                         );
@@ -139,7 +134,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                 Image.asset(
                                     'assets/icons8/pluto-no-messages-1.png'),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 25),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 25),
                                   child: Text(
                                       'It seems like there is no messages',
                                       style: Theme.of(context).textTheme.body2),
@@ -163,12 +159,12 @@ class _MessagesTabState extends State<MessagesTab> {
               child: Row(
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.insert_emoticon,
                     ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      Future.delayed(Duration(milliseconds: 15));
+                      Future.delayed(const Duration(milliseconds: 15));
                       setState(() {
                         isShowSticker = !isShowSticker;
                       });
@@ -178,7 +174,7 @@ class _MessagesTabState extends State<MessagesTab> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Color(0xFFF5F5F5),
+                        color: const Color(0xFFF5F5F5),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: TextField(
@@ -187,7 +183,7 @@ class _MessagesTabState extends State<MessagesTab> {
                           if (isShowSticker) {
                             setState(() {
                               isShowSticker = false;
-                              Future.delayed(Duration(milliseconds: 15));
+                              Future.delayed(const Duration(milliseconds: 15));
                             });
                           }
                           ;
@@ -196,33 +192,34 @@ class _MessagesTabState extends State<MessagesTab> {
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         focusNode: _focusNode,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none, hintText: 'Type text...'),
                         style: Theme.of(context).textTheme.body2,
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.image,
                     ),
                     onPressed: () async {
-                     await  _sendImage();
+                      await _sendImage();
                     },
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.send,
                     ),
                     onPressed: () {
-                      if (msgController.text.length > 0)
+                      if (msgController.text.length > 0) {
                         sendMessage(
                             context,
                             widget.chat?.chatId,
                             msgController.text,
-                            (widget.isRoom
+                            widget.isRoom
                                 ? ChatIdType.number3_
-                                : ChatIdType.number2_));
+                                : ChatIdType.number2_);
+                      }
                       msgController.clear();
                     },
                   ),
@@ -239,7 +236,6 @@ class _MessagesTabState extends State<MessagesTab> {
           ),
         ],
       ),
-      onWillPop: onBackPress,
     );
   }
 
@@ -248,24 +244,6 @@ class _MessagesTabState extends State<MessagesTab> {
         onEmojiSelected: (Category category, Emoji emoji) {
           _onEmojiSelected(emoji);
         },
-        onBackspacePressed: _onBackspacePressed,
-        config: const Config(
-            columns: 7,
-            emojiSizeMax: 32.0,
-            verticalSpacing: 0,
-            horizontalSpacing: 0,
-            initCategory: Category.RECENT,
-            bgColor: Color(0xFFF2F2F2),
-            indicatorColor: Colors.blue,
-            iconColor: Colors.grey,
-            iconColorSelected: Colors.blue,
-            progressIndicatorColor: Colors.blue,
-            backspaceColor: Colors.blue,
-            showRecentsTab: true,
-            recentsLimit: 28,
-            noRecentsText: 'No Recents',
-            noRecentsStyle: TextStyle(fontSize: 20, color: Colors.black26),
-            categoryIcons: CategoryIcons(),
-            buttonMode: ButtonMode.MATERIAL));
+        onBackspacePressed: _onBackspacePressed);
   }
 }

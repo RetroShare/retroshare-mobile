@@ -35,26 +35,26 @@ class _FriendsTabState extends State<FriendsTab> {
         return Consumer<FriendsIdentity>(builder: (context, friendsIdsList, _) {
           return Consumer<RoomChatLobby>(
             builder: (context, roomChat, _) {
-              Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
+              final Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
                   friendsDistantAndIdsTuple =
                   Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(
                       friendsIdsList.friendsIdsList,
                       roomChat.distanceChat?.values
                               ?.toList()
-                              ?.where((chat) => (friendsIdsList
+                              ?.where((chat) =>
+                                  friendsIdsList
                                           .allIdentity[chat.interlocutorId] ==
                                       null ||
                                   friendsIdsList
                                           .allIdentity[chat.interlocutorId]
                                           .isContact ==
-                                      false))
+                                      false)
+                              ?.toSet()
                               ?.toList() ??
                           [],
                       friendsIdsList.allIdentity);
 
-              if (friendsDistantAndIdsTuple.item1?.isNotEmpty ??
-                  false || friendsDistantAndIdsTuple.item2?.isNotEmpty ??
-                  false)
+              if (friendsDistantAndIdsTuple.item1?.isNotEmpty ?? false) {
                 return CustomScrollView(
                   slivers: <Widget>[
                     sliverPersistentHeader('Contacts', context),
@@ -80,8 +80,8 @@ class _FriendsTabState extends State<FriendsTab> {
                                     context),
                                 onLongPress: (Offset tapPosition) {
                                   showCustomMenu(
-                                      "Remove from contacts",
-                                      Icon(
+                                      'Remove from contacts',
+                                      const Icon(
                                         Icons.delete,
                                         color: Colors.black,
                                       ),
@@ -114,7 +114,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     SliverOpacity(
                       opacity: (friendsDistantAndIdsTuple.item2?.isNotEmpty ??
                                   false) &&
-                              (friendsDistantAndIdsTuple.item2?.length > 0 ??
+                              (friendsDistantAndIdsTuple.item2.isNotEmpty ??
                                   false)
                           ? 1.0
                           : 0.0,
@@ -130,7 +130,8 @@ class _FriendsTabState extends State<FriendsTab> {
                         itemExtent: personDelegateHeight,
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                            Identity actualId = friendsDistantAndIdsTuple.item3[
+                            final Identity actualId =
+                             friendsDistantAndIdsTuple.item3[
                                     friendsDistantAndIdsTuple
                                         .item2[index]?.interlocutorId] ??
                                 Identity(friendsDistantAndIdsTuple
@@ -142,8 +143,8 @@ class _FriendsTabState extends State<FriendsTab> {
                                     actualId, context),
                                 onLongPress: (Offset tapPosition) {
                                   showCustomMenu(
-                                      "Add to contacts",
-                                      Icon(
+                                      'Add to contacts',
+                                      const Icon(
                                         Icons.add,
                                         color: Colors.black,
                                       ),
@@ -164,12 +165,14 @@ class _FriendsTabState extends State<FriendsTab> {
                               ),
                             );
                           },
-                          childCount: friendsDistantAndIdsTuple.item2.length,
+                          childCount: friendsDistantAndIdsTuple.item2.
+                          toSet().length,
                         ),
                       ),
                     ),
                   ],
                 );
+              }
 
               return Center(
                 child: SizedBox(
@@ -178,11 +181,11 @@ class _FriendsTabState extends State<FriendsTab> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Image.asset('assets/icons8/list-is-empty-3.png'),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           'Looks like an empty space',
                           style: Theme.of(context).textTheme.body2,
@@ -190,14 +193,14 @@ class _FriendsTabState extends State<FriendsTab> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           'You can add friends in the menu',
                           style: Theme.of(context).textTheme.body1,
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                     ],

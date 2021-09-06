@@ -13,10 +13,10 @@ class SignUpScreen extends StatefulWidget {
 enum PasswordError { correct, notTheSame, tooShort }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController usernameController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  TextEditingController repeatPasswordController = new TextEditingController();
-  TextEditingController nodeNameController = new TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatPasswordController = TextEditingController();
+  TextEditingController nodeNameController = TextEditingController();
 
   bool advancedOption;
   bool isUsernameCorrect;
@@ -39,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void createAccount() async {
+  Future<void> createAccount() async {
     bool success = true;
     if (usernameController.text.length < 3) {
       setState(() {
@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!success) return;
 
     Navigator.pushNamed(context, '/', arguments: {
-      'statusText': "Creating account...\nThis could take minutes",
+      'statusText': 'Creating account...\nThis could take minutes',
       'isLoading': true,
       'spinner': true
     });
@@ -82,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
     } on HttpException catch (err) {
       var errorMessage = 'Authentication failed';
-      errorShowDialog("Auth Failed", 'Something went wrong', context);
+      errorShowDialog(errorMessage, 'Something went wrong', context);
     } catch (e) {
       errorShowDialog('Retroshare Service Down',
           'Please ensure retroshare service is not down!', context);
@@ -110,13 +110,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFF5F5F5),
+                      color: const Color(0xFFF5F5F5),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     height: 40,
                     child: TextField(
                       controller: usernameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.person_outline,
@@ -134,11 +134,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
-                          width: 52,
-                        ),
-                        Container(
+                        const SizedBox(
                           height: 25,
+                          width: 52,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -163,13 +161,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFF5F5F5),
+                      color: const Color(0xFFF5F5F5),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     height: 40,
                     child: TextField(
                       controller: passwordController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.lock_outline,
@@ -188,11 +186,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
-                          width: 52,
-                        ),
-                        Container(
+                        const SizedBox(
                           height: 25,
+                          width: 52,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -217,13 +213,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFF5F5F5),
+                      color: const Color(0xFFF5F5F5),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     height: 40,
                     child: TextField(
                       controller: repeatPasswordController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.lock_outline,
@@ -242,11 +238,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
-                          width: 52,
-                        ),
-                        Container(
+                        const SizedBox(
                           height: 25,
+                          width: 52,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -291,7 +285,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                             },
                           ),
-                          SizedBox(width: 3),
+                          const SizedBox(width: 3),
                           Text(
                             'Advanced option',
                             style: Theme.of(context).textTheme.body1,
@@ -303,7 +297,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Visibility(
                   visible: advancedOption,
-                  child: SizedBox(height: 10),
+                  child: const SizedBox(height: 10),
                 ),
                 Visibility(
                   visible: advancedOption,
@@ -312,13 +306,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Color(0xFFF5F5F5),
+                        color: const Color(0xFFF5F5F5),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       height: 40,
                       child: TextField(
                         controller: nodeNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.smartphone,
@@ -334,7 +328,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Visibility(
                   visible: advancedOption,
-                  child: SizedBox(height: 10),
+                  child: const SizedBox(height: 10),
                 ),
                 Visibility(
                   visible: advancedOption,
@@ -353,7 +347,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               // todo: implement Tor/I2p Hidden node
                               value: false, onChanged: (bool value) {},
                             ),
-                            SizedBox(width: 3),
+                            const SizedBox(width: 3),
                             Text(
                               'Tor/I2p Hidden node',
                               style: Theme.of(context).textTheme.body1,
@@ -368,13 +362,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     await createAccount();
                   },
                   textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
+                  padding: EdgeInsets.zero,
                   child: SizedBox(
                     width: double.infinity,
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: <Color>[
                             Color(0xFF00FFFF),
                             Color(0xFF29ABE2),

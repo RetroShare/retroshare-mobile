@@ -50,17 +50,18 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     isAnonymous = true;
     _blockCreation = false;
 
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
 
-    _doneButtonController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _doneButtonController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
 
     _roomNameController.addListener(() {
-      if (_isRoomCreation && _roomNameController.text.length > 2)
+      if (_isRoomCreation && _roomNameController.text.length > 2) {
         _doneButtonController.forward();
-      else
+      } else {
         _doneButtonController.reverse();
+      }
     });
 
     _fadeAnimation = Tween(
@@ -69,7 +70,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Interval(
+        curve: const Interval(
           0.5,
           1.0,
           curve: Curves.easeInOut,
@@ -102,7 +103,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Interval(
+        curve: const Interval(
           0.0,
           0.75,
           curve: Curves.easeInOut,
@@ -111,7 +112,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     );
 
     _doneButtonColor =
-        ColorTween(begin: Color(0xFF9E9E9E), end: Colors.black).animate(
+        ColorTween(begin: const Color(0xFF9E9E9E), end: Colors.black).animate(
       CurvedAnimation(
         parent: _doneButtonController,
         curve: Curves.easeInOut,
@@ -147,11 +148,12 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       setState(() {
         _isRoomCreation = false;
       });
-    } else
+    } else {
       Navigator.pop(context);
+    }
   }
 
-  void _createChat() async {
+  Future<void> _createChat() async {
     if (_isRoomCreation && !_blockCreation) {
       _blockCreation = true;
       _doneButtonController.reverse();
@@ -169,7 +171,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
         });
       } catch (e) {
         errorShowDialog(
-            "Error", "Please ensure retroshare service is not down!", context);
+            'Error', 'Please ensure retroshare service is not down!', context);
       }
 
       _doneButtonController.forward();
@@ -192,8 +194,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       },
       child: Scaffold(
         body: SafeArea(
-          top: true,
-          bottom: true,
           child: Column(
             children: <Widget>[
               Container(
@@ -206,7 +206,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                       height: appBarHeight,
                       width: personDelegateHeight,
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           size: 25,
                         ),
@@ -221,13 +221,13 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                         child: AnimatedBuilder(
                           animation: _animationController,
                           builder: (BuildContext context, Widget widget) {
-                            return Container(
+                            return SizedBox(
                               height: _heightAnimation.value + 10,
                               child: Stack(
                                 children: <Widget>[
                                   Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: Container(
+                                    child: SizedBox(
                                       height: 4 * 40.0 + 3 * 8,
                                       width: double.infinity,
                                       child: FadeTransition(
@@ -262,7 +262,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                           controller:
                                                               _roomNameController,
                                                           decoration:
-                                                              InputDecoration(
+                                                              const InputDecoration(
                                                                   border:
                                                                       InputBorder
                                                                           .none,
@@ -289,7 +289,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(15),
-                                                  color: Color(0xFFF5F5F5),
+                                                  color:
+                                                      const Color(0xFFF5F5F5),
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -305,7 +306,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                           controller:
                                                               _roomTopicController,
                                                           decoration:
-                                                              InputDecoration(
+                                                              const InputDecoration(
                                                                   border:
                                                                       InputBorder
                                                                           .none,
@@ -393,7 +394,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                           });
                                                         },
                                                       ),
-                                                      SizedBox(width: 3),
+                                                      const SizedBox(width: 3),
                                                       Text(
                                                         'Accessible to anonymous',
                                                         style: Theme.of(context)
@@ -414,8 +415,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   ChipsInput(
                                     decoration: InputDecoration(
                                       hintText: _isRoomCreation
-                                          ? "Invite friends"
-                                          : "Search",
+                                          ? 'Invite friends'
+                                          : 'Search',
                                       isDense: true,
                                     ),
                                     findSuggestions: (String query) {
@@ -512,7 +513,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                         animation: _doneButtonController,
                         builder: (BuildContext context, Widget widget) {
                           return IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.done,
                               size: 25,
                             ),
@@ -537,8 +538,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                     },
                     child: Container(
                       padding: const EdgeInsets.only(
-                          left: 8, top: 0, right: 16, bottom: 0),
-                      decoration: BoxDecoration(
+                        left: 8,
+                        right: 16,
+                      ),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
 //                      height: _buttonHeightAnimation.value,
@@ -546,7 +549,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                         opacity: _buttonFadeAnimation,
                         child: Row(
                           children: <Widget>[
-                            Container(
+                            SizedBox(
                               height: _buttonHeightAnimation.value,
                               width: personDelegateHeight,
                               child: Center(
@@ -578,8 +581,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                 child: Stack(
                   children: <Widget>[
                     ListView.builder(
-                      padding: const EdgeInsets.only(
-                          left: 8, top: 0, right: 16, bottom: 8),
+                      padding:
+                          const EdgeInsets.only(left: 8, right: 16, bottom: 8),
 //                            itemCount: friendsSignedIdsList.length + 1,
                       itemCount: (_suggestionsList == null)
                           ? 1
@@ -603,7 +606,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     opacity: _buttonFadeAnimation,
                                     child: Row(
                                       children: <Widget>[
-                                        Container(
+                                        SizedBox(
                                           height: _buttonHeightAnimation.value,
                                           width: personDelegateHeight,
                                           child: Center(
@@ -616,7 +619,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         ),
                                         Expanded(
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 8),
                                             child: Text('Create new room',
                                                 style: Theme.of(context)
@@ -662,11 +665,12 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                               children: <Widget>[
                                 Image.asset(
                                     'assets/icons8/list-is-empty-3.png'),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
                                     'Looks like an empty space',
                                     style: Theme.of(context).textTheme.body2,
@@ -674,7 +678,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
                                     'You can add friends in the menu',
                                     style: Theme.of(context).textTheme.body1,

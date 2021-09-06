@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:retroshare/provider/friends_identity.dart';
@@ -5,7 +6,7 @@ import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
-int getUnreadCount(context, Identity identity) {
+int getUnreadCount(BuildContext context, Identity identity) {
   return Provider.of<RoomChatLobby>(context, listen: false).distanceChat != null
       ? Provider.of<RoomChatLobby>(context, listen: false)
               .distanceChat[Chat.getDistantChatId(
@@ -18,12 +19,12 @@ int getUnreadCount(context, Identity identity) {
       : 0;
 }
 
-String getChatSenderName(dynamic context, ChatMessage message) {
-  final distantChats =
+String getChatSenderName(BuildContext context, ChatMessage message) {
+  final Map<String, Chat> distantChats =
       Provider.of<RoomChatLobby>(context, listen: false).distanceChat;
-  final allIds =
+  final Map<String, Identity> allIds =
       Provider.of<FriendsIdentity>(context, listen: false).allIdentity;
-  final lobbyParticipants =
+  final Map<String, List<Identity>> lobbyParticipants =
       Provider.of<RoomChatLobby>(context, listen: false).lobbyParticipants;
   if (message.isLobbyMessage()) {
     return lobbyParticipants[message.chat_id.lobbyId.xstr64]
@@ -32,12 +33,11 @@ String getChatSenderName(dynamic context, ChatMessage message) {
             ?.name ??
         message.lobby_peer_gxs_id;
   }
-  Identity id =
+  final Identity id =
       allIds[distantChats[message.chat_id.distantChatId].interlocutorId];
   if (id == null) {
     Provider.of<Identities>(context, listen: false).callrequestIdentity(
-        new Identity(
-            distantChats[message.chat_id.distantChatId].interlocutorId));
+        Identity(distantChats[message.chat_id.distantChatId].interlocutorId));
     return distantChats[message.chat_id.distantChatId].interlocutorId;
   }
   return id.name.isEmpty ? id.mId : id.name;

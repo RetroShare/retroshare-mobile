@@ -39,7 +39,7 @@ class PersonDelegateData {
   final MemoryImage image;
 
   /// Generate generic chat person delegate data for DRY
-  static ChatData(Chat chatData) {
+  static PersonDelegateData ChatData(Chat chatData) {
     return PersonDelegateData(
       name: chatData.chatName,
       message: chatData.lobbyTopic,
@@ -47,18 +47,19 @@ class PersonDelegateData {
       isRoom: true,
       isMessage: true,
       icon: chatData.isPublic ?? true ? Icons.public : Icons.lock,
-      isUnread: chatData.unreadCount > 0 ? true : false,
+      isUnread: chatData.unreadCount > 0,
     );
   }
 
-  static PublicChatData(VisibleChatLobbyRecord chatData) {
-    String message = "${chatData.lobbyTopic}" +
+  static PersonDelegateData PublicChatData(VisibleChatLobbyRecord chatData) {
+    // ignore: prefer_interpolation_to_compose_strings
+    final String message = chatData.lobbyTopic +
         (chatData.totalNumberOfPeers != null || chatData.totalNumberOfPeers != 0
-            ? "Total: ${chatData.totalNumberOfPeers}"
-            : " ") +
+            ? 'Total: ${chatData.totalNumberOfPeers}'
+            : ' ') +
         (chatData.participatingFriends.isNotEmpty
-            ? "Friends: ${chatData.participatingFriends.length.toString()}"
-            : "");
+            ? 'Friends: ${chatData.participatingFriends.length.toString()}'
+            : '');
 
     return PersonDelegateData(
       name: chatData.lobbyName,
@@ -72,9 +73,9 @@ class PersonDelegateData {
     );
   }
 
-  static IdentityData(
+  static PersonDelegateData IdentityData(
     Identity identity,
-    context,
+    BuildContext context,
   ) {
     return PersonDelegateData(
       name: identity.name,
@@ -83,11 +84,14 @@ class PersonDelegateData {
           ? MemoryImage(base64Decode(identity.avatar))
           : null,
       isMessage: true,
+      // ignore: avoid_bool_literals_in_conditional_expressions
       isUnread: getUnreadCount(context, identity) > 0 ? true : false,
     );
   }
 
-  static LocationData(Location location) {
+  // ignore: non_constant_identifier_names
+  // ignore: prefer_constructors_over_static_methods
+  static PersonDelegateData LocationData(Location location) {
     return PersonDelegateData(
       name: location.accountName,
       message: location.locationName,
@@ -98,13 +102,14 @@ class PersonDelegateData {
 }
 
 class PersonDelegate extends StatefulWidget {
+    const PersonDelegate(
+      {this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
   final PersonDelegateData data;
   final Function onPressed;
   final Function onLongPress;
   final bool isSelectable;
 
-  const PersonDelegate(
-      {this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
+
 
   @override
   _PersonDelegateState createState() => _PersonDelegateState();
@@ -132,23 +137,18 @@ class _PersonDelegateState extends State<PersonDelegate>
         boxShadow: [
           BoxShadow(
             color: Colors.white.withOpacity(0),
-            blurRadius: 0.0,
             spreadRadius: appBarHeight / 3,
           )
         ],
-        borderRadius: BorderRadius.all(Radius.circular(appBarHeight / 3)),
+        borderRadius: const BorderRadius.all(Radius.circular(appBarHeight / 3)),
         color: Colors.white.withOpacity(0),
       ),
-      end: BoxDecoration(
+      end: const BoxDecoration(
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 10.0,
             spreadRadius: 2.0,
-            offset: Offset(
-              0.0,
-              0.0,
-            ),
           )
         ],
         borderRadius: BorderRadius.all(Radius.circular(appBarHeight / 3)),
@@ -178,17 +178,17 @@ class _PersonDelegateState extends State<PersonDelegate>
       },
       onTapDown: _storePosition,
       child: AnimatedContainer(
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
         curve: Curves.fastOutSlowIn,
         height: delegateHeight,
         decoration: boxShadow.value,
         child: Row(
           children: <Widget>[
-            Container(
+            SizedBox(
               width: delegateHeight,
               height: delegateHeight,
               child: Stack(
-                alignment: Alignment(-1.0, 0.0),
+                alignment: Alignment.centerLeft,
                 children: <Widget>[
                   Center(
                     child: Visibility(
@@ -197,7 +197,7 @@ class _PersonDelegateState extends State<PersonDelegate>
                         height: delegateHeight * 0.92,
                         width: delegateHeight * 0.92,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
@@ -272,7 +272,7 @@ class _PersonDelegateState extends State<PersonDelegate>
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: const  EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,14 +288,14 @@ class _PersonDelegateState extends State<PersonDelegate>
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Visibility(
                         visible:
                             widget.isSelectable && _curvedAnimation.value == 1,
                         child: IconButton(
-                            icon: Icon(Icons.navigate_next),
+                            icon: const Icon(Icons.navigate_next),
                             onPressed: () => Navigator.of(context)
-                                .pushReplacementNamed("/profile",
+                                .pushReplacementNamed('/profile',
                                     arguments: {'id': id})),
                       )
                     ]),
@@ -328,10 +328,11 @@ class _PersonDelegateState extends State<PersonDelegate>
       return Consumer<Identities>(
         key: UniqueKey(),
         builder: (context, id, _) {
-          if (id.selectedIdentity.mId == widget.data.mId)
+          if (id.selectedIdentity.mId == widget.data.mId) {
             _animationController.value = 1;
-          else
+          } else {
             _animationController.value = 0;
+          }
 
           return _build(context, id.selectedIdentity);
         },
@@ -342,10 +343,12 @@ class _PersonDelegateState extends State<PersonDelegate>
   }
 }
 
-/// Todo: do this better when new PersonDelegate class will be implemented. For ListTile, integrate new popup menu.
-void showCustomMenu(String title, Icon icon, Function action,
-    Offset tapPosition, context) async {
-  final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+/// Todo: do this better when new PersonDelegate
+/// class will be implemented. For ListTile, integrate new popup menu.
+Future<void> showCustomMenu(String title, Icon icon, Function action,
+    Offset tapPosition, BuildContext context) async {
+  final RenderBox overlay =
+      Overlay.of(context).context.findRenderObject() as RenderBox;
 
   final delta = await showMenu(
     context: context,
@@ -353,15 +356,14 @@ void showCustomMenu(String title, Icon icon, Function action,
       PopupMenuItem(
         value: 0,
         child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-          enabled: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
           leading: icon,
           title: Text(title, style: Theme.of(context).textTheme.body2),
         ),
       ),
     ],
     position: RelativeRect.fromRect(
-      tapPosition & Size(40, 40),
+      tapPosition & const Size(40, 40),
       Offset.zero & overlay.semanticBounds.size,
     ),
   );

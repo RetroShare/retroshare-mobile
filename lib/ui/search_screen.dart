@@ -10,9 +10,8 @@ import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key key, this.initialTab}) : super(key: key);
   final int initialTab;
-
-  SearchScreen({Key key, this.initialTab}) : super(key: key);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -45,20 +44,21 @@ class _SearchScreenState extends State<SearchScreen>
 
     _searchBoxFilter.addListener(() {
       if (_searchBoxFilter.text.isEmpty) {
-        if (this.mounted)
+        if (mounted) {
           setState(() {
-            _searchContent = "";
+            _searchContent = '';
             filteredAllIds = allIds;
             filteredContactsIds = contactsIds;
             filteredSubscribedChats = subscribedChats;
-            //Provider.of<ChatLobby>(context, listen: false).subscribedlist;
             filteredPublicChats = publicChats;
           });
+        }
       } else {
-        if (this.mounted)
+        if (mounted) {
           setState(() {
             _searchContent = _searchBoxFilter.text;
           });
+        }
       }
     });
 
@@ -80,7 +80,7 @@ class _SearchScreenState extends State<SearchScreen>
     });
   }
 
-  void _goToChat(lobby) async {
+  Future<void> _goToChat(lobby) async {
     Navigator.pushNamed(context, '/room',
         arguments: {'isRoom': true, 'chatData': getChat(context, lobby)});
   }
@@ -96,18 +96,16 @@ class _SearchScreenState extends State<SearchScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        top: true,
-        bottom: true,
         child: Column(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: appBarHeight,
               child: Row(
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     width: personDelegateHeight,
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back,
                         size: 25,
                       ),
@@ -124,10 +122,10 @@ class _SearchScreenState extends State<SearchScreen>
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Color(0xFFF5F5F5),
+                          color: const Color(0xFFF5F5F5),
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        margin: EdgeInsets.symmetric(horizontal: 8),
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
                         height: 40,
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -136,14 +134,14 @@ class _SearchScreenState extends State<SearchScreen>
                               Icon(Icons.search,
                                   color:
                                       Theme.of(context).textTheme.body1.color),
-                              SizedBox(
+                              const SizedBox(
                                 width: 8,
                               ),
                               Expanded(
                                 child: TextField(
                                   controller: _searchBoxFilter,
                                   autofocus: true,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       hintText: 'Type text...'),
                                   style: Theme.of(context).textTheme.body2,
@@ -161,7 +159,7 @@ class _SearchScreenState extends State<SearchScreen>
             ),
             Container(
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   bottom: (appBarHeight - 40) / 2,
                 ),
                 child: Row(
@@ -194,7 +192,7 @@ class _SearchScreenState extends State<SearchScreen>
                         );
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     AnimatedBuilder(
@@ -243,7 +241,7 @@ class _SearchScreenState extends State<SearchScreen>
                             true,
                         child: Center(
                           child: SingleChildScrollView(
-                            child: Container(
+                            child: SizedBox(
                               width: 200,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -425,7 +423,8 @@ class _SearchScreenState extends State<SearchScreen>
     }
 
     return Visibility(
-//      visible: (filteredAllIds?.isNotEmpty ?? false || filteredContactsIds.isNotEmpty ),
+//      visible: (filteredAllIds?.isNotEmpty
+//?? false || filteredContactsIds.isNotEmpty ),
       visible: (filteredAllIds != null && filteredAllIds.isNotEmpty) ||
           (filteredContactsIds != null && filteredContactsIds.isNotEmpty),
       child: CustomScrollView(
@@ -443,8 +442,8 @@ class _SearchScreenState extends State<SearchScreen>
                         filteredContactsIds[index], context),
                     onLongPress: (Offset tapPosition) {
                       showCustomMenu(
-                          "Remove from contacts",
-                          Icon(
+                          'Remove from contacts',
+                          const Icon(
                             Icons.delete,
                             color: Colors.black,
                           ),
@@ -483,8 +482,8 @@ class _SearchScreenState extends State<SearchScreen>
                         filteredAllIds[index], context),
                     onLongPress: (Offset tapPosition) {
                       showCustomMenu(
-                          "Add to contacts",
-                          Icon(
+                          'Add to contacts',
+                          const Icon(
                             Icons.person_add,
                             color: Colors.black,
                           ),

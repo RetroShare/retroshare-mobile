@@ -1,8 +1,9 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:retroshare/common/styles.dart';
-import 'dart:math' as math;
 
-SliverPersistentHeader sliverPersistentHeader(String headerText, context) {
+SliverPersistentHeader sliverPersistentHeader(
+    String headerText, BuildContext context) {
   return SliverPersistentHeader(
     pinned: true,
     delegate: _SliverAppBarDelegate(
@@ -10,7 +11,7 @@ SliverPersistentHeader sliverPersistentHeader(String headerText, context) {
       maxHeight: 3 * personDelegateHeight / 4,
       child: Container(
         color: Colors.white,
-        padding: EdgeInsets.only(left: personDelegateHeight / 4),
+        padding: const EdgeInsets.only(left: personDelegateHeight / 4),
         alignment: Alignment.centerLeft,
         child: Text(
           headerText,
@@ -37,7 +38,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new SizedBox.expand(child: child);
+    return SizedBox.expand(child: child);
   }
 
   @override

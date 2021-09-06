@@ -7,7 +7,7 @@ class ChatLobby with ChangeNotifier {
   List<Chat> get subscribedlist => _chatlist;
   AuthToken _authToken;
 
-  setAuthToken(AuthToken authToken) async {
+  void setAuthToken(AuthToken authToken) {
     _authToken = authToken;
     notifyListeners();
   }
@@ -15,7 +15,7 @@ class ChatLobby with ChangeNotifier {
   List<VisibleChatLobbyRecord> get unSubscribedlist => _unsubscribedlist;
 
   Future<void> fetchAndUpdate() async {
-    var list = await RsMsgs.getSubscribedChatLobbies(_authToken);
+    final list = await RsMsgs.getSubscribedChatLobbies(_authToken);
     List<Chat> chatsList = [];
     for (int i = 0; i < list.length; i++) {
       final chatItem =
@@ -45,7 +45,7 @@ class ChatLobby with ChangeNotifier {
 
   Future<void> unsubscribed(String lobbyId) async {
     await RsMsgs.unsubscribeChatLobby(lobbyId, _authToken);
-    var list = await RsMsgs.getSubscribedChatLobbies(_authToken);
+    final list = await RsMsgs.getSubscribedChatLobbies(_authToken);
     List<Chat> chatsList = [];
     for (int i = 0; i < list.length; i++) {
       final chatItem =
