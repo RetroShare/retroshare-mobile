@@ -37,10 +37,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.done
                   ? Consumer<Identities>(builder: (ctx, idsTuple, _) {
-                      List<Identity> ownIdentity = idsTuple.ownIdentity
-                          .where((element) =>
-                              element.mId != '00000000000000000000000000000000')
-                          .toList();
+                      final List<Identity> ownIdentity = idsTuple.ownIdentity;
                       return ListView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         itemCount: ownIdentity?.length ?? 0,

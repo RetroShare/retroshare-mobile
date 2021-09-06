@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/HelperFunction/events.dart';
+import 'package:retroshare/HelperFunction/identity.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
 import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
@@ -20,8 +21,7 @@ Future<void> registerChatEvent(
                 .addChatMessage(msg, msg.chat_id.lobbyId.xstr64);
           }
           // Check if is distant chat message
-          else if (msg.chat_id.distantChatId !=
-              '00000000000000000000000000000000') {
+          else if (isNullCheck(msg.chat_id.distantChatId)) {
             // First check if the recieved message
             //is from an already registered chat
             chatMiddleware(msg, context);

@@ -14,7 +14,7 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
   // ignore: avoid_single_cascade_in_expression_statements
   respSigned
     ..toSet().forEach((id) {
-      if (id != null && id != '00000000000000000000000000000000') {
+      if (id != null && isNullCheck(id)) {
         ownIdsList.add(Identity(id, true));
       }
     });
@@ -25,7 +25,7 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
   // ignore: avoid_single_cascade_in_expression_statements
   respPseudonymous
     ..toSet().forEach((id) {
-      if (id != null && id != '00000000000000000000000000000000') {
+      if (id != null && isNullCheck(id)) {
         ownIdsList.add(Identity(id, false));
       }
     });
@@ -141,4 +141,8 @@ dynamic getAllIdentities(AuthToken authToken) async {
   } else {
     throw Exception('Failed to load response');
   }
+}
+
+bool isNullCheck(String s) {
+  return s != '00000000000000000000000000000000';
 }
