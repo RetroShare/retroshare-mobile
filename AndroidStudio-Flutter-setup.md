@@ -151,22 +151,22 @@ than you should be able to talk to the servcie direcly.
 for exc. like:
 curl http://127.0.0.1:9091/RsJsonApi/version -v
 This would for exc generate an output like
-    *   Trying 127.0.0.1...
-    * TCP_NODELAY set
-    * Connected to 127.0.0.1 (127.0.0.1) port 9091 (#0)
-    > GET /RsJsonApi/version HTTP/1.1  
-    > Host: 127.0.0.1:9091  
-    > User-Agent: curl/7.55.1  
-    > Accept: */*  
-    >  
-    < HTTP/1.1 200 OK  
-    < Access-Control-Allow-Headers: Authorization,DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range  
-    < Access-Control-Allow-Methods: GET, POST, OPTIONS  
-    < Access-Control-Allow-Origin: *  
-    < Access-Control-Expose-Headers: Content-Length,Content-Range  
-    < Connection: close  
-    < Content-Length: 116  
-    < Content-Type: application/json  
+```     
+    Trying 127.0.0.1...
+    TCP_NODELAY set
+    Connected to 127.0.0.1 (127.0.0.1) port 9091 (#0)
+    GET /RsJsonApi/version HTTP/1.1  
+    Host: 127.0.0.1:9091  
+    User-Agent: curl/7.55.1  
+    Accept: */*  
+    HTTP/1.1 200 OK  
+    Access-Control-Allow-Headers: Authorization,DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range  
+    Access-Control-Allow-Methods: GET, POST, OPTIONS  
+    Access-Control-Allow-Origin: *  
+    Access-Control-Expose-Headers: Content-Length,Content-Range  
+    Connection: close  
+    Content-Length: 116  
+    Content-Type: application/json  
     <  
     {
         "major": 0,
@@ -175,3 +175,4 @@ This would for exc generate an output like
         "extra": "-38-g25f58bc10",
         "human": "0.6.6-38-g25f58bc10"
     }* Closing connection 0
+  ```
