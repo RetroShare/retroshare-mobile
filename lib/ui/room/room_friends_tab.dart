@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/HelperFunction/chat.dart';
-import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
@@ -30,7 +29,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   }
 
   void _addToContacts(String gxsId) {
-    Provider.of<FriendsIdentity>(context, listen: false)
+    Provider.of<RoomChatLobby>(context, listen: false)
         .toggleContacts(gxsId, true);
   }
 
@@ -79,10 +78,15 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                   context);
                             },
                             onPressed: () {
+                              final curr = Provider.of<Identities>(context,
+                                      listen: false)
+                                  .currentIdentity;
                               Navigator.pushNamed(context, '/room', arguments: {
                                 'isRoom': false,
-                                'chatData': getChat(
-                                    context, _lobbyParticipantsList[index]),
+                                'chatData': Provider.of<RoomChatLobby>(context,
+                                        listen: false)
+                                    .getChat(
+                                        curr, _lobbyParticipantsList[index]),
                               });
                             },
                           ),

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:retroshare/HelperFunction/events.dart';
 import 'package:retroshare/HelperFunction/identity.dart';
 import 'package:retroshare/Middleware/chat_middleware.dart';
-import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
@@ -12,11 +11,11 @@ Future<void> registerChatEvent(
   await eventsRegisterChatMessage(
       listenCb: (var json, ChatMessage msg) {
         if (msg != null) {
-          AuthToken authToken =
-              Provider.of<RoomChatLobby>(context, listen: false).authToken;
           // Check if is a lobby chat
-          if (msg.chat_id.lobbyId.xstr64 != '0') {
-            chatMiddleware(msg, context);
+          if (msg.isLobbyMessage()) {
+            Provider.of<RoomChatLobby>(context, listen: false)
+                .chatIdentityCheck(msg);
+            showChatNotify(msg, context);
             Provider.of<RoomChatLobby>(context, listen: false)
                 .addChatMessage(msg, msg.chat_id.lobbyId.xstr64);
           }
@@ -24,34 +23,10 @@ Future<void> registerChatEvent(
           else if (isNullCheck(msg.chat_id.distantChatId)) {
             // First check if the recieved message
             //is from an already registered chat
-            chatMiddleware(msg, context);
-            !Chat.distantChatExistsStore(
-                    msg.chat_id.distantChatId,
-                    Provider.of<RoomChatLobby>(context, listen: false)
-                        .distanceChat)
-                ? RsMsgs.getDistantChatStatus(
-                        authToken, msg.chat_id.distantChatId, msg)
-                    .then((DistantChatPeerInfo res) {
-                    // Create the chat and add it to the store
-                    Chat chat = Chat(
-                        interlocutorId: res.toId,
-                        isPublic: false,
-                        numberOfParticipants: 1,
-                        ownIdToUse: res.ownId,
-                        chatId: msg.chat_id.distantChatId);
-                    Chat.addDistantChat(res.toId, res.ownId, res.peerId);
-                    chatActionMiddleware(chat, context);
-                    Provider.of<RoomChatLobby>(context, listen: false)
-                        .addDistanceChat(chat);
-                    Provider.of<FriendsIdentity>(context, listen: false)
-                        .setAllIds(chat);
-                    // Finally send AddChatMessageAction
-
-                    Provider.of<RoomChatLobby>(context, listen: false)
-                        .addChatMessage(msg, msg.chat_id.distantChatId);
-                  })
-                : Provider.of<RoomChatLobby>(context, listen: false)
-                    .addChatMessage(msg, msg.chat_id.distantChatId);
+            Provider.of<RoomChatLobby>(context, listen: false)
+                .chatIdentityCheck(msg);
+            Provider.of<RoomChatLobby>(context, listen: false)
+                .getDistanceChatStatus(msg);
           }
         }
       },

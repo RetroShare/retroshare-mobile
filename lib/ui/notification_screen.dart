@@ -49,7 +49,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 Expanded(
                   child: Text(
                     'Notification',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
               ],

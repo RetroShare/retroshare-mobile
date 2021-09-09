@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
@@ -65,7 +64,7 @@ class _RoomScreenState extends State<RoomScreen>
 
   @override
   Widget build(BuildContext context) {
-    final friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
+    final friendIdentity = Provider.of<RoomChatLobby>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: friendIdentity != null
@@ -85,7 +84,12 @@ class _RoomScreenState extends State<RoomScreen>
                             ),
                             onPressed: () {
                               Future.delayed(Duration.zero, () async {
-                                Navigator.pop(context);
+                                if (widget.isRoom &&
+                                    _tabController.index == 1) {
+                                  _tabController.animateTo(0);
+                                } else {
+                                  Navigator.pop(context);
+                                }
                               });
                             },
                           ),

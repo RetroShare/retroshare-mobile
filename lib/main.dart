@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/notifications.dart';
-import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/friend_location.dart';
@@ -41,27 +40,21 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         ChangeNotifierProxyProvider<AccountCredentials, Identities>(
           create: (_) => Identities(),
           update: (_, auth, identities) =>
-              identities..setAuthToken(auth.authtoken),
+              identities..authToken = auth.authtoken,
         ),
         ChangeNotifierProxyProvider<AccountCredentials, FriendLocations>(
           create: (_) => FriendLocations(),
           update: (_, auth, friendLocations) =>
-              friendLocations..setAuthToken(auth.authtoken),
+              friendLocations..authToken = auth.authtoken,
         ),
         ChangeNotifierProxyProvider<AccountCredentials, ChatLobby>(
           create: (_) => ChatLobby(),
-          update: (_, auth, chatLobby) =>
-              chatLobby..setAuthToken(auth.authtoken),
-        ),
-        ChangeNotifierProxyProvider<AccountCredentials, FriendsIdentity>(
-          create: (_) => FriendsIdentity(),
-          update: (_, auth, friendsIdentity) =>
-              friendsIdentity..setAuthToken(auth.authtoken),
+          update: (_, auth, chatLobby) => chatLobby..authToken = auth.authtoken,
         ),
         ChangeNotifierProxyProvider<AccountCredentials, RoomChatLobby>(
           create: (_) => RoomChatLobby(),
           update: (_, auth, roomChatLobby) =>
-              roomChatLobby..setAuthToken(auth.authtoken),
+              roomChatLobby..authToken = auth.authtoken,
         ),
       ],
       child: Builder(

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:tuple/tuple.dart';
 
@@ -11,7 +8,6 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
   final List<dynamic> respSigned =
       await RsIdentity.getOwnSignedIdentity(authToken);
 
-  // ignore: avoid_single_cascade_in_expression_statements
   respSigned
     ..toSet().forEach((id) {
       if (id != null && isNullCheck(id)) {
@@ -22,7 +18,7 @@ Future<List<Identity>> getOwnIdentities(AuthToken authToken) async {
   /// fetch the Unsigned Identity
   final List<dynamic> respPseudonymous =
       await RsIdentity.getOwnPseudonimousIds(authToken);
-  // ignore: avoid_single_cascade_in_expression_statements
+
   respPseudonymous
     ..toSet().forEach((id) {
       if (id != null && isNullCheck(id)) {
@@ -66,81 +62,76 @@ Future<Tuple2<bool, Identity>> getIdDetails(
 }
 
 // Identities that are not contacts do not have loaded avatars
-dynamic getAllIdentities(AuthToken authToken) async {
-  final response = await http
-      .get('http://127.0.0.1:9092/rsIdentity/getIdentitiesSummaries', headers: {
-    HttpHeaders.authorizationHeader:
-        'Basic ${base64.encode(utf8.encode('$authToken'))}'
+Future<Tuple3<List<Identity>, List<Identity>, List<Identity>>> getAllIdentities(
+    AuthToken authToken) async {
+  final response = await RsIdentity.getIdentitiesSummaries(authToken);
+  List<String> ids = [];
+  response.forEach((id) {
+    ids.add(id['mGroupId']);
   });
+  final response2 = await RsIdentity.getIdentitiesInfo(ids, authToken);
 
-  if (response.statusCode == 200) {
-    List<String> ids = [];
-    json.decode(response.body)['ids'].forEach((id) {
-      ids.add(id['mGroupId']);
-    });
-
-    final response2 = await http.post(
-      'http://127.0.0.1:9092/rsIdentity/getIdentitiesInfo',
-      headers: {
-        HttpHeaders.authorizationHeader:
-            'Basic ${base64.encode(utf8.encode('$authToken'))}'
-      },
-      body: json.encode({'ids': ids}),
-    );
-
-    final List<Identity> notContactIds = [];
-    final List<Identity> contactIds = [];
-    final List<Identity> signedContactIds = [];
-    final List<Identity> ownIds = [];
-
-    if (response2.statusCode == 200) {
-      final idsInfo = json.decode(response2.body)['idsInfo'];
-      for (var i = 0; i < idsInfo.length; i++) {
-        if (idsInfo[i]['mIsAContact'] == true &&
-            idsInfo[i]['mMeta']['mSubscribeFlags'] != 7) {
-          bool success = true;
-          Identity id;
-          do {
-            final Tuple2<bool, Identity> tuple =
-                await getIdDetails(idsInfo[i]['mMeta']['mGroupId'], authToken);
-            success = tuple.item1;
-            id = tuple.item2;
-          } while (!success);
-          // This is because sometimes,
-          // the returning Id of [getIdDetails], that is a
-          // result of call 'torsIdentity/getIdDetails', return identity details, from the cache
-          // So sometimes the avatar are not updated, instead of in rsIdentity/getIdentitiesInfo, where they are
-          if (id.avatar == '' &&
-              idsInfo[i]['mImage']['mData']['base64'] != '') {
-            id.avatar = idsInfo[i]['mImage']['mData']['base64'];
-          }
-          id.isContact = true;
-          contactIds.add(id);
-          if (id.signed) signedContactIds.add(id);
-        } else if (idsInfo[i]['mMeta']['mSubscribeFlags'] == 7) {
-          ownIds.add(Identity(
-              idsInfo[i]['mMeta']['mGroupId'],
-              idsInfo[i]['mPgpId'] != '0000000000000000',
-              idsInfo[i]['mMeta']['mGroupName'],
-              ''));
-        } else {
-          notContactIds.add(Identity(
-              idsInfo[i]['mMeta']['mGroupId'],
-              idsInfo[i]['mPgpId'] != '0000000000000000',
-              idsInfo[i]['mMeta']['mGroupName'],
-              ''));
-        }
+  List<Identity> notContactIds = [];
+  List<Identity> contactIds = [];
+  List<Identity> signedContactIds = [];
+  List<Identity> ownIds = [];
+  final idsInfo = response2;
+  for (var i = 0; i < idsInfo.length; i++) {
+    if (idsInfo[i]['mIsAContact'] == true &&
+        idsInfo[i]['mMeta']['mSubscribeFlags'] != 7) {
+      // get the  contact IDs and Unknown Ids
+      final Tuple2<Identity, bool> knownIden =
+          await getKnownIdentity(idsInfo[i], authToken);
+      if (knownIden.item2) {
+        signedContactIds.add(knownIden.item1);
       }
-
-      notContactIds.sort((id1, id2) {
-        return id1.name.compareTo(id2.name);
-      });
-      return Tuple3<List<Identity>, List<Identity>, List<Identity>>(
-          signedContactIds, contactIds, notContactIds);
+      contactIds.add(knownIden.item1);
+    } else if (idsInfo[i]['mMeta']['mSubscribeFlags'] == 7) {
+      // ownIdentity
+      ownIds.add(Identity(
+          idsInfo[i]['mMeta']['mGroupId'],
+          idsInfo[i]['mPgpId'] != '0000000000000000',
+          idsInfo[i]['mMeta']['mGroupName'],
+          ''));
+    } else {
+      // unknown Identity
+      notContactIds.add(Identity(
+          idsInfo[i]['mMeta']['mGroupId'],
+          idsInfo[i]['mPgpId'] != '0000000000000000',
+          idsInfo[i]['mMeta']['mGroupName'],
+          ''));
     }
-  } else {
-    throw Exception('Failed to load response');
   }
+  // sort the unknown Identity by name
+  notContactIds.sort((id1, id2) {
+    return id1.name.compareTo(id2.name);
+  });
+  return Tuple3<List<Identity>, List<Identity>, List<Identity>>(
+      signedContactIds, contactIds, notContactIds);
+}
+
+Future<Tuple2<Identity, bool>> getKnownIdentity(
+    dynamic idsInfo, AuthToken authToken) async {
+  Identity identity;
+  bool success = true;
+  do {
+    final Tuple2<bool, Identity> tuple =
+        await getIdDetails(idsInfo['mMeta']['mGroupId'], authToken);
+    success = tuple.item1;
+    identity = tuple.item2;
+  } while (!success);
+
+  // This is because sometimes,
+  // the returning Id of [getIdDetails], that is a
+  // result of call 'torsIdentity/getIdDetails', return identity details, from the cache
+  // So sometimes the avatar are not updated, instead of in rsIdentity/getIdentitiesInfo, where they are
+  if (identity.avatar == '' && idsInfo['mImage']['mData']['base64'] != '') {
+    identity.avatar = idsInfo['mImage']['mData']['base64'];
+  }
+  identity.isContact = true;
+
+  //return the tuple
+  return Tuple2<Identity, bool>(identity, identity.signed);
 }
 
 bool isNullCheck(String s) {

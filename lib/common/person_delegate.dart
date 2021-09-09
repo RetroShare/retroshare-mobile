@@ -2,11 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/common_methods.dart';
-
 import 'package:retroshare/common/styles.dart';
-
 import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/room.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class PersonDelegateData {
@@ -77,6 +75,8 @@ class PersonDelegateData {
     Identity identity,
     BuildContext context,
   ) {
+    final Identity currentIdenInfo =
+        Provider.of<Identities>(context, listen: false).currentIdentity;
     return PersonDelegateData(
       name: identity.name,
       mId: identity.mId,
@@ -85,7 +85,11 @@ class PersonDelegateData {
           : null,
       isMessage: true,
       // ignore: avoid_bool_literals_in_conditional_expressions
-      isUnread: getUnreadCount(context, identity) > 0 ? true : false,
+      isUnread: Provider.of<RoomChatLobby>(context, listen: false)
+                  .getUnreadCount(identity, currentIdenInfo) >
+              0
+          ? true
+          : false,
     );
   }
 
@@ -102,14 +106,12 @@ class PersonDelegateData {
 }
 
 class PersonDelegate extends StatefulWidget {
-    const PersonDelegate(
+  const PersonDelegate(
       {this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
   final PersonDelegateData data;
   final Function onPressed;
   final Function onLongPress;
   final bool isSelectable;
-
-
 
   @override
   _PersonDelegateState createState() => _PersonDelegateState();
@@ -128,7 +130,8 @@ class _PersonDelegateState extends State<PersonDelegate>
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+        AnimationController(vsync: this, duration: const 
+        Duration(milliseconds: 200));
     _curvedAnimation =
         CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
 
@@ -272,7 +275,7 @@ class _PersonDelegateState extends State<PersonDelegate>
             ),
             Expanded(
               child: Padding(
-                padding: const  EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:retroshare/Middleware/register_chat_event.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare/provider/room.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
@@ -35,18 +35,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _leftIconAnimation =
         ColorTween(begin: Colors.lightBlueAccent, end: Colors.black12)
             .animate(_tabController.animation);
+
     _rightIconAnimation =
         ColorTween(begin: Colors.black12, end: Colors.lightBlueAccent)
             .animate(_tabController.animation);
+
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
+
     shadowColor = ColorTween(
       begin: const Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<FriendsIdentity>(context, listen: false).fetchAndUpdate();
+      Provider.of<RoomChatLobby>(context, listen: false).fetchAndUpdate();
       final authToken =
           Provider.of<AccountCredentials>(context, listen: false).authtoken;
       RsMsgs.getPendingChatLobbyInvites(authToken);

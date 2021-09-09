@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/HelperFunction/chat.dart';
 import 'package:retroshare/common/shimmer.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/common/styles.dart';
@@ -39,12 +40,23 @@ class ChatsTab extends StatelessWidget {
                                         data: PersonDelegateData.ChatData(
                                             chatsList.subscribedlist[index]),
                                         onPressed: () {
-                                          Navigator.pushNamed(
-                                              context, '/room', arguments: {
-                                            'isRoom': true,
-                                            'chatData': getChat(context,
-                                                chatsList.subscribedlist[index])
-                                          });
+                                          final curr = Provider.of<Identities>(
+                                                  context,
+                                                  listen: false)
+                                              .currentIdentity;
+                                          Navigator.pushNamed(context, '/room',
+                                              arguments: {
+                                                'isRoom': true,
+                                                'chatData': Provider.of<
+                                                            RoomChatLobby>(
+                                                        context,
+                                                        listen: false)
+                                                    .getChat(
+                                                        curr,
+                                                        chatsList
+                                                                .subscribedlist[
+                                                            index])
+                                              });
                                         },
                                         onLongPress: (Offset tapPosition) {
                                           showCustomMenu(
@@ -80,10 +92,12 @@ class ChatsTab extends StatelessWidget {
                               children: <Widget>[
                                 Image.asset('assets/icons8/pluto-sign-in.png'),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 25),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 25),
                                   child: Text(
                                     "Looks like there aren't any subscribed chats",
-                                    style: Theme.of(context).textTheme.body2,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

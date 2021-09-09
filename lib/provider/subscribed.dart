@@ -7,10 +7,11 @@ class ChatLobby with ChangeNotifier {
   List<Chat> get subscribedlist => _chatlist;
   AuthToken _authToken;
 
-  void setAuthToken(AuthToken authToken) {
+  set authToken(AuthToken authToken) {
     _authToken = authToken;
-    notifyListeners();
   }
+
+  AuthToken get autthToken => _authToken;
 
   List<VisibleChatLobbyRecord> get unSubscribedlist => _unsubscribedlist;
 
@@ -73,7 +74,7 @@ class ChatLobby with ChangeNotifier {
       bool public = true,
       bool anonymous = true}) async {
     try {
-      bool success = await RsMsgs.createChatLobby(
+      final bool success = await RsMsgs.createChatLobby(
           _authToken, lobbyName, idToUse, lobbyTopic,
           inviteList: inviteList, anonymous: anonymous, public: public);
       if (success) fetchAndUpdate();

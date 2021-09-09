@@ -21,7 +21,7 @@ class SplashScreen extends StatefulWidget {
   String statusText;
 
   @override
-  _SplashState createState() => new _SplashState();
+  _SplashState createState() => _SplashState();
 }
 
 class _SplashState extends State<SplashScreen> {
@@ -68,7 +68,7 @@ class _SplashState extends State<SplashScreen> {
       // ignore: use_build_context_synchronously
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {
-        if (ids.ownIdentity != null && ids.ownIdentity.length == 0) {
+        if (ids.ownIdentity != null && ids.ownIdentity.isEmpty) {
           Navigator.pushReplacementNamed(context, '/create_identity',
               arguments: true);
         } else {

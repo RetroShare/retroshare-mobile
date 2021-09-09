@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/HelperFunction/chat.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
-import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/person_delegate.dart';
@@ -20,7 +20,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-  TextEditingController _searchBoxFilter = TextEditingController();
+  TextEditingController _searchBoxFilter = new TextEditingController();
   Animation<Color> _leftTabIconColor;
   Animation<Color> _rightTabIconColor;
 
@@ -68,8 +68,8 @@ class _SearchScreenState extends State<SearchScreen>
         .animate(_tabController.animation);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
-      var chatLobby = Provider.of<ChatLobby>(context, listen: false);
+      final friendIdentity = Provider.of<RoomChatLobby>(context, listen: false);
+      final chatLobby = Provider.of<ChatLobby>(context, listen: false);
       await friendIdentity.fetchAndUpdate();
       await chatLobby.fetchAndUpdate();
       await chatLobby.fetchAndUpdateUnsubscribed();
@@ -81,8 +81,13 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   Future<void> _goToChat(lobby) async {
-    Navigator.pushNamed(context, '/room',
-        arguments: {'isRoom': true, 'chatData': getChat(context, lobby)});
+    final curr =
+        Provider.of<Identities>(context, listen: false).currentIdentity;
+    Navigator.pushNamed(context, '/room', arguments: {
+      'isRoom': true,
+      'chatData': Provider.of<RoomChatLobby>(context, listen: false)
+          .getChat(curr, lobby)
+    });
   }
 
   @override
@@ -180,11 +185,11 @@ class _SearchScreenState extends State<SearchScreen>
                                   BorderRadius.circular(appBarHeight / 2),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const  EdgeInsets.all(8),
                               child: Center(
                                 child: Text(
                                   'Chats',
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ),
@@ -210,7 +215,7 @@ class _SearchScreenState extends State<SearchScreen>
                                   BorderRadius.circular(appBarHeight / 2),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Center(
                                 child: Text(
                                   'People',
@@ -249,10 +254,12 @@ class _SearchScreenState extends State<SearchScreen>
                                   Image.asset(
                                       'assets/icons8/sport-yoga-reading-1.png'),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 25),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 25),
                                     child: Text(
                                       'Nothing was found',
-                                      style: Theme.of(context).textTheme.body2,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
                                 ],
@@ -282,10 +289,10 @@ class _SearchScreenState extends State<SearchScreen>
                                   Image.asset(
                                       'assets/icons8/virtual-reality.png'),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 25),
+                                    padding: const EdgeInsets.symmetric(vertical: 25),
                                     child: Text(
                                       'Nothing was found',
-                                      style: Theme.of(context).textTheme.body2,
+                                      style: Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
                                 ],
@@ -307,7 +314,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   Widget _buildChatsList() {
     if (_searchContent?.isNotEmpty ?? false) {
-      List<Chat> tempChatsList = new List();
+      List<Chat> tempChatsList = [];
       for (int i = 0; i < subscribedChats.length; i++) {
         if (subscribedChats[i]
             .chatName
@@ -318,7 +325,7 @@ class _SearchScreenState extends State<SearchScreen>
       }
       filteredSubscribedChats = tempChatsList;
 
-      List<VisibleChatLobbyRecord> tempList = new List();
+      List<VisibleChatLobbyRecord> tempList = [];
       for (int i = 0; i < publicChats.length; i++) {
         if (publicChats[i]
             .lobbyName
@@ -386,7 +393,7 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   void _toggleContacts(String gxsId, bool type) {
-    Provider.of<FriendsIdentity>(context, listen: false)
+    Provider.of<RoomChatLobby>(context, listen: false)
         .toggleContacts(gxsId, type);
   }
 
@@ -396,7 +403,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   Widget _buildPeopleList() {
     if (_searchContent.isNotEmpty) {
-      List<Identity> tempContactsList = new List();
+      List<Identity> tempContactsList = [];
       for (int i = 0; i < contactsIds.length; i++) {
         if (contactsIds[i]
             .name
@@ -407,7 +414,7 @@ class _SearchScreenState extends State<SearchScreen>
       }
       filteredContactsIds = tempContactsList;
 
-      List<Identity> tempList = new List();
+      List<Identity> tempList = [];
       for (int i = 0; i < allIds.length; i++) {
         if (allIds[i]
             .name
@@ -453,13 +460,17 @@ class _SearchScreenState extends State<SearchScreen>
                           context);
                     },
                     onPressed: () {
+                      final curr =
+                          Provider.of<Identities>(context, listen: false)
+                              .currentIdentity;
                       Navigator.pushNamed(
                         context,
                         '/room',
                         arguments: {
                           'isRoom': false,
                           'chatData':
-                              getChat(context, filteredContactsIds[index])
+                              Provider.of<RoomChatLobby>(context, listen: false)
+                                  .getChat(curr, filteredContactsIds[index])
                         },
                       );
                     },
@@ -493,12 +504,17 @@ class _SearchScreenState extends State<SearchScreen>
                           context);
                     },
                     onPressed: () {
+                      final curr =
+                          Provider.of<Identities>(context, listen: false)
+                              .currentIdentity;
                       Navigator.pushNamed(
                         context,
                         '/room',
                         arguments: {
                           'isRoom': false,
-                          'chatData': getChat(context, filteredAllIds[index])
+                          'chatData':
+                              Provider.of<RoomChatLobby>(context, listen: false)
+                                  .getChat(curr, filteredAllIds[index])
                         },
                       );
                     },

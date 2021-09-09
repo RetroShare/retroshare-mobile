@@ -36,24 +36,27 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                 .fetchOwnidenities(),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.done
-                  ? Consumer<Identities>(builder: (ctx, idsTuple, _) {
-                      final List<Identity> ownIdentity = idsTuple.ownIdentity;
-                      return ListView.builder(
+                  ?  ListView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        itemCount: ownIdentity?.length ?? 0,
+                        itemCount: Provider.of<Identities>(context, listen: false).ownIdentity
+                                    ?.length ?? 0,
                         itemBuilder: (BuildContext context, int index) {
                           return PersonDelegate(
                             data: PersonDelegateData.IdentityData(
-                                ownIdentity[index], context),
+                                 Provider.of<Identities>(context, listen: false)
+                                    .ownIdentity[index], context),
                             isSelectable: true,
                             onPressed: () {
-                              final id = ownIdentity[index];
-                              idsTuple.updateSelectedIdentity(id);
+                              final id =  Provider.of<Identities>(context,
+                                      listen: false)
+                                  .ownIdentity[index];
+                              Provider.of<Identities>(context, listen: false)
+                                .updateSelectedIdentity(id);
                             },
                           );
                         },
-                      );
-                    })
+                      )
+                    
                   : ChangeIdentityShimmer();
             }),
       )),

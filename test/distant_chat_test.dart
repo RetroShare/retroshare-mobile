@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:retroshare_api_wrapper/retroshare.dart';
 
 //// tests for ChatId
 void main() {
@@ -69,7 +68,8 @@ void main() {
 ////          Identity identity = Identity(id);
 ////          identity.name = json.decode(response.body)['details']['mNickname'];
 ////        response.body
-//          String avatar = json.decode((response.body))['details']['mAvatar']['mData'];
+//          String avatar =
+// json.decode((response.body))['details']['mAvatar']['mData'];
 //
 //          print(avatar);
 //

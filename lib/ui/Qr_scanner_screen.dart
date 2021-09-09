@@ -131,20 +131,20 @@ class _QRScannerState extends State<QRScanner>
   }
 
   Future _scan() async {
-    String barcode;
     try {
-      barcode = await scanner.scan();
-      if (barcode != null) {
-        Provider.of<FriendLocations>(context, listen: false)
-            .addFriendLocation(barcode)
-            .then((value) {
-          showToast('Friend has successfully added',
+      await scanner.scan().then((barcode) {
+        if (barcode != null) {
+          Provider.of<FriendLocations>(context, listen: false)
+              .addFriendLocation(barcode)
+              .then((value) {
+            showToast('Friend has successfully added',
+                position: ToastPosition.bottom);
+          });
+        } else {
+          showToast('An error occurred while adding your friend.',
               position: ToastPosition.bottom);
-        });
-      } else {
-        showToast('An error occurred while adding your friend.',
-            position: ToastPosition.bottom);
-      }
+        }
+      });
     } on HttpException catch (e) {
       showToast('An error occurred while adding your friend.',
           position: ToastPosition.bottom);
@@ -343,10 +343,11 @@ class _QRScannerState extends State<QRScanner>
                     setState(() {
                       check = newval;
                     });
-                    if (check)
+                    if (check) {
                       tabController.animateTo(0);
-                    else
+                    } else {
                       tabController.animateTo(1);
+                    }
                   },
                 ),
               ),

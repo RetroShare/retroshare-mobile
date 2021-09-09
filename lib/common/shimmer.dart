@@ -41,7 +41,7 @@ Widget friendLocationShimmer() {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(15))),
               ),
-              const Padding(padding: const EdgeInsets.all(8)),
+              const Padding(padding: EdgeInsets.all(8)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Container(
                   width: 60,

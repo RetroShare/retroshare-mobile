@@ -13,7 +13,6 @@ Future<StreamSubscription<Event>> eventsRegisterChatMessage(
     {Function listenCb, Function onError, AuthToken authToken}) async {
   return registerEvent(RsEventType.CHAT_MESSAGE, (Event event) {
     // Deserialize the message
-
     final jsonData = event.data != null ? jsonDecode(event.data) : null;
     ChatMessage chatMessage;
     if (jsonData['event'] != null) {

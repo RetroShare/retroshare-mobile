@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
+import 'package:retroshare/provider/Idenity.dart';
+import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
-import 'package:retroshare/HelperFunction/chat.dart';
 
 class DiscoverChatsScreen extends StatefulWidget {
   @override
@@ -21,8 +22,13 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
   }
 
   Future<void> _goToChat(lobby) async {
-    Navigator.pushNamed(context, '/room',
-        arguments: {'isRoom': true, 'chatData': getChat(context, lobby)});
+    final curr =
+        Provider.of<Identities>(context, listen: false).currentIdentity;
+    Navigator.pushNamed(context, '/room', arguments: {
+      'isRoom': true,
+      'chatData': Provider.of<RoomChatLobby>(context, listen: false)
+          .getChat(curr, lobby)
+    });
   }
 
   @override
@@ -51,7 +57,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                   Expanded(
                     child: Text(
                       'Discover public chats',
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
                 ],
@@ -69,7 +75,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                               return _chatsList.unSubscribedlist != null &&
                                       _chatsList.unSubscribedlist.isNotEmpty
                                   ? ListView.builder(
-                                      padding: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(8),
                                       itemCount:
                                           _chatsList.unSubscribedlist.length,
                                       itemBuilder:
@@ -166,7 +172,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                                   'No public chats are available',
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .body2),
+                                                      .bodyText1),
                                             ),
                                           ],
                                         ),

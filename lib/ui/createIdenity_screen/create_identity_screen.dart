@@ -65,12 +65,12 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                                   BorderRadius.circular(appBarHeight / 2),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Center(
                                 child: Text(
                                   'Signed Identity',
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ),
@@ -96,12 +96,12 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                                   BorderRadius.circular(appBarHeight / 2),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Center(
                                 child: Text(
                                   ' Pseudo Identity',
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ),

@@ -40,7 +40,7 @@ dependencies:
   # https://gitlab.com/b1rdG/retroshare-dart-see
   eventsource:
     git:
-      url: 'https://gitlab.com/Kumaravinash9/retroshare-dart-see/'
+      url: 'https://gitlab.com/Kumaravinash9/retroshare-dart-see.git'
       ref: master
 
     # path: "../retroshare-dart-see"

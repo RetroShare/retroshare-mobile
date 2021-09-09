@@ -68,20 +68,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
       'spinner': true
     });
     try {
-      final account_signup =
+      final accountSignup =
           Provider.of<AccountCredentials>(context, listen: false);
-      await account_signup.signup(usernameController.text,
-          passwordController.text, nodeNameController.text);
-
-      final ids = Provider.of<Identities>(context, listen: false);
-      ids.fetchOwnidenities().then((value) {
-        ids.ownIdentity != null && ids.ownIdentity.length == 0
-            ? Navigator.pushReplacementNamed(context, '/create_identity',
-                arguments: true)
-            : Navigator.pushReplacementNamed(context, '/home');
+      await accountSignup
+          .signup(usernameController.text, passwordController.text,
+              nodeNameController.text)
+          .then((value) {
+        final ids = Provider.of<Identities>(context, listen: false);
+        ids.fetchOwnidenities().then((value) {
+          ids.ownIdentity != null && ids.ownIdentity.isEmpty
+              ? Navigator.pushReplacementNamed(context, '/create_identity',
+                  arguments: true)
+              : Navigator.pushReplacementNamed(context, '/home');
+        });
       });
     } on HttpException catch (err) {
-      var errorMessage = 'Authentication failed';
+      debugPrint(err.toString());
+      const errorMessage = 'Authentication failed';
       errorShowDialog(errorMessage, 'Something went wrong', context);
     } catch (e) {
       errorShowDialog('Retroshare Service Down',
@@ -124,7 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             size: 22.0,
                           ),
                           hintText: 'Username'),
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
                 ),
@@ -175,7 +178,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             size: 22.0,
                           ),
                           hintText: 'Password'),
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                       obscureText: true,
                     ),
                   ),
@@ -227,7 +230,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             size: 22.0,
                           ),
                           hintText: 'Repeat password'),
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText2,
                       obscureText: true,
                     ),
                   ),
@@ -288,7 +291,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           const SizedBox(width: 3),
                           Text(
                             'Advanced option',
-                            style: Theme.of(context).textTheme.body1,
+                            style: Theme.of(context).textTheme.bodyText2,
                           )
                         ],
                       ),
@@ -321,7 +324,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           hintText: 'Node name',
                         ),
-                        style: Theme.of(context).textTheme.body2,
+                        style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
                   ),
@@ -350,7 +353,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             const SizedBox(width: 3),
                             Text(
                               'Tor/I2p Hidden node',
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.bodyText2,
                             )
                           ],
                         )),

@@ -4,8 +4,6 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/HelperFunction/chat.dart';
-import 'package:retroshare/common/common_methods.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/room.dart';
@@ -61,8 +59,16 @@ class _MessagesTabState extends State<MessagesTab> {
       var text = base64.encode(image.readAsBytesSync());
       text = "<img alt='Red dot (png)' src='data:image/png;base64,$text'/>";
       // ignore: use_build_context_synchronously
-      await sendMessage(context, widget.chat?.chatId, text,
-          widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_);
+      try {
+        await Provider.of<RoomChatLobby>(context, listen: false).sendMessage(
+            widget.chat?.chatId,
+            text,
+            widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_);
+      } catch (e) {
+        // ignore: use_build_context_synchronously
+        errorShowDialog(
+            'Error', 'You are not the member of the chat Lobby', context);
+      }
     } else {
       showFlutterToast('Image Size is too large !', Colors.red);
     }
@@ -117,7 +123,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                   (msgList[index].incoming == true)
                               // Why msgList[index]?.incoming ?? false is
                               //not working??
-                              ? getChatSenderName(context, msgList[index])
+                              ? messagesList.getChatSenderName(msgList[index])
                               : null,
                         );
                       },
@@ -211,14 +217,14 @@ class _MessagesTabState extends State<MessagesTab> {
                       Icons.send,
                     ),
                     onPressed: () {
-                      if (msgController.text.length > 0) {
-                        sendMessage(
-                            context,
-                            widget.chat?.chatId,
-                            msgController.text,
-                            widget.isRoom
-                                ? ChatIdType.number3_
-                                : ChatIdType.number2_);
+                      if (msgController.text.isNotEmpty) {
+                        Provider.of<RoomChatLobby>(context, listen: false)
+                            .sendMessage(
+                                widget.chat?.chatId,
+                                msgController.text,
+                                widget.isRoom
+                                    ? ChatIdType.number3_
+                                    : ChatIdType.number2_);
                       }
                       msgController.clear();
                     },
