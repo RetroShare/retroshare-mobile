@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/HelperFunction/identity.dart';
+import 'package:retroshare/apiUtils/identity.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:tuple/tuple.dart';
@@ -46,7 +46,8 @@ class RoomChatLobby with ChangeNotifier {
     notifyListeners();
   }
 
-  void setAllIds(Chat chat) {
+  Future<void> setAllIds(Chat chat) async{
+    await fetchAndUpdate();
     if (_allIdentity[chat.interlocutorId] == null) {
       _allIdentity = Map.from(_allIdentity)
         ..[chat.interlocutorId] = Identity(chat.interlocutorId);

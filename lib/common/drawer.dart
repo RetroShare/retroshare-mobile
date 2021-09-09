@@ -9,7 +9,7 @@ import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 Widget drawerWidget(BuildContext ctx) {
-  Widget buildList(IconData icon, String title, Function changeState) {
+  Widget buildNavList(IconData icon, String title, Function changeState) {
     return Container(
       height: 60,
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -126,24 +126,24 @@ Widget drawerWidget(BuildContext ctx) {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
-              buildList(Icons.person_add_alt, 'Add friend', () {
+              buildNavList(Icons.person_add_alt, 'Add friend', () {
                 Future.delayed(Duration.zero, () {
                   Navigator.pushNamed(ctx, '/add_friend');
                 });
               }),
-              buildList(Icons.add, 'Create new identity', () {
+              buildNavList(Icons.add, 'Create new identity', () {
                 Navigator.pushNamed(ctx, '/create_identity');
               }),
-              buildList(Icons.visibility, 'Change identity', () {
+              buildNavList(Icons.visibility, 'Change identity', () {
                 Navigator.pushNamed(ctx, '/change_identity');
               }),
-              buildList(Icons.devices, 'Friends location', () {
+              buildNavList(Icons.devices, 'Friends location', () {
                 Navigator.pushNamed(ctx, '/friends_locations');
               }),
-              buildList(Icons.language, 'Discover public chats', () {
+              buildNavList(Icons.language, 'Discover public chats', () {
                 Navigator.pushNamed(ctx, '/discover_chats');
               }),
-              buildList(Icons.info_rounded, 'About', () {
+              buildNavList(Icons.info_rounded, 'About', () {
                 Navigator.pushNamed(ctx, '/about');
               })
             ],

@@ -39,10 +39,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
   List<Identity> _suggestionsList;
   List<Location> _locationsList;
   List<Location> _selectedLocations;
-
+  bool _init = true;
   @override
   void initState() {
     super.initState();
+    _init = true;
     _isRoomCreation = false;
     isPublic = true;
     isAnonymous = true;
@@ -116,9 +117,13 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
         curve: Curves.easeInOut,
       ),
     );
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<FriendLocations>(context, listen: false)
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_init) {
+      Provider.of<FriendLocations>(context, listen: false)
           .fetchfriendLocation();
       final identities = Provider.of<RoomChatLobby>(context, listen: false);
       final locations = Provider.of<FriendLocations>(context, listen: false);
@@ -126,7 +131,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       _suggestionsList = identities.friendsSignedIdsList;
       _locationsList = locations.friendlist;
       _selectedLocations = <Location>[];
-    });
+    }
+    _init = false;
   }
 
   @override
@@ -147,7 +153,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
         _isRoomCreation = false;
       });
     } else {
-      Navigator.pop(context);
+      Navigator.pop(context,true);
     }
   }
 

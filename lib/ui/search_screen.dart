@@ -23,7 +23,7 @@ class _SearchScreenState extends State<SearchScreen>
   TextEditingController _searchBoxFilter = new TextEditingController();
   Animation<Color> _leftTabIconColor;
   Animation<Color> _rightTabIconColor;
-
+  bool _init = true;
   String _searchContent = '';
   List<Identity> allIds = [];
   List<Identity> filteredAllIds = [];
@@ -41,7 +41,7 @@ class _SearchScreenState extends State<SearchScreen>
     super.initState();
     _tabController =
         TabController(vsync: this, length: 2, initialIndex: widget.initialTab);
-
+    _init = true;
     _searchBoxFilter.addListener(() {
       if (_searchBoxFilter.text.isEmpty) {
         if (mounted) {
@@ -66,18 +66,23 @@ class _SearchScreenState extends State<SearchScreen>
         .animate(_tabController.animation);
     _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
         .animate(_tabController.animation);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+  @override
+  void didChangeDependencies() {
+    if (_init) {
       final friendIdentity = Provider.of<RoomChatLobby>(context, listen: false);
       final chatLobby = Provider.of<ChatLobby>(context, listen: false);
-      await friendIdentity.fetchAndUpdate();
-      await chatLobby.fetchAndUpdate();
-      await chatLobby.fetchAndUpdateUnsubscribed();
+      friendIdentity.fetchAndUpdate();
+      chatLobby.fetchAndUpdate();
+      chatLobby.fetchAndUpdateUnsubscribed();
       allIds = friendIdentity.notContactIds;
       contactsIds = friendIdentity.friendsIdsList;
       subscribedChats = chatLobby.subscribedlist;
       publicChats = chatLobby.unSubscribedlist;
-    });
+    }
+    _init = false;
+    super.didChangeDependencies();
   }
 
   Future<void> _goToChat(lobby) async {
@@ -185,7 +190,7 @@ class _SearchScreenState extends State<SearchScreen>
                                   BorderRadius.circular(appBarHeight / 2),
                             ),
                             child: Padding(
-                              padding: const  EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Center(
                                 child: Text(
                                   'Chats',
@@ -289,10 +294,12 @@ class _SearchScreenState extends State<SearchScreen>
                                   Image.asset(
                                       'assets/icons8/virtual-reality.png'),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 25),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 25),
                                     child: Text(
                                       'Nothing was found',
-                                      style: Theme.of(context).textTheme.bodyText1,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
                                 ],

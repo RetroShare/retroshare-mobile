@@ -20,7 +20,7 @@ class RoomScreen extends StatefulWidget {
 class _RoomScreenState extends State<RoomScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-
+  bool _init = true;
   final bool isOnline = false;
 
   Animation<Color> _iconAnimation;
@@ -28,7 +28,7 @@ class _RoomScreenState extends State<RoomScreen>
   @override
   void initState() {
     super.initState();
-
+    _init =true;
     _tabController = TabController(vsync: this, length: widget.isRoom ? 2 : 1);
 
     _iconAnimation =
@@ -64,6 +64,7 @@ class _RoomScreenState extends State<RoomScreen>
 
   @override
   Widget build(BuildContext context) {
+  
     final friendIdentity = Provider.of<RoomChatLobby>(context, listen: false);
     return Scaffold(
       body: SafeArea(

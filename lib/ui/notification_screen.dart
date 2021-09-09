@@ -42,7 +42,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       size: 25,
                     ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context,true);
                     },
                   ),
                 ),

@@ -29,10 +29,7 @@ class _FriendsTabState extends State<FriendsTab> {
     return SafeArea(
       top: false,
       bottom: false,
-      child: FutureBuilder(
-        future:  Provider.of<RoomChatLobby>(context, listen: false).fetchAndUpdate(),
-        builder: (context, snapshot) {
-        return  snapshot.connectionState == ConnectionState.done? Consumer<RoomChatLobby>(
+      child:Consumer<RoomChatLobby>(
           builder: (context, roomChat, _) {
             final Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
                 friendsDistantAndIdsTuple =
@@ -218,9 +215,8 @@ class _FriendsTabState extends State<FriendsTab> {
               ),
             );
           },
-        ): const Center(child: 
-        CircularProgressIndicator());
-      }),
+     
+      ),
     );
   }
 }

@@ -62,10 +62,11 @@ class _SplashState extends State<SplashScreen> {
     } while (!connectedToBackend);
     // ignore: use_build_context_synchronously
     final auth = Provider.of<AccountCredentials>(context, listen: false);
-    final bool isTokenValid = await auth.checkisvalidAuthToken();
-    if (isLoggedIn && isTokenValid && auth.loggedinAccount != null) {
+    await auth.checkisvalidAuthToken().then((isTokenValid) async{
+
+      // Already authenticated
+      if (isLoggedIn && isTokenValid && auth.loggedinAccount != null) {
       _setStatusText('Logging in...');
-      // ignore: use_build_context_synchronously
       final ids = Provider.of<Identities>(context, listen: false);
       ids.fetchOwnidenities().then((value) {
         if (ids.ownIdentity != null && ids.ownIdentity.isEmpty) {
@@ -76,16 +77,18 @@ class _SplashState extends State<SplashScreen> {
         }
       });
     } else {
+      // Fetching the existing node location
       _setStatusText('Get locations...');
-      await auth.fetchAuthAccountList();
-      if (auth.accountList.isEmpty) {
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, '/launch_transition');
-      } else {
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, '/signin');
-      }
+      await auth.fetchAuthAccountList().then((value) {
+        if (auth.accountList.isEmpty) {
+          Navigator.pushReplacementNamed(context, '/launch_transition');
+        } else {
+          Navigator.pushReplacementNamed(context, '/signin');
+        }
+      });
     }
+    });
+    
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

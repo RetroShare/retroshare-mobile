@@ -75,7 +75,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
               }
             },
             textColor: Colors.white,
-            padding: const EdgeInsets.all(0.0),
+            padding: EdgeInsets.zero,
             child: SizedBox(
               width: double.infinity,
               child: Container(

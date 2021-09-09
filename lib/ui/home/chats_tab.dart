@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/shimmer.dart';
+
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
@@ -17,12 +17,7 @@ class ChatsTab extends StatelessWidget {
     return SafeArea(
         top: false,
         bottom: false,
-        child: FutureBuilder(
-            future:
-                Provider.of<ChatLobby>(context, listen: false).fetchAndUpdate(),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.done
-                  ? Consumer<ChatLobby>(
+        child: Consumer<ChatLobby>(
                       builder: (context, chatsList, _) {
                         if (chatsList.subscribedlist != null &&
                             chatsList.subscribedlist?.isNotEmpty) {
@@ -107,7 +102,7 @@ class ChatsTab extends StatelessWidget {
                         );
                       },
                     )
-                  : chatTabShimmer();
-            }));
+                
+            );
   }
 }

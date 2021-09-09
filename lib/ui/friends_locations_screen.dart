@@ -15,9 +15,8 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
       if (mounted) _getFriendsAccounts();
-    });
+    
   }
 
   Future<void> _getFriendsAccounts() async {
