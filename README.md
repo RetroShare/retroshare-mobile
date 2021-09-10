@@ -41,6 +41,13 @@ adb reverse tcp:9092 tcp:9092
 ```
 * Follow this [steps](https://github.com/RetroShare/retroshare-mobile/blob/master/AndroidStudio-Flutter-setup.md)  for more Info.
 
+## Code linting and formatting
+Don't forget to format the code before creating a PR. Run the below command to check your code is formatted or not.
+``` bash
+flutter format .
+```
+
+
 ## Contributing
 Please read [Contributing.md](https://github.com/RetroShare/retroshare-mobile/blob/master/Contribution.md) for details on our code of conduct and the process for submitting pull requests to us.
  
