@@ -48,6 +48,18 @@ The allowed ```<types>``` are :
 
 When you file a feature request or when you are submitting a bug report to the [issue tracker](https://github.com/RetroShare/retroshare-mobile/issues), make sure you add steps to reproduce it. Especially if that bug is some weird/rare one.
 
+
+## Necessary packages
+RS-mobile depends on the following packages to be avail on path-level parallel to RS-mobile itself and with a name actually not matching the their repo names:
+{as of rs-mobile: SHA-1: 8a16a84711388872d455ce2a81dbfe4f8643f63f}
+
+- Repo: https://gitlab.com/Kumaravinash9/retroshare-dart-see.git
+  1. These package  is used to listen `Server Sent Event(SEE)`. If your PR have some changes related to it then don't forget to create a PR there.
+
+- Repo: https://github.com/Kumaravinash9/Retroshare-Wrapper.git
+   All the API and Models class defined in this above  repo. So, `Add/Update` these changes there if your PR's changes are related to Models class and API calls.
+
+
 ### Join the development
 
 -   Commit to the `develop` branch that is currently in development and `master` branch is in production.
