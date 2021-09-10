@@ -98,7 +98,7 @@ class _QRScannerState extends State<QRScanner>
   }*/
 
   Widget getHeaderBuilder() {
-    return Container(
+    return SizedBox(
       child: Stack(
         children: <Widget>[
           ScaleTransition(
@@ -117,8 +117,8 @@ class _QRScannerState extends State<QRScanner>
             scale: _rightHeaderScaleAnimation,
             child: FadeTransition(
               opacity: _rightHeaderFadeAnimation,
-              child: Container(
-                child: const Text(
+              child: const SizedBox(
+                child:  Text(
                   'Long Invite',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                 ),
@@ -183,11 +183,9 @@ class _QRScannerState extends State<QRScanner>
         final image = await boundary.toImage();
         ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
         final Uint8List pngBytes = byteData.buffer.asUint8List();
-        //final appDir = await getApplicationDocumentsDirectory();
-        // final result =
+        final appDir = await getApplicationDocumentsDirectory();
         await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
-
-        //final file = new File('${appDir.path}/retroshare_qr_code.png').create();
+        File('${appDir.path}/retroshare_qr_code.png').create();
         showToast('Hey there! QR Image has successfully saved.',
             position: ToastPosition.bottom);
       } catch (e) {
@@ -232,7 +230,7 @@ class _QRScannerState extends State<QRScanner>
                   const SizedBox(height: 20),
                   Text(
                     'QR Scanner',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const Spacer(),
                   PopupMenuButton(
@@ -297,13 +295,13 @@ class _QRScannerState extends State<QRScanner>
                           child: Center(
                             child: snapshot.connectionState ==
                                     ConnectionState.waiting
-                                ? Container(
+                                ? SizedBox(
                                     child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
                                           onPressed: () async {},
-                                          icon: Icon(Icons.refresh)),
+                                          icon: const Icon(Icons.refresh)),
                                       const Text(
                                         'Loading',
                                         style: TextStyle(
@@ -312,7 +310,7 @@ class _QRScannerState extends State<QRScanner>
                                       ),
                                     ],
                                   ))
-                                : Container(
+                                : SizedBox(
                                     child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
