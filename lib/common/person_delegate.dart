@@ -80,7 +80,7 @@ class PersonDelegateData {
     return PersonDelegateData(
       name: identity.name,
       mId: identity.mId,
-      image: identity.avatar != null
+      image: identity.avatar != null && identity.avatar.isNotEmpty
           ? MemoryImage(base64Decode(identity.avatar))
           : null,
       isMessage: true,
@@ -129,9 +129,8 @@ class _PersonDelegateState extends State<PersonDelegate>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const 
-        Duration(milliseconds: 200));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
     _curvedAnimation =
         CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
 
@@ -237,6 +236,10 @@ class _PersonDelegateState extends State<PersonDelegate>
                                   image: DecorationImage(
                                     fit: BoxFit.fitWidth,
                                     image: widget.data.image,
+                                    onError:(context,stackTrace) =>  Center(child:Icon(
+                                      widget.data.icon,
+                                      size: personDelegateIconHeight,
+                                    ))
                                   ),
                                 ),
                       child: Visibility(

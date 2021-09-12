@@ -113,8 +113,11 @@ class _RoomScreenState extends State<RoomScreen>
                                                         .allIdentity[widget.chat
                                                             ?.interlocutorId]
                                                         ?.avatar ==
-                                                    null ??
-                                            false)
+                                                    null  || friendIdentity
+                                                        .allIdentity[widget.chat
+                                                            .interlocutorId]
+                                                        .avatar.isEmpty
+                                            )
                                         ? null
                                         : BoxDecoration(
                                             color: Colors.lightBlueAccent,
@@ -136,12 +139,15 @@ class _RoomScreenState extends State<RoomScreen>
                                                               .chat
                                                               ?.interlocutorId]
                                                           ?.avatar ==
-                                                      null ??
-                                              false,
+                                                      null || friendIdentity
+                                                        .allIdentity[widget.chat
+                                                            .interlocutorId]
+                                                        .avatar.isEmpty ??true
+                                              ,
                                       child: Center(
                                         child: Icon(
                                           (widget.chat?.isPublic == null ||
-                                                  widget.chat?.isPublic)
+                                                  widget.chat.isPublic)
                                               ? Icons.people
                                               : Icons.person,
                                           size: 40,

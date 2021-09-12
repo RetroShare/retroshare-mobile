@@ -1,12 +1,18 @@
+import 'dart:convert';
+
+import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/apiUtils/events.dart';
 import 'package:retroshare/apiUtils/eventsource.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
 import 'package:retroshare/ui/home/friends_tab.dart';
@@ -50,6 +56,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       begin: const Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      final authtoken =
+          Provider.of<ChatLobby>(context, listen: false).authToken;
+      registerEvent(RsEventType.NETWORK, (Event e) async {
+        final jsonData = e.data != null ? jsonDecode(e.data) : null;
+        if (jsonData['event'] != null) {
+          final Location location = await RsPeers.getPeerDetails(
+              jsonData['event']['mSslId'], authtoken);
+          print(location.accountName);
+        }
+      }, authtoken);
+    });
   }
 
   @override
@@ -154,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           context,
                           '/search',
                           arguments: _tabController.index,
-                        ).then((value) async{
+                        ).then((value) async {
                           await fetchdata(context);
                         });
                       });
@@ -172,9 +190,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         context,
                         '/search',
                         arguments: _tabController.index,
-                      ).then((value) {
-                        if (value == true) fetchdata(context);
-                      });
+                      );
                     },
                   ),
                   Padding(
@@ -202,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      onDrawerChanged: (val) async{
+      onDrawerChanged: (val) async {
         if (!val) {
           await fetchdata(context);
         }

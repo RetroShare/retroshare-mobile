@@ -11,7 +11,7 @@ class ChatLobby with ChangeNotifier {
     _authToken = authToken;
   }
 
-  AuthToken get autthToken => _authToken;
+  AuthToken get authToken => _authToken;
 
   List<VisibleChatLobbyRecord> get unSubscribedlist => _unsubscribedlist;
 

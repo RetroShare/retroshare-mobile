@@ -83,7 +83,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
       });
     } on HttpException catch (err) {
-      debugPrint(err.toString());
       const errorMessage = 'Authentication failed';
       errorShowDialog(errorMessage, 'Something went wrong', context);
     } catch (e) {
