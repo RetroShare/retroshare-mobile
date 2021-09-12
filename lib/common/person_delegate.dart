@@ -234,7 +234,7 @@ class _PersonDelegateState extends State<PersonDelegate>
                                   borderRadius: BorderRadius.circular(
                                       delegateHeight * 0.92 * 0.33),
                                   image: DecorationImage(
-                                    fit: BoxFit.fitWidth,
+                                    fit: BoxFit.fill,
                                     image: widget.data.image,
                                     onError:(context,stackTrace) =>  Center(child:Icon(
                                       widget.data.icon,

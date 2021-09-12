@@ -51,28 +51,34 @@ Widget drawerWidget(BuildContext ctx) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: (curr.currentIdentity.avatar == null)
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
-                                border: Border.all(color: Colors.black38))
-                            : BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
-                                border: Border.all(color: Colors.black38),
-                                image: DecorationImage(
-                                  fit: BoxFit.fitWidth,
-                                  image: MemoryImage(base64
-                                      .decode(curr.currentIdentity.avatar)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/profile',
+                              arguments: {'id': curr.currentIdentity});
+                        },
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: (curr.currentIdentity.avatar == null)
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(color: Colors.black38))
+                              : BoxDecoration(
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(color: Colors.black38),
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: MemoryImage(base64
+                                        .decode(curr.currentIdentity.avatar)),
+                                  ),
                                 ),
+                          child: Visibility(
+                            visible: curr.currentIdentity?.avatar == null,
+                            child: const Center(
+                              child: Icon(
+                                Icons.person,
+                                size: 80,
                               ),
-                        child: Visibility(
-                          visible: curr.currentIdentity?.avatar == null,
-                          child: const Center(
-                            child: Icon(
-                              Icons.person,
-                              size: 80,
                             ),
                           ),
                         ),

@@ -35,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(),
                     image: DecorationImage(
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.fill,
                       image: MemoryImage(base64.decode(widget.curr.avatar)),
                     ),
                   ),
@@ -105,6 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 Widget textField(String text, String label) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
     children: [
       Text(
         label,
