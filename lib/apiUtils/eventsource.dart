@@ -46,8 +46,6 @@ Future<StreamSubscription<Event>> registerEventsHandlers(
   return streamSubscription;
 }
 
-
-
 // register chat event
 Future<void> registerChatEvent(
     BuildContext context, AuthToken authToken) async {
@@ -76,8 +74,6 @@ Future<void> registerChatEvent(
       authToken: authToken);
 }
 
-
-
 // Show the incoming chat  message  notification when app is in background/ resume state
 Future<void> showChatNotify(ChatMessage message, BuildContext context) async {
   if (message != null && message.msg.isNotEmpty && message.incoming) {
@@ -88,7 +84,7 @@ Future<void> showChatNotify(ChatMessage message, BuildContext context) async {
     // Parse the notification message from the HTML tag.
     String parsedMsg;
     final parsed = parse(message.msg).getElementsByTagName('span');
-    parsed!=null ? parsedMsg = parsed[0].text : parsedMsg = message.msg;
+    parsed != null ? parsedMsg = parsed[0].text : parsedMsg = message.msg;
 
     // Check if current chat is focused, to notify unread count
     if (roomChatLobby.currentChat == null ||

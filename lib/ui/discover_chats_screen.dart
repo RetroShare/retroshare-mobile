@@ -50,7 +50,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                         size: 25,
                       ),
                       onPressed: () {
-                        Navigator.pop(context,true);
+                        Navigator.pop(context, true);
                       },
                     ),
                   ),

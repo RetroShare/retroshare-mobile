@@ -179,7 +179,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                             borderRadius: BorderRadius.circular(
                                                 300 * 0.7 * 0.33),
                                             image: DecorationImage(
-                                              fit: BoxFit.fitWidth,
+                                              fit: BoxFit.fill,
                                               image: MemoryImage(_image.mData),
                                             ),
                                           ),

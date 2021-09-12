@@ -83,6 +83,7 @@ class _QRScannerState extends State<QRScanner>
     return ownCert;
   }
 
+/// WIP : Permisssion for Camera 
   /*Future<bool> requestCameraPermission() async {
     if (await Permission.camera.isUndetermined) {
       final status = await Permission.camera.request();
@@ -118,7 +119,7 @@ class _QRScannerState extends State<QRScanner>
             child: FadeTransition(
               opacity: _rightHeaderFadeAnimation,
               child: const SizedBox(
-                child:  Text(
+                child: Text(
                   'Long Invite',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                 ),

@@ -1,18 +1,13 @@
-import 'dart:convert';
 
-import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/apiUtils/events.dart';
 import 'package:retroshare/apiUtils/eventsource.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
-import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:retroshare/ui/home/chats_tab.dart';
 import 'package:retroshare/ui/home/friends_tab.dart';
@@ -153,24 +148,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ),
                 primary: false,
-
                 title: InkWell(
                   onTap: () {
-                      Future.delayed(const Duration(milliseconds: 2), () {
-                        Navigator.pushNamed(
-                          context,
-                          '/search',
-                          arguments: _tabController.index,
-                        ).then((value) async {
-                          await fetchdata(context);
-                        });
+                    Future.delayed(const Duration(milliseconds: 2), () {
+                      Navigator.pushNamed(
+                        context,
+                        '/search',
+                        arguments: _tabController.index,
+                      ).then((value) async {
+                        await fetchdata(context);
                       });
-                    },
+                    });
+                  },
                   child: const SizedBox(
-                    width: double.maxFinite,
-                    child:  
-                    Text('Search',style: TextStyle(color:
-                     Colors.grey,fontSize: 14),textAlign: TextAlign.start,)),
+                      width: double.maxFinite,
+                      child: Text(
+                        'Search',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        textAlign: TextAlign.start,
+                      )),
                 ),
                 actions: <Widget>[
                   IconButton(

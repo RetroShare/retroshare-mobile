@@ -7,7 +7,6 @@ import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/person_delegate.dart';
-import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class ChangeIdentityScreen extends StatefulWidget {
   @override
@@ -36,27 +35,29 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                 .fetchOwnidenities(),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.done
-                  ?  ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        itemCount: Provider.of<Identities>(context, listen: false).ownIdentity
-                                    ?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          return PersonDelegate(
-                            data: PersonDelegateData.IdentityData(
-                                 Provider.of<Identities>(context, listen: false)
-                                    .ownIdentity[index], context),
-                            isSelectable: true,
-                            onPressed: () {
-                              final id =  Provider.of<Identities>(context,
-                                      listen: false)
-                                  .ownIdentity[index];
+                  ? ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      itemCount: Provider.of<Identities>(context, listen: false)
+                              .ownIdentity
+                              ?.length ??
+                          0,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PersonDelegate(
+                          data: PersonDelegateData.IdentityData(
                               Provider.of<Identities>(context, listen: false)
+                                  .ownIdentity[index],
+                              context),
+                          isSelectable: true,
+                          onPressed: () {
+                            final id =
+                                Provider.of<Identities>(context, listen: false)
+                                    .ownIdentity[index];
+                            Provider.of<Identities>(context, listen: false)
                                 .updateSelectedIdentity(id);
-                            },
-                          );
-                        },
-                      )
-                    
+                          },
+                        );
+                      },
+                    )
                   : ChangeIdentityShimmer();
             }),
       )),

@@ -153,7 +153,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
         _isRoomCreation = false;
       });
     } else {
-      Navigator.pop(context,true);
+      Navigator.pop(context, true);
     }
   }
 

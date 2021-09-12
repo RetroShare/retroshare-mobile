@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/common/shimmer.dart';
@@ -15,8 +14,7 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
   @override
   void initState() {
     super.initState();
-      if (mounted) _getFriendsAccounts();
-    
+    if (mounted) _getFriendsAccounts();
   }
 
   Future<void> _getFriendsAccounts() async {

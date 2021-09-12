@@ -46,7 +46,7 @@ class RoomChatLobby with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setAllIds(Chat chat) async{
+  Future<void> setAllIds(Chat chat) async {
     await fetchAndUpdate();
     if (_allIdentity[chat.interlocutorId] == null) {
       _allIdentity = Map.from(_allIdentity)

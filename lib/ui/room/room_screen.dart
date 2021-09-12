@@ -28,7 +28,7 @@ class _RoomScreenState extends State<RoomScreen>
   @override
   void initState() {
     super.initState();
-    _init =true;
+    _init = true;
     _tabController = TabController(vsync: this, length: widget.isRoom ? 2 : 1);
 
     _iconAnimation =
@@ -64,7 +64,6 @@ class _RoomScreenState extends State<RoomScreen>
 
   @override
   Widget build(BuildContext context) {
-  
     final friendIdentity = Provider.of<RoomChatLobby>(context, listen: false);
     return Scaffold(
       body: SafeArea(
@@ -108,16 +107,17 @@ class _RoomScreenState extends State<RoomScreen>
                                     height: appBarHeight * 0.70,
                                     width: appBarHeight * 0.70,
                                     decoration: (widget.chat?.interlocutorId ==
-                                                    null ||
-                                                friendIdentity
-                                                        .allIdentity[widget.chat
-                                                            ?.interlocutorId]
-                                                        ?.avatar ==
-                                                    null  || friendIdentity
-                                                        .allIdentity[widget.chat
-                                                            .interlocutorId]
-                                                        .avatar.isEmpty
-                                            )
+                                                null ||
+                                            friendIdentity
+                                                    .allIdentity[widget
+                                                        .chat?.interlocutorId]
+                                                    ?.avatar ==
+                                                null ||
+                                            friendIdentity
+                                                .allIdentity[
+                                                    widget.chat.interlocutorId]
+                                                .avatar
+                                                .isEmpty)
                                         ? null
                                         : BoxDecoration(
                                             color: Colors.lightBlueAccent,
@@ -139,11 +139,13 @@ class _RoomScreenState extends State<RoomScreen>
                                                               .chat
                                                               ?.interlocutorId]
                                                           ?.avatar ==
-                                                      null || friendIdentity
-                                                        .allIdentity[widget.chat
-                                                            .interlocutorId]
-                                                        .avatar.isEmpty ??true
-                                              ,
+                                                      null ||
+                                                  friendIdentity
+                                                      .allIdentity[widget
+                                                          .chat.interlocutorId]
+                                                      .avatar
+                                                      .isEmpty ??
+                                              true,
                                       child: Center(
                                         child: Icon(
                                           (widget.chat?.isPublic == null ||
