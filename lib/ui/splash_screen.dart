@@ -27,19 +27,28 @@ class SplashScreen extends StatefulWidget {
 class _SplashState extends State<SplashScreen> {
   bool _spinner = false;
   String _statusText;
+  bool _init = true;
 
   @override
   void initState() {
     super.initState();
-    if (widget.isLoading == false) {
-      _statusText = 'Loading...';
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        checkBackendState(context);
-      });
-    } else {
-      _statusText = widget.statusText;
-      _spinner = widget.spinner;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_init) {
+      if (widget.isLoading == false) {
+        _statusText = 'Loading...';
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          checkBackendState(context);
+        });
+      } else {
+        _statusText = widget.statusText;
+        _spinner = widget.spinner;
+      }
     }
+    _init = false;
   }
 
   void _setStatusText(String txt) {
@@ -62,33 +71,31 @@ class _SplashState extends State<SplashScreen> {
     } while (!connectedToBackend);
     // ignore: use_build_context_synchronously
     final auth = Provider.of<AccountCredentials>(context, listen: false);
-    await auth.checkisvalidAuthToken().then((isTokenValid) async{
-
+    await auth.checkisvalidAuthToken().then((isTokenValid) async {
       // Already authenticated
       if (isLoggedIn && isTokenValid && auth.loggedinAccount != null) {
-      _setStatusText('Logging in...');
-      final ids = Provider.of<Identities>(context, listen: false);
-      ids.fetchOwnidenities().then((value) {
-        if (ids.ownIdentity != null && ids.ownIdentity.isEmpty) {
-          Navigator.pushReplacementNamed(context, '/create_identity',
-              arguments: true);
-        } else {
-          Navigator.pushReplacementNamed(context, '/home');
-        }
-      });
-    } else {
-      // Fetching the existing node location
-      _setStatusText('Get locations...');
-      await auth.fetchAuthAccountList().then((value) {
-        if (auth.accountList.isEmpty) {
-          Navigator.pushReplacementNamed(context, '/launch_transition');
-        } else {
-          Navigator.pushReplacementNamed(context, '/signin');
-        }
-      });
-    }
+        _setStatusText('Logging in...');
+        final ids = Provider.of<Identities>(context, listen: false);
+        ids.fetchOwnidenities().then((value) {
+          if (ids.ownIdentity != null && ids.ownIdentity.isEmpty) {
+            Navigator.pushReplacementNamed(context, '/create_identity',
+                arguments: true);
+          } else {
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+        });
+      } else {
+        // Fetching the existing node location
+        _setStatusText('Get locations...');
+        await auth.fetchAuthAccountList().then((value) {
+          if (auth.accountList.isEmpty) {
+            Navigator.pushReplacementNamed(context, '/launch_transition');
+          } else {
+            Navigator.pushReplacementNamed(context, '/signin');
+          }
+        });
+      }
     });
-    
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
