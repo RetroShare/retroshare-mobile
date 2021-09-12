@@ -153,9 +153,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ),
                 primary: false,
-                title: TextField(
-                    onTap: () {
-                      Future.delayed(const Duration(milliseconds: 20), () {
+
+                title: InkWell(
+                  onTap: () {
+                      Future.delayed(const Duration(milliseconds: 2), () {
                         Navigator.pushNamed(
                           context,
                           '/search',
@@ -165,10 +166,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         });
                       });
                     },
-                    decoration: const InputDecoration(
-                        hintText: 'Search',
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.grey))),
+                  child: const SizedBox(
+                    width: double.maxFinite,
+                    child:  
+                    Text('Search',style: TextStyle(color:
+                     Colors.grey,fontSize: 14),textAlign: TextAlign.start,)),
+                ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.search,
