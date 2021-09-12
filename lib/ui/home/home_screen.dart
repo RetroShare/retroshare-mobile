@@ -56,18 +56,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       begin: const Color.fromRGBO(0, 0, 0, 0),
       end: Colors.black12,
     ).animate(_animationController);
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      final authtoken =
-          Provider.of<ChatLobby>(context, listen: false).authToken;
-      registerEvent(RsEventType.NETWORK, (Event e) async {
-        final jsonData = e.data != null ? jsonDecode(e.data) : null;
-        if (jsonData['event'] != null) {
-          final Location location = await RsPeers.getPeerDetails(
-              jsonData['event']['mSslId'], authtoken);
-          print(location.accountName);
-        }
-      }, authtoken);
-    });
   }
 
   @override
