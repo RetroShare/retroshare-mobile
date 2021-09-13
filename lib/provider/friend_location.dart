@@ -6,12 +6,13 @@ class FriendLocations with ChangeNotifier {
   List<Location> _friendlist = [];
   List<Location> get friendlist => _friendlist;
   AuthToken _authToken;
-  void setAuthToken(AuthToken authToken) {
+
+  set authToken(AuthToken authToken) {
     _authToken = authToken;
     notifyListeners();
   }
 
-  AuthToken get getAuthToken => _authToken;
+  AuthToken get authToken => _authToken;
 
   Future<void> fetchfriendLocation() async {
     final sslIds = await RsPeers.getFriendList(_authToken);

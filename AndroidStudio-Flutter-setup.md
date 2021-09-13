@@ -65,20 +65,6 @@ This results in the FlutterDir.
   it should now tell all (but maybe chrome) is OK.
 
 # RS mobile: Prepare project
-## Necessary packages
-RS-mobile depends on the following packages to be avail on path-level parallel to RS-mobile itself and with a name actually not matching the repo names:
-{as of rs-mobile: SHA-1: 8a16a84711388872d455ce2a81dbfe4f8643f63f}
-
-- Repo: https://gitlab.com/Kumaravinash9/retroshare-dart-see.git
-  1. clone it to the same folder-hierarchy level as you will do for rs-mobile
-  2. ensure the folder is named "retroshare-dart-see" as actual awaited in pubspec.yaml of rs-mobile
-  3. call by cmd-console in this path:  
-     ``flutter pub get``
-- Repo: https://github.com/Kumaravinash9/Retroshare-Wrapper.git
-  1. clone it to the same folder-hierarchy level as you will do for rs-mobile
-  2. ensure the folder is named different to the repo name as "retroshare_api_wrapper" as actual awaited in pubspec.yaml of rs-mobile
-  3. call for exc. by cmd-console in this path:  
-     ``flutter pub get``
 
 ## Main package
 1. Git: clone RS mobile locally as RSMobileDir  

@@ -122,7 +122,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                                 size: 22.0,
                               ),
                               hintText: 'Name'),
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                     ),
@@ -160,7 +160,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Visibility(
             visible: !_pseduorequestCreateIdentity,
             child: BottomBar(

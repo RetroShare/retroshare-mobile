@@ -13,7 +13,7 @@ import '../common/color_loader_3.dart';
 
 class UpdateIdentityScreen extends StatefulWidget {
   const UpdateIdentityScreen({this.curr});
-  final curr;
+  final dynamic curr;
 
   @override
   _UpdateIdentityScreenState createState() => _UpdateIdentityScreenState();
@@ -110,7 +110,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                       padding: EdgeInsets.zero,
                       child: Text(
                         'Update identity',
-                        style: Theme.of(context).textTheme.body2,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                   ),
@@ -179,7 +179,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                             borderRadius: BorderRadius.circular(
                                                 300 * 0.7 * 0.33),
                                             image: DecorationImage(
-                                              fit: BoxFit.fitWidth,
+                                              fit: BoxFit.fill,
                                               image: MemoryImage(_image.mData),
                                             ),
                                           ),
@@ -225,7 +225,8 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                             size: 22.0,
                                           ),
                                           hintText: 'Name'),
-                                      style: Theme.of(context).textTheme.body2,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
                                 ),

@@ -13,7 +13,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  TextEditingController passwordController = new TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   List<DropdownMenuItem<Account>> accountsDropdown;
   Account currentAccount;
@@ -49,13 +49,15 @@ class _SignInScreenState extends State<SignInScreen> {
     });
     try {
       await Provider.of<AccountCredentials>(context, listen: false)
-          .login(currentAccount, password);
-      final ids = Provider.of<Identities>(context, listen: false);
-      ids.fetchOwnidenities().then((value) {
-        ids.ownIdentity != null && ids.ownIdentity.isEmpty
-            ? Navigator.pushReplacementNamed(context, '/create_identity',
-                arguments: true)
-            : Navigator.pushReplacementNamed(context, '/home');
+          .login(currentAccount, password)
+          .then((value) {
+        final ids = Provider.of<Identities>(context, listen: false);
+        ids.fetchOwnidenities().then((value) {
+          ids.ownIdentity != null && ids.ownIdentity.isEmpty
+              ? Navigator.pushReplacementNamed(context, '/create_identity',
+                  arguments: true)
+              : Navigator.pushReplacementNamed(context, '/home');
+        });
       });
     } on HttpException catch (error) {
       const errorMessage = 'Authentication failed';
@@ -80,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   List<DropdownMenuItem<Account>> getDropDownMenuItems(BuildContext context) {
     final List<DropdownMenuItem<Account>> items = [];
-    for (Account account
+    for (final Account account
         in Provider.of<AccountCredentials>(context, listen: false)
             .accountList) {
       items.add(DropdownMenuItem(
@@ -147,7 +149,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    color: Color(0xFFF5F5F5),
+                                    color: const Color(0xFFF5F5F5),
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
@@ -239,7 +241,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       currentAccount, passwordController.text);
                                 },
                                 textColor: Colors.white,
-                                padding: const EdgeInsets.all(0.0),
+                                padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(

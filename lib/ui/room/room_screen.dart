@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/provider/friends_identity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/messages_tab.dart';
 import 'package:retroshare/ui/room/room_friends_tab.dart';
@@ -21,7 +20,7 @@ class RoomScreen extends StatefulWidget {
 class _RoomScreenState extends State<RoomScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-
+  bool _init = true;
   final bool isOnline = false;
 
   Animation<Color> _iconAnimation;
@@ -29,7 +28,7 @@ class _RoomScreenState extends State<RoomScreen>
   @override
   void initState() {
     super.initState();
-
+    _init = true;
     _tabController = TabController(vsync: this, length: widget.isRoom ? 2 : 1);
 
     _iconAnimation =
@@ -65,7 +64,7 @@ class _RoomScreenState extends State<RoomScreen>
 
   @override
   Widget build(BuildContext context) {
-    final friendIdentity = Provider.of<FriendsIdentity>(context, listen: false);
+    final friendIdentity = Provider.of<RoomChatLobby>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: friendIdentity != null
@@ -85,7 +84,12 @@ class _RoomScreenState extends State<RoomScreen>
                             ),
                             onPressed: () {
                               Future.delayed(Duration.zero, () async {
-                                Navigator.pop(context);
+                                if (widget.isRoom &&
+                                    _tabController.index == 1) {
+                                  _tabController.animateTo(0);
+                                } else {
+                                  Navigator.pop(context);
+                                }
                               });
                             },
                           ),
@@ -103,13 +107,17 @@ class _RoomScreenState extends State<RoomScreen>
                                     height: appBarHeight * 0.70,
                                     width: appBarHeight * 0.70,
                                     decoration: (widget.chat?.interlocutorId ==
-                                                    null ||
-                                                friendIdentity
-                                                        .allIdentity[widget.chat
-                                                            ?.interlocutorId]
-                                                        ?.avatar ==
-                                                    null ??
-                                            false)
+                                                null ||
+                                            friendIdentity
+                                                    .allIdentity[widget
+                                                        .chat?.interlocutorId]
+                                                    ?.avatar ==
+                                                null ||
+                                            friendIdentity
+                                                .allIdentity[
+                                                    widget.chat.interlocutorId]
+                                                .avatar
+                                                .isEmpty)
                                         ? null
                                         : BoxDecoration(
                                             color: Colors.lightBlueAccent,
@@ -131,12 +139,17 @@ class _RoomScreenState extends State<RoomScreen>
                                                               .chat
                                                               ?.interlocutorId]
                                                           ?.avatar ==
-                                                      null ??
-                                              false,
+                                                      null ||
+                                                  friendIdentity
+                                                      .allIdentity[widget
+                                                          .chat.interlocutorId]
+                                                      .avatar
+                                                      .isEmpty ??
+                                              true,
                                       child: Center(
                                         child: Icon(
                                           (widget.chat?.isPublic == null ||
-                                                  widget.chat?.isPublic)
+                                                  widget.chat.isPublic)
                                               ? Icons.people
                                               : Icons.person,
                                           size: 40,

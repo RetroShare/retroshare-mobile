@@ -40,7 +40,7 @@ dependencies:
   # https://gitlab.com/b1rdG/retroshare-dart-see
   eventsource:
     git:
-      url: 'https://gitlab.com/Kumaravinash9/retroshare-dart-see/'
+      url: 'https://gitlab.com/Kumaravinash9/retroshare-dart-see.git'
       ref: master
 
     # path: "../retroshare-dart-see"
@@ -63,7 +63,6 @@ dependencies:
   html: ^0.14.0+3
   provider: ^5.0.0
   path_provider: ^2.0.2
-  flutter_custom_dialog: ^1.0.20
   fluttertoast: ^8.0.8
   webview_flutter: ^1.0.7
   # Share RetroShare Invite

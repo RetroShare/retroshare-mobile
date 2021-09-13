@@ -13,7 +13,7 @@ class AccountCredentials with ChangeNotifier {
   Account get loggedinAccount => _loggedinAccount;
   AuthToken get getAuthToken => _authToken;
 
-  setLogginAccount(Account acc) {
+  set logginAccount(Account acc) {
     _loggedinAccount = acc;
   }
 
@@ -66,7 +66,7 @@ class AccountCredentials with ChangeNotifier {
 
   Future<void> login(Account currentAccount, String password) async {
     final int resp = await RsLoginHelper.requestLogIn(currentAccount, password);
-    setLogginAccount(currentAccount);
+    logginAccount = currentAccount;
     // Login success 0, already logged in 1
     if (resp == 0 || resp == 1) {
       final bool isAuthTokenValid =
@@ -88,7 +88,7 @@ class AccountCredentials with ChangeNotifier {
         resp['retval']['errorNumber'] != 0 ? false : true, account);
     if (accountCreate != null && accountCreate.item1) {
       _accountsList.add(accountCreate.item2);
-      setLogginAccount(accountCreate.item2);
+      logginAccount = accountCreate.item2;
       final bool isAuthTokenValid =
           await getinitializeAuth(accountCreate.item2.locationName, password);
       if (!isAuthTokenValid) throw const HttpException('AUTHTOKEN FAILED');

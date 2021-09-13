@@ -42,14 +42,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       size: 25,
                     ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     },
                   ),
                 ),
                 Expanded(
                   child: Text(
                     'Notification',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
               ],
@@ -193,7 +193,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 25),
                                       child: Text(
-                                        // ignore: lines_longer_than_80_chars
                                         "Looks like there aren't any notification",
                                         style:
                                             Theme.of(context).textTheme.body2,

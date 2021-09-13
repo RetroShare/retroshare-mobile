@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/HelperFunction/chat.dart';
-import 'package:retroshare/provider/friends_identity.dart';
+import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
@@ -30,7 +29,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   }
 
   void _addToContacts(String gxsId) {
-    Provider.of<FriendsIdentity>(context, listen: false)
+    Provider.of<RoomChatLobby>(context, listen: false)
         .toggleContacts(gxsId, true);
   }
 
@@ -53,7 +52,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                           null
                   ? lobbyParticipantsList.lobbyParticipants[widget.chat?.chatId]
                   : null;
-              return _lobbyParticipantsList.length > 0
+              return _lobbyParticipantsList.isNotEmpty
                   ? ListView.builder(
                       padding: const EdgeInsets.all(16.0),
                       itemCount: _lobbyParticipantsList == null
@@ -79,10 +78,15 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                   context);
                             },
                             onPressed: () {
+                              final curr = Provider.of<Identities>(context,
+                                      listen: false)
+                                  .currentIdentity;
                               Navigator.pushNamed(context, '/room', arguments: {
                                 'isRoom': false,
-                                'chatData': getChat(
-                                    context, _lobbyParticipantsList[index]),
+                                'chatData': Provider.of<RoomChatLobby>(context,
+                                        listen: false)
+                                    .getChat(
+                                        curr, _lobbyParticipantsList[index]),
                               });
                             },
                           ),
@@ -100,7 +104,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                               height: 20,
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 'Looks like an empty space',
                                 style: Theme.of(context).textTheme.body2,
@@ -108,7 +112,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 'You can invite your friends',
                                 style: Theme.of(context).textTheme.body1,

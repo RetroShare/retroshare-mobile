@@ -42,8 +42,9 @@ analyzer:
     file_names: ignore
     avoid_void_async: error
     sized_box_for_whitespace: warning
-    lines_longer_than_80_chars: info
+    lines_longer_than_80_chars: ignore
     unused_local_variable: error
     prefer_const_literals_to_create_immutables: ignore
     avoid_redundant_argument_values: error
-    
+    avoid_single_cascade_in_expression_statements: ignore
+    unnecessary_getters_setters: ignore
