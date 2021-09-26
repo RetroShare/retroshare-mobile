@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/ui/room/message_delegate.dart';
-import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class MessagesTab extends StatefulWidget {
@@ -36,22 +37,25 @@ class _MessagesTabState extends State<MessagesTab> {
     msgController
       ..text += emoji.emoji
       ..selection = TextSelection.fromPosition(
-          TextPosition(offset: msgController.text.length));
+        TextPosition(offset: msgController.text.length),
+      );
   }
 
   void _onBackspacePressed() {
     msgController
       ..text = msgController.text.characters.skipLast(1).toString()
       ..selection = TextSelection.fromPosition(
-          TextPosition(offset: msgController.text.length));
+        TextPosition(offset: msgController.text.length),
+      );
   }
 
   Future<void> _sendImage() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 40,
-        maxWidth: 250,
-        maxHeight: 250);
+    final File image = await ImagePicker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 40,
+      maxWidth: 250,
+      maxHeight: 250,
+    );
     final bytes = image.readAsBytesSync().lengthInBytes;
     final kb = bytes / 1024;
     final mb = kb / 1024;
@@ -61,9 +65,10 @@ class _MessagesTabState extends State<MessagesTab> {
       // ignore: use_build_context_synchronously
       try {
         await Provider.of<RoomChatLobby>(context, listen: false).sendMessage(
-            widget.chat?.chatId,
-            text,
-            widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_);
+          widget.chat?.chatId,
+          text,
+          widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_,
+        );
       } catch (e) {
         // ignore: use_build_context_synchronously
         errorShowDialog(
@@ -143,8 +148,10 @@ class _MessagesTabState extends State<MessagesTab> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 25),
                                   child: Text(
-                                      'It seems like there is no messages',
-                                      style: Theme.of(context).textTheme.body2),
+                                    'It seems like there is no messages',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
                                 ),
                               ],
                             ),
@@ -199,8 +206,10 @@ class _MessagesTabState extends State<MessagesTab> {
                         maxLines: null,
                         focusNode: _focusNode,
                         decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: 'Type text...'),
-                        style: Theme.of(context).textTheme.body2,
+                          border: InputBorder.none,
+                          hintText: 'Type text...',
+                        ),
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                   ),
@@ -247,9 +256,10 @@ class _MessagesTabState extends State<MessagesTab> {
 
   Widget buildSticker() {
     return EmojiPicker(
-        onEmojiSelected: (Category category, Emoji emoji) {
-          _onEmojiSelected(emoji);
-        },
-        onBackspacePressed: _onBackspacePressed);
+      onEmojiSelected: (Category category, Emoji emoji) {
+        _onEmojiSelected(emoji);
+      },
+      onBackspacePressed: _onBackspacePressed,
+    );
   }
 }

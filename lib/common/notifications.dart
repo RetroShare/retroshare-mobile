@@ -52,8 +52,12 @@ Future<void> showChatNotification(
   const platformChannelSpecifics =
       NotificationDetails(androidPlatformChannelSpecifics, null);
   await flutterLocalNotificationsPlugin.show(
-      int.parse(chatId), title, body, platformChannelSpecifics,
-      payload: chatId);
+    int.parse(chatId),
+    title,
+    body,
+    platformChannelSpecifics,
+    payload: chatId,
+  );
 }
 
 Future<void> showInviteCopyNotification() async {

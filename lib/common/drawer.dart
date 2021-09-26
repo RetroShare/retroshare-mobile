@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -17,23 +16,26 @@ Widget drawerWidget(BuildContext ctx) {
         onTap: () {
           changeState();
         },
-        child: Row(children: <Widget>[
-          Icon(
-            icon,
-            size: 30,
-            color: Theme.of(ctx).textTheme.body2.color,
-          ),
-          const SizedBox(
-            width: 15.0,
-          ),
-          Text(
-            title,
-            style: const TextStyle(
+        child: Row(
+          children: <Widget>[
+            Icon(
+              icon,
+              size: 30,
+              color: Theme.of(ctx).textTheme.bodyText1.color,
+            ),
+            const SizedBox(
+              width: 15.0,
+            ),
+            Text(
+              title,
+              style: const TextStyle(
                 fontFamily: 'Vollkorn',
                 fontSize: 17,
-                fontWeight: FontWeight.w500),
-          ),
-        ]),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -159,9 +161,10 @@ Widget drawerWidget(BuildContext ctx) {
         const Text(
           'V 1.0.1',
           style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.blueAccent),
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.blueAccent,
+          ),
         ),
         const SizedBox(
           height: 30,

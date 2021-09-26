@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:retroshare/common/drawer.dart';
-import 'package:retroshare/common/shimmer.dart';
-import 'package:retroshare/provider/Idenity.dart';
-import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/common/bottom_bar.dart';
+import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/common/person_delegate.dart';
+import 'package:retroshare/common/shimmer.dart';
+import 'package:retroshare/common/styles.dart';
+import 'package:retroshare/provider/Idenity.dart';
 
 class ChangeIdentityScreen extends StatefulWidget {
   @override
@@ -28,9 +28,9 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
       backgroundColor: Colors.white,
       appBar: appBar('Change Identity', context),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FutureBuilder(
             future: Provider.of<Identities>(context, listen: false)
                 .fetchOwnidenities(),
             builder: (context, snapshot) {
@@ -44,9 +44,10 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return PersonDelegate(
                           data: PersonDelegateData.IdentityData(
-                              Provider.of<Identities>(context, listen: false)
-                                  .ownIdentity[index],
-                              context),
+                            Provider.of<Identities>(context, listen: false)
+                                .ownIdentity[index],
+                            context,
+                          ),
                           isSelectable: true,
                           onPressed: () {
                             final id =
@@ -59,8 +60,10 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                       },
                     )
                   : ChangeIdentityShimmer();
-            }),
-      )),
+            },
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomBar(
         child: Center(
           child: SizedBox(
@@ -73,7 +76,8 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0 + personDelegateHeight * 0.04),
+                  horizontal: 16.0 + personDelegateHeight * 0.04,
+                ),
                 child: SizedBox(
                   width: double.infinity,
                   child: Container(

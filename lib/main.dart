@@ -8,11 +8,12 @@ import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare/routes.dart';
+import 'apiUtils/retroshareService.dart';
 import 'model/app_life_cycle_state.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initializeNotifications();
+  //initializeNotifications();
   runApp(App());
 }
 

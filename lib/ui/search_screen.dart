@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
+import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
-import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/common/person_delegate.dart';
-
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -141,9 +140,11 @@ class _SearchScreenState extends State<SearchScreen>
                           alignment: Alignment.centerLeft,
                           child: Row(
                             children: <Widget>[
-                              Icon(Icons.search,
-                                  color:
-                                      Theme.of(context).textTheme.body1.color),
+                              Icon(
+                                Icons.search,
+                                color:
+                                    Theme.of(context).textTheme.bodyText1.color,
+                              ),
                               const SizedBox(
                                 width: 8,
                               ),
@@ -152,9 +153,10 @@ class _SearchScreenState extends State<SearchScreen>
                                   controller: _searchBoxFilter,
                                   autofocus: true,
                                   decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'Type text...'),
-                                  style: Theme.of(context).textTheme.body2,
+                                    border: InputBorder.none,
+                                    hintText: 'Type text...',
+                                  ),
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ],
@@ -224,7 +226,7 @@ class _SearchScreenState extends State<SearchScreen>
                               child: Center(
                                 child: Text(
                                   'People',
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ),

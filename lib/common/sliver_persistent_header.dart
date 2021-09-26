@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:retroshare/common/styles.dart';
 
 SliverPersistentHeader sliverPersistentHeader(
-    String headerText, BuildContext context) {
+  String headerText,
+  BuildContext context,
+) {
   return SliverPersistentHeader(
     pinned: true,
     delegate: _SliverAppBarDelegate(
@@ -15,7 +17,7 @@ SliverPersistentHeader sliverPersistentHeader(
         alignment: Alignment.centerLeft,
         child: Text(
           headerText,
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
     ),

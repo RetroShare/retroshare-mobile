@@ -122,14 +122,19 @@ class _RoomScreenState extends State<RoomScreen>
                                         : BoxDecoration(
                                             color: Colors.lightBlueAccent,
                                             borderRadius: BorderRadius.circular(
-                                                appBarHeight * 0.70 * 0.33),
+                                              appBarHeight * 0.70 * 0.33,
+                                            ),
                                             image: DecorationImage(
-                                                fit: BoxFit.fitWidth,
-                                                image: MemoryImage(base64Decode(
-                                                    friendIdentity
-                                                        .allIdentity[widget.chat
-                                                            ?.interlocutorId]
-                                                        .avatar))),
+                                              fit: BoxFit.fitWidth,
+                                              image: MemoryImage(
+                                                base64Decode(
+                                                  friendIdentity
+                                                      .allIdentity[widget
+                                                          .chat?.interlocutorId]
+                                                      .avatar,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                     child: Visibility(
                                       visible:
@@ -168,11 +173,13 @@ class _RoomScreenState extends State<RoomScreen>
                                       width: appBarHeight * 0.25,
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: Colors.white,
-                                            width: appBarHeight * 0.03),
+                                          color: Colors.white,
+                                          width: appBarHeight * 0.03,
+                                        ),
                                         color: Colors.lightGreenAccent,
                                         borderRadius: BorderRadius.circular(
-                                            appBarHeight * 0.3 * 0.5),
+                                          appBarHeight * 0.3 * 0.5,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -193,7 +200,7 @@ class _RoomScreenState extends State<RoomScreen>
                                     widget.chat?.chatName ??
                                     widget.chat?.interlocutorId ??
                                     'Name',
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         Visibility(

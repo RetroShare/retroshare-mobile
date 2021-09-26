@@ -104,8 +104,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: <Widget>[
                 Hero(
                   tag: 'logo',
-                  child: Image.asset('assets/rs-logo.png',
-                      height: 250, width: 250),
+                  child: Image.asset(
+                    'assets/rs-logo.png',
+                    height: 250,
+                    width: 250,
+                  ),
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -119,13 +122,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: TextField(
                       controller: usernameController,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          icon: Icon(
-                            Icons.person_outline,
-                            color: Color(0xFF9E9E9E),
-                            size: 22.0,
-                          ),
-                          hintText: 'Username'),
+                        border: InputBorder.none,
+                        icon: Icon(
+                          Icons.person_outline,
+                          color: Color(0xFF9E9E9E),
+                          size: 22.0,
+                        ),
+                        hintText: 'Username',
+                      ),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
@@ -170,13 +174,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: TextField(
                       controller: passwordController,
                       decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          icon: Icon(
-                            Icons.lock_outline,
-                            color: Color(0xFF9E9E9E),
-                            size: 22.0,
-                          ),
-                          hintText: 'Password'),
+                        border: InputBorder.none,
+                        icon: Icon(
+                          Icons.lock_outline,
+                          color: Color(0xFF9E9E9E),
+                          size: 22.0,
+                        ),
+                        hintText: 'Password',
+                      ),
                       style: Theme.of(context).textTheme.bodyText1,
                       obscureText: true,
                     ),

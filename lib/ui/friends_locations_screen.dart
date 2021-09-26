@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/drawer.dart';
+import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/common/shimmer.dart';
 import 'package:retroshare/provider/friend_location.dart';
-import 'package:retroshare/common/person_delegate.dart';
 
 class FriendsLocationsScreen extends StatefulWidget {
   @override
@@ -36,15 +36,18 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
         //top: true,
 
         child: FutureBuilder(
-            future: _getFriendsAccounts(),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.done
-                  ? Consumer<FriendLocations>(builder: (ctx, idsTuple, _) {
+          future: _getFriendsAccounts(),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.done
+                ? Consumer<FriendLocations>(
+                    builder: (ctx, idsTuple, _) {
                       return idsTuple.friendlist != null &&
                               idsTuple.friendlist.isNotEmpty
                           ? ListView.builder(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8),
+                                horizontal: 16.0,
+                                vertical: 8,
+                              ),
                               itemCount: idsTuple.friendlist.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
@@ -79,17 +82,19 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                                       ),
                                       Text(
                                         'woof woof',
-                                        style:
-                                            Theme.of(context).textTheme.body2,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
                                         textAlign: TextAlign.center,
                                       ),
                                       Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 5),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5),
                                         child: Text(
                                           'You can add friends in the menu',
-                                          style:
-                                              Theme.of(context).textTheme.body1,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -98,9 +103,11 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                                 ),
                               ),
                             );
-                    })
-                  : friendLocationShimmer();
-            }),
+                    },
+                  )
+                : friendLocationShimmer();
+          },
+        ),
       ),
     );
   }

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:retroshare/ui/notification_screen.dart';
-import 'package:retroshare/ui/update_idenity_screen.dart';
 import 'package:retroshare/ui/about_screen.dart';
-import 'package:retroshare/ui/profile_screen.dart';
-import 'package:retroshare/ui/splash_screen.dart';
+import 'package:retroshare/ui/add_friend/add_friend_screen.dart';
+import 'package:retroshare/ui/change_identity_screen.dart';
+import 'package:retroshare/ui/createIdenity_screen/create_identity_screen.dart';
+import 'package:retroshare/ui/create_room_screen.dart';
+import 'package:retroshare/ui/discover_chats_screen.dart';
+import 'package:retroshare/ui/friends_locations_screen.dart';
 import 'package:retroshare/ui/home/home_screen.dart';
+import 'package:retroshare/ui/launch_transition_screen.dart';
+import 'package:retroshare/ui/notification_screen.dart';
+import 'package:retroshare/ui/profile_screen.dart';
+import 'package:retroshare/ui/room/room_screen.dart';
+import 'package:retroshare/ui/search_screen.dart';
 import 'package:retroshare/ui/signin_screen.dart';
 import 'package:retroshare/ui/signup_screen.dart';
-import 'package:retroshare/ui/room/room_screen.dart';
-import 'package:retroshare/ui/create_room_screen.dart';
-import 'package:retroshare/ui/createIdenity_screen/create_identity_screen.dart';
-import 'package:retroshare/ui/launch_transition_screen.dart';
-import 'package:retroshare/ui/change_identity_screen.dart';
-import 'package:retroshare/ui/add_friend/add_friend_screen.dart';
-import 'package:retroshare/ui/discover_chats_screen.dart';
-import 'package:retroshare/ui/search_screen.dart';
-import 'package:retroshare/ui/friends_locations_screen.dart';
+import 'package:retroshare/ui/splash_screen.dart';
+import 'package:retroshare/ui/update_idenity_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -64,7 +64,8 @@ class RouteGenerator {
       case '/create_identity':
         if (args is bool) {
           return MaterialPageRoute(
-              builder: (_) => CreateIdentityScreen(isFirstId: args));
+            builder: (_) => CreateIdentityScreen(isFirstId: args),
+          );
         }
 
         return MaterialPageRoute(builder: (_) => const CreateIdentityScreen());
@@ -86,7 +87,8 @@ class RouteGenerator {
       case '/search':
         if (args is int) {
           return MaterialPageRoute(
-              builder: (_) => SearchScreen(initialTab: args));
+            builder: (_) => SearchScreen(initialTab: args),
+          );
         }
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case '/friends_locations':

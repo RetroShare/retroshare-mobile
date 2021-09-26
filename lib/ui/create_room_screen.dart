@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chips_input/flutter_chips_input.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/friend_location.dart';
 import 'package:retroshare/provider/room.dart';
 import 'package:retroshare/provider/subscribed.dart';
-import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class CreateRoomScreen extends StatefulWidget {
@@ -50,10 +50,14 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
     _blockCreation = false;
 
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 400));
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
 
     _doneButtonController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
 
     _roomNameController.addListener(() {
       if (_isRoomCreation && _roomNameController.text.length > 2) {
@@ -166,10 +170,13 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       try {
         Provider.of<ChatLobby>(context, listen: false)
             .createChatlobby(
-                _roomNameController.text, id, _roomTopicController.text,
-                inviteList: _selectedLocations,
-                anonymous: isAnonymous,
-                public: isPublic)
+          _roomNameController.text,
+          id,
+          _roomTopicController.text,
+          inviteList: _selectedLocations,
+          anonymous: isAnonymous,
+          public: isPublic,
+        )
             .then((value) {
           Navigator.of(context).pop();
         });
@@ -255,7 +262,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 15),
+                                                  horizontal: 15,
+                                                ),
                                                 height: 40,
                                                 child: Align(
                                                   alignment:
@@ -268,15 +276,15 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                               _roomNameController,
                                                           decoration:
                                                               const InputDecoration(
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintText:
-                                                                      'Room name'),
+                                                            border: InputBorder
+                                                                .none,
+                                                            hintText:
+                                                                'Room name',
+                                                          ),
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
-                                                                  .body2,
+                                                                  .bodyText1,
                                                         ),
                                                       ),
                                                     ],
@@ -299,7 +307,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 15),
+                                                  horizontal: 15,
+                                                ),
                                                 height: 40,
                                                 child: Align(
                                                   alignment:
@@ -312,15 +321,15 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                               _roomTopicController,
                                                           decoration:
                                                               const InputDecoration(
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintText:
-                                                                      'Room topic'),
+                                                            border: InputBorder
+                                                                .none,
+                                                            hintText:
+                                                                'Room topic',
+                                                          ),
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
-                                                                  .body2,
+                                                                  .bodyText1,
                                                         ),
                                                       ),
                                                     ],
@@ -343,7 +352,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            15),
+                                                      15,
+                                                    ),
                                                   ),
                                                   padding: const EdgeInsets
                                                       .symmetric(horizontal: 2),
@@ -364,7 +374,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                         'Public',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .body2,
+                                                            .bodyText1,
                                                       )
                                                     ],
                                                   ),
@@ -383,7 +393,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            15),
+                                                      15,
+                                                    ),
                                                   ),
                                                   padding: const EdgeInsets
                                                       .symmetric(horizontal: 2),
@@ -404,7 +415,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                         'Accessible to anonymous',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .body2,
+                                                            .bodyText1,
                                                       )
                                                     ],
                                                   ),
@@ -426,15 +437,15 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       isDense: true,
                                     ),
                                     findSuggestions: (String query) {
-                                      if (query.length != 0) {
-                                        var lowercaseQuery =
+                                      if (query.isNotEmpty) {
+                                        final lowercaseQuery =
                                             query.toLowerCase();
                                         // If is room creation,
                                         // open suggestion box and
                                         //find it on locations list
                                         if (_isRoomCreation) {
-                                          var results = _locationsList.where(
-                                              (profile) {
+                                          var results =
+                                              _locationsList.where((profile) {
                                             return profile.locationName
                                                     .toLowerCase()
                                                     .contains(
@@ -442,14 +453,21 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                 profile.accountName
                                                     .toLowerCase()
                                                     .contains(
-                                                        query.toLowerCase());
+                                                      query.toLowerCase(),
+                                                    );
                                           }).toList(growable: false)
-                                            ..sort((a, b) => a.locationName
-                                                .toLowerCase()
-                                                .indexOf(lowercaseQuery)
-                                                .compareTo(b.locationName
-                                                    .toLowerCase()
-                                                    .indexOf(lowercaseQuery)));
+                                                ..sort(
+                                                  (a, b) => a.locationName
+                                                      .toLowerCase()
+                                                      .indexOf(lowercaseQuery)
+                                                      .compareTo(
+                                                        b.locationName
+                                                            .toLowerCase()
+                                                            .indexOf(
+                                                              lowercaseQuery,
+                                                            ),
+                                                      ),
+                                                );
 
                                           return results;
                                         }
@@ -460,8 +478,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         // The suggestion box is not
                                         //open because it
                                         //return always an empty list
-                                        var results = _friendsList.where(
-                                            (profile) {
+                                        final results = _friendsList
+                                            .where((profile) {
                                           return profile.name
                                               .toLowerCase()
                                               .contains(query.toLowerCase());
@@ -496,9 +514,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         //),
                                         onDeleted: () {
                                           _selectedLocations.removeWhere(
-                                              (location) =>
-                                                  location.rsPeerId ==
-                                                  profile.rsPeerId);
+                                            (location) =>
+                                                location.rsPeerId ==
+                                                profile.rsPeerId,
+                                          );
                                           state.deleteChip(profile);
                                         },
                                         materialTapTargetSize:
@@ -509,9 +528,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         (context, state, profile) {
                                       return Expanded(
                                         child: PersonDelegate(
-                                            data:
-                                                PersonDelegateData.LocationData(
-                                                    profile)),
+                                          data: PersonDelegateData.LocationData(
+                                            profile,
+                                          ),
+                                        ),
                                       );
                                     },
                                   )
@@ -568,11 +588,13 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                               height: _buttonHeightAnimation.value,
                               width: personDelegateHeight,
                               child: Center(
-                                child: Icon(Icons.language,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .body2
-                                        .color),
+                                child: Icon(
+                                  Icons.language,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .color,
+                                ),
                               ),
                             ),
                             Expanded(
@@ -627,21 +649,26 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                           height: _buttonHeightAnimation.value,
                                           width: personDelegateHeight,
                                           child: Center(
-                                            child: Icon(Icons.add,
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .body2
-                                                    .color),
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  .color,
+                                            ),
                                           ),
                                         ),
                                         Expanded(
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            child: Text('Create new room',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .body2),
+                                              horizontal: 8,
+                                            ),
+                                            child: Text(
+                                              'Create new room',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -656,7 +683,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                         // Todo: DRY
                         return PersonDelegate(
                           data: PersonDelegateData.IdentityData(
-                              _suggestionsList[index], context),
+                            _suggestionsList[index],
+                            context,
+                          ),
                           onPressed: () {
                             final curr =
                                 Provider.of<Identities>(context, listen: false)
@@ -666,9 +695,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                               '/room',
                               arguments: {
                                 'isRoom': false,
-                                'chatData': Provider.of<RoomChatLobby>(context,
-                                        listen: false)
-                                    .getChat(curr, _suggestionsList[index])
+                                'chatData': Provider.of<RoomChatLobby>(
+                                  context,
+                                  listen: false,
+                                ).getChat(curr, _suggestionsList[index])
                               },
                             );
                           },
@@ -685,7 +715,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Image.asset(
-                                    'assets/icons8/list-is-empty-3.png'),
+                                  'assets/icons8/list-is-empty-3.png',
+                                ),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -694,7 +725,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
                                     'Looks like an empty space',
-                                    style: Theme.of(context).textTheme.body2,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -703,7 +735,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                       const EdgeInsets.symmetric(vertical: 5),
                                   child: Text(
                                     'You can add friends in the menu',
-                                    style: Theme.of(context).textTheme.body1,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

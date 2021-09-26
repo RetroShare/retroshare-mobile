@@ -24,19 +24,23 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
   Future<void> _goToChat(lobby) async {
     final curr =
         Provider.of<Identities>(context, listen: false).currentIdentity;
-    Navigator.pushNamed(context, '/room', arguments: {
-      'isRoom': true,
-      'chatData': Provider.of<RoomChatLobby>(context, listen: false)
-          .getChat(curr, lobby)
-    });
+    Navigator.pushNamed(
+      context,
+      '/room',
+      arguments: {
+        'isRoom': true,
+        'chatData': Provider.of<RoomChatLobby>(context, listen: false)
+            .getChat(curr, lobby)
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-            child: Column(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
           children: <Widget>[
             SizedBox(
               height: appBarHeight,
@@ -64,126 +68,132 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
               ),
             ),
             Expanded(
-                child: FutureBuilder(
-                    future: Provider.of<ChatLobby>(context, listen: false)
-                        .fetchAndUpdateUnsubscribed(),
-                    builder: (context, snapshot) {
-                      return snapshot.connectionState == ConnectionState.done &&
-                              !snapshot.hasError
-                          ? Consumer<ChatLobby>(
-                              builder: (context, _chatsList, _) {
-                              return _chatsList.unSubscribedlist != null &&
-                                      _chatsList.unSubscribedlist.isNotEmpty
-                                  ? ListView.builder(
-                                      padding: const EdgeInsets.all(8),
-                                      itemCount:
-                                          _chatsList.unSubscribedlist.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            _goToChat(_chatsList
-                                                .unSubscribedlist[index]);
-                                          },
-                                          key: UniqueKey(),
-                                          child: SizedBox(
-                                            height: personDelegateHeight,
-                                            child: Row(
-                                              children: <Widget>[
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 8),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        Text(
-                                                          _chatsList
-                                                              .unSubscribedlist[
-                                                                  index]
-                                                              .lobbyName,
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .body2,
+              child: FutureBuilder(
+                future: Provider.of<ChatLobby>(context, listen: false)
+                    .fetchAndUpdateUnsubscribed(),
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.done &&
+                          !snapshot.hasError
+                      ? Consumer<ChatLobby>(
+                          builder: (context, _chatsList, _) {
+                            return _chatsList.unSubscribedlist != null &&
+                                    _chatsList.unSubscribedlist.isNotEmpty
+                                ? ListView.builder(
+                                    padding: const EdgeInsets.all(8),
+                                    itemCount:
+                                        _chatsList.unSubscribedlist.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          _goToChat(_chatsList
+                                              .unSubscribedlist[index]);
+                                        },
+                                        key: UniqueKey(),
+                                        child: SizedBox(
+                                          height: personDelegateHeight,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 8,
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        _chatsList
+                                                            .unSubscribedlist[
+                                                                index]
+                                                            .lobbyName,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1,
+                                                      ),
+                                                      Visibility(
+                                                        visible: _chatsList
+                                                            .unSubscribedlist[
+                                                                index]
+                                                            .lobbyTopic
+                                                            .isNotEmpty,
+                                                        child: Text(
+                                                          'Topic: ${_chatsList.unSubscribedlist[index].lobbyTopic}',
+                                                          style: Theme.of(
+                                                            context,
+                                                          ).textTheme.bodyText1,
                                                         ),
-                                                        Visibility(
-                                                          visible: _chatsList
-                                                              .unSubscribedlist[
-                                                                  index]
-                                                              .lobbyTopic
-                                                              .isNotEmpty,
-                                                          child: Text(
-                                                            'Topic: ${_chatsList.unSubscribedlist[index].lobbyTopic}',
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .body1,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          'Number of participants: ${_chatsList.unSubscribedlist[index].totalNumberOfPeers}',
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .body1,
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                      Text(
+                                                        'Number of participants: ${_chatsList.unSubscribedlist[index].totalNumberOfPeers}',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                                Center(
-                                                  child: IconButton(
-                                                    icon:
-                                                        const Icon(Icons.input),
-                                                    onPressed: () {
-                                                      _goToChat(_chatsList
+                                              ),
+                                              Center(
+                                                child: IconButton(
+                                                  icon: const Icon(Icons.input),
+                                                  onPressed: () {
+                                                    _goToChat(
+                                                      _chatsList
                                                               .unSubscribedlist[
-                                                          index]);
-                                                    },
-                                                  ),
+                                                          index],
+                                                    );
+                                                  },
                                                 ),
-                                              ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Center(
+                                    child: SizedBox(
+                                      width: 250,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Image.asset(
+                                            'assets/icons8/pluto-fatal-error.png',
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 25,
+                                            ),
+                                            child: Text(
+                                              'No public chats are available',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1,
                                             ),
                                           ),
-                                        );
-                                      },
-                                    )
-                                  : Center(
-                                      child: SizedBox(
-                                        width: 250,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Image.asset(
-                                                'assets/icons8/pluto-fatal-error.png'),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 25),
-                                              child: Text(
-                                                  'No public chats are available',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1),
-                                            ),
-                                          ],
-                                        ),
+                                        ],
                                       ),
-                                    );
-                            })
-                          : const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                    })),
+                                    ),
+                                  );
+                          },
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                },
+              ),
+            ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }

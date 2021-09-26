@@ -5,7 +5,7 @@ import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-
+import 'dart:async';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
@@ -117,14 +117,15 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                           });
                         },
                         decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.person_outline,
-                              color: Color(0xFF9E9E9E),
-                              size: 22.0,
-                            ),
-                            hintText: 'Name'),
-                        style: Theme.of(context).textTheme.body2,
+                          border: InputBorder.none,
+                          icon: Icon(
+                            Icons.person_outline,
+                            color: Color(0xFF9E9E9E),
+                            size: 22.0,
+                          ),
+                          hintText: 'Name',
+                        ),
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                   ),
@@ -182,7 +183,8 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                         }
                       },
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 + personDelegateHeight * 0.04),
+                        horizontal: 16.0 + personDelegateHeight * 0.04,
+                      ),
                       child: SizedBox(
                         width: double.infinity,
                         child: Container(

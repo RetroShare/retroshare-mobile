@@ -1,7 +1,8 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
-import 'package:tuple/tuple.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
+import 'package:tuple/tuple.dart';
 
 class AccountCredentials with ChangeNotifier {
   List<Account> _accountsList = [];
@@ -29,9 +30,9 @@ class AccountCredentials with ChangeNotifier {
               location['mLocationName'], location['mPgpName']));
         }
       });
+      _accountsList = [];
       _accountsList = accountsList;
       notifyListeners();
-
       _lastAccountUsed = await setlastAccountUsed();
     } catch (e) {
       throw HttpException(e.toString());
@@ -41,21 +42,21 @@ class AccountCredentials with ChangeNotifier {
   Account get getlastAccountUsed => _lastAccountUsed;
 
   Future<Account> setlastAccountUsed() async {
-    try {
-      final currAccount = await RsAccounts.getCurrentAccountId(_authToken);
-      for (final Account account in _accountsList) {
-        if (account.locationId == currAccount) return account;
-      }
-    } catch (e) {
-      throw HttpException(e.toString());
+    final currAccount = await RsAccounts.getCurrentAccountId(_authToken);
+    for (final Account account in _accountsList) {
+      if (account.locationId == currAccount) return account;
     }
+
     return null;
   }
 
   Future<bool> getinitializeAuth(String locationId, String password) async {
     _authToken = AuthToken(locationId, password);
     final bool success = await RsJsonApi.checkExistingAuthTokens(
-            locationId, password, _authToken) ??
+          locationId,
+          password,
+          _authToken,
+        ) ??
         false;
     return success;
   }
@@ -85,13 +86,16 @@ class AccountCredentials with ChangeNotifier {
     final Account account =
         Account(resp['locationId'], resp['pgpId'], username, username);
     final Tuple2<bool, Account> accountCreate = Tuple2<bool, Account>(
-        resp['retval']['errorNumber'] != 0 ? false : true, account);
+      resp['retval']['errorNumber'] != 0 ? false : true,
+      account,
+    );
     if (accountCreate != null && accountCreate.item1) {
       _accountsList.add(accountCreate.item2);
       logginAccount = accountCreate.item2;
       final bool isAuthTokenValid =
           await getinitializeAuth(accountCreate.item2.locationName, password);
       if (!isAuthTokenValid) throw const HttpException('AUTHTOKEN FAILED');
+
       notifyListeners();
     } else {
       throw const HttpException('DATA INSUFFICIENT');

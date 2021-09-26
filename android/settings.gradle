@@ -1,4 +1,5 @@
 include ':app'
+import org.apache.tools.ant.DirectoryScanner
 
 def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
 
@@ -13,3 +14,5 @@ plugins.each { name, path ->
     include ":$name"
     project(":$name").projectDir = pluginDirectory
 }
+DirectoryScanner.removeDefaultExclude('**/.git')
+DirectoryScanner.removeDefaultExclude('**/.git/**')

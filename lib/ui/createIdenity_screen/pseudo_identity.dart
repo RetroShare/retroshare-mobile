@@ -5,7 +5,7 @@ import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-
+import 'dart:async';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
@@ -52,157 +52,160 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Column(
-        children: [
-          IntrinsicHeight(
-            child: Center(
-              child: SizedBox(
-                width: 300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        imagePickerDialog(context, _setImage);
-                      },
-                      child: Container(
-                        height: 300 * 0.7,
-                        width: 300 * 0.7,
-                        decoration: _image?.mData == null
-                            ? null
-                            : BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(300 * 0.7 * 0.33),
-                                image: DecorationImage(
-                                  fit: BoxFit.fitWidth,
-                                  image: MemoryImage(_image?.mData),
+    return Stack(
+      children: [
+        Column(
+          children: [
+            IntrinsicHeight(
+              child: Center(
+                child: SizedBox(
+                  width: 300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          imagePickerDialog(context, _setImage);
+                        },
+                        child: Container(
+                          height: 300 * 0.7,
+                          width: 300 * 0.7,
+                          decoration: _image?.mData == null
+                              ? null
+                              : BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(300 * 0.7 * 0.33),
+                                  image: DecorationImage(
+                                    fit: BoxFit.fitWidth,
+                                    image: MemoryImage(_image?.mData),
+                                  ),
                                 ),
+                          child: Visibility(
+                            visible:
+                                _image != null ? _image?.mData?.isEmpty : true,
+                            child: const Center(
+                              child: Icon(
+                                Icons.person,
+                                size: 300 * 0.7,
                               ),
-                        child: Visibility(
-                          visible:
-                              _image != null ? _image?.mData?.isEmpty : true,
-                          child: const Center(
-                            child: Icon(
-                              Icons.person,
-                              size: 300 * 0.7,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: const Color(0xFFF5F5F5),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        height: 40,
-                        child: TextField(
-                          controller: pseudosignednameController,
-                          enabled: !_pseduorequestCreateIdentity,
-                          onChanged: (text) {
-                            setState(() {
-                              _showError = !_validate(text);
-                            });
-                          },
-                          decoration: const InputDecoration(
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: const Color(0xFFF5F5F5),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          height: 40,
+                          child: TextField(
+                            controller: pseudosignednameController,
+                            enabled: !_pseduorequestCreateIdentity,
+                            onChanged: (text) {
+                              setState(() {
+                                _showError = !_validate(text);
+                              });
+                            },
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 Icons.person_outline,
                                 color: Color(0xFF9E9E9E),
                                 size: 22.0,
                               ),
-                              hintText: 'Name'),
-                          style: Theme.of(context).textTheme.bodyText1,
+                              hintText: 'Name',
+                            ),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
                         ),
                       ),
-                    ),
-                    Visibility(
-                      visible: _showError,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Row(
-                          children: <Widget>[
-                            const SizedBox(
-                              width: 52,
-                            ),
-                            const SizedBox(
-                              height: 25,
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'Name too short',
-                                  style: TextStyle(
-                                    color: Colors.red,
+                      Visibility(
+                        visible: _showError,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Row(
+                            children: <Widget>[
+                              const SizedBox(
+                                width: 52,
+                              ),
+                              const SizedBox(
+                                height: 25,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    'Name too short',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const Spacer(),
-          Visibility(
-            visible: !_pseduorequestCreateIdentity,
-            child: BottomBar(
-              child: Center(
-                child: SizedBox(
-                  height: 2 * appBarHeight / 3,
-                  child: Builder(
-                    builder: (context) => FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          _showError =
-                              !_validate(pseudosignednameController.text);
-                        });
-                        if (!_showError) {
+            const Spacer(),
+            Visibility(
+              visible: !_pseduorequestCreateIdentity,
+              child: BottomBar(
+                child: Center(
+                  child: SizedBox(
+                    height: 2 * appBarHeight / 3,
+                    child: Builder(
+                      builder: (context) => FlatButton(
+                        onPressed: () {
                           setState(() {
-                            _pseduorequestCreateIdentity = true;
+                            _showError =
+                                !_validate(pseudosignednameController.text);
                           });
-                          _createIdentity();
-                        }
-                      },
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 + personDelegateHeight * 0.04),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            gradient: const LinearGradient(
-                              colors: <Color>[
-                                Color(0xFF00FFFF),
-                                Color(0xFF29ABE2),
-                              ],
-                              begin: Alignment(-1.0, -4.0),
-                              end: Alignment(1.0, 4.0),
+                          if (!_showError) {
+                            setState(() {
+                              _pseduorequestCreateIdentity = true;
+                            });
+                            _createIdentity();
+                          }
+                        },
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0 + personDelegateHeight * 0.04),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              gradient: const LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF00FFFF),
+                                  Color(0xFF29ABE2),
+                                ],
+                                begin: Alignment(-1.0, -4.0),
+                                end: Alignment(1.0, 4.0),
+                              ),
                             ),
-                          ),
-                          padding: const EdgeInsets.all(6.0),
-                          child: Center(
-                            child: Text(
-                              'Create Identity',
-                              style: Theme.of(context).textTheme.button,
-                              textAlign: TextAlign.center,
+                            padding: const EdgeInsets.all(6.0),
+                            child: Center(
+                              child: Text(
+                                'Create Identity',
+                                style: Theme.of(context).textTheme.button,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
@@ -212,18 +215,18 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      Visibility(
-        visible: _pseduorequestCreateIdentity,
-        child: const Center(
-          child: ColorLoader3(
-            radius: 15.0,
-            dotRadius: 6.0,
-          ),
+          ],
         ),
-      )
-    ]);
+        Visibility(
+          visible: _pseduorequestCreateIdentity,
+          child: const Center(
+            child: ColorLoader3(
+              radius: 15.0,
+              dotRadius: 6.0,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
