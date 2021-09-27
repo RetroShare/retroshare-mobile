@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
@@ -84,7 +85,7 @@ class _QRScannerState extends State<QRScanner>
   }
 
   /// WIP : Permisssion for Camera
-  /*Future<bool> requestCameraPermission() async {
+  Future<bool> requestCameraPermission() async {
     if (await Permission.camera.isUndetermined) {
       final status = await Permission.camera.request();
       if (status.isDenied) return false;
@@ -92,11 +93,11 @@ class _QRScannerState extends State<QRScanner>
     return true;
   }
 
-  void checkServiceStatus(BuildContext context) async {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("Access Denied!"),
+  void checkServiceStatus(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Access Denied!'),
     ));
-  }*/
+  }
 
   Widget getHeaderBuilder() {
     return SizedBox(
@@ -133,21 +134,27 @@ class _QRScannerState extends State<QRScanner>
 
   Future _scan() async {
     try {
-      await scanner.scan().then((barcode) {
-        if (barcode != null) {
-          Provider.of<FriendLocations>(context, listen: false)
-              .addFriendLocation(barcode)
-              .then((value) {
-            showToast(
-              'Friend has successfully added',
-              position: ToastPosition.bottom,
-            );
+      requestCameraPermission().then((value) async {
+        if (value) {
+          await scanner.scan().then((barcode) {
+            if (barcode != null) {
+              Provider.of<FriendLocations>(context, listen: false)
+                  .addFriendLocation(barcode)
+                  .then((value) {
+                showToast(
+                  'Friend has successfully added',
+                  position: ToastPosition.bottom,
+                );
+              });
+            } else {
+              showToast(
+                'An error occurred while adding your friend.',
+                position: ToastPosition.bottom,
+              );
+            }
           });
         } else {
-          showToast(
-            'An error occurred while adding your friend.',
-            position: ToastPosition.bottom,
-          );
+          checkServiceStatus(context);
         }
       });
     } on HttpException catch (e) {
