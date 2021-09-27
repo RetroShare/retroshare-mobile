@@ -215,141 +215,145 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      onDrawerChanged: (val) async {
-        if (!val) {
-          await fetchdata(context);
-        }
-      },
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      drawer: drawerWidget(context),
-      appBar: _appBar(AppBar().preferredSize.height),
-      body: Stack(
-        children: [
-          TabBarView(
-            controller: _tabController,
+    return WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: Scaffold(
+          onDrawerChanged: (val) async {
+            if (!val) {
+              await fetchdata(context);
+            }
+          },
+          key: _scaffoldKey,
+          resizeToAvoidBottomInset: false,
+          drawer: drawerWidget(context),
+          appBar: _appBar(AppBar().preferredSize.height),
+          body: Stack(
             children: [
-              ChatsTab(),
-              FriendsTab(),
-            ],
-          ),
-          if (_isLoading)
-            Center(
-              child: Card(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  width: 200,
-                  height: 100,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const CircularProgressIndicator(
-                          color: Colors.purple,
-                        ),
-                        const Text(
-                          'Loading ..',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.blue,
-                            fontFamily: 'Oxygen',
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            )
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 7,
-        child: Stack(
-          children: <Widget>[
-            SizedBox(
-              height: homeScreenBottomBarHeight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        _tabController.animateTo(0);
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            AnimatedBuilder(
-                              animation: _tabController.animation,
-                              builder: getLeftIconBuilder,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 74),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        _tabController.animateTo(1);
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            AnimatedBuilder(
-                              animation: _tabController.animation,
-                              builder: getRightIconBuilder,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+              TabBarView(
+                controller: _tabController,
+                children: [
+                  ChatsTab(),
+                  FriendsTab(),
                 ],
               ),
+              if (_isLoading)
+                Center(
+                  child: Card(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      width: 200,
+                      height: 100,
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const CircularProgressIndicator(
+                              color: Colors.purple,
+                            ),
+                            const Text(
+                              'Loading ..',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                                fontFamily: 'Oxygen',
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+            ],
+          ),
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 7,
+            child: Stack(
+              children: <Widget>[
+                SizedBox(
+                  height: homeScreenBottomBarHeight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            _tabController.animateTo(0);
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                AnimatedBuilder(
+                                  animation: _tabController.animation,
+                                  builder: getLeftIconBuilder,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 74),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            _tabController.animateTo(1);
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                AnimatedBuilder(
+                                  animation: _tabController.animation,
+                                  builder: getRightIconBuilder,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _panelController.close,
+                  child: Opacity(
+                    opacity: _animationController.value * 0.5,
+                    child: Container(
+                      height: 50,
+                      color: _animationController.value == 0.0
+                          ? null
+                          : Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            GestureDetector(
-              onTap: _panelController.close,
-              child: Opacity(
-                opacity: _animationController.value * 0.5,
-                child: Container(
-                  height: 50,
-                  color:
-                      _animationController.value == 0.0 ? null : Colors.black,
+          ),
+          floatingActionButton: SizedBox(
+            height: 60,
+            width: 60,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: Colors.lightBlueAccent,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/create_room');
+                },
+                child: const Icon(
+                  Icons.add,
+                  size: 35,
+                  color: Colors.white,
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: SizedBox(
-        height: 60,
-        width: 60,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
-            onPressed: () {
-              Navigator.pushNamed(context, '/create_room');
-            },
-            child: const Icon(
-              Icons.add,
-              size: 35,
-              color: Colors.white,
-            ),
           ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+        ));
   }
 }
