@@ -33,6 +33,7 @@ dependencies:
   oktoast: ^3.1.3+1
   image_gallery_saver: ^1.6.9
   emoji_picker_flutter: ^1.0.6
+  permission_handler: ^5.1.0
 
   # https://gitlab.com/jpascualsana/openapi-dart-retroshare-api-wrapper
   #retroshare_api_wrapper:
