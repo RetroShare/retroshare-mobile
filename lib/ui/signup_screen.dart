@@ -86,8 +86,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       const errorMessage = 'Authentication failed';
       errorShowDialog(errorMessage, 'Something went wrong', context);
     } catch (e) {
-      errorShowDialog('Retroshare Service Down',
-          'Please ensure retroshare service is not down!', context);
+      errorShowDialog(
+          'Retroshare Service Down', 'Try to restart the app Again!', context);
     }
   }
 

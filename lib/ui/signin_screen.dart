@@ -76,7 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
     } catch (e) {
       errorShowDialog(
         'Retroshare Service Down',
-        'Please ensure retroshare service is not down!',
+        'Try to  restart the app',
         context,
       );
     }

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/apiUtils/retroshareService.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
-import 'package:retroshare_api_wrapper/retroshare.dart';
+import 'package:retroshare_api_wrapper/retroshare.dart' as rs;
 
 import '../common/color_loader_3.dart';
 
@@ -60,8 +59,11 @@ class _SplashState extends State<SplashScreen> {
       try {
         await Future.delayed(const Duration(seconds: 2));
         RsServiceControl.startRetroshare().then((value) async {
-          isRetroshareRunning().then((value1) {
-            if (value1) {
+          rs.isRetroshareRunning().then((isstart) {
+            if (isstart) {
+              //break the loop
+              run = false;
+              setControlCallbacks();
               final auth =
                   Provider.of<AccountCredentials>(context, listen: false);
               auth.checkisvalidAuthToken().then((isTokenValid) async {
@@ -93,8 +95,6 @@ class _SplashState extends State<SplashScreen> {
                   });
                 }
               });
-              //break the loop
-              run = false;
             }
           });
         });

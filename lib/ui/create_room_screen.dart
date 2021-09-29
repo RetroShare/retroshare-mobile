@@ -181,8 +181,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
           Navigator.of(context).pop();
         });
       } catch (e) {
-        errorShowDialog(
-            'Error', 'Please ensure retroshare service is not down!', context);
+        errorShowDialog('Error', 'Try to retart the app!', context);
       }
 
       _doneButtonController.forward();
@@ -478,8 +477,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         // The suggestion box is not
                                         //open because it
                                         //return always an empty list
-                                        final results = _friendsList
-                                            .where((profile) {
+                                        final results = _friendsList.where(
+                                            (profile) {
                                           return profile.name
                                               .toLowerCase()
                                               .contains(query.toLowerCase());
