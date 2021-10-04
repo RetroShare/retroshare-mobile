@@ -54,8 +54,11 @@ class _SignInScreenState extends State<SignInScreen> {
         final ids = Provider.of<Identities>(context, listen: false);
         ids.fetchOwnidenities().then((value) {
           ids.ownIdentity != null && ids.ownIdentity.isEmpty
-              ? Navigator.pushReplacementNamed(context, '/create_identity',
-                  arguments: true)
+              ? Navigator.pushReplacementNamed(
+                  context,
+                  '/create_identity',
+                  arguments: true,
+                )
               : Navigator.pushReplacementNamed(context, '/home');
         });
       });
@@ -65,11 +68,17 @@ class _SignInScreenState extends State<SignInScreen> {
         _isWrongPassword();
       } else {
         errorShowDialog(
-            errorMessage, 'Please input your valid credentials', context);
+          errorMessage,
+          'Please input your valid credentials',
+          context,
+        );
       }
     } catch (e) {
-      errorShowDialog('Retroshare Service Down',
-          'Please ensure retroshare service is not down!', context);
+      errorShowDialog(
+        'Retroshare Service Down',
+        'Try to  restart the app',
+        context,
+      );
     }
   }
 
@@ -82,11 +91,12 @@ class _SignInScreenState extends State<SignInScreen> {
 
   List<DropdownMenuItem<Account>> getDropDownMenuItems(BuildContext context) {
     final List<DropdownMenuItem<Account>> items = [];
-    for (final Account account
+    for (Account account
         in Provider.of<AccountCredentials>(context, listen: false)
             .accountList) {
       items.add(DropdownMenuItem(
         value: account,
+        key: UniqueKey(),
         child: Row(
           children: <Widget>[
             Text(account.pgpName),
@@ -141,8 +151,11 @@ class _SignInScreenState extends State<SignInScreen> {
                             children: <Widget>[
                               Hero(
                                 tag: 'logo',
-                                child: Image.asset('assets/rs-logo.png',
-                                    height: 250, width: 250),
+                                child: Image.asset(
+                                  'assets/rs-logo.png',
+                                  height: 250,
+                                  width: 250,
+                                ),
                               ),
                               SizedBox(
                                 width: double.infinity,
@@ -152,7 +165,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                     color: const Color(0xFFF5F5F5),
                                   ),
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
+                                    horizontal: 15,
+                                  ),
                                   height: 40,
                                   child: GestureDetector(
                                     onLongPress: () {
@@ -169,15 +183,21 @@ class _SignInScreenState extends State<SignInScreen> {
                                           width: 15,
                                         ),
                                         Expanded(
-                                          child: DropdownButtonHideUnderline(
-                                            child: DropdownButton(
-                                              value: currentAccount,
-                                              items:
-                                                  getDropDownMenuItems(context),
-                                              onChanged: changedDropDownItem,
-                                              disabledHint: const Text('Login'),
-                                            ),
-                                          ),
+                                          child: getDropDownMenuItems(context)
+                                                      .isNotEmpty &&
+                                                  currentAccount != null
+                                              ? DropdownButtonHideUnderline(
+                                                  child: DropdownButton(
+                                                    value: currentAccount,
+                                                    items: getDropDownMenuItems(
+                                                        context),
+                                                    onChanged:
+                                                        changedDropDownItem,
+                                                    disabledHint:
+                                                        const Text('Login'),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
                                         ),
                                       ],
                                     ),
@@ -193,7 +213,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                     color: const Color(0xFFF5F5F5),
                                   ),
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
+                                    horizontal: 15,
+                                  ),
                                   height: 40,
                                   child: TextField(
                                     controller: passwordController,
@@ -238,7 +259,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               FlatButton(
                                 onPressed: () {
                                   attemptLogIn(
-                                      currentAccount, passwordController.text);
+                                    currentAccount,
+                                    passwordController.text,
+                                  );
                                 },
                                 textColor: Colors.white,
                                 padding: EdgeInsets.zero,
@@ -268,12 +291,15 @@ class _SignInScreenState extends State<SignInScreen> {
                               const SizedBox(
                                 height: 6,
                               ),
-                              const Text('OR',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: 'Oxygen',
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
+                              const Text(
+                                'OR',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Oxygen',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                               const SizedBox(
                                 height: 6,
                               ),

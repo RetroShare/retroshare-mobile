@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/apiUtils/identity.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:tuple/tuple.dart';
@@ -152,8 +151,10 @@ class RoomChatLobby with ChangeNotifier {
   String getChatSenderName(ChatMessage message) {
     if (message.isLobbyMessage()) {
       return _lobbyParticipants[message.chat_id.lobbyId.xstr64]
-              .firstWhere((id) => id.mId == message.lobby_peer_gxs_id,
-                  orElse: () => null)
+              .firstWhere(
+                (id) => id.mId == message.lobby_peer_gxs_id,
+                orElse: () => null,
+              )
               ?.name ??
           message.lobby_peer_gxs_id;
     }
@@ -198,11 +199,12 @@ class RoomChatLobby with ChangeNotifier {
         chat = _distanceChat[distantChatId];
       } else {
         chat = Chat(
-            interlocutorId: to.mId,
-            isPublic: false,
-            chatName: to.name,
-            numberOfParticipants: 1,
-            ownIdToUse: currentId);
+          interlocutorId: to.mId,
+          isPublic: false,
+          chatName: to.name,
+          numberOfParticipants: 1,
+          ownIdToUse: currentId,
+        );
         initiateDistantChat(chat);
       }
     } else if (to != null && (to is VisibleChatLobbyRecord)) {
@@ -233,11 +235,12 @@ class RoomChatLobby with ChangeNotifier {
             .then((DistantChatPeerInfo res) {
             // Create the chat and add it to the store
             Chat chat = Chat(
-                interlocutorId: res.toId,
-                isPublic: false,
-                numberOfParticipants: 1,
-                ownIdToUse: res.ownId,
-                chatId: msg.chat_id.distantChatId);
+              interlocutorId: res.toId,
+              isPublic: false,
+              numberOfParticipants: 1,
+              ownIdToUse: res.ownId,
+              chatId: msg.chat_id.distantChatId,
+            );
             Chat.addDistantChat(res.toId, res.ownId, res.peerId);
             chatActionMiddleware(chat);
             addDistanceChat(chat);
@@ -269,8 +272,11 @@ class RoomChatLobby with ChangeNotifier {
                   _allIdentity[_distanceChat[message.chat_id.distantChatId]
                           ?.interlocutorId]
                       ?.name)) {
-        await callrequestIdentity(Identity(
-            _distanceChat[message.chat_id.distantChatId]?.interlocutorId));
+        await callrequestIdentity(
+          Identity(
+            _distanceChat[message.chat_id.distantChatId]?.interlocutorId,
+          ),
+        );
       }
     }
   }

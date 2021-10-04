@@ -1,9 +1,9 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/ui/createIdenity_screen/create_signed_identity.dart';
 import 'package:retroshare/ui/createIdenity_screen/pseudo_identity.dart';
+import 'dart:async';
 
 class CreateIdentityScreen extends StatefulWidget {
   const CreateIdentityScreen({Key key, this.isFirstId = false})
@@ -28,8 +28,9 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
     _leftTabIconColor =
         ColorTween(begin: const Color(0xFFF5F5F5), end: Colors.white)
             .animate(_tabController.animation);
-    _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
-        .animate(_tabController.animation);
+    _rightTabIconColor =
+        ColorTween(begin: Colors.white, end: const Color(0xFFF5F5F5))
+            .animate(_tabController.animation);
   }
 
   @override
@@ -41,7 +42,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Container(
+            SizedBox(
               child: Padding(
                 padding: const EdgeInsets.only(
                   bottom: (appBarHeight - 40) / 2,
@@ -114,11 +115,15 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
               ),
             ),
             Expanded(
-                child: TabBarView(controller: _tabController, children: [
-              SignedIdenityTab(widget.isFirstId, UniqueKey()),
-              if (!widget.isFirstId)
-                PseudoSignedIdenityTab(widget.isFirstId, UniqueKey()),
-            ])),
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  SignedIdenityTab(widget.isFirstId, UniqueKey()),
+                  if (!widget.isFirstId)
+                    PseudoSignedIdenityTab(widget.isFirstId, UniqueKey()),
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class RoomFriendsTab extends StatefulWidget {
@@ -38,12 +38,12 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Provider.of<RoomChatLobby>(context, listen: false)
-            .updateParticipants(widget.chat?.chatId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Consumer<RoomChatLobby>(
-                builder: (context, lobbyParticipantsList, _) {
+      future: Provider.of<RoomChatLobby>(context, listen: false)
+          .updateParticipants(widget.chat?.chatId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Consumer<RoomChatLobby>(
+            builder: (context, lobbyParticipantsList, _) {
               List<Identity> _lobbyParticipantsList = widget.chat?.chatId !=
                           null ||
                       lobbyParticipantsList.lobbyParticipants != null ||
@@ -64,30 +64,42 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                           // Todo: DRY
                           child: PersonDelegate(
                             data: PersonDelegateData.IdentityData(
-                                _lobbyParticipantsList[index], context),
+                              _lobbyParticipantsList[index],
+                              context,
+                            ),
                             onLongPress: (Offset tapPosition) {
                               showCustomMenu(
-                                  'Add to contacts',
-                                  const Icon(
-                                    Icons.add,
-                                    color: Colors.black,
-                                  ),
-                                  () => _addToContacts(
-                                      _lobbyParticipantsList[index].mId),
-                                  tapPosition,
-                                  context);
+                                'Add to contacts',
+                                const Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                ),
+                                () => _addToContacts(
+                                  _lobbyParticipantsList[index].mId,
+                                ),
+                                tapPosition,
+                                context,
+                              );
                             },
                             onPressed: () {
-                              final curr = Provider.of<Identities>(context,
-                                      listen: false)
-                                  .currentIdentity;
-                              Navigator.pushNamed(context, '/room', arguments: {
-                                'isRoom': false,
-                                'chatData': Provider.of<RoomChatLobby>(context,
-                                        listen: false)
-                                    .getChat(
-                                        curr, _lobbyParticipantsList[index]),
-                              });
+                              final curr = Provider.of<Identities>(
+                                context,
+                                listen: false,
+                              ).currentIdentity;
+                              Navigator.pushNamed(
+                                context,
+                                '/room',
+                                arguments: {
+                                  'isRoom': false,
+                                  'chatData': Provider.of<RoomChatLobby>(
+                                    context,
+                                    listen: false,
+                                  ).getChat(
+                                    curr,
+                                    _lobbyParticipantsList[index],
+                                  ),
+                                },
+                              );
                             },
                           ),
                         );
@@ -107,7 +119,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 'Looks like an empty space',
-                                style: Theme.of(context).textTheme.body2,
+                                style: Theme.of(context).textTheme.bodyText1,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -115,7 +127,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 'You can invite your friends',
-                                style: Theme.of(context).textTheme.body1,
+                                style: Theme.of(context).textTheme.bodyText1,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -126,9 +138,11 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                         ),
                       ),
                     );
-            });
-          }
-          return const Center(child: CircularProgressIndicator());
-        });
+            },
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }

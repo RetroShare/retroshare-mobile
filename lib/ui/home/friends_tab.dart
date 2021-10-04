@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/person_delegate.dart';
 import 'package:retroshare/common/sliver_persistent_header.dart';
+import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/room.dart';
-import 'package:retroshare/common/person_delegate.dart';
-import 'package:retroshare/common/styles.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:tuple/tuple.dart';
 
@@ -34,19 +34,20 @@ class _FriendsTabState extends State<FriendsTab> {
           final Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>
               friendsDistantAndIdsTuple =
               Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(
-                  roomChat.friendsIdsList,
-                  roomChat.distanceChat?.values
-                          ?.toList()
-                          ?.where((chat) =>
-                              roomChat.allIdentity[chat.interlocutorId] ==
-                                  null ||
-                              roomChat.allIdentity[chat.interlocutorId]
-                                      .isContact ==
-                                  false)
-                          ?.toSet()
-                          ?.toList() ??
-                      [],
-                  roomChat.allIdentity);
+            roomChat.friendsIdsList,
+            roomChat.distanceChat?.values
+                    ?.toList()
+                    ?.where(
+                      (chat) =>
+                          roomChat.allIdentity[chat.interlocutorId] == null ||
+                          roomChat.allIdentity[chat.interlocutorId].isContact ==
+                              false,
+                    )
+                    ?.toSet()
+                    ?.toList() ??
+                [],
+            roomChat.allIdentity,
+          );
 
           if (friendsDistantAndIdsTuple.item1?.isNotEmpty ?? false) {
             return CustomScrollView(
@@ -54,14 +55,15 @@ class _FriendsTabState extends State<FriendsTab> {
                 sliverPersistentHeader('Contacts', context),
                 SliverPadding(
                   padding: EdgeInsets.only(
-                      left: 8,
-                      top: 8,
-                      right: 16,
-                      bottom:
-                          (friendsDistantAndIdsTuple.item2?.isEmpty != false ??
-                                  true)
-                              ? homeScreenBottomBarHeight * 2
-                              : 8.0),
+                    left: 8,
+                    top: 8,
+                    right: 16,
+                    bottom:
+                        (friendsDistantAndIdsTuple.item2?.isEmpty != false ??
+                                true)
+                            ? homeScreenBottomBarHeight * 2
+                            : 8.0,
+                  ),
                   sliver: SliverFixedExtentList(
                     itemExtent: personDelegateHeight,
                     delegate: SliverChildBuilderDelegate(
@@ -70,25 +72,28 @@ class _FriendsTabState extends State<FriendsTab> {
                           // Todo: DRY
                           child: PersonDelegate(
                             data: PersonDelegateData.IdentityData(
-                                friendsDistantAndIdsTuple.item1[index],
-                                context),
+                              friendsDistantAndIdsTuple.item1[index],
+                              context,
+                            ),
                             onLongPress: (Offset tapPosition) {
                               showCustomMenu(
-                                  'Remove from contacts',
-                                  const Icon(
-                                    Icons.delete,
-                                    color: Colors.black,
-                                  ),
-                                  () => _removeFromContacts(
-                                      friendsDistantAndIdsTuple
-                                          .item1[index].mId),
-                                  tapPosition,
-                                  context);
+                                'Remove from contacts',
+                                const Icon(
+                                  Icons.delete,
+                                  color: Colors.black,
+                                ),
+                                () => _removeFromContacts(
+                                  friendsDistantAndIdsTuple.item1[index].mId,
+                                ),
+                                tapPosition,
+                                context,
+                              );
                             },
                             onPressed: () {
-                              final curr = Provider.of<Identities>(context,
-                                      listen: false)
-                                  .currentIdentity;
+                              final curr = Provider.of<Identities>(
+                                context,
+                                listen: false,
+                              ).currentIdentity;
 
                               Navigator.pushNamed(
                                 context,
@@ -96,12 +101,12 @@ class _FriendsTabState extends State<FriendsTab> {
                                 arguments: {
                                   'isRoom': false,
                                   'chatData': Provider.of<RoomChatLobby>(
-                                          context,
-                                          listen: false)
-                                      .getChat(
-                                          curr,
-                                          friendsDistantAndIdsTuple
-                                              .item1[index]),
+                                    context,
+                                    listen: false,
+                                  ).getChat(
+                                    curr,
+                                    friendsDistantAndIdsTuple.item1[index],
+                                  ),
                                 },
                               );
                             },
@@ -122,10 +127,11 @@ class _FriendsTabState extends State<FriendsTab> {
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.only(
-                      left: 8,
-                      top: 8,
-                      right: 16,
-                      bottom: homeScreenBottomBarHeight * 2),
+                    left: 8,
+                    top: 8,
+                    right: 16,
+                    bottom: homeScreenBottomBarHeight * 2,
+                  ),
                   sliver: SliverFixedExtentList(
                     itemExtent: personDelegateHeight,
                     delegate: SliverChildBuilderDelegate(
@@ -134,8 +140,10 @@ class _FriendsTabState extends State<FriendsTab> {
                             friendsDistantAndIdsTuple.item3[
                                     friendsDistantAndIdsTuple
                                         .item2[index]?.interlocutorId] ??
-                                Identity(friendsDistantAndIdsTuple
-                                    .item2[index].interlocutorId);
+                                Identity(
+                                  friendsDistantAndIdsTuple
+                                      .item2[index].interlocutorId,
+                                );
                         return GestureDetector(
                           // Todo: DRY
                           child: PersonDelegate(
@@ -143,28 +151,30 @@ class _FriendsTabState extends State<FriendsTab> {
                                 actualId, context),
                             onLongPress: (Offset tapPosition) {
                               showCustomMenu(
-                                  'Add to contacts',
-                                  const Icon(
-                                    Icons.add,
-                                    color: Colors.black,
-                                  ),
-                                  () => _addToContacts(actualId.mId),
-                                  tapPosition,
-                                  context);
+                                'Add to contacts',
+                                const Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                ),
+                                () => _addToContacts(actualId.mId),
+                                tapPosition,
+                                context,
+                              );
                             },
                             onPressed: () {
-                              final curr = Provider.of<Identities>(context,
-                                      listen: false)
-                                  .currentIdentity;
+                              final curr = Provider.of<Identities>(
+                                context,
+                                listen: false,
+                              ).currentIdentity;
                               Navigator.pushNamed(
                                 context,
                                 '/room',
                                 arguments: {
                                   'isRoom': false,
                                   'chatData': Provider.of<RoomChatLobby>(
-                                          context,
-                                          listen: false)
-                                      .getChat(curr, actualId),
+                                    context,
+                                    listen: false,
+                                  ).getChat(curr, actualId),
                                 },
                               );
                             },
@@ -194,7 +204,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       'Looks like an empty space',
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -202,7 +212,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       'You can add friends in the menu',
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText2,
                       textAlign: TextAlign.center,
                     ),
                   ),

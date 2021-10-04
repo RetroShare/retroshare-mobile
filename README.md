@@ -33,11 +33,15 @@ retroshare-service backend.
 
 ## Installing on Local Machine:
 
-* Download recent release of retroshare service [here](https://github.com/RetroShare/retroshare-mobile/tree/master/android/retroshare-service).
-* Debug: using adb to use a retroshare-service installed on your computer:
-
+* Download [Qt 5.12.5](https://www.qt.io/blog/qt-5.12.5-released).
+* Add the Android  dependencies `Android x86` , `Android ARM64-v8a` and `Android ARMv7` using QT maintainer tool.
+* Add the `Qt 5.12.5` location in `retroshare-service.properties.example` file in `qt.installdir`.
+* Run below command:
 ```bash
-adb reverse tcp:9092 tcp:9092
+  cd android
+  cp retroshare-service.properties.example retroshare-service.properties
+  cd ..
+  flutter run
 ```
 * Follow this [steps](https://github.com/RetroShare/retroshare-mobile/blob/master/AndroidStudio-Flutter-setup.md)  for more Info.
 

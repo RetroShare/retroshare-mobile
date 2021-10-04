@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
+
 import '../common/color_loader_3.dart';
 
 class UpdateIdentityScreen extends StatefulWidget {
@@ -59,9 +59,14 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
       try {
         await Provider.of<Identities>(context, listen: false)
             .updateIdentity(
-                Identity(widget.curr.mId, widget.curr.signed,
-                    nameController.text, _image?.base64String),
-                _image)
+          Identity(
+            widget.curr.mId,
+            widget.curr.signed,
+            nameController.text,
+            _image?.base64String,
+          ),
+          _image,
+        )
             .then((value) {
           Navigator.pop(context);
         });
@@ -177,7 +182,8 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                         ? null
                                         : BoxDecoration(
                                             borderRadius: BorderRadius.circular(
-                                                300 * 0.7 * 0.33),
+                                              300 * 0.7 * 0.33,
+                                            ),
                                             image: DecorationImage(
                                               fit: BoxFit.fill,
                                               image: MemoryImage(_image.mData),
@@ -207,7 +213,8 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                       color: const Color(0xFFF5F5F5),
                                     ),
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15),
+                                      horizontal: 15,
+                                    ),
                                     height: 40,
                                     child: TextField(
                                       controller: nameController,
@@ -218,13 +225,14 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                                         });
                                       },
                                       decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          icon: Icon(
-                                            Icons.person_outline,
-                                            color: Color(0xFF9E9E9E),
-                                            size: 22.0,
-                                          ),
-                                          hintText: 'Name'),
+                                        border: InputBorder.none,
+                                        icon: Icon(
+                                          Icons.person_outline,
+                                          color: Color(0xFF9E9E9E),
+                                          size: 22.0,
+                                        ),
+                                        hintText: 'Name',
+                                      ),
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
@@ -290,7 +298,8 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                           }
                         },
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0 + personDelegateHeight * 0.04),
+                          horizontal: 16.0 + personDelegateHeight * 0.04,
+                        ),
                         child: SizedBox(
                           width: double.infinity,
                           child: Container(

@@ -289,8 +289,8 @@ class _PersonDelegateState extends State<PersonDelegate>
                         child: Text(
                           widget.data.name,
                           style: widget.data.isMessage
-                              ? Theme.of(context).textTheme.body2
-                              : Theme.of(context).textTheme.body1,
+                              ? Theme.of(context).textTheme.bodyText1
+                              : Theme.of(context).textTheme.bodyText1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -299,10 +299,13 @@ class _PersonDelegateState extends State<PersonDelegate>
                         visible:
                             widget.isSelectable && _curvedAnimation.value == 1,
                         child: IconButton(
-                            icon: const Icon(Icons.navigate_next),
-                            onPressed: () => Navigator.of(context)
-                                .pushReplacementNamed('/profile',
-                                    arguments: {'id': id})),
+                          icon: const Icon(Icons.navigate_next),
+                          onPressed: () =>
+                              Navigator.of(context).pushReplacementNamed(
+                            '/profile',
+                            arguments: {'id': id},
+                          ),
+                        ),
                       )
                     ]),
                     Visibility(
@@ -310,7 +313,7 @@ class _PersonDelegateState extends State<PersonDelegate>
                           widget.data.message.isNotEmpty,
                       child: Text(
                         widget.data.message,
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                   ],
@@ -319,8 +322,10 @@ class _PersonDelegateState extends State<PersonDelegate>
             ),
             Visibility(
               visible: widget.data.isTime,
-              child: Text(widget.data.time,
-                  style: Theme.of(context).textTheme.caption),
+              child: Text(
+                widget.data.time,
+                style: Theme.of(context).textTheme.caption,
+              ),
             ),
           ],
         ),
@@ -364,7 +369,7 @@ Future<void> showCustomMenu(String title, Icon icon, Function action,
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
           leading: icon,
-          title: Text(title, style: Theme.of(context).textTheme.body2),
+          title: Text(title, style: Theme.of(context).textTheme.bodyText1),
         ),
       ),
     ],

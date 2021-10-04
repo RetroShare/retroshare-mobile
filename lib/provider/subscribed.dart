@@ -69,14 +69,23 @@ class ChatLobby with ChangeNotifier {
   }
 
   Future<void> createChatlobby(
-      String lobbyName, String idToUse, String lobbyTopic,
-      {List<Location> inviteList = const <Location>[],
-      bool public = true,
-      bool anonymous = true}) async {
+    String lobbyName,
+    String idToUse,
+    String lobbyTopic, {
+    List<Location> inviteList = const <Location>[],
+    bool public = true,
+    bool anonymous = true,
+  }) async {
     try {
       final bool success = await RsMsgs.createChatLobby(
-          _authToken, lobbyName, idToUse, lobbyTopic,
-          inviteList: inviteList, anonymous: anonymous, public: public);
+        _authToken,
+        lobbyName,
+        idToUse,
+        lobbyTopic,
+        inviteList: inviteList,
+        anonymous: anonymous,
+        public: public,
+      );
       if (success) fetchAndUpdate();
     } catch (e) {
       throw Exception(e.toString());

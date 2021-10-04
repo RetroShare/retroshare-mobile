@@ -31,8 +31,9 @@ class BottomBar extends StatelessWidget {
               ),
             ],
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(appBarHeight / 3),
-                topRight: Radius.circular(appBarHeight / 3)),
+              topLeft: Radius.circular(appBarHeight / 3),
+              topRight: Radius.circular(appBarHeight / 3),
+            ),
             color: Colors.white,
           ),
           child: child,

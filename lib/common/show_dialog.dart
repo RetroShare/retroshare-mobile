@@ -52,13 +52,14 @@ warningShowDialog(String title, String text, BuildContext context) {
 
 showFlutterToast(String title, Color color) {
   return Fluttertoast.showToast(
-      msg: title,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: color,
-      textColor: Colors.white,
-      fontSize: 16.0);
+    msg: title,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: color,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }
 
 contentBox(BuildContext context) {
@@ -66,10 +67,11 @@ contentBox(BuildContext context) {
     children: <Widget>[
       Container(
         padding: const EdgeInsets.only(
-            left: Constants.padding,
-            top: Constants.avatarRadius,
-            right: Constants.padding,
-            bottom: Constants.padding),
+          left: Constants.padding,
+          top: Constants.avatarRadius,
+          right: Constants.padding,
+          bottom: Constants.padding,
+        ),
         margin: const EdgeInsets.only(top: Constants.avatarRadius),
         decoration: BoxDecoration(
             color: Colors.white,
@@ -135,8 +137,9 @@ void showdeleteDialog(BuildContext context) {
         return AlertDialog(
           title: Text("Delete '$name'?"),
           content: const Text(
-              // ignore: lines_longer_than_80_chars
-              'The deletion of identity cannot be undone. Are you sure you want to continue?'),
+            // ignore: lines_longer_than_80_chars
+            'The deletion of identity cannot be undone. Are you sure you want to continue?',
+          ),
           actions: <Widget>[
             FlatButton(
               onPressed: () {
@@ -173,8 +176,9 @@ void showdeleteDialog(BuildContext context) {
         return AlertDialog(
           title: const Text('Too few identities'),
           content: const Text(
-              // ignore: lines_longer_than_80_chars
-              'You must have at least one more identity to be able to delete this one.'),
+            // ignore: lines_longer_than_80_chars
+            'You must have at least one more identity to be able to delete this one.',
+          ),
           actions: <Widget>[
             FlatButton(
               onPressed: () {

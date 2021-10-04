@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:retroshare/apiUtils/identity.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
