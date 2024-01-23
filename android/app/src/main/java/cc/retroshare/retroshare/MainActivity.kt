@@ -1,19 +1,24 @@
 package cc.retroshare.retroshare
 
-import android.annotation.TargetApi
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 
-import android.os.Build
+import android.os.Build;
 // From that sample application
 import androidx.annotation.NonNull;
 
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.engine.FlutterEngine
-//import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
 
+import io.flutter.embedding.engine.FlutterEngine;
+//import io.flutter.plugin.common.MethodChannel
+
+//V2 embeddings Jan-2024
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.plugins.GeneratedPluginRegistrant;
+import androidx.annotation.NonNull;
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
 
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
