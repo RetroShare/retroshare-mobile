@@ -7,7 +7,7 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="Retroshare"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
@@ -27,15 +27,13 @@
             <!--<meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />-->
-          
+            <meta-data
+                android:name='io.flutter.embedding.android.SplashScreenDrawable'
+                android:resource="@drawable/launch_background"/>
 
-            <meta-data 
-              android:name='io.flutter.embedding.android.SplashScreenDrawable'
-              android:resource="@drawable/launch_background"/>
-            <meta-data 
-            android:name="flutterEmbedding"
-            android:value="2"/>
-
+            <meta-data
+                android:name='flutterEmbedding'
+                android:value='2' />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
