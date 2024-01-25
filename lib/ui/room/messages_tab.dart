@@ -13,7 +13,7 @@ import 'package:retroshare/ui/room/message_delegate.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class MessagesTab extends StatefulWidget {
-  const MessagesTab({this.chat, this.isRoom});
+  const MessagesTab({required this.chat,required  this.isRoom});
   final Chat chat;
   final bool isRoom;
 
@@ -24,7 +24,7 @@ class MessagesTab extends StatefulWidget {
 class _MessagesTabState extends State<MessagesTab> {
   TextEditingController msgController = TextEditingController();
   final double _bottomBarHeight = appBarHeight;
-  FocusScopeNode _focusNode;
+  late FocusScopeNode _focusNode;
 
   bool isShowSticker = false;
   @override
@@ -50,7 +50,7 @@ class _MessagesTabState extends State<MessagesTab> {
   }
 
   Future<void> _sendImage() async {
-    final File image = await ImagePicker.pickImage(
+    final File image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 40,
       maxWidth: 250,
@@ -109,7 +109,7 @@ class _MessagesTabState extends State<MessagesTab> {
               builder: (context, messagesList, _) {
                 final dynamic msgList = (messagesList.messagesList[widget.chat.chatId] == null)
                     ? []
-                    : messagesList.messagesList[widget.chat.chatId].reversed
+                    : messagesList.messagesList[widget.chat.chatId]?.reversed
                         .toList();
                 return Stack(
                   children: <Widget>[

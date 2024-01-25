@@ -5,7 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class MessageDelegate extends StatelessWidget {
-  const MessageDelegate({this.data, this.bubbleTitle, this.key});
+  const MessageDelegate({required this.data,required this.bubbleTitle, this.key});
   @override
   final key;
   final String bubbleTitle;

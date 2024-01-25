@@ -7,7 +7,7 @@ import 'package:retroshare/provider/room.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class RoomFriendsTab extends StatefulWidget {
-  const RoomFriendsTab({this.chat});
+  const RoomFriendsTab({required this.chat});
   final Chat chat;
   @override
   _RoomFriendsTabState createState() => _RoomFriendsTabState();
@@ -15,7 +15,7 @@ class RoomFriendsTab extends StatefulWidget {
 
 class _RoomFriendsTabState extends State<RoomFriendsTab> {
 //  List<Identity> _lobbyParticipantsList = List<Identity>();
-  Image myImage;
+  late Image myImage;
   @override
   void initState() {
     myImage = Image.asset('assets/icons8/friends_together.png');
@@ -44,14 +44,17 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Consumer<RoomChatLobby>(
             builder: (context, lobbyParticipantsList, _) {
-              final List<Identity> lobbyParticipantsList = widget.chat.chatId !=
+              List<Identity> lobbyParticipantsList=[];
+              if (widget.chat.chatId !=
                           null ||
                       lobbyParticipantsList.lobbyParticipants != null ||
                       lobbyParticipantsList
                               .lobbyParticipants[widget.chat.chatId] !=
-                          null
-                  ? lobbyParticipantsList.lobbyParticipants[widget.chat.chatId]
-                  : null;
+                          null) {
+                lobbyParticipantsList = lobbyParticipantsList.lobbyParticipants[widget.chat.chatId];
+              } else {
+                lobbyParticipantsList = null;
+              }
               return lobbyParticipantsList.isNotEmpty
                   ? ListView.builder(
                       padding: const EdgeInsets.all(16.0),
@@ -96,7 +99,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                     listen: false,
                                   ).getChat(
                                     curr,
-                                    lobbyParticipantsList[index],
+                                    lobbyParticipantsList[index], from: '',
                                   ),
                                 },
                               );
