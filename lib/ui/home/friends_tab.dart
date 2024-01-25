@@ -40,7 +40,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     .where(
                       (chat) =>
                           roomChat.allIdentity[chat.interlocutorId] == null ||
-                          roomChat.allIdentity[chat.interlocutorId].isContact ==
+                          roomChat.allIdentity[chat.interlocutorId]?.isContact ==
                               false,
                     )
                     .toSet()
@@ -105,7 +105,7 @@ class _FriendsTabState extends State<FriendsTab> {
                                     listen: false,
                                   ).getChat(
                                     curr,
-                                    friendsDistantAndIdsTuple.item1[index],
+                                    friendsDistantAndIdsTuple.item1[index], from: '',
                                   ),
                                 },
                               );
@@ -174,7 +174,7 @@ class _FriendsTabState extends State<FriendsTab> {
                                   'chatData': Provider.of<RoomChatLobby>(
                                     context,
                                     listen: false,
-                                  ).getChat(curr, actualId),
+                                  ).getChat(curr, actualId, from: ''),
                                 },
                               );
                             },

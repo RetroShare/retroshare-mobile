@@ -50,7 +50,7 @@ class ChatsTab extends StatelessWidget {
                                   listen: false,
                                 ).getChat(
                                   curr,
-                                  chatsList.subscribedlist[index],
+                                  chatsList.subscribedlist[index], from: '',
                                 ),
                               },
                             );

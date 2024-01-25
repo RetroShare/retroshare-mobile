@@ -17,13 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  TabController _tabController;
-  PanelController _panelController;
-  Animation<Color> _leftIconAnimation;
-  Animation<Color> _rightIconAnimation;
-  Animation<Color> shadowColor;
+  late TabController _tabController;
+  late PanelController _panelController;
+  late Animation<Color> _leftIconAnimation;
+  late Animation<Color> _rightIconAnimation;
+  late Animation<Color> shadowColor;
   bool isfetch = true;
-  AnimationController _animationController;
+  late AnimationController _animationController;
   var _isInit = true;
   var _isLoading = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 backgroundColor: Colors.white,
                 leading: InkWell(
                   onTap: () {
-                    _scaffoldKey.currentState.openDrawer();
+                    _scaffoldKey.currentState?.openDrawer();
                   },
                   child: Icon(
                     Icons.menu,
