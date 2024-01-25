@@ -4,9 +4,9 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:tuple/tuple.dart';
 
 class RoomChatLobby with ChangeNotifier {
-  Map<String, List<Identity>> _lobbyParticipants;
+  late Map<String, List<Identity>> _lobbyParticipants;
   Map<String, Chat> _distanceChat = {};
-  Chat _currentChat;
+  late Chat _currentChat;
   Map<String, Chat> get distanceChat => {..._distanceChat};
   Map<String, List<ChatMessage>> _messagesList = {};
   Map<String, List<ChatMessage>> get messagesList => {..._messagesList};
@@ -19,7 +19,7 @@ class RoomChatLobby with ChangeNotifier {
   List<Identity> get friendsIdsList => [..._friendsIdsList];
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
-  AuthToken _authToken;
+  late AuthToken _authToken;
 
   set authToken(AuthToken authToken) {
     _authToken = authToken;
@@ -105,7 +105,7 @@ class RoomChatLobby with ChangeNotifier {
   void addChatMessage(ChatMessage message, String chatId) {
     _messagesList = Map.from(_messagesList ?? <String, List<ChatMessage>>{})
       ..putIfAbsent(chatId, () => []);
-    _messagesList[chatId].add(message);
+    _messagesList[chatId]?.add(message);
     notifyListeners();
   }
 
@@ -151,7 +151,7 @@ class RoomChatLobby with ChangeNotifier {
   String getChatSenderName(ChatMessage message) {
     if (message.isLobbyMessage()) {
       return _lobbyParticipants[message.chat_id.lobbyId.xstr64]
-              .firstWhere(
+              ?.firstWhere(
                 (id) => id.mId == message.lobby_peer_gxs_id,
                 orElse: () => null,
               )
@@ -159,7 +159,7 @@ class RoomChatLobby with ChangeNotifier {
           message.lobby_peer_gxs_id;
     }
     final Identity id = _allIdentity[
-        _distanceChat[message.chat_id.distantChatId].interlocutorId];
+        _distanceChat[message.chat_id.distantChatId]?.interlocutorId];
     return id.name.isEmpty ? id.mId : id.name;
   }
 
@@ -183,9 +183,9 @@ class RoomChatLobby with ChangeNotifier {
   Chat getChat(
     Identity currentIdentity,
     dynamic to, {
-    String from,
+    required String from,
   }) {
-    Chat chat;
+    late Chat chat;
 
     final String currentId = from ?? currentIdentity.mId;
     if (to != null && to is Identity) {
@@ -254,8 +254,8 @@ class RoomChatLobby with ChangeNotifier {
     if (message.msg.isNotEmpty && message.incoming) {
       if (message.isLobbyMessage() &&
           (_allIdentity[message.lobby_peer_gxs_id] == null ||
-              _allIdentity[message.lobby_peer_gxs_id].mId ==
-                  _allIdentity[message.lobby_peer_gxs_id].name)) {
+              _allIdentity[message.lobby_peer_gxs_id]?.mId ==
+                  _allIdentity[message.lobby_peer_gxs_id]?.name)) {
         await callrequestIdentity(Identity(message.lobby_peer_gxs_id));
       } else if (!message.isLobbyMessage() &&
           (_allIdentity[_distanceChat[message.chat_id.distantChatId]

@@ -6,9 +6,9 @@ import 'package:tuple/tuple.dart';
 
 class AccountCredentials with ChangeNotifier {
   List<Account> _accountsList = [];
-  Account _lastAccountUsed;
-  Account _loggedinAccount;
-  AuthToken _authToken;
+  late Account _lastAccountUsed;
+  late Account _loggedinAccount;
+  late AuthToken _authToken;
   Account get lastAccountUsed => _lastAccountUsed;
   List<Account> get accountList => _accountsList;
   Account get loggedinAccount => _loggedinAccount;
@@ -41,7 +41,7 @@ class AccountCredentials with ChangeNotifier {
 
   Account get getlastAccountUsed => _lastAccountUsed;
 
-  Future<Account> setlastAccountUsed() async {
+  Future<Account?> setlastAccountUsed() async {
     final currAccount = await RsAccounts.getCurrentAccountId(_authToken);
     for (final Account account in _accountsList) {
       if (account.locationId == currAccount) return account;

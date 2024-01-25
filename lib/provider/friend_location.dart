@@ -5,7 +5,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 class FriendLocations with ChangeNotifier {
   List<Location> _friendlist = [];
   List<Location> get friendlist => _friendlist;
-  AuthToken _authToken;
+  late AuthToken _authToken;
 
   set authToken(AuthToken authToken) {
     _authToken = authToken;
