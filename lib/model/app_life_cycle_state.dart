@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-AppLifecycleState actuaApplState;
+late AppLifecycleState actuaApplState;
 
 class LifecycleEventHandler extends WidgetsBindingObserver {
 
   LifecycleEventHandler({
-    this.resumeCallBack,
-    this.suspendingCallBack,
+    required this.resumeCallBack,
+    required this.suspendingCallBack,
   }) {
     actuaApplState = AppLifecycleState.resumed;
   }
@@ -25,6 +25,8 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
         await suspendingCallBack();
+      case AppLifecycleState.hidden:
+        // TODO: Handle this case.
           }
   }
 }
