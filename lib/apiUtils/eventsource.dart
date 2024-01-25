@@ -14,33 +14,31 @@ Future<void> registerChatEvent(
 ) async {
   await eventsRegisterChatMessage(
     listenCb: (var json, ChatMessage msg) {
-      if (msg != null) {
-        // Check if is a lobby chat
-        if (msg.isLobbyMessage()) {
-          Provider.of<RoomChatLobby>(context, listen: false)
-              .chatIdentityCheck(msg);
-          showChatNotify(msg, context);
-          Provider.of<RoomChatLobby>(context, listen: false)
-              .addChatMessage(msg, msg.chat_id.lobbyId.xstr64);
-        }
-        // Check if is distant chat message
-        else if (isNullCheck(msg.chat_id.distantChatId)) {
-          // First check if the recieved message
-          //is from an already registered chat
-          Provider.of<RoomChatLobby>(context, listen: false)
-              .chatIdentityCheck(msg);
-          Provider.of<RoomChatLobby>(context, listen: false)
-              .getDistanceChatStatus(msg);
-        }
+      // Check if is a lobby chat
+      if (msg.isLobbyMessage()) {
+        Provider.of<RoomChatLobby>(context, listen: false)
+            .chatIdentityCheck(msg);
+        showChatNotify(msg, context);
+        Provider.of<RoomChatLobby>(context, listen: false)
+            .addChatMessage(msg, msg.chat_id.lobbyId.xstr64);
       }
-    },
+      // Check if is distant chat message
+      else if (isNullCheck(msg.chat_id.distantChatId)) {
+        // First check if the recieved message
+        //is from an already registered chat
+        Provider.of<RoomChatLobby>(context, listen: false)
+            .chatIdentityCheck(msg);
+        Provider.of<RoomChatLobby>(context, listen: false)
+            .getDistanceChatStatus(msg);
+      }
+        },
     authToken: authToken,
   );
 }
 
 // Show the incoming chat  message  notification when app is in background/ resume state
 Future<void> showChatNotify(ChatMessage message, BuildContext context) async {
-  if (message != null && message.msg.isNotEmpty && message.incoming) {
+  if (message.msg.isNotEmpty && message.incoming) {
     final roomChatLobby = Provider.of<RoomChatLobby>(context, listen: false);
     final subscribedChats =
         Provider.of<ChatLobby>(context, listen: false).subscribedlist;
@@ -51,20 +49,18 @@ Future<void> showChatNotify(ChatMessage message, BuildContext context) async {
     parsed != null ? parsedMsg = parsed[0].text : parsedMsg = message.msg;
 
     // Check if current chat is focused, to notify unread count
-    if (roomChatLobby.currentChat == null ||
-        (roomChatLobby.currentChat != null &&
-            ((message.isLobbyMessage() &&
+    if ((message.isLobbyMessage() &&
                     roomChatLobby.currentChat.chatId !=
                         message.chat_id.lobbyId.xstr64) ||
                 (message.isLobbyMessage() &&
                     roomChatLobby.currentChat.chatId !=
-                        message.chat_id.distantChatId)))) {
-      Chat chat = message.isLobbyMessage()
+                        message.chat_id.distantChatId)) {
+      final Chat chat = message.isLobbyMessage()
           ? subscribedChats.firstWhere(
               (chat) => chat.chatId == message.chat_id.lobbyId.xstr64,
             )
           : roomChatLobby.distanceChat[message.chat_id.distantChatId];
-      chat?.unreadCount++;
+      chat.unreadCount++;
     }
 
     // Show notification

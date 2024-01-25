@@ -20,7 +20,6 @@ class Identities with ChangeNotifier {
   Future<void> fetchOwnidenities() async {
     _ownidentities = await getOwnIdentities(_authToken);
     if (_currentIdentity == null &&
-        _ownidentities != null &&
         _ownidentities.isNotEmpty) {
       _currentIdentity = _ownidentities[0];
       _selected = _ownidentities[0];
@@ -31,7 +30,7 @@ class Identities with ChangeNotifier {
   Identity get selectedIdentity => _selected;
 
   void updatecurrentIdentity() {
-    if (_selected != null) _currentIdentity = _selected;
+    _currentIdentity = _selected;
     notifyListeners();
   }
 

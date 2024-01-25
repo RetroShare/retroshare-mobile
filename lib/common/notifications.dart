@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 
-NotificationAppLaunchDetails notificationAppLaunchDetails;
+late NotificationAppLaunchDetails notificationAppLaunchDetails;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 final BehaviorSubject<String> selectNotificationSubject =
@@ -18,9 +18,8 @@ Future<void> initializeNotifications() async {
       InitializationSettings(initializationSettingsAndroid, null);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: (String payload) async {
-    if (payload != null) {}
     selectNotificationSubject.add(payload);
-  });
+  },);
 }
 
 void configureSelectNotificationSubject(context) {
@@ -33,7 +32,7 @@ void configureSelectNotificationSubject(context) {
 }
 
 Future<void> showChatNotification(
-    String chatId, String title, String body) async {
+    String chatId, String title, String body,) async {
   // For multiple messages check: inbox notification
   //  var largeIconPath = await _downloadAndSaveFile(
   //      'http://via.placeholder.com/128x128/00FF00/000000', 'largeIcon');
@@ -73,5 +72,5 @@ Future<void> showInviteCopyNotification() async {
       1111,
       'Invite copied!',
       'Your RetroShare invite was copied to your clipboard',
-      platformChannelSpecifics);
+      platformChannelSpecifics,);
 }

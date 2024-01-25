@@ -283,7 +283,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
-                                                                  .bodyText1,
+                                                                  .bodyLarge,
                                                         ),
                                                       ),
                                                     ],
@@ -328,7 +328,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
-                                                                  .bodyText1,
+                                                                  .bodyLarge,
                                                         ),
                                                       ),
                                                     ],
@@ -373,8 +373,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                         'Public',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText1,
-                                                      )
+                                                            .bodyLarge,
+                                                      ),
                                                     ],
                                                   ),
                                                 ),
@@ -414,8 +414,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                                         'Accessible to anonymous',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText1,
-                                                      )
+                                                            .bodyLarge,
+                                                      ),
                                                     ],
                                                   ),
                                                 ),
@@ -443,12 +443,12 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         // open suggestion box and
                                         //find it on locations list
                                         if (_isRoomCreation) {
-                                          var results =
+                                          final results =
                                               _locationsList.where((profile) {
                                             return profile.locationName
                                                     .toLowerCase()
                                                     .contains(
-                                                        query.toLowerCase()) ||
+                                                        query.toLowerCase(),) ||
                                                 profile.accountName
                                                     .toLowerCase()
                                                     .contains(
@@ -488,7 +488,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                               .indexOf(lowercaseQuery)
                                               .compareTo(b.name
                                                   .toLowerCase()
-                                                  .indexOf(lowercaseQuery)));
+                                                  .indexOf(lowercaseQuery),),);
                                         _updateSuggestions(results);
                                         return _isRoomCreation
                                             ? results
@@ -533,7 +533,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         ),
                                       );
                                     },
-                                  )
+                                  ),
                                 ],
                               ),
                             );
@@ -591,7 +591,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   Icons.language,
                                   color: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyLarge
                                       .color,
                                 ),
                               ),
@@ -602,7 +602,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                     const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   'Discover public chats',
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),
@@ -652,7 +652,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                               Icons.add,
                                               color: Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1
+                                                  .bodyLarge
                                                   .color,
                                             ),
                                           ),
@@ -666,7 +666,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                               'Create new room',
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1,
+                                                  .bodyLarge,
                                             ),
                                           ),
                                         ),
@@ -697,7 +697,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                 'chatData': Provider.of<RoomChatLobby>(
                                   context,
                                   listen: false,
-                                ).getChat(curr, _suggestionsList[index])
+                                ).getChat(curr, _suggestionsList[index]),
                               },
                             );
                           },
@@ -705,7 +705,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                       },
                     ),
                     Visibility(
-                      visible: _friendsList?.isEmpty ?? false,
+                      visible: _friendsList.isEmpty ?? false,
                       child: Center(
                         child: SingleChildScrollView(
                           child: SizedBox(
@@ -725,7 +725,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   child: Text(
                                     'Looks like an empty space',
                                     style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.bodyLarge,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -735,7 +735,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   child: Text(
                                     'You can add friends in the menu',
                                     style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.bodyLarge,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

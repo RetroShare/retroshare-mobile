@@ -6,7 +6,7 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/friend_location.dart';
 
-import '../Qr_scanner_screen.dart';
+import 'package:retroshare/ui/Qr_scanner_screen.dart';
 
 class GetAddfriend extends StatefulWidget {
   @override
@@ -38,9 +38,9 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 ),
                 hintStyle: const TextStyle(fontSize: 16, fontFamily: 'Oxygen'),
                 labelStyle: const TextStyle(fontSize: 12),
-                hintText: 'Paste your friend\'s invite here',
+                hintText: "Paste your friend's invite here",
                 border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(6))),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(6)),),
           ),
           const SizedBox(height: 10),
           FlatButton(
@@ -60,7 +60,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 });
                 Navigator.of(context)
                     .pushReplacementNamed('/friends_locations');
-              } on HttpException catch (e) {
+              } on HttpException {
                 setState(() {
                   _requestAddCert = false;
                 });
@@ -103,7 +103,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
               child: Text(
             'OR',
             style: TextStyle(fontWeight: FontWeight.bold),
-          )),
+          ),),
           FlatButton(
             onPressed: () {
               Navigator.of(context)
@@ -130,7 +130,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
       Center(
@@ -141,7 +141,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
             dotRadius: 6.0,
           ),
         ),
-      )
-    ]);
+      ),
+    ],);
   }
 }

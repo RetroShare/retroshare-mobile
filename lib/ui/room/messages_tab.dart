@@ -59,20 +59,20 @@ class _MessagesTabState extends State<MessagesTab> {
     final bytes = image.readAsBytesSync().lengthInBytes;
     final kb = bytes / 1024;
     final mb = kb / 1024;
-    if (mb < 3 && image != null) {
+    if (mb < 3) {
       var text = base64.encode(image.readAsBytesSync());
       text = "<img alt='Red dot (png)' src='data:image/png;base64,$text'/>";
       // ignore: use_build_context_synchronously
       try {
         await Provider.of<RoomChatLobby>(context, listen: false).sendMessage(
-          widget.chat?.chatId,
+          widget.chat.chatId,
           text,
           widget.isRoom ? ChatIdType.number3_ : ChatIdType.number2_,
         );
       } catch (e) {
         // ignore: use_build_context_synchronously
         errorShowDialog(
-            'Error', 'You are not the member of the chat Lobby', context);
+            'Error', 'You are not the member of the chat Lobby', context,);
       }
     } else {
       showFlutterToast('Image Size is too large !', Colors.red);
@@ -107,11 +107,9 @@ class _MessagesTabState extends State<MessagesTab> {
           Expanded(
             child: Consumer<RoomChatLobby>(
               builder: (context, messagesList, _) {
-                dynamic msgList = (widget.chat?.chatId == null ||
-                        messagesList.messagesList == null ||
-                        messagesList.messagesList[widget.chat?.chatId] == null)
+                final dynamic msgList = (messagesList.messagesList[widget.chat.chatId] == null)
                     ? []
-                    : messagesList.messagesList[widget.chat?.chatId].reversed
+                    : messagesList.messagesList[widget.chat.chatId].reversed
                         .toList();
                 return Stack(
                   children: <Widget>[
@@ -143,14 +141,14 @@ class _MessagesTabState extends State<MessagesTab> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Image.asset(
-                                    'assets/icons8/pluto-no-messages-1.png'),
+                                    'assets/icons8/pluto-no-messages-1.png',),
                                 Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 25),
                                   child: Text(
                                     'It seems like there is no messages',
                                     style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 ),
                               ],
@@ -199,7 +197,6 @@ class _MessagesTabState extends State<MessagesTab> {
                               Future.delayed(const Duration(milliseconds: 15));
                             });
                           }
-                          ;
                         },
                         controller: msgController,
                         keyboardType: TextInputType.multiline,
@@ -209,7 +206,7 @@ class _MessagesTabState extends State<MessagesTab> {
                           border: InputBorder.none,
                           hintText: 'Type text...',
                         ),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ),
@@ -229,11 +226,11 @@ class _MessagesTabState extends State<MessagesTab> {
                       if (msgController.text.isNotEmpty) {
                         Provider.of<RoomChatLobby>(context, listen: false)
                             .sendMessage(
-                                widget.chat?.chatId,
+                                widget.chat.chatId,
                                 msgController.text,
                                 widget.isRoom
                                     ? ChatIdType.number3_
-                                    : ChatIdType.number2_);
+                                    : ChatIdType.number2_,);
                       }
                       msgController.clear();
                     },

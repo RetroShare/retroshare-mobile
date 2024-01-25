@@ -3,9 +3,9 @@ import 'package:retroshare/common/styles.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar(
-      {this.child,
+      {required this.child,
       this.minHeight = appBarHeight,
-      this.maxHeight = appBarHeight});
+      this.maxHeight = appBarHeight,});
   final Widget child;
   final double minHeight;
   final double maxHeight;
@@ -37,6 +37,6 @@ class BottomBar extends StatelessWidget {
             color: Colors.white,
           ),
           child: child,
-        ));
+        ),);
   }
 }

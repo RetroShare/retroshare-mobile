@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/apiUtils/retroshareService.dart';
+import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart' as rs;
-
-import '../common/color_loader_3.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({
@@ -68,11 +67,11 @@ class _SplashState extends State<SplashScreen> {
                   Provider.of<AccountCredentials>(context, listen: false);
               auth.checkisvalidAuthToken().then((isTokenValid) async {
                 // Already authenticated
-                if (isTokenValid && auth.loggedinAccount != null) {
+                if (isTokenValid) {
                   _setStatusText('Logging in...');
                   final ids = Provider.of<Identities>(context, listen: false);
                   ids.fetchOwnidenities().then((value) {
-                    if (ids.ownIdentity != null && ids.ownIdentity.isEmpty) {
+                    if (ids.ownIdentity.isEmpty) {
                       Navigator.pushReplacementNamed(
                         context,
                         '/create_identity',
@@ -88,7 +87,7 @@ class _SplashState extends State<SplashScreen> {
                   await auth.fetchAuthAccountList().then((value) {
                     if (auth.accountList.isEmpty) {
                       Navigator.pushReplacementNamed(
-                          context, '/launch_transition');
+                          context, '/launch_transition',);
                     } else {
                       Navigator.pushReplacementNamed(context, '/signin');
                     }
@@ -100,7 +99,7 @@ class _SplashState extends State<SplashScreen> {
         });
       } catch (err) {
         errorShowDialog(
-            'Something went wrong', 'Try to start  the app again', context);
+            'Something went wrong', 'Try to start  the app again', context,);
       }
     }
   }
@@ -137,10 +136,10 @@ class _SplashState extends State<SplashScreen> {
                   radius: 15.0,
                   dotRadius: 6.0,
                 ),
-              )
+              ),
             ],
           ),
-        )),
+        ),),
       ),
     );
   }

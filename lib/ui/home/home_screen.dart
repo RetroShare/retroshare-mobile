@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             .animate(_tabController.animation);
 
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
+        vsync: this, duration: const Duration(milliseconds: 200),);
     isfetch = true;
     shadowColor = ColorTween(
       begin: const Color.fromRGBO(0, 0, 0, 0),
@@ -205,10 +205,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       },
                       child: NotificationIcon(),
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       );
@@ -243,27 +243,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       width: 200,
                       height: 100,
-                      child: Center(
+                      child: const Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const CircularProgressIndicator(
+                            CircularProgressIndicator(
                               color: Colors.purple,
                             ),
-                            const Text(
+                            Text(
                               'Loading ..',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.blue,
                                 fontFamily: 'Oxygen',
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                )
+                ),
             ],
           ),
           bottomNavigationBar: BottomAppBar(
@@ -354,6 +354,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-        ));
+        ),);
   }
 }

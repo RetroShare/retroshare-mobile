@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
               child: Visibility(
-                visible: widget.curr?.avatar == null,
+                visible: widget.curr.avatar == null,
                 child: const Center(
                   child: Icon(
                     Icons.person,
@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     textField(widget.curr.mId, 'Identity ID'),
                     const SizedBox(height: 20),
                     textField(
-                        widget.curr.signed ? 'signed' : 'unsigned', 'Type'),
+                        widget.curr.signed ? 'signed' : 'unsigned', 'Type',),
                     const SizedBox(height: 20),
                     textField(lastAccount.pgpName, 'Node Name'),
                     const SizedBox(height: 20),
@@ -92,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 6),
+                            vertical: 10.0, horizontal: 6,),
                         child: const Text(
                           'Edit Identity',
                           style:
@@ -104,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

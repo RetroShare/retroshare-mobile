@@ -29,7 +29,7 @@ class RouteGenerator {
                     isLoading: args['isLoading'],
                     spinner: args['spinner'],
                     statusText: args['statusText'],
-                  ));
+                  ),);
         }
 
         return MaterialPageRoute(builder: (_) => SplashScreen());
@@ -46,7 +46,7 @@ class RouteGenerator {
           return MaterialPageRoute(
               builder: (_) => UpdateIdentityScreen(
                     curr: args['id'],
-                  ));
+                  ),);
         }
         return MaterialPageRoute(builder: (_) => const UpdateIdentityScreen());
       case '/room':
@@ -58,7 +58,7 @@ class RouteGenerator {
             ),
           );
         }
-        return MaterialPageRoute(builder: (_) => const RoomScreen());
+        return MaterialPageRoute(builder: (_) => RoomScreen());
       case '/create_room':
         return MaterialPageRoute(builder: (_) => CreateRoomScreen());
       case '/create_identity':
@@ -68,13 +68,13 @@ class RouteGenerator {
           );
         }
 
-        return MaterialPageRoute(builder: (_) => const CreateIdentityScreen());
+        return MaterialPageRoute(builder: (_) =>  CreateIdentityScreen());
       case '/profile':
         if (args is Map) {
           return MaterialPageRoute(
               builder: (_) => ProfileScreen(
                     curr: args['id'],
-                  ));
+                  ),);
         }
         return MaterialPageRoute(builder: (_) => SplashScreen());
 
@@ -90,7 +90,7 @@ class RouteGenerator {
             builder: (_) => SearchScreen(initialTab: args),
           );
         }
-        return MaterialPageRoute(builder: (_) => const SearchScreen());
+        return MaterialPageRoute(builder: (_) => SearchScreen());
       case '/friends_locations':
         return MaterialPageRoute(builder: (_) => FriendsLocationsScreen());
       case '/about':

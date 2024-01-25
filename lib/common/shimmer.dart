@@ -28,7 +28,7 @@ Widget friendLocationShimmer() {
                 const EdgeInsets.only(top: 8, bottom: 10, left: 8, right: 8),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(14)),
+                borderRadius: BorderRadius.circular(14),),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(
                 height: 10,
@@ -39,7 +39,7 @@ Widget friendLocationShimmer() {
                 alignment: Alignment.topCenter,
                 decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),),
               ),
               const Padding(padding: EdgeInsets.all(8)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -54,8 +54,8 @@ Widget friendLocationShimmer() {
                   height: 18,
                   color: Colors.white,
                 ),
-              ])
-            ])),
+              ],),
+            ],),),
         itemCount: 6,
       ),
     ),
@@ -88,7 +88,7 @@ Widget ChangeIdentityShimmer() {
             margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(14)),
+                borderRadius: BorderRadius.circular(14),),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(
                 height: 10,
@@ -99,7 +99,7 @@ Widget ChangeIdentityShimmer() {
                 alignment: Alignment.topCenter,
                 decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),),
               ),
               const Padding(padding: EdgeInsets.all(8)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -114,8 +114,8 @@ Widget ChangeIdentityShimmer() {
                   height: 18,
                   color: Colors.white,
                 ),
-              ])
-            ])),
+              ],),
+            ],),),
         itemCount: 6,
       ),
     ),
@@ -146,7 +146,7 @@ Widget chatTabShimmer() {
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
           decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
-              borderRadius: BorderRadius.circular(14)),
+              borderRadius: BorderRadius.circular(14),),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const CircleAvatar(
               backgroundColor: Colors.white,
@@ -165,8 +165,8 @@ Widget chatTabShimmer() {
                 height: 18,
                 color: Colors.white,
               ),
-            ])
-          ])),
+            ],),
+          ],),),
       itemCount: 5,
     ),
   );

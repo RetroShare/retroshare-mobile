@@ -1,17 +1,19 @@
+import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-import 'dart:async';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class PseudoSignedIdenityTab extends StatefulWidget {
   const PseudoSignedIdenityTab(this.isFirstId, this.key);
   final bool isFirstId;
+  @override
   final Key key;
 
   @override
@@ -27,10 +29,8 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
   void _setImage(File image) {
     Navigator.pop(context);
     setState(() {
-      if (image != null) {
-        _image = RsGxsImage(image.readAsBytesSync());
-      }
-    });
+      _image = RsGxsImage(image.readAsBytesSync());
+        });
   }
 
   bool _validate(text) {
@@ -41,8 +41,8 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
     await Provider.of<Identities>(context, listen: false)
         .createnewIdenity(
             Identity('', false, pseudosignednameController.text,
-                _image?.base64String),
-            _image)
+                _image.base64String,),
+            _image,)
         .then((value) {
       widget.isFirstId
           ? Navigator.pushReplacementNamed(context, '/home')
@@ -73,19 +73,19 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                         child: Container(
                           height: 300 * 0.7,
                           width: 300 * 0.7,
-                          decoration: _image?.mData == null
+                          decoration: _image.mData == null
                               ? null
                               : BoxDecoration(
                                   borderRadius:
                                       BorderRadius.circular(300 * 0.7 * 0.33),
                                   image: DecorationImage(
                                     fit: BoxFit.fitWidth,
-                                    image: MemoryImage(_image?.mData),
+                                    image: MemoryImage(_image.mData),
                                   ),
                                 ),
                           child: Visibility(
                             visible:
-                                _image != null ? _image?.mData?.isEmpty : true,
+                                _image != null ? _image.mData.isEmpty : true,
                             child: const Center(
                               child: Icon(
                                 Icons.person,
@@ -124,20 +124,20 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                               ),
                               hintText: 'Name',
                             ),
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                       ),
                       Visibility(
                         visible: _showError,
-                        child: SizedBox(
+                        child: const SizedBox(
                           width: double.infinity,
                           child: Row(
                             children: <Widget>[
-                              const SizedBox(
+                              SizedBox(
                                 width: 52,
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 height: 25,
                                 child: Align(
                                   alignment: Alignment.centerRight,
@@ -184,7 +184,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                           }
                         },
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0 + personDelegateHeight * 0.04),
+                            horizontal: 16.0 + personDelegateHeight * 0.04,),
                         child: SizedBox(
                           width: double.infinity,
                           child: Container(
@@ -203,7 +203,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                             child: Center(
                               child: Text(
                                 'Create Identity',
-                                style: Theme.of(context).textTheme.button,
+                                style: Theme.of(context).textTheme.labelLarge,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -225,7 +225,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
               dotRadius: 6.0,
             ),
           ),
-        )
+        ),
       ],
     );
   }

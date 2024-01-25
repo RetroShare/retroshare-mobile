@@ -3,7 +3,6 @@ import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/ui/createIdenity_screen/create_signed_identity.dart';
 import 'package:retroshare/ui/createIdenity_screen/pseudo_identity.dart';
-import 'dart:async';
 
 class CreateIdentityScreen extends StatefulWidget {
   const CreateIdentityScreen({Key key, this.isFirstId = false})
@@ -71,7 +70,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                                 child: Text(
                                   'Signed Identity',
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),
@@ -102,7 +101,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                                 child: Text(
                                   ' Pseudo Identity',
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),

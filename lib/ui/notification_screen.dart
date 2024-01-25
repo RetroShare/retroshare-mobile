@@ -51,7 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   Expanded(
                     child: Text(
                       'Notification',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ],
@@ -122,7 +122,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                           fontFamily: 'Oxygen',
-                                                        ))
+                                                        ),),
                                                   ],
                                                 ),
                                               ),
@@ -184,13 +184,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                               Colors.blueAccent,
                                                         ),
                                                       ),
-                                                    )
+                                                    ),
                                                   ],
                                                 ),
-                                              )
+                                              ),
                                             ],
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -208,12 +208,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 25),
+                                          vertical: 25,),
                                       child: Text(
                                         "Looks like there aren't any notification",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1,
+                                            .bodyLarge,
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -224,7 +224,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       : const Center(child: CircularProgressIndicator());
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

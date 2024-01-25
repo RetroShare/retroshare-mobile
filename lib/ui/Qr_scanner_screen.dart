@@ -78,7 +78,7 @@ class _QRScannerState extends State<QRScanner>
       ownCert = await RsPeers.getShortInvite(authToken,
           sslId: Provider.of<AccountCredentials>(context)
               .lastAccountUsed
-              .locationId);
+              .locationId,);
     }
     Future.delayed(const Duration(milliseconds: 60));
     return ownCert;
@@ -96,7 +96,7 @@ class _QRScannerState extends State<QRScanner>
   void checkServiceStatus(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text('Access Denied!'),
-    ));
+    ),);
   }
 
   Widget getHeaderBuilder() {
@@ -157,7 +157,7 @@ class _QRScannerState extends State<QRScanner>
           checkServiceStatus(context);
         }
       });
-    } on HttpException catch (e) {
+    } on HttpException {
       showToast(
         'An error occurred while adding your friend.',
         position: ToastPosition.bottom,
@@ -187,7 +187,7 @@ class _QRScannerState extends State<QRScanner>
             style: const TextStyle(
               fontSize: 12,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -257,7 +257,7 @@ class _QRScannerState extends State<QRScanner>
                       const SizedBox(height: 20),
                       Text(
                         'QR Scanner',
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       const Spacer(),
                       PopupMenuButton(
@@ -266,11 +266,11 @@ class _QRScannerState extends State<QRScanner>
                         itemBuilder: (BuildContext context) {
                           return [
                             popupchildWidget(
-                                'Save', Icons.save, QRoperation.save),
+                                'Save', Icons.save, QRoperation.save,),
                             popupchildWidget(
-                                'Refresh', Icons.refresh, QRoperation.refresh),
+                                'Refresh', Icons.refresh, QRoperation.refresh,),
                             popupchildWidget(
-                                'Share', Icons.share_rounded, QRoperation.share)
+                                'Share', Icons.share_rounded, QRoperation.share,),
                           ];
                         },
                       ),
@@ -292,7 +292,7 @@ class _QRScannerState extends State<QRScanner>
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.all(Radius.circular(
-                                      20) //         <--- border radius here
+                                      20,), //         <--- border radius here
                                   ),
                             ),
                             child: FutureBuilder(
@@ -309,7 +309,7 @@ class _QRScannerState extends State<QRScanner>
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(
-                                                      Constants.padding),
+                                                      Constants.padding,),
                                             ),
                                             elevation: 0,
                                             backgroundColor: Colors.transparent,
@@ -344,7 +344,7 @@ class _QRScannerState extends State<QRScanner>
                                                   ),
                                                 ),
                                               ],
-                                            ))
+                                            ),)
                                           : SizedBox(
                                               child: Column(
                                               mainAxisSize: MainAxisSize.min,
@@ -354,7 +354,7 @@ class _QRScannerState extends State<QRScanner>
                                                     icon: const Icon(
                                                       Icons.error,
                                                       color: Colors.grey,
-                                                    )),
+                                                    ),),
                                                 const Text(
                                                   'something went wrong !',
                                                   style: TextStyle(
@@ -363,15 +363,15 @@ class _QRScannerState extends State<QRScanner>
                                                   ),
                                                 ),
                                               ],
-                                            )),
+                                            ),),
                                     ),
                                   );
-                                }),
+                                },),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 14.0, vertical: 10),
+                              horizontal: 14.0, vertical: 10,),
                           child: SwitchListTile(
                             value: check,
                             title: getHeaderBuilder(),
@@ -387,7 +387,7 @@ class _QRScannerState extends State<QRScanner>
                             },
                           ),
                         ),
-                        Qrinfo()
+                        Qrinfo(),
                       ],
                     ),
                   ),
@@ -402,7 +402,7 @@ class _QRScannerState extends State<QRScanner>
                   dotRadius: 6.0,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -433,14 +433,14 @@ Widget Qrinfo() {
           'Note :',
           style: GoogleFonts.oxygen(
               textStyle:
-                  const TextStyle(fontWeight: FontWeight.w700, fontSize: 20)),
+                  const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),),
         ),
         const SizedBox(height: 8),
         Text(
           '''
 Use Long invite when you want to connect with computers running a retroshare version <0.6.6. Otherwise you can use Short invite''',
           style: GoogleFonts.oxygen(),
-        )
+        ),
       ],
     ),
   );

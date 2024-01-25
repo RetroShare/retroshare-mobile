@@ -39,7 +39,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       itemCount: Provider.of<Identities>(context, listen: false)
                               .ownIdentity
-                              ?.length ??
+                              .length ??
                           0,
                       itemBuilder: (BuildContext context, int index) {
                         return PersonDelegate(
@@ -95,7 +95,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
                       'Change Identity',
-                      style: Theme.of(context).textTheme.button,
+                      style: Theme.of(context).textTheme.labelLarge,
                       textAlign: TextAlign.center,
                     ),
                   ),

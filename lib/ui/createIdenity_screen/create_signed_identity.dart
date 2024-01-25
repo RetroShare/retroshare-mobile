@@ -1,17 +1,19 @@
+import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/bottom_bar.dart';
 import 'package:retroshare/common/color_loader_3.dart';
 import 'package:retroshare/common/image_picker_dialog.dart';
 import 'package:retroshare/common/styles.dart';
-import 'dart:async';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SignedIdenityTab extends StatefulWidget {
   const SignedIdenityTab(this.isFirstId, this.key);
   final bool isFirstId;
+  @override
   final Key key;
 
   @override
@@ -27,10 +29,8 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
   void _setImage(File image) {
     Navigator.pop(context);
     setState(() {
-      if (image != null) {
-        _image = RsGxsImage(image.readAsBytesSync());
-      }
-    });
+      _image = RsGxsImage(image.readAsBytesSync());
+        });
   }
 
   bool _validate(text) {
@@ -44,8 +44,8 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
   Future<void> _createIdentity() async {
     await Provider.of<Identities>(context, listen: false)
         .createnewIdenity(
-            Identity('', true, signednameController.text, _image?.base64String),
-            _image)
+            Identity('', true, signednameController.text, _image.base64String),
+            _image,)
         .then((value) {
       widget.isFirstId
           ? Navigator.pushReplacementNamed(context, '/home')
@@ -74,7 +74,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                     child: Container(
                       height: 300 * 0.7,
                       width: 300 * 0.7,
-                      decoration: _image?.mData == null
+                      decoration: _image.mData == null
                           ? null
                           : BoxDecoration(
                               borderRadius:
@@ -86,7 +86,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                             ),
                       child: Visibility(
                         // ignore: avoid_bool_literals_in_conditional_expressions
-                        visible: _image != null ? _image?.mData?.isEmpty : true,
+                        visible: _image != null ? _image.mData.isEmpty : true,
                         child: const Center(
                           child: Icon(
                             Icons.person,
@@ -125,20 +125,20 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                           ),
                           hintText: 'Name',
                         ),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ),
                   Visibility(
                     visible: _showError,
-                    child: SizedBox(
+                    child: const SizedBox(
                       width: double.infinity,
                       child: Row(
                         children: <Widget>[
-                          const SizedBox(
+                          SizedBox(
                             width: 52,
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 25,
                             child: Align(
                               alignment: Alignment.centerRight,
@@ -203,7 +203,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
                           child: Center(
                             child: Text(
                               'Create Identity',
-                              style: Theme.of(context).textTheme.button,
+                              style: Theme.of(context).textTheme.labelLarge,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -225,7 +225,7 @@ class _SignedIdenityTabState extends State<SignedIdenityTab> {
             dotRadius: 6.0,
           ),
         ),
-      )
-    ]);
+      ),
+    ],);
   }
 }

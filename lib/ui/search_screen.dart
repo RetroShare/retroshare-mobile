@@ -19,7 +19,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-  TextEditingController _searchBoxFilter = new TextEditingController();
+  final TextEditingController _searchBoxFilter = TextEditingController();
   Animation<Color> _leftTabIconColor;
   Animation<Color> _rightTabIconColor;
   bool _init = true;
@@ -61,9 +61,9 @@ class _SearchScreenState extends State<SearchScreen>
       }
     });
 
-    _leftTabIconColor = ColorTween(begin: Color(0xFFF5F5F5), end: Colors.white)
+    _leftTabIconColor = ColorTween(begin: const Color(0xFFF5F5F5), end: Colors.white)
         .animate(_tabController.animation);
-    _rightTabIconColor = ColorTween(begin: Colors.white, end: Color(0xFFF5F5F5))
+    _rightTabIconColor = ColorTween(begin: Colors.white, end: const Color(0xFFF5F5F5))
         .animate(_tabController.animation);
   }
 
@@ -90,8 +90,8 @@ class _SearchScreenState extends State<SearchScreen>
     Navigator.pushNamed(context, '/room', arguments: {
       'isRoom': true,
       'chatData': Provider.of<RoomChatLobby>(context, listen: false)
-          .getChat(curr, lobby)
-    });
+          .getChat(curr, lobby),
+    },);
   }
 
   @override
@@ -143,7 +143,7 @@ class _SearchScreenState extends State<SearchScreen>
                               Icon(
                                 Icons.search,
                                 color:
-                                    Theme.of(context).textTheme.bodyText1.color,
+                                    Theme.of(context).textTheme.bodyLarge.color,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -156,7 +156,7 @@ class _SearchScreenState extends State<SearchScreen>
                                     border: InputBorder.none,
                                     hintText: 'Type text...',
                                   ),
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ],
@@ -196,7 +196,7 @@ class _SearchScreenState extends State<SearchScreen>
                               child: Center(
                                 child: Text(
                                   'Chats',
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),
@@ -226,7 +226,7 @@ class _SearchScreenState extends State<SearchScreen>
                               child: Center(
                                 child: Text(
                                   'People',
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),
@@ -247,9 +247,9 @@ class _SearchScreenState extends State<SearchScreen>
                     children: <Widget>[
                       _buildChatsList(),
                       Visibility(
-                        visible: filteredSubscribedChats?.isEmpty ??
+                        visible: filteredSubscribedChats.isEmpty ??
                             // ignore: null_aware_in_logical_operator
-                            true && filteredPublicChats?.isEmpty ??
+                            true && filteredPublicChats.isEmpty ??
                             true,
                         child: Center(
                           child: SingleChildScrollView(
@@ -259,14 +259,14 @@ class _SearchScreenState extends State<SearchScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Image.asset(
-                                      'assets/icons8/sport-yoga-reading-1.png'),
+                                      'assets/icons8/sport-yoga-reading-1.png',),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 25),
+                                        vertical: 25,),
                                     child: Text(
                                       'Nothing was found',
                                       style:
-                                          Theme.of(context).textTheme.bodyText1,
+                                          Theme.of(context).textTheme.bodyLarge,
                                     ),
                                   ),
                                 ],
@@ -282,10 +282,8 @@ class _SearchScreenState extends State<SearchScreen>
                     children: <Widget>[
                       _buildPeopleList(),
                       Visibility(
-                        visible: (filteredAllIds == null ||
-                                filteredAllIds.isEmpty) &&
-                            (filteredContactsIds == null ||
-                                filteredContactsIds.isEmpty),
+                        visible: (filteredAllIds.isEmpty) &&
+                            (filteredContactsIds.isEmpty),
                         child: Center(
                           child: SingleChildScrollView(
                             child: SizedBox(
@@ -294,14 +292,14 @@ class _SearchScreenState extends State<SearchScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Image.asset(
-                                      'assets/icons8/virtual-reality.png'),
+                                      'assets/icons8/virtual-reality.png',),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 25),
+                                        vertical: 25,),
                                     child: Text(
                                       'Nothing was found',
                                       style:
-                                          Theme.of(context).textTheme.bodyText1,
+                                          Theme.of(context).textTheme.bodyLarge,
                                     ),
                                   ),
                                 ],
@@ -322,8 +320,8 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   Widget _buildChatsList() {
-    if (_searchContent?.isNotEmpty ?? false) {
-      List<Chat> tempChatsList = [];
+    if (_searchContent.isNotEmpty ?? false) {
+      final List<Chat> tempChatsList = [];
       for (int i = 0; i < subscribedChats.length; i++) {
         if (subscribedChats[i]
             .chatName
@@ -334,7 +332,7 @@ class _SearchScreenState extends State<SearchScreen>
       }
       filteredSubscribedChats = tempChatsList;
 
-      List<VisibleChatLobbyRecord> tempList = [];
+      final List<VisibleChatLobbyRecord> tempList = [];
       for (int i = 0; i < publicChats.length; i++) {
         if (publicChats[i]
             .lobbyName
@@ -350,8 +348,8 @@ class _SearchScreenState extends State<SearchScreen>
     }
 
     return Visibility(
-      visible: filteredSubscribedChats?.isNotEmpty ??
-          false || filteredPublicChats?.isNotEmpty ??
+      visible: filteredSubscribedChats.isNotEmpty ??
+          false || filteredPublicChats.isNotEmpty ??
           false,
       child: CustomScrollView(
         slivers: <Widget>[
@@ -363,16 +361,16 @@ class _SearchScreenState extends State<SearchScreen>
                 // Todo: DRY
                 return PersonDelegate(
                   data: PersonDelegateData.ChatData(
-                      filteredSubscribedChats[index]),
+                      filteredSubscribedChats[index],),
                   onPressed: () {
                     Navigator.pushNamed(context, '/room', arguments: {
                       'isRoom': true,
-                      'chatData': filteredSubscribedChats[index]
-                    });
+                      'chatData': filteredSubscribedChats[index],
+                    },);
                   },
                 );
               },
-              childCount: filteredSubscribedChats?.length ?? 0,
+              childCount: filteredSubscribedChats.length ?? 0,
             ),
           ),
           sliverPersistentHeader('Public chats', context),
@@ -386,14 +384,14 @@ class _SearchScreenState extends State<SearchScreen>
                   },
                   child: PersonDelegate(
                     data: PersonDelegateData.PublicChatData(
-                        filteredPublicChats[index]),
+                        filteredPublicChats[index],),
                     onPressed: () {
                       _goToChat(filteredPublicChats[index]);
                     },
                   ),
                 );
               },
-              childCount: filteredPublicChats?.length ?? 0,
+              childCount: filteredPublicChats.length ?? 0,
             ),
           ),
         ],
@@ -412,7 +410,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   Widget _buildPeopleList() {
     if (_searchContent.isNotEmpty) {
-      List<Identity> tempContactsList = [];
+      final List<Identity> tempContactsList = [];
       for (int i = 0; i < contactsIds.length; i++) {
         if (contactsIds[i]
             .name
@@ -423,7 +421,7 @@ class _SearchScreenState extends State<SearchScreen>
       }
       filteredContactsIds = tempContactsList;
 
-      List<Identity> tempList = [];
+      final List<Identity> tempList = [];
       for (int i = 0; i < allIds.length; i++) {
         if (allIds[i]
             .name
@@ -441,8 +439,8 @@ class _SearchScreenState extends State<SearchScreen>
     return Visibility(
 //      visible: (filteredAllIds?.isNotEmpty
 //?? false || filteredContactsIds.isNotEmpty ),
-      visible: (filteredAllIds != null && filteredAllIds.isNotEmpty) ||
-          (filteredContactsIds != null && filteredContactsIds.isNotEmpty),
+      visible: (filteredAllIds.isNotEmpty) ||
+          (filteredContactsIds.isNotEmpty),
       child: CustomScrollView(
         slivers: <Widget>[
           sliverPersistentHeader('Contacts', context),
@@ -455,7 +453,7 @@ class _SearchScreenState extends State<SearchScreen>
                   // Todo: DRY
                   child: PersonDelegate(
                     data: PersonDelegateData.IdentityData(
-                        filteredContactsIds[index], context),
+                        filteredContactsIds[index], context,),
                     onLongPress: (Offset tapPosition) {
                       showCustomMenu(
                           'Remove from contacts',
@@ -466,7 +464,7 @@ class _SearchScreenState extends State<SearchScreen>
                           () =>
                               _toggleContacts(filteredAllIds[index].mId, false),
                           tapPosition,
-                          context);
+                          context,);
                     },
                     onPressed: () {
                       final curr =
@@ -479,14 +477,14 @@ class _SearchScreenState extends State<SearchScreen>
                           'isRoom': false,
                           'chatData':
                               Provider.of<RoomChatLobby>(context, listen: false)
-                                  .getChat(curr, filteredContactsIds[index])
+                                  .getChat(curr, filteredContactsIds[index]),
                         },
                       );
                     },
                   ),
                 );
               },
-              childCount: filteredContactsIds?.length ?? 0,
+              childCount: filteredContactsIds.length ?? 0,
             ),
           ),
           sliverPersistentHeader('People', context),
@@ -499,7 +497,7 @@ class _SearchScreenState extends State<SearchScreen>
                   // Todo: DRY
                   child: PersonDelegate(
                     data: PersonDelegateData.IdentityData(
-                        filteredAllIds[index], context),
+                        filteredAllIds[index], context,),
                     onLongPress: (Offset tapPosition) {
                       showCustomMenu(
                           'Add to contacts',
@@ -510,7 +508,7 @@ class _SearchScreenState extends State<SearchScreen>
                           () =>
                               _toggleContacts(filteredAllIds[index].mId, true),
                           tapPosition,
-                          context);
+                          context,);
                     },
                     onPressed: () {
                       final curr =
@@ -523,14 +521,14 @@ class _SearchScreenState extends State<SearchScreen>
                           'isRoom': false,
                           'chatData':
                               Provider.of<RoomChatLobby>(context, listen: false)
-                                  .getChat(curr, filteredAllIds[index])
+                                  .getChat(curr, filteredAllIds[index]),
                         },
                       );
                     },
                   ),
                 );
               },
-              childCount: filteredAllIds?.length ?? 0,
+              childCount: filteredAllIds.length ?? 0,
             ),
           ),
         ],

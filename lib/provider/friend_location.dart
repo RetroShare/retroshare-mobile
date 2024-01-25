@@ -26,7 +26,7 @@ class FriendLocations with ChangeNotifier {
 
   Future<void> addFriendLocation(String base64Payload) async {
     bool isAdded = false;
-    if (base64Payload != null && base64Payload.length < 100) {
+    if (base64Payload.length < 100) {
       isAdded = await RsPeers.acceptShortInvite(_authToken, base64Payload);
     } else {
       isAdded = await RsPeers.acceptInvite(
