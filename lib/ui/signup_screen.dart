@@ -18,9 +18,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController repeatPasswordController = TextEditingController();
   TextEditingController nodeNameController = TextEditingController();
 
-  bool advancedOption;
-  bool isUsernameCorrect;
-  PasswordError passwordError;
+  late bool advancedOption;
+  late bool isUsernameCorrect;
+  late PasswordError passwordError;
 
   @override
   void initState() {
@@ -65,29 +65,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Navigator.pushNamed(context, '/', arguments: {
       'statusText': 'Creating account...\nThis could take minutes',
       'isLoading': true,
-      'spinner': true
-    });
+      'spinner': true,
+    },);
     try {
       final accountSignup =
           Provider.of<AccountCredentials>(context, listen: false);
       await accountSignup
           .signup(usernameController.text, passwordController.text,
-              nodeNameController.text)
+              nodeNameController.text,)
           .then((value) {
         final ids = Provider.of<Identities>(context, listen: false);
         ids.fetchOwnidenities().then((value) {
-          ids.ownIdentity != null && ids.ownIdentity.isEmpty
+          ids.ownIdentity.isEmpty
               ? Navigator.pushReplacementNamed(context, '/create_identity',
-                  arguments: true)
+                  arguments: true,)
               : Navigator.pushReplacementNamed(context, '/home');
         });
       });
-    } on HttpException catch (err) {
+    } on HttpException {
       const errorMessage = 'Authentication failed';
       errorShowDialog(errorMessage, 'Something went wrong', context);
     } catch (e) {
       errorShowDialog(
-          'Retroshare Service Down', 'Try to restart the app Again!', context);
+          'Retroshare Service Down', 'Try to restart the app Again!', context,);
     }
   }
 
@@ -130,17 +130,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         hintText: 'Username',
                       ),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ),
                 Visibility(
                   visible: !isUsernameCorrect,
-                  child: SizedBox(
+                  child: const SizedBox(
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        const SizedBox(
+                        SizedBox(
                           height: 25,
                           width: 52,
                           child: Align(
@@ -182,18 +182,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         hintText: 'Password',
                       ),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       obscureText: true,
                     ),
                   ),
                 ),
                 Visibility(
                   visible: passwordError == PasswordError.tooShort,
-                  child: SizedBox(
+                  child: const SizedBox(
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        const SizedBox(
+                        SizedBox(
                           height: 25,
                           width: 52,
                           child: Align(
@@ -233,19 +233,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: Color(0xFF9E9E9E),
                             size: 22.0,
                           ),
-                          hintText: 'Repeat password'),
-                      style: Theme.of(context).textTheme.bodyText2,
+                          hintText: 'Repeat password',),
+                      style: Theme.of(context).textTheme.bodyMedium,
                       obscureText: true,
                     ),
                   ),
                 ),
                 Visibility(
                   visible: passwordError == PasswordError.notTheSame,
-                  child: SizedBox(
+                  child: const SizedBox(
                     width: double.infinity,
                     child: Row(
                       children: <Widget>[
-                        const SizedBox(
+                        SizedBox(
                           height: 25,
                           width: 52,
                           child: Align(
@@ -295,8 +295,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           const SizedBox(width: 3),
                           Text(
                             'Advanced option',
-                            style: Theme.of(context).textTheme.bodyText2,
-                          )
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ],
                       ),
                     ),
@@ -328,7 +328,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           hintText: 'Node name',
                         ),
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ),
@@ -357,19 +357,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             const SizedBox(width: 3),
                             Text(
                               'Tor/I2p Hidden node',
-                              style: Theme.of(context).textTheme.bodyText2,
-                            )
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
                           ],
-                        )),
+                        ),),
                   ),
                 ),
                 const SizedBox(height: 20),
-                FlatButton(
+                TextButton(
                   onPressed: () async {
                     await createAccount();
                   },
-                  textColor: Colors.white,
-                  padding: EdgeInsets.zero,
+                  style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,),
+                  // padding: EdgeInsets.zero,
                   child: SizedBox(
                     width: double.infinity,
                     child: Container(

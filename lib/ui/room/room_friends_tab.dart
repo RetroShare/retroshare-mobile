@@ -7,7 +7,7 @@ import 'package:retroshare/provider/room.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class RoomFriendsTab extends StatefulWidget {
-  const RoomFriendsTab({this.chat});
+  const RoomFriendsTab({required this.chat});
   final Chat chat;
   @override
   _RoomFriendsTabState createState() => _RoomFriendsTabState();
@@ -15,7 +15,7 @@ class RoomFriendsTab extends StatefulWidget {
 
 class _RoomFriendsTabState extends State<RoomFriendsTab> {
 //  List<Identity> _lobbyParticipantsList = List<Identity>();
-  Image myImage;
+  late Image myImage;
   @override
   void initState() {
     myImage = Image.asset('assets/icons8/friends_together.png');
@@ -24,7 +24,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       precacheImage(myImage.image, context);
       Provider.of<RoomChatLobby>(context, listen: false)
-          .updateParticipants(widget.chat?.chatId);
+          .updateParticipants(widget.chat.chatId);
     });
   }
 
@@ -39,32 +39,35 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: Provider.of<RoomChatLobby>(context, listen: false)
-          .updateParticipants(widget.chat?.chatId),
+          .updateParticipants(widget.chat.chatId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Consumer<RoomChatLobby>(
             builder: (context, lobbyParticipantsList, _) {
-              List<Identity> _lobbyParticipantsList = widget.chat?.chatId !=
+              List<Identity> lobbyParticipantsList=[];
+              if (widget.chat.chatId !=
                           null ||
                       lobbyParticipantsList.lobbyParticipants != null ||
                       lobbyParticipantsList
-                              .lobbyParticipants[widget.chat?.chatId] !=
-                          null
-                  ? lobbyParticipantsList.lobbyParticipants[widget.chat?.chatId]
-                  : null;
-              return _lobbyParticipantsList.isNotEmpty
+                              .lobbyParticipants[widget.chat.chatId] !=
+                          null) {
+                lobbyParticipantsList = lobbyParticipantsList.lobbyParticipants[widget.chat.chatId];
+              } else {
+                lobbyParticipantsList = null;
+              }
+              return lobbyParticipantsList.isNotEmpty
                   ? ListView.builder(
                       padding: const EdgeInsets.all(16.0),
-                      itemCount: _lobbyParticipantsList == null
+                      itemCount: lobbyParticipantsList == null
                           ? 0
-                          : _lobbyParticipantsList.length,
+                          : lobbyParticipantsList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTapDown: _storePosition,
                           // Todo: DRY
                           child: PersonDelegate(
                             data: PersonDelegateData.IdentityData(
-                              _lobbyParticipantsList[index],
+                              lobbyParticipantsList[index],
                               context,
                             ),
                             onLongPress: (Offset tapPosition) {
@@ -75,7 +78,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                   color: Colors.black,
                                 ),
                                 () => _addToContacts(
-                                  _lobbyParticipantsList[index].mId,
+                                  lobbyParticipantsList[index].mId,
                                 ),
                                 tapPosition,
                                 context,
@@ -96,7 +99,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                                     listen: false,
                                   ).getChat(
                                     curr,
-                                    _lobbyParticipantsList[index],
+                                    lobbyParticipantsList[index], from: '',
                                   ),
                                 },
                               );
@@ -119,7 +122,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 'Looks like an empty space',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -127,7 +130,7 @@ class _RoomFriendsTabState extends State<RoomFriendsTab> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 'You can invite your friends',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
                             ),

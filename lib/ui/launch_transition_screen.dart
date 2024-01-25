@@ -36,12 +36,13 @@ class _LaunchTransitionScreenState extends State<LaunchTransitionScreen> {
                           flex: 2,
                           child: Column(
                             children: <Widget>[
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/signup');
                                 },
-                                textColor: Colors.white,
-                                padding: EdgeInsets.zero,
+                          style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,),
+                                // padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(

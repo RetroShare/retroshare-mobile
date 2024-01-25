@@ -6,8 +6,10 @@ import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
+import 'package:flutter/material.dart';
 
-errorShowDialog(String title, String text, BuildContext context) {
+
+Future errorShowDialog(String title, String text, BuildContext context) {
   return CoolAlert.show(
     context: context,
     type: CoolAlertType.error,
@@ -20,11 +22,11 @@ errorShowDialog(String title, String text, BuildContext context) {
   );
 }
 
-loading(BuildContext context) {
+Future loading(BuildContext context) {
   return CoolAlert.show(context: context, type: CoolAlertType.loading);
 }
 
-successShowDialog(String title, String text, BuildContext context) {
+Future successShowDialog(String title, String text, BuildContext context) {
   return CoolAlert.show(
     context: context,
     type: CoolAlertType.success,
@@ -37,7 +39,7 @@ successShowDialog(String title, String text, BuildContext context) {
   );
 }
 
-warningShowDialog(String title, String text, BuildContext context) {
+Future warningShowDialog(String title, String text, BuildContext context) {
   return CoolAlert.show(
     context: context,
     type: CoolAlertType.warning,
@@ -50,19 +52,18 @@ warningShowDialog(String title, String text, BuildContext context) {
   );
 }
 
-showFlutterToast(String title, Color color) {
+Future<bool?> showFlutterToast(String title, Color color) {
   return Fluttertoast.showToast(
     msg: title,
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
     backgroundColor: color,
     textColor: Colors.white,
     fontSize: 16.0,
   );
 }
 
-contentBox(BuildContext context) {
+Stack contentBox(BuildContext context) {
   return Stack(
     children: <Widget>[
       Container(
@@ -78,7 +79,7 @@ contentBox(BuildContext context) {
             borderRadius: BorderRadius.circular(Constants.padding),
             boxShadow: const [
               BoxShadow(offset: Offset(0, 10), blurRadius: 10),
-            ]),
+            ],),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -91,14 +92,14 @@ contentBox(BuildContext context) {
             ),
             Align(
               alignment: Alignment.bottomRight,
-              child: FlatButton(
+              child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: const Text(
                     'OK',
                     style: TextStyle(fontSize: 14),
-                  )),
+                  ),),
             ),
           ],
         ),
@@ -141,13 +142,13 @@ void showdeleteDialog(BuildContext context) {
             'The deletion of identity cannot be undone. Are you sure you want to continue?',
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 try {
                   await Provider.of<Identities>(context, listen: false)
@@ -155,12 +156,12 @@ void showdeleteDialog(BuildContext context) {
                       .then((value) {
                     Navigator.of(context).pop();
                   });
-                } on HttpException catch (e) {
+                } on HttpException {
                   warningShowDialog('Retro Service is Down',
-                      'Please ensure retroshare service is not down', context);
+                      'Please ensure retroshare service is not down', context,);
                 } catch (e) {
                   warningShowDialog(
-                      'Try Again', 'Something wrong happens!', context);
+                      'Try Again', 'Something wrong happens!', context,);
                 }
               },
               child: const Text('Delete'),
@@ -180,7 +181,7 @@ void showdeleteDialog(BuildContext context) {
             'You must have at least one more identity to be able to delete this one.',
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },

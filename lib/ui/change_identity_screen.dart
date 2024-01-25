@@ -39,7 +39,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       itemCount: Provider.of<Identities>(context, listen: false)
                               .ownIdentity
-                              ?.length ??
+                              .length ??
                           0,
                       itemBuilder: (BuildContext context, int index) {
                         return PersonDelegate(
@@ -55,7 +55,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                                     .ownIdentity[index];
                             Provider.of<Identities>(context, listen: false)
                                 .updateSelectedIdentity(id);
-                          },
+                          }, onLongPress: null,
                         );
                       },
                     )
@@ -68,7 +68,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
         child: Center(
           child: SizedBox(
             height: 2 * appBarHeight / 3,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
                 Provider.of<Identities>(context, listen: false)
                     .updatecurrentIdentity();
@@ -95,7 +95,7 @@ class _ChangeIdentityScreenState extends State<ChangeIdentityScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
                       'Change Identity',
-                      style: Theme.of(context).textTheme.button,
+                      style: Theme.of(context).textTheme.labelLarge,
                       textAlign: TextAlign.center,
                     ),
                   ),

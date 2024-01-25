@@ -9,8 +9,8 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class PersonDelegateData {
   const PersonDelegateData({
-    this.name,
-    this.mId,
+    required this.name,
+    required this.mId,
     this.message = '',
     this.time = '',
     this.profileImage = '',
@@ -20,7 +20,7 @@ class PersonDelegateData {
     this.isTime = false,
     this.isRoom = false,
     this.icon = Icons.person,
-    this.image,
+    required this.image,
   });
 
   final String name;
@@ -41,11 +41,11 @@ class PersonDelegateData {
     return PersonDelegateData(
       name: chatData.chatName,
       message: chatData.lobbyTopic,
-      mId: chatData.chatId.toString(),
+      mId: chatData.chatId,
       isRoom: true,
       isMessage: true,
       icon: chatData.isPublic ?? true ? Icons.public : Icons.lock,
-      isUnread: chatData.unreadCount > 0,
+      isUnread: chatData.unreadCount > 0, image: null,
     );
   }
 
@@ -56,7 +56,7 @@ class PersonDelegateData {
             ? 'Total: ${chatData.totalNumberOfPeers}'
             : ' ') +
         (chatData.participatingFriends.isNotEmpty
-            ? 'Friends: ${chatData.participatingFriends.length.toString()}'
+            ? 'Friends: ${chatData.participatingFriends.length}'
             : '');
 
     return PersonDelegateData(
@@ -67,7 +67,7 @@ class PersonDelegateData {
       isMessage: true,
       icon: Chat.isPublicChat(chatData.lobbyFlags) ?? true
           ? Icons.public
-          : Icons.lock,
+          : Icons.lock, image: null,
     );
   }
 
@@ -80,7 +80,7 @@ class PersonDelegateData {
     return PersonDelegateData(
       name: identity.name,
       mId: identity.mId,
-      image: identity.avatar != null && identity.avatar.isNotEmpty
+      image: identity.avatar.isNotEmpty
           ? MemoryImage(base64Decode(identity.avatar))
           : null,
       isMessage: true,
@@ -100,14 +100,14 @@ class PersonDelegateData {
       name: location.accountName,
       message: location.locationName,
       isOnline: location.isOnline,
-      isMessage: true,
+      isMessage: true, mId: '', image: null,
     );
   }
 }
 
 class PersonDelegate extends StatefulWidget {
   const PersonDelegate(
-      {this.data, this.onPressed, this.onLongPress, this.isSelectable = false});
+      {required this.data, required this.onPressed, required this.onLongPress, this.isSelectable = false,});
   final PersonDelegateData data;
   final Function onPressed;
   final Function onLongPress;
@@ -122,15 +122,15 @@ class _PersonDelegateState extends State<PersonDelegate>
     with SingleTickerProviderStateMixin {
   final double delegateHeight = personDelegateHeight;
 
-  Animation<Decoration> boxShadow;
-  AnimationController _animationController;
-  CurvedAnimation _curvedAnimation;
+  late Animation<Decoration> boxShadow;
+  late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
+        vsync: this, duration: const Duration(milliseconds: 200),);
     _curvedAnimation =
         CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
 
@@ -140,7 +140,7 @@ class _PersonDelegateState extends State<PersonDelegate>
           BoxShadow(
             color: Colors.white.withOpacity(0),
             spreadRadius: appBarHeight / 3,
-          )
+          ),
         ],
         borderRadius: const BorderRadius.all(Radius.circular(appBarHeight / 3)),
         color: Colors.white.withOpacity(0),
@@ -151,7 +151,7 @@ class _PersonDelegateState extends State<PersonDelegate>
             color: Colors.black12,
             blurRadius: 10.0,
             spreadRadius: 2.0,
-          )
+          ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(appBarHeight / 3)),
         color: Colors.white,
@@ -165,7 +165,7 @@ class _PersonDelegateState extends State<PersonDelegate>
     super.dispose();
   }
 
-  Offset _tapPosition;
+  late Offset _tapPosition;
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
   }
@@ -173,10 +173,10 @@ class _PersonDelegateState extends State<PersonDelegate>
   Widget _build(BuildContext context, [Identity id = null]) {
     return GestureDetector(
       onTap: () {
-        if (widget.onPressed != null) widget.onPressed();
+        widget.onPressed();
       },
       onLongPress: () {
-        if (widget.onLongPress != null) widget.onLongPress(_tapPosition);
+        widget.onLongPress(_tapPosition);
       },
       onTapDown: _storePosition,
       child: AnimatedContainer(
@@ -208,7 +208,7 @@ class _PersonDelegateState extends State<PersonDelegate>
                             ],
                           ),
                           borderRadius: BorderRadius.circular(
-                              delegateHeight * 0.92 * 0.33),
+                              delegateHeight * 0.92 * 0.33,),
                         ),
                       ),
                     ),
@@ -222,17 +222,17 @@ class _PersonDelegateState extends State<PersonDelegate>
                           ? delegateHeight * 0.88
                           : delegateHeight * 0.8,
                       decoration:
-                          (widget.data.isRoom || widget.data.image == null)
+                          (widget.data.isRoom)
                               ? null
                               : BoxDecoration(
                                   border: widget.data.isUnread
                                       ? Border.all(
                                           color: Colors.white,
-                                          width: delegateHeight * 0.03)
+                                          width: delegateHeight * 0.03,)
                                       : null,
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(
-                                      delegateHeight * 0.92 * 0.33),
+                                      delegateHeight * 0.92 * 0.33,),
                                   image: DecorationImage(
                                       fit: BoxFit.fill,
                                       image: widget.data.image,
@@ -240,11 +240,11 @@ class _PersonDelegateState extends State<PersonDelegate>
                                               child: Icon(
                                             widget.data.icon,
                                             size: personDelegateIconHeight,
-                                          ))),
+                                          ),),),
                                 ),
                       child: Visibility(
                         visible:
-                            widget.data.isRoom || widget.data.image == null,
+                            widget.data.isRoom,
                         child: Center(
                           child: Icon(
                             widget.data.icon,
@@ -265,7 +265,7 @@ class _PersonDelegateState extends State<PersonDelegate>
                         decoration: BoxDecoration(
                           border: Border.all(
                               color: Colors.white,
-                              width: delegateHeight * 0.03),
+                              width: delegateHeight * 0.03,),
                           color: Colors.lightGreenAccent,
                           borderRadius:
                               BorderRadius.circular(delegateHeight * 0.3 * 0.5),
@@ -289,8 +289,8 @@ class _PersonDelegateState extends State<PersonDelegate>
                         child: Text(
                           widget.data.name,
                           style: widget.data.isMessage
-                              ? Theme.of(context).textTheme.bodyText1
-                              : Theme.of(context).textTheme.bodyText1,
+                              ? Theme.of(context).textTheme.bodyLarge
+                              : Theme.of(context).textTheme.bodyLarge,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -306,14 +306,14 @@ class _PersonDelegateState extends State<PersonDelegate>
                             arguments: {'id': id},
                           ),
                         ),
-                      )
-                    ]),
+                      ),
+                    ],),
                     Visibility(
                       visible: widget.data.isMessage &&
                           widget.data.message.isNotEmpty,
                       child: Text(
                         widget.data.message,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ],
@@ -324,7 +324,7 @@ class _PersonDelegateState extends State<PersonDelegate>
               visible: widget.data.isTime,
               child: Text(
                 widget.data.time,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
           ],
@@ -357,9 +357,9 @@ class _PersonDelegateState extends State<PersonDelegate>
 /// Todo: do this better when new PersonDelegate
 /// class will be implemented. For ListTile, integrate new popup menu.
 Future<void> showCustomMenu(String title, Icon icon, Function action,
-    Offset tapPosition, BuildContext context) async {
+    Offset tapPosition, BuildContext context,) async {
   final RenderBox overlay =
-      Overlay.of(context).context.findRenderObject() as RenderBox;
+      Overlay.of(context).context.findRenderObject()! as RenderBox;
 
   final delta = await showMenu(
     context: context,
@@ -369,7 +369,7 @@ Future<void> showCustomMenu(String title, Icon icon, Function action,
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
           leading: icon,
-          title: Text(title, style: Theme.of(context).textTheme.bodyText1),
+          title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
         ),
       ),
     ],

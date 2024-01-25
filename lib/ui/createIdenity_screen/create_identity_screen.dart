@@ -3,10 +3,9 @@ import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/ui/createIdenity_screen/create_signed_identity.dart';
 import 'package:retroshare/ui/createIdenity_screen/pseudo_identity.dart';
-import 'dart:async';
 
 class CreateIdentityScreen extends StatefulWidget {
-  const CreateIdentityScreen({Key key, this.isFirstId = false})
+  const CreateIdentityScreen({required Key key, this.isFirstId = false})
       : super(key: key);
   final bool isFirstId;
 
@@ -16,9 +15,9 @@ class CreateIdentityScreen extends StatefulWidget {
 
 class _CreateIdentityScreenState extends State<CreateIdentityScreen>
     with SingleTickerProviderStateMixin {
-  Animation<Color> _leftTabIconColor;
-  Animation<Color> _rightTabIconColor;
-  TabController _tabController;
+  late Animation<Color> _leftTabIconColor;
+  late Animation<Color> _rightTabIconColor;
+  late TabController _tabController;
   @override
   void initState() {
     // TODO: implement initState
@@ -71,7 +70,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                                 child: Text(
                                   'Signed Identity',
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),
@@ -102,7 +101,7 @@ class _CreateIdentityScreenState extends State<CreateIdentityScreen>
                                 child: Text(
                                   ' Pseudo Identity',
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),

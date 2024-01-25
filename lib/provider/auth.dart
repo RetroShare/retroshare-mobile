@@ -6,9 +6,9 @@ import 'package:tuple/tuple.dart';
 
 class AccountCredentials with ChangeNotifier {
   List<Account> _accountsList = [];
-  Account _lastAccountUsed;
-  Account _loggedinAccount;
-  AuthToken _authToken;
+  late Account _lastAccountUsed;
+  late Account _loggedinAccount;
+  late AuthToken _authToken;
   Account get lastAccountUsed => _lastAccountUsed;
   List<Account> get accountList => _accountsList;
   Account get loggedinAccount => _loggedinAccount;
@@ -23,11 +23,11 @@ class AccountCredentials with ChangeNotifier {
   Future<void> fetchAuthAccountList() async {
     try {
       final resp = await RsLoginHelper.getLocations();
-      List<Account> accountsList = [];
+      final List<Account> accountsList = [];
       resp.forEach((location) {
         if (location != null) {
           accountsList.add(Account(location['mLocationId'], location['mPgpId'],
-              location['mLocationName'], location['mPgpName']));
+              location['mLocationName'], location['mPgpName'],),);
         }
       });
       _accountsList = [];
@@ -41,7 +41,7 @@ class AccountCredentials with ChangeNotifier {
 
   Account get getlastAccountUsed => _lastAccountUsed;
 
-  Future<Account> setlastAccountUsed() async {
+  Future<Account?> setlastAccountUsed() async {
     final currAccount = await RsAccounts.getCurrentAccountId(_authToken);
     for (final Account account in _accountsList) {
       if (account.locationId == currAccount) return account;
@@ -89,7 +89,7 @@ class AccountCredentials with ChangeNotifier {
       resp['retval']['errorNumber'] != 0 ? false : true,
       account,
     );
-    if (accountCreate != null && accountCreate.item1) {
+    if (accountCreate.item1) {
       _accountsList.add(accountCreate.item2);
       logginAccount = accountCreate.item2;
       final bool isAuthTokenValid =

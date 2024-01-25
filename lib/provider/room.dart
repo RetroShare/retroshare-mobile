@@ -4,9 +4,9 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:tuple/tuple.dart';
 
 class RoomChatLobby with ChangeNotifier {
-  Map<String, List<Identity>> _lobbyParticipants;
+  late Map<String, List<Identity>> _lobbyParticipants;
   Map<String, Chat> _distanceChat = {};
-  Chat _currentChat;
+  late Chat _currentChat;
   Map<String, Chat> get distanceChat => {..._distanceChat};
   Map<String, List<ChatMessage>> _messagesList = {};
   Map<String, List<ChatMessage>> get messagesList => {..._messagesList};
@@ -19,7 +19,7 @@ class RoomChatLobby with ChangeNotifier {
   List<Identity> get friendsIdsList => [..._friendsIdsList];
   List<Identity> get notContactIds => [..._notContactIds];
   List<Identity> get friendsSignedIdsList => [..._friendsSignedIdsList];
-  AuthToken _authToken;
+  late AuthToken _authToken;
 
   set authToken(AuthToken authToken) {
     _authToken = authToken;
@@ -29,17 +29,17 @@ class RoomChatLobby with ChangeNotifier {
   AuthToken get authToken => _authToken;
 
   Future<void> fetchAndUpdate() async {
-    Tuple3<List<Identity>, List<Identity>, List<Identity>> tupleIds =
+    final Tuple3<List<Identity>, List<Identity>, List<Identity>> tupleIds =
         await getAllIdentities(_authToken);
     _friendsSignedIdsList = tupleIds.item1;
     _friendsIdsList = tupleIds.item2;
     _notContactIds = tupleIds.item3;
 
     _allIdentity = {
-      for (var id in [tupleIds.item1, tupleIds.item2, tupleIds.item3]
+      for (final id in [tupleIds.item1, tupleIds.item2, tupleIds.item3]
           .expand((x) => x)
           .toList())
-        id.mId: id
+        id.mId: id,
     };
 
     notifyListeners();
@@ -67,13 +67,13 @@ class RoomChatLobby with ChangeNotifier {
   Chat get currentChat => _currentChat;
 
   Future<void> updateParticipants(String lobbyId) async {
-    List<Identity> participants = [];
-    var gxsIds = await RsMsgs.getLobbyParticipants(lobbyId, _authToken);
+    final List<Identity> participants = [];
+    final gxsIds = await RsMsgs.getLobbyParticipants(lobbyId, _authToken);
     for (int i = 0; i < gxsIds.length; i++) {
       bool success = true;
       Identity id;
       do {
-        Tuple2<bool, Identity> tuple =
+        final Tuple2<bool, Identity> tuple =
             await getIdDetails(gxsIds[i]['key'], _authToken);
         success = tuple.item1;
         id = tuple.item2;
@@ -105,7 +105,7 @@ class RoomChatLobby with ChangeNotifier {
   void addChatMessage(ChatMessage message, String chatId) {
     _messagesList = Map.from(_messagesList ?? <String, List<ChatMessage>>{})
       ..putIfAbsent(chatId, () => []);
-    if (message != null) _messagesList[chatId].add(message);
+    _messagesList[chatId]?.add(message);
     notifyListeners();
   }
 
@@ -120,7 +120,7 @@ class RoomChatLobby with ChangeNotifier {
 
 // Send the chat messsage to the lobby & Peers
   Future<void> sendMessage(String chatId, String msgTxt,
-      [ChatIdType type = ChatIdType.number2_]) async {
+      [ChatIdType type = ChatIdType.number2_,]) async {
     RsMsgs.sendMessage(chatId, msgTxt, _authToken, type).then((bool res) {
       if (res) {
         //final store = StoreProvider.of<AppState>(context);
@@ -141,9 +141,9 @@ class RoomChatLobby with ChangeNotifier {
   }
 
   void chatActionMiddleware(Chat distancechat) {
-    if (_allIdentity[distancechat?.interlocutorId] == null) {
-      var identity = Identity(distancechat?.interlocutorId);
-      identity?.name = distancechat?.chatName;
+    if (_allIdentity[distancechat.interlocutorId] == null) {
+      final identity = Identity(distancechat.interlocutorId);
+      identity.name = distancechat.chatName;
       callrequestIdentity(identity);
     }
   }
@@ -151,20 +151,15 @@ class RoomChatLobby with ChangeNotifier {
   String getChatSenderName(ChatMessage message) {
     if (message.isLobbyMessage()) {
       return _lobbyParticipants[message.chat_id.lobbyId.xstr64]
-              .firstWhere(
+              ?.firstWhere(
                 (id) => id.mId == message.lobby_peer_gxs_id,
                 orElse: () => null,
               )
-              ?.name ??
+              .name ??
           message.lobby_peer_gxs_id;
     }
     final Identity id = _allIdentity[
-        _distanceChat[message.chat_id.distantChatId].interlocutorId];
-    if (id == null) {
-      callrequestIdentity(Identity(
-          _distanceChat[message.chat_id.distantChatId].interlocutorId));
-      return _distanceChat[message.chat_id.distantChatId].interlocutorId;
-    }
+        _distanceChat[message.chat_id.distantChatId]?.interlocutorId];
     return id.name.isEmpty ? id.mId : id.name;
   }
 
@@ -188,9 +183,9 @@ class RoomChatLobby with ChangeNotifier {
   Chat getChat(
     Identity currentIdentity,
     dynamic to, {
-    String from,
+    required String from,
   }) {
-    Chat chat;
+    late Chat chat;
 
     final String currentId = from ?? currentIdentity.mId;
     if (to != null && to is Identity) {
@@ -234,7 +229,7 @@ class RoomChatLobby with ChangeNotifier {
         ? RsMsgs.getDistantChatStatus(authToken, msg.chat_id.distantChatId, msg)
             .then((DistantChatPeerInfo res) {
             // Create the chat and add it to the store
-            Chat chat = Chat(
+            final Chat chat = Chat(
               interlocutorId: res.toId,
               isPublic: false,
               numberOfParticipants: 1,
@@ -256,11 +251,11 @@ class RoomChatLobby with ChangeNotifier {
   // connection is started (id where name and mId are the same)
   // To dispatch the action, check if is dummy identity.
   Future<void> chatIdentityCheck(ChatMessage message) async {
-    if (message != null && message.msg.isNotEmpty && message.incoming) {
+    if (message.msg.isNotEmpty && message.incoming) {
       if (message.isLobbyMessage() &&
           (_allIdentity[message.lobby_peer_gxs_id] == null ||
-              _allIdentity[message.lobby_peer_gxs_id].mId ==
-                  _allIdentity[message.lobby_peer_gxs_id].name)) {
+              _allIdentity[message.lobby_peer_gxs_id]?.mId ==
+                  _allIdentity[message.lobby_peer_gxs_id]?.name)) {
         await callrequestIdentity(Identity(message.lobby_peer_gxs_id));
       } else if (!message.isLobbyMessage() &&
           (_allIdentity[_distanceChat[message.chat_id.distantChatId]

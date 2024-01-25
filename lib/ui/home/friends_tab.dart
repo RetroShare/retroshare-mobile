@@ -35,21 +35,21 @@ class _FriendsTabState extends State<FriendsTab> {
               friendsDistantAndIdsTuple =
               Tuple3<List<Identity>, List<Chat>, Map<String, Identity>>(
             roomChat.friendsIdsList,
-            roomChat.distanceChat?.values
-                    ?.toList()
-                    ?.where(
+            roomChat.distanceChat.values
+                    .toList()
+                    .where(
                       (chat) =>
                           roomChat.allIdentity[chat.interlocutorId] == null ||
-                          roomChat.allIdentity[chat.interlocutorId].isContact ==
+                          roomChat.allIdentity[chat.interlocutorId]?.isContact ==
                               false,
                     )
-                    ?.toSet()
-                    ?.toList() ??
+                    .toSet()
+                    .toList() ??
                 [],
             roomChat.allIdentity,
           );
 
-          if (friendsDistantAndIdsTuple.item1?.isNotEmpty ?? false) {
+          if (friendsDistantAndIdsTuple.item1.isNotEmpty ?? false) {
             return CustomScrollView(
               slivers: <Widget>[
                 sliverPersistentHeader('Contacts', context),
@@ -59,7 +59,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     top: 8,
                     right: 16,
                     bottom:
-                        (friendsDistantAndIdsTuple.item2?.isEmpty != false ??
+                        (friendsDistantAndIdsTuple.item2.isEmpty != false ??
                                 true)
                             ? homeScreenBottomBarHeight * 2
                             : 8.0,
@@ -105,7 +105,7 @@ class _FriendsTabState extends State<FriendsTab> {
                                     listen: false,
                                   ).getChat(
                                     curr,
-                                    friendsDistantAndIdsTuple.item1[index],
+                                    friendsDistantAndIdsTuple.item1[index], from: '',
                                   ),
                                 },
                               );
@@ -113,12 +113,12 @@ class _FriendsTabState extends State<FriendsTab> {
                           ),
                         );
                       },
-                      childCount: friendsDistantAndIdsTuple.item1?.length,
+                      childCount: friendsDistantAndIdsTuple.item1.length,
                     ),
                   ),
                 ),
                 SliverOpacity(
-                  opacity: (friendsDistantAndIdsTuple.item2?.isNotEmpty ??
+                  opacity: (friendsDistantAndIdsTuple.item2.isNotEmpty ??
                               false) &&
                           (friendsDistantAndIdsTuple.item2.isNotEmpty ?? false)
                       ? 1.0
@@ -139,7 +139,7 @@ class _FriendsTabState extends State<FriendsTab> {
                         final Identity actualId =
                             friendsDistantAndIdsTuple.item3[
                                     friendsDistantAndIdsTuple
-                                        .item2[index]?.interlocutorId] ??
+                                        .item2[index].interlocutorId] ??
                                 Identity(
                                   friendsDistantAndIdsTuple
                                       .item2[index].interlocutorId,
@@ -148,7 +148,7 @@ class _FriendsTabState extends State<FriendsTab> {
                           // Todo: DRY
                           child: PersonDelegate(
                             data: PersonDelegateData.IdentityData(
-                                actualId, context),
+                                actualId, context,),
                             onLongPress: (Offset tapPosition) {
                               showCustomMenu(
                                 'Add to contacts',
@@ -174,7 +174,7 @@ class _FriendsTabState extends State<FriendsTab> {
                                   'chatData': Provider.of<RoomChatLobby>(
                                     context,
                                     listen: false,
-                                  ).getChat(curr, actualId),
+                                  ).getChat(curr, actualId, from: ''),
                                 },
                               );
                             },
@@ -204,7 +204,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       'Looks like an empty space',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -212,7 +212,7 @@ class _FriendsTabState extends State<FriendsTab> {
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       'You can add friends in the menu',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),

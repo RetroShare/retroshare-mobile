@@ -12,13 +12,13 @@ class ColorLoader3 extends StatefulWidget {
 
 class _ColorLoader3State extends State<ColorLoader3>
     with SingleTickerProviderStateMixin {
-  Animation<double> animation_rotation;
-  Animation<double> animation_radius_in;
-  Animation<double> animation_radius_out;
-  AnimationController controller;
+  late Animation<double> animation_rotation;
+  late Animation<double> animation_radius_in;
+  late Animation<double> animation_radius_out;
+  late AnimationController controller;
 
-  double radius;
-  double dotRadius;
+  late double radius;
+  late double dotRadius;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _ColorLoader3State extends State<ColorLoader3>
     dotRadius = widget.dotRadius;
 
     controller = AnimationController(
-        duration: const Duration(milliseconds: 3000), vsync: this);
+        duration: const Duration(milliseconds: 3000), vsync: this,);
 
     animation_rotation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -83,7 +83,7 @@ class _ColorLoader3State extends State<ColorLoader3>
               child: Stack(
                 children: <Widget>[
                   Transform.translate(
-                    offset: Offset(0.0, 0.0),
+                    offset: const Offset(0.0, 0.0),
                     child: Dot(
                       radius: radius,
                       color: Colors.black12,
@@ -186,10 +186,10 @@ class _ColorLoader3State extends State<ColorLoader3>
 }
 
 class Dot extends StatelessWidget {
+
+  const Dot({required this.radius,required this.color});
   final double radius;
   final Color color;
-
-  Dot({this.radius, this.color});
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 class FriendLocations with ChangeNotifier {
   List<Location> _friendlist = [];
   List<Location> get friendlist => _friendlist;
-  AuthToken _authToken;
+  late AuthToken _authToken;
 
   set authToken(AuthToken authToken) {
     _authToken = authToken;
@@ -26,7 +26,7 @@ class FriendLocations with ChangeNotifier {
 
   Future<void> addFriendLocation(String base64Payload) async {
     bool isAdded = false;
-    if (base64Payload != null && base64Payload.length < 100) {
+    if (base64Payload.length < 100) {
       isAdded = await RsPeers.acceptShortInvite(_authToken, base64Payload);
     } else {
       isAdded = await RsPeers.acceptInvite(

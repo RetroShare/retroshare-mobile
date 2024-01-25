@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/color_loader_3.dart';
@@ -6,7 +7,7 @@ import 'package:retroshare/common/show_dialog.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/friend_location.dart';
 
-import '../Qr_scanner_screen.dart';
+import 'package:retroshare/ui/Qr_scanner_screen.dart';
 
 class GetAddfriend extends StatefulWidget {
   @override
@@ -38,12 +39,12 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 ),
                 hintStyle: const TextStyle(fontSize: 16, fontFamily: 'Oxygen'),
                 labelStyle: const TextStyle(fontSize: 12),
-                hintText: 'Paste your friend\'s invite here',
+                hintText: "Paste your friend's invite here",
                 border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(6))),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(6)),),
           ),
           const SizedBox(height: 10),
-          FlatButton(
+          TextButton(
             onPressed: () async {
               setState(() {
                 _requestAddCert = true;
@@ -60,7 +61,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 });
                 Navigator.of(context)
                     .pushReplacementNamed('/friends_locations');
-              } on HttpException catch (e) {
+              } on HttpException {
                 setState(() {
                   _requestAddCert = false;
                 });
@@ -74,8 +75,10 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 showFlutterToast('something went wrong', Colors.red);
               }
             },
-            textColor: Colors.white,
-            padding: EdgeInsets.zero,
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white, // Set text color here
+            ),
+            // padding: EdgeInsets.zero,
             child: SizedBox(
               width: double.infinity,
               child: Container(
@@ -103,14 +106,16 @@ class _GetAddfriendState extends State<GetAddfriend> {
               child: Text(
             'OR',
             style: TextStyle(fontWeight: FontWeight.bold),
-          )),
-          FlatButton(
+          ),),
+          TextButton(
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => QRScanner()));
             },
-            textColor: Colors.white,
-            padding: EdgeInsets.zero,
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white, // Set text color here
+            ),
+            // padding: EdgeInsets.zero,
             child: SizedBox(
               width: double.infinity,
               child: Container(
@@ -130,7 +135,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
       Center(
@@ -141,7 +146,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
             dotRadius: 6.0,
           ),
         ),
-      )
-    ]);
+      ),
+    ],);
   }
 }

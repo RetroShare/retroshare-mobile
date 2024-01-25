@@ -5,7 +5,7 @@ class ChatLobby with ChangeNotifier {
   List<Chat> _chatlist = [];
   List<VisibleChatLobbyRecord> _unsubscribedlist = [];
   List<Chat> get subscribedlist => _chatlist;
-  AuthToken _authToken;
+  late AuthToken _authToken;
 
   set authToken(AuthToken authToken) {
     _authToken = authToken;
@@ -17,7 +17,7 @@ class ChatLobby with ChangeNotifier {
 
   Future<void> fetchAndUpdate() async {
     final list = await RsMsgs.getSubscribedChatLobbies(_authToken);
-    List<Chat> chatsList = [];
+    final List<Chat> chatsList = [];
     for (int i = 0; i < list.length; i++) {
       final chatItem =
           await RsMsgs.getChatLobbyInfo(list[i]['xstr64'], _authToken);
@@ -28,12 +28,12 @@ class ChatLobby with ChangeNotifier {
           lobbyTopic: chatItem['lobby_topic'],
           ownIdToUse: chatItem['gxs_id'],
           autoSubscribe: await RsMsgs.getLobbyAutoSubscribe(
-              chatItem['lobby_id']['xstr64'], _authToken),
+              chatItem['lobby_id']['xstr64'], _authToken,),
           lobbyFlags: chatItem['lobby_flags'],
           isPublic:
               chatItem['lobby_flags'] == 4 || chatItem['lobby_flags'] == 20
                   ? true
-                  : false));
+                  : false,),);
     }
     _chatlist = chatsList;
     notifyListeners();
@@ -47,7 +47,7 @@ class ChatLobby with ChangeNotifier {
   Future<void> unsubscribed(String lobbyId) async {
     await RsMsgs.unsubscribeChatLobby(lobbyId, _authToken);
     final list = await RsMsgs.getSubscribedChatLobbies(_authToken);
-    List<Chat> chatsList = [];
+    final List<Chat> chatsList = [];
     for (int i = 0; i < list.length; i++) {
       final chatItem =
           await RsMsgs.getChatLobbyInfo(list[i]['xstr64'], _authToken);
@@ -57,12 +57,12 @@ class ChatLobby with ChangeNotifier {
           lobbyTopic: chatItem['lobby_topic'],
           ownIdToUse: chatItem['gxs_id'],
           autoSubscribe: await RsMsgs.getLobbyAutoSubscribe(
-              chatItem['lobby_id']['xstr64'], _authToken),
+              chatItem['lobby_id']['xstr64'], _authToken,),
           lobbyFlags: chatItem['lobby_flags'],
           isPublic:
               chatItem['lobby_flags'] == 4 || chatItem['lobby_flags'] == 20
                   ? true
-                  : false));
+                  : false,),);
     }
     _chatlist = chatsList;
     await fetchAndUpdateUnsubscribed();

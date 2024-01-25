@@ -30,7 +30,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
       arguments: {
         'isRoom': true,
         'chatData': Provider.of<RoomChatLobby>(context, listen: false)
-            .getChat(curr, lobby)
+            .getChat(curr, lobby, from: ''),
       },
     );
   }
@@ -61,7 +61,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                   Expanded(
                     child: Text(
                       'Discover public chats',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ],
@@ -75,19 +75,18 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                   return snapshot.connectionState == ConnectionState.done &&
                           !snapshot.hasError
                       ? Consumer<ChatLobby>(
-                          builder: (context, _chatsList, _) {
-                            return _chatsList.unSubscribedlist != null &&
-                                    _chatsList.unSubscribedlist.isNotEmpty
+                          builder: (context, chatsList, _) {
+                            return chatsList.unSubscribedlist.isNotEmpty
                                 ? ListView.builder(
                                     padding: const EdgeInsets.all(8),
                                     itemCount:
-                                        _chatsList.unSubscribedlist.length,
+                                        chatsList.unSubscribedlist.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return GestureDetector(
                                         onTap: () {
-                                          _goToChat(_chatsList
-                                              .unSubscribedlist[index]);
+                                          _goToChat(chatsList
+                                              .unSubscribedlist[index],);
                                         },
                                         key: UniqueKey(),
                                         child: SizedBox(
@@ -109,32 +108,32 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                                             .start,
                                                     children: <Widget>[
                                                       Text(
-                                                        _chatsList
+                                                        chatsList
                                                             .unSubscribedlist[
                                                                 index]
                                                             .lobbyName,
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText1,
+                                                            .bodyLarge,
                                                       ),
                                                       Visibility(
-                                                        visible: _chatsList
+                                                        visible: chatsList
                                                             .unSubscribedlist[
                                                                 index]
                                                             .lobbyTopic
                                                             .isNotEmpty,
                                                         child: Text(
-                                                          'Topic: ${_chatsList.unSubscribedlist[index].lobbyTopic}',
+                                                          'Topic: ${chatsList.unSubscribedlist[index].lobbyTopic}',
                                                           style: Theme.of(
                                                             context,
-                                                          ).textTheme.bodyText1,
+                                                          ).textTheme.bodyLarge,
                                                         ),
                                                       ),
                                                       Text(
-                                                        'Number of participants: ${_chatsList.unSubscribedlist[index].totalNumberOfPeers}',
+                                                        'Number of participants: ${chatsList.unSubscribedlist[index].totalNumberOfPeers}',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText1,
+                                                            .bodyLarge,
                                                       ),
                                                     ],
                                                   ),
@@ -145,7 +144,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                                   icon: const Icon(Icons.input),
                                                   onPressed: () {
                                                     _goToChat(
-                                                      _chatsList
+                                                      chatsList
                                                               .unSubscribedlist[
                                                           index],
                                                     );
@@ -176,7 +175,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
                                               'No public chats are available',
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1,
+                                                  .bodyLarge,
                                             ),
                                           ),
                                         ],

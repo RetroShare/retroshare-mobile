@@ -17,7 +17,7 @@ SliverPersistentHeader sliverPersistentHeader(
         alignment: Alignment.centerLeft,
         child: Text(
           headerText,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),
     ),
@@ -26,9 +26,9 @@ SliverPersistentHeader sliverPersistentHeader(
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
   });
   final double minHeight;
   final double maxHeight;
@@ -39,7 +39,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => math.max(maxHeight, minHeight);
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+      BuildContext context, double shrinkOffset, bool overlapsContent,) {
     return SizedBox.expand(child: child);
   }
 

@@ -17,13 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  TabController _tabController;
-  PanelController _panelController;
-  Animation<Color> _leftIconAnimation;
-  Animation<Color> _rightIconAnimation;
-  Animation<Color> shadowColor;
+  late TabController _tabController;
+  late PanelController _panelController;
+  late Animation<Color> _leftIconAnimation;
+  late Animation<Color> _rightIconAnimation;
+  late Animation<Color> shadowColor;
   bool isfetch = true;
-  AnimationController _animationController;
+  late AnimationController _animationController;
   var _isInit = true;
   var _isLoading = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             .animate(_tabController.animation);
 
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
+        vsync: this, duration: const Duration(milliseconds: 200),);
     isfetch = true;
     shadowColor = ColorTween(
       begin: const Color.fromRGBO(0, 0, 0, 0),
@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 backgroundColor: Colors.white,
                 leading: InkWell(
                   onTap: () {
-                    _scaffoldKey.currentState.openDrawer();
+                    _scaffoldKey.currentState?.openDrawer();
                   },
                   child: Icon(
                     Icons.menu,
@@ -205,10 +205,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       },
                       child: NotificationIcon(),
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       );
@@ -243,27 +243,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       width: 200,
                       height: 100,
-                      child: Center(
+                      child: const Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const CircularProgressIndicator(
+                            CircularProgressIndicator(
                               color: Colors.purple,
                             ),
-                            const Text(
+                            Text(
                               'Loading ..',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.blue,
                                 fontFamily: 'Oxygen',
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                )
+                ),
             ],
           ),
           bottomNavigationBar: BottomAppBar(
@@ -354,6 +354,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-        ));
+        ),);
   }
 }

@@ -21,7 +21,7 @@ Widget drawerWidget(BuildContext ctx) {
             Icon(
               icon,
               size: 30,
-              color: Theme.of(ctx).textTheme.bodyText1.color,
+              color: Theme.of(ctx).textTheme.bodyLarge!.color,
             ),
             const SizedBox(
               width: 15.0,
@@ -56,7 +56,7 @@ Widget drawerWidget(BuildContext ctx) {
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed('/profile',
-                              arguments: {'id': curr.currentIdentity});
+                              arguments: {'id': curr.currentIdentity},);
                         },
                         child: Container(
                           height: 100,
@@ -64,18 +64,18 @@ Widget drawerWidget(BuildContext ctx) {
                           decoration: (curr.currentIdentity.avatar == null)
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.circular(18),
-                                  border: Border.all(color: Colors.black38))
+                                  border: Border.all(color: Colors.black38),)
                               : BoxDecoration(
                                   borderRadius: BorderRadius.circular(18),
                                   border: Border.all(color: Colors.black38),
                                   image: DecorationImage(
                                     fit: BoxFit.fill,
                                     image: MemoryImage(base64
-                                        .decode(curr.currentIdentity.avatar)),
+                                        .decode(curr.currentIdentity.avatar),),
                                   ),
                                 ),
                           child: Visibility(
-                            visible: curr.currentIdentity?.avatar == null,
+                            visible: curr.currentIdentity.avatar == null,
                             child: const Center(
                               child: Icon(
                                 Icons.person,
@@ -106,13 +106,13 @@ Widget drawerWidget(BuildContext ctx) {
                               onPressed: () {
                                 Navigator.of(context).pushNamed(
                                     '/updateIdentity',
-                                    arguments: {'id': curr.currentIdentity});
+                                    arguments: {'id': curr.currentIdentity},);
                               },
                               icon: const Icon(
                                 FontAwesomeIcons.userEdit,
                                 size: 18,
                                 color: Colors.blue,
-                              )),
+                              ),),
                           IconButton(
                               onPressed: () {
                                 showdeleteDialog(context);
@@ -121,14 +121,14 @@ Widget drawerWidget(BuildContext ctx) {
                                 FontAwesomeIcons.trash,
                                 size: 18,
                                 color: Colors.red,
-                              ))
+                              ),),
                         ],
-                      )
+                      ),
                     ],
                   );
-                }),
+                },),
               ),
-            ])),
+            ],),),
         const Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -153,7 +153,7 @@ Widget drawerWidget(BuildContext ctx) {
               }),
               buildNavList(Icons.info_rounded, 'About', () {
                 Navigator.pushNamed(ctx, '/about');
-              })
+              }),
             ],
           ),
         ),
@@ -168,7 +168,7 @@ Widget drawerWidget(BuildContext ctx) {
         ),
         const SizedBox(
           height: 30,
-        )
+        ),
       ],
     ),
   );
@@ -208,7 +208,7 @@ class _NotificationIconState extends State<NotificationIcon> {
     return Stack(
       children: [
         Icon(Icons.notifications,
-            color: Theme.of(context).primaryColor, size: 28),
+            color: Theme.of(context).primaryColor, size: 28,),
         Positioned(
             top: 1,
             right: 1,
@@ -224,11 +224,11 @@ class _NotificationIconState extends State<NotificationIcon> {
                             child: Text(
                             snapshot.data.length.toString(),
                             style: const TextStyle(fontSize: 8),
-                          ))
+                          ),)
                         : const FittedBox(
-                            child: Text('0', style: TextStyle(fontSize: 8)));
+                            child: Text('0', style: TextStyle(fontSize: 8)),);
                   },
-                ))),
+                ),),),
       ],
     );
   }

@@ -9,7 +9,7 @@ import 'package:retroshare/ui/room/room_friends_tab.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class RoomScreen extends StatefulWidget {
-  const RoomScreen({Key key, this.isRoom = false, this.chat}) : super(key: key);
+  const RoomScreen({required Key key, this.isRoom = false, required this.chat}) : super(key: key);
   final bool isRoom;
   final Chat chat;
 
@@ -19,11 +19,11 @@ class RoomScreen extends StatefulWidget {
 
 class _RoomScreenState extends State<RoomScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   bool _init = true;
   final bool isOnline = false;
 
-  Animation<Color> _iconAnimation;
+  late Animation<Color> _iconAnimation;
 
   @override
   void initState() {
@@ -35,10 +35,10 @@ class _RoomScreenState extends State<RoomScreen>
         ColorTween(begin: Colors.black, end: Colors.lightBlueAccent)
             .animate(_tabController.animation);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      widget.chat?.unreadCount = 0;
+      widget.chat.unreadCount = 0;
       if (widget.isRoom) {
         Provider.of<RoomChatLobby>(context, listen: false)
-            .updateParticipants(widget.chat?.chatId);
+            .updateParticipants(widget.chat.chatId);
       }
       Provider.of<RoomChatLobby>(context, listen: false)
           .updateCurrentChat(widget.chat);
@@ -106,17 +106,15 @@ class _RoomScreenState extends State<RoomScreen>
                                   child: Container(
                                     height: appBarHeight * 0.70,
                                     width: appBarHeight * 0.70,
-                                    decoration: (widget.chat?.interlocutorId ==
-                                                null ||
-                                            friendIdentity
+                                    decoration: (friendIdentity
                                                     .allIdentity[widget
-                                                        .chat?.interlocutorId]
+                                                        .chat.interlocutorId]
                                                     ?.avatar ==
                                                 null ||
                                             friendIdentity
                                                 .allIdentity[
                                                     widget.chat.interlocutorId]
-                                                .avatar
+                                                !.avatar
                                                 .isEmpty)
                                         ? null
                                         : BoxDecoration(
@@ -130,31 +128,29 @@ class _RoomScreenState extends State<RoomScreen>
                                                 base64Decode(
                                                   friendIdentity
                                                       .allIdentity[widget
-                                                          .chat?.interlocutorId]
-                                                      .avatar,
+                                                          .chat.interlocutorId]
+                                                      ?.avatar,
                                                 ),
                                               ),
                                             ),
                                           ),
                                     child: Visibility(
                                       visible:
-                                          widget.chat?.interlocutorId == null ||
-                                                  friendIdentity
+                                          friendIdentity
                                                           .allIdentity[widget
                                                               .chat
-                                                              ?.interlocutorId]
+                                                              .interlocutorId]
                                                           ?.avatar ==
                                                       null ||
                                                   friendIdentity
                                                       .allIdentity[widget
                                                           .chat.interlocutorId]
-                                                      .avatar
+                                                      !.avatar
                                                       .isEmpty ??
                                               true,
                                       child: Center(
                                         child: Icon(
-                                          (widget.chat?.isPublic == null ||
-                                                  widget.chat.isPublic)
+                                          (widget.chat.isPublic)
                                               ? Icons.people
                                               : Icons.person,
                                           size: 40,
@@ -192,15 +188,15 @@ class _RoomScreenState extends State<RoomScreen>
                         Expanded(
                           child: Text(
                             widget.isRoom
-                                ? widget.chat?.chatName
+                                ? widget.chat.chatName
                                 : friendIdentity
                                         .allIdentity[
-                                            widget.chat?.interlocutorId]
+                                            widget.chat.interlocutorId]
                                         ?.name ??
-                                    widget.chat?.chatName ??
-                                    widget.chat?.interlocutorId ??
+                                    widget.chat.chatName ??
+                                    widget.chat.interlocutorId ??
                                     'Name',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                         Visibility(

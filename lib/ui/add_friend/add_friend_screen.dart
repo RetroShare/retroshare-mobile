@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:retroshare/common/drawer.dart';
 import 'package:retroshare/ui/add_friend/add_friend_text.dart';
-import 'add_friends_utils.dart';
+import 'package:retroshare/ui/add_friend/add_friends_utils.dart';
 
 class AddFriendScreen extends StatefulWidget {
   @override
@@ -22,13 +22,13 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GetAddfriend(),
-                const GetInvite(),
+                GetInvite(key: null,),
                 const SizedBox(
                   height: 20,
                 ),
               ],
             ),
           ),
-        ));
+        ),);
   }
 }

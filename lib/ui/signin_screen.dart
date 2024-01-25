@@ -15,10 +15,10 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController passwordController = TextEditingController();
 
-  List<DropdownMenuItem<Account>> accountsDropdown;
-  Account currentAccount;
-  bool hideLocations;
-  bool wrongPassword;
+  late List<DropdownMenuItem<Account>> accountsDropdown;
+  late Account currentAccount;
+  late bool hideLocations;
+  late bool wrongPassword;
 
   @override
   void initState() {
@@ -45,15 +45,15 @@ class _SignInScreenState extends State<SignInScreen> {
     Navigator.pushNamed(context, '/', arguments: {
       'statusText': 'Attempt login...\nCrypto in course',
       'isLoading': true,
-      'spinner': true
-    });
+      'spinner': true,
+    },);
     try {
       await Provider.of<AccountCredentials>(context, listen: false)
           .login(currentAccount, password)
           .then((value) {
         final ids = Provider.of<Identities>(context, listen: false);
         ids.fetchOwnidenities().then((value) {
-          ids.ownIdentity != null && ids.ownIdentity.isEmpty
+          ids.ownIdentity.isEmpty
               ? Navigator.pushReplacementNamed(
                   context,
                   '/create_identity',
@@ -91,7 +91,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   List<DropdownMenuItem<Account>> getDropDownMenuItems(BuildContext context) {
     final List<DropdownMenuItem<Account>> items = [];
-    for (Account account
+    for (final Account account
         in Provider.of<AccountCredentials>(context, listen: false)
             .accountList) {
       items.add(DropdownMenuItem(
@@ -103,10 +103,10 @@ class _SignInScreenState extends State<SignInScreen> {
             Visibility(
               visible: !hideLocations,
               child: Text(':${account.locationName}'),
-            )
+            ),
           ],
         ),
-      ));
+      ),);
     }
     return items;
   }
@@ -184,13 +184,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                         ),
                                         Expanded(
                                           child: getDropDownMenuItems(context)
-                                                      .isNotEmpty &&
-                                                  currentAccount != null
+                                                      .isNotEmpty
                                               ? DropdownButtonHideUnderline(
                                                   child: DropdownButton(
                                                     value: currentAccount,
                                                     items: getDropDownMenuItems(
-                                                        context),
+                                                        context,),
                                                     onChanged:
                                                         changedDropDownItem,
                                                     disabledHint:
@@ -233,11 +232,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               Visibility(
                                 visible: wrongPassword,
-                                child: SizedBox(
+                                child: const SizedBox(
                                   width: double.infinity,
                                   child: Row(
                                     children: <Widget>[
-                                      const SizedBox(
+                                      SizedBox(
                                         height: 25,
                                         width: 52,
                                         child: Align(
@@ -256,15 +255,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                               ),
                               SizedBox(height: wrongPassword ? 8 : 24),
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   attemptLogIn(
                                     currentAccount,
                                     passwordController.text,
                                   );
                                 },
-                                textColor: Colors.white,
-                                padding: EdgeInsets.zero,
+                                style: TextButton.styleFrom(
+                                    foregroundColor: Colors.white),
+                                // padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(
@@ -303,12 +303,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               const SizedBox(
                                 height: 6,
                               ),
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/signup');
                                 },
-                                textColor: Colors.white,
-                                padding: EdgeInsets.zero,
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white),
+                                // padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(

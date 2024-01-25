@@ -5,7 +5,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class MessageDelegate extends StatelessWidget {
-  const MessageDelegate({this.data, this.bubbleTitle, this.key});
+  const MessageDelegate({required this.data,required this.bubbleTitle, this.key});
+  @override
   final key;
   final String bubbleTitle;
   final ChatMessage data;
@@ -34,7 +35,7 @@ class MessageDelegate extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Visibility(
-                  visible: bubbleTitle?.isNotEmpty ?? false,
+                  visible: bubbleTitle.isNotEmpty ?? false,
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
@@ -58,7 +59,7 @@ class MessageDelegate extends StatelessWidget {
                       child: !isMessageType(data.msg)
                           ? Html(
                               data:
-                                  '${data.msg}<span> &nbsp;&nbsp;&nbsp;</span>' // Todo: add some white space to don't overlap the time
+                                  '${data.msg}<span> &nbsp;&nbsp;&nbsp;</span>', // Todo: add some white space to don't overlap the time
                               )
                           : FadeInImage(
                               alignment: Alignment.centerLeft,
@@ -95,7 +96,7 @@ class MessageDelegate extends StatelessWidget {
                           fontSize: 11.0,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],

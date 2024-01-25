@@ -18,8 +18,7 @@ class ChatsTab extends StatelessWidget {
       bottom: false,
       child: Consumer<ChatLobby>(
         builder: (context, chatsList, _) {
-          if (chatsList.subscribedlist != null &&
-              chatsList.subscribedlist.isNotEmpty) {
+          if (chatsList.subscribedlist.isNotEmpty) {
             return CustomScrollView(
               slivers: <Widget>[
                 SliverPadding(
@@ -36,7 +35,7 @@ class ChatsTab extends StatelessWidget {
                         // Todo: DRY
                         return PersonDelegate(
                           data: PersonDelegateData.ChatData(
-                              chatsList.subscribedlist[index]),
+                              chatsList.subscribedlist[index],),
                           onPressed: () {
                             final curr =
                                 Provider.of<Identities>(context, listen: false)
@@ -51,8 +50,8 @@ class ChatsTab extends StatelessWidget {
                                   listen: false,
                                 ).getChat(
                                   curr,
-                                  chatsList.subscribedlist[index],
-                                )
+                                  chatsList.subscribedlist[index], from: '',
+                                ),
                               },
                             );
                           },
@@ -73,10 +72,10 @@ class ChatsTab extends StatelessWidget {
                           },
                         );
                       },
-                      childCount: chatsList.subscribedlist?.length ?? 0,
+                      childCount: chatsList.subscribedlist.length ?? 0,
                     ),
                   ),
-                )
+                ),
               ],
             );
           }
@@ -92,7 +91,7 @@ class ChatsTab extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 25),
                     child: Text(
                       "Looks like there aren't any subscribed chats",
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.center,
                     ),
                   ),

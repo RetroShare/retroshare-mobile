@@ -5,8 +5,8 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class Identities with ChangeNotifier {
   List<Identity> _ownidentities = [];
-  Identity _selected;
-  AuthToken _authToken;
+  late Identity _selected;
+  late AuthToken _authToken;
   set authToken(AuthToken authToken) {
     _authToken = authToken;
   }
@@ -14,13 +14,12 @@ class Identities with ChangeNotifier {
   AuthToken get authToken => _authToken;
 
   List<Identity> get ownIdentity => _ownidentities;
-  Identity _currentIdentity;
+  late Identity _currentIdentity;
   Identity get currentIdentity => _currentIdentity;
 
   Future<void> fetchOwnidenities() async {
     _ownidentities = await getOwnIdentities(_authToken);
     if (_currentIdentity == null &&
-        _ownidentities != null &&
         _ownidentities.isNotEmpty) {
       _currentIdentity = _ownidentities[0];
       _selected = _ownidentities[0];
@@ -31,7 +30,7 @@ class Identities with ChangeNotifier {
   Identity get selectedIdentity => _selected;
 
   void updatecurrentIdentity() {
-    if (_selected != null) _currentIdentity = _selected;
+    _currentIdentity = _selected;
     notifyListeners();
   }
 

@@ -46,7 +46,7 @@ class RsServiceControl {
       await rsPlatform.invokeMethod('restart');
 
       await Future.delayed(const Duration(milliseconds: 300));
-      bool isUp = await isRetroshareRunning();
+      final bool isUp = await isRetroshareRunning();
       if (!isUp) throw Exception('The service did not restart after a while');
     } catch (err) {
       throw Exception('The service could not be restarted');
