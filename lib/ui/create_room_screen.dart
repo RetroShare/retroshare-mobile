@@ -21,24 +21,24 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
       TextEditingController();
   final TextEditingController _roomNameController = TextEditingController();
   final TextEditingController _roomTopicController = TextEditingController();
-  bool isPublic;
-  bool isAnonymous;
+  late bool isPublic;
+  late bool isAnonymous;
 
-  bool _isRoomCreation;
-  bool _blockCreation; //Used to prevent double click on room creation
-  Animation<double> _fadeAnimation;
-  Animation<double> _heightAnimation;
-  Animation<double> _buttonHeightAnimation;
-  Animation<double> _buttonFadeAnimation;
-  AnimationController _animationController;
+  late bool _isRoomCreation;
+  late bool _blockCreation; //Used to prevent double click on room creation
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _heightAnimation;
+  late Animation<double> _buttonHeightAnimation;
+  late Animation<double> _buttonFadeAnimation;
+  late AnimationController _animationController;
 
-  Animation<Color> _doneButtonColor;
-  AnimationController _doneButtonController;
+  late Animation<Color> _doneButtonColor;
+  late AnimationController _doneButtonController;
 
-  List<Identity> _friendsList;
-  List<Identity> _suggestionsList;
-  List<Location> _locationsList;
-  List<Location> _selectedLocations;
+  late List<Identity> _friendsList;
+  late List<Identity> _suggestionsList;
+  late List<Location> _locationsList;
+  late List<Location> _selectedLocations;
   bool _init = true;
   @override
   void initState() {
@@ -529,7 +529,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                         child: PersonDelegate(
                                           data: PersonDelegateData.LocationData(
                                             profile,
-                                          ),
+                                          ), onPressed: null, onLongPress: null,
                                         ),
                                       );
                                     },
@@ -592,7 +592,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                   color: Theme.of(context)
                                       .textTheme
                                       .bodyLarge
-                                      .color,
+                                      ?.color,
                                 ),
                               ),
                             ),
@@ -653,7 +653,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                               color: Theme.of(context)
                                                   .textTheme
                                                   .bodyLarge
-                                                  .color,
+                                                  ?.color,
                                             ),
                                           ),
                                         ),
@@ -697,10 +697,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen>
                                 'chatData': Provider.of<RoomChatLobby>(
                                   context,
                                   listen: false,
-                                ).getChat(curr, _suggestionsList[index]),
+                                ).getChat(curr, _suggestionsList[index], from: ''),
                               },
                             );
-                          },
+                          }, onLongPress: null,
                         );
                       },
                     ),

@@ -9,7 +9,7 @@ import 'package:retroshare/provider/subscribed.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key key, this.initialTab}) : super(key: key);
+  const SearchScreen({required Key key,required this.initialTab}) : super(key: key);
   final int initialTab;
 
   @override
@@ -18,10 +18,10 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   final TextEditingController _searchBoxFilter = TextEditingController();
-  Animation<Color> _leftTabIconColor;
-  Animation<Color> _rightTabIconColor;
+  late Animation<Color> _leftTabIconColor;
+  late Animation<Color> _rightTabIconColor;
   bool _init = true;
   String _searchContent = '';
   List<Identity> allIds = [];
@@ -90,7 +90,7 @@ class _SearchScreenState extends State<SearchScreen>
     Navigator.pushNamed(context, '/room', arguments: {
       'isRoom': true,
       'chatData': Provider.of<RoomChatLobby>(context, listen: false)
-          .getChat(curr, lobby),
+          .getChat(curr, lobby, from: ''),
     },);
   }
 
@@ -143,7 +143,7 @@ class _SearchScreenState extends State<SearchScreen>
                               Icon(
                                 Icons.search,
                                 color:
-                                    Theme.of(context).textTheme.bodyLarge.color,
+                                    Theme.of(context).textTheme.bodyLarge?.color,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -367,7 +367,7 @@ class _SearchScreenState extends State<SearchScreen>
                       'isRoom': true,
                       'chatData': filteredSubscribedChats[index],
                     },);
-                  },
+                  }, onLongPress: null,
                 );
               },
               childCount: filteredSubscribedChats.length ?? 0,
@@ -387,7 +387,7 @@ class _SearchScreenState extends State<SearchScreen>
                         filteredPublicChats[index],),
                     onPressed: () {
                       _goToChat(filteredPublicChats[index]);
-                    },
+                    }, onLongPress: null,
                   ),
                 );
               },
@@ -477,7 +477,7 @@ class _SearchScreenState extends State<SearchScreen>
                           'isRoom': false,
                           'chatData':
                               Provider.of<RoomChatLobby>(context, listen: false)
-                                  .getChat(curr, filteredContactsIds[index]),
+                                  .getChat(curr, filteredContactsIds[index], from: ''),
                         },
                       );
                     },
@@ -521,7 +521,7 @@ class _SearchScreenState extends State<SearchScreen>
                           'isRoom': false,
                           'chatData':
                               Provider.of<RoomChatLobby>(context, listen: false)
-                                  .getChat(curr, filteredAllIds[index]),
+                                  .getChat(curr, filteredAllIds[index], from: ''),
                         },
                       );
                     },

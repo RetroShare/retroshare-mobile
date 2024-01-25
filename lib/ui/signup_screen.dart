@@ -18,9 +18,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController repeatPasswordController = TextEditingController();
   TextEditingController nodeNameController = TextEditingController();
 
-  bool advancedOption;
-  bool isUsernameCorrect;
-  PasswordError passwordError;
+  late bool advancedOption;
+  late bool isUsernameCorrect;
+  late PasswordError passwordError;
 
   @override
   void initState() {
@@ -364,12 +364,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                FlatButton(
+                TextButton(
                   onPressed: () async {
                     await createAccount();
                   },
-                  textColor: Colors.white,
-                  padding: EdgeInsets.zero,
+                  style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,),
+                  // padding: EdgeInsets.zero,
                   child: SizedBox(
                     width: double.infinity,
                     child: Container(

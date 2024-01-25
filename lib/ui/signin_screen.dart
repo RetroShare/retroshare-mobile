@@ -15,10 +15,10 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController passwordController = TextEditingController();
 
-  List<DropdownMenuItem<Account>> accountsDropdown;
-  Account currentAccount;
-  bool hideLocations;
-  bool wrongPassword;
+  late List<DropdownMenuItem<Account>> accountsDropdown;
+  late Account currentAccount;
+  late bool hideLocations;
+  late bool wrongPassword;
 
   @override
   void initState() {
@@ -255,15 +255,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                               ),
                               SizedBox(height: wrongPassword ? 8 : 24),
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   attemptLogIn(
                                     currentAccount,
                                     passwordController.text,
                                   );
                                 },
-                                textColor: Colors.white,
-                                padding: EdgeInsets.zero,
+                                style: TextButton.styleFrom(
+                                    foregroundColor: Colors.white),
+                                // padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(
@@ -302,12 +303,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               const SizedBox(
                                 height: 6,
                               ),
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/signup');
                                 },
-                                textColor: Colors.white,
-                                padding: EdgeInsets.zero,
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white),
+                                // padding: EdgeInsets.zero,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Container(

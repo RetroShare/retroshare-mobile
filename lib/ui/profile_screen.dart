@@ -6,7 +6,7 @@ import 'package:retroshare/provider/auth.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key key, this.curr}) : super(key: key);
+  const ProfileScreen({required Key key,required this.curr}) : super(key: key);
 
   final Identity curr;
 

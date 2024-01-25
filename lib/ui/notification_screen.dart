@@ -131,7 +131,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    FlatButton(
+                                                    TextButton(
                                                       onPressed: () async {
                                                         // ignore: lines_longer_than_80_chars
                                                         await RsMsgs
@@ -151,7 +151,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                    FlatButton(
+                                                    TextButton(
                                                       onPressed: () async {
                                                         final mId = Provider.of<
                                                             Identities>(

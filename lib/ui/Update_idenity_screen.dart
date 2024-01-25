@@ -21,7 +21,7 @@ class UpdateIdentityScreen extends StatefulWidget {
 
 class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
   TextEditingController nameController = TextEditingController();
-  RsGxsImage _image;
+  late RsGxsImage _image;
   bool _showError = false;
   bool _requestCreateIdentity = false;
   @override
@@ -282,7 +282,7 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                   child: SizedBox(
                     height: 2 * appBarHeight / 3,
                     child: Builder(
-                      builder: (context) => FlatButton(
+                      builder: (context) => TextButton(
                         onPressed: () async {
                           setState(() {
                             _showError = !_validate(nameController.text);
@@ -295,9 +295,9 @@ class _UpdateIdentityScreenState extends State<UpdateIdentityScreen> {
                             await updateIdentity();
                           }
                         },
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 + personDelegateHeight * 0.04,
-                        ),
+                        // padding: const EdgeInsets.symmetric(
+                        //   horizontal: 16.0 + personDelegateHeight * 0.04,
+                        // ),
                         child: SizedBox(
                           width: double.infinity,
                           child: Container(

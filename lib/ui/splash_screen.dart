@@ -10,7 +10,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart' as rs;
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({
-    Key key,
+    required Key key,
     this.isLoading = false,
     this.statusText = '',
     this.spinner = false,
@@ -26,7 +26,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashState extends State<SplashScreen> {
   bool _spinner = false;
-  String _statusText;
+  late String _statusText;
   bool _init = true;
 
   @override

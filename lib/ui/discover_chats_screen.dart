@@ -30,7 +30,7 @@ class _DiscoverChatsScreenState extends State<DiscoverChatsScreen> {
       arguments: {
         'isRoom': true,
         'chatData': Provider.of<RoomChatLobby>(context, listen: false)
-            .getChat(curr, lobby),
+            .getChat(curr, lobby, from: ''),
       },
     );
   }

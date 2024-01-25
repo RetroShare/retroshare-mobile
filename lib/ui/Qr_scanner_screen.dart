@@ -29,16 +29,16 @@ class QRScanner extends StatefulWidget {
 
 class _QRScannerState extends State<QRScanner>
     with SingleTickerProviderStateMixin {
-  bool check;
+  late bool check;
   final GlobalKey _globalkey = GlobalKey();
   TextEditingController ownCertController = TextEditingController();
-  TabController tabController;
+  late TabController tabController;
 
-  Animation<double> _leftHeaderFadeAnimation;
-  Animation<double> _leftHeaderScaleAnimation;
-  bool _requestQR;
-  Animation<double> _rightHeaderFadeAnimation;
-  Animation<double> _rightHeaderScaleAnimation;
+  late Animation<double> _leftHeaderFadeAnimation;
+  late Animation<double> _leftHeaderScaleAnimation;
+  late bool _requestQR;
+  late Animation<double> _rightHeaderFadeAnimation;
+  late Animation<double> _rightHeaderScaleAnimation;
 
   @override
   void initState() {
@@ -197,7 +197,7 @@ class _QRScannerState extends State<QRScanner>
     if (val == QRoperation.save) {
       try {
         final RenderRepaintBoundary boundary =
-            _globalkey.currentContext.findRenderObject();
+            _globalkey.currentContext?.findRenderObject();
         final image = await boundary.toImage();
         final ByteData byteData =
             await image.toByteData(format: ImageByteFormat.png);
@@ -303,7 +303,7 @@ class _QRScannerState extends State<QRScanner>
                                       snapshot.hasData) {
                                     return RepaintBoundary(
                                       key: _globalkey,
-                                      child: QrImage(
+                                      child: QrImageView(
                                         errorStateBuilder: (context, result) {
                                           return Dialog(
                                             shape: RoundedRectangleBorder(

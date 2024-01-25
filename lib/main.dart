@@ -28,10 +28,17 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     // Used for notifications to open specific Navigator path
     configureSelectNotificationSubject(context);
     // Used to check when the app is on background
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler());
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(resumeCallBack: _onResume,
+      suspendingCallBack: _onSuspending,));
     super.initState();
   }
+  void _onResume() {
+    // Actions to perform when the app resumes
+  }
 
+  void _onSuspending() {
+    // Actions to perform when the app is suspending
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

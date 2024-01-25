@@ -28,11 +28,11 @@ class RouteGenerator {
               builder: (_) => SplashScreen(
                     isLoading: args['isLoading'],
                     spinner: args['spinner'],
-                    statusText: args['statusText'],
+                    statusText: args['statusText'], key: null,
                   ),);
         }
 
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => SplashScreen(key: null,));
       case '/home':
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case '/signin':
@@ -54,29 +54,29 @@ class RouteGenerator {
           return MaterialPageRoute(
             builder: (_) => RoomScreen(
               isRoom: args['isRoom'],
-              chat: args['chatData'],
+              chat: args['chatData'], key: null,
             ),
           );
         }
-        return MaterialPageRoute(builder: (_) => RoomScreen());
+        return MaterialPageRoute(builder: (_) => RoomScreen(key: null, chat: null,));
       case '/create_room':
         return MaterialPageRoute(builder: (_) => CreateRoomScreen());
       case '/create_identity':
         if (args is bool) {
           return MaterialPageRoute(
-            builder: (_) => CreateIdentityScreen(isFirstId: args),
+            builder: (_) => CreateIdentityScreen(isFirstId: args, key: null,),
           );
         }
 
-        return MaterialPageRoute(builder: (_) =>  CreateIdentityScreen());
+        return MaterialPageRoute(builder: (_) =>  CreateIdentityScreen(key: null,));
       case '/profile':
         if (args is Map) {
           return MaterialPageRoute(
               builder: (_) => ProfileScreen(
-                    curr: args['id'],
+                    curr: args['id'], key: null,
                   ),);
         }
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => SplashScreen(key: null,));
 
       case '/change_identity':
         return MaterialPageRoute(builder: (_) => ChangeIdentityScreen());
@@ -87,10 +87,10 @@ class RouteGenerator {
       case '/search':
         if (args is int) {
           return MaterialPageRoute(
-            builder: (_) => SearchScreen(initialTab: args),
+            builder: (_) => SearchScreen(initialTab: args, key: null,),
           );
         }
-        return MaterialPageRoute(builder: (_) => SearchScreen());
+        return MaterialPageRoute(builder: (_) => SearchScreen(key: null, initialTab: null,));
       case '/friends_locations':
         return MaterialPageRoute(builder: (_) => FriendsLocationsScreen());
       case '/about':

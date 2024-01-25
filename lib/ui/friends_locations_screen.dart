@@ -61,8 +61,8 @@ class _FriendsLocationsScreenState extends State<FriendsLocationsScreen> {
                                           '${idsTuple.friendlist[index].rsGpgId}:${idsTuple.friendlist[index].rsPeerId}',
                                       isOnline:
                                           idsTuple.friendlist[index].isOnline,
-                                      isMessage: true,
-                                    ),
+                                      isMessage: true, mId: '', image: null,
+                                    ), onPressed: null, onLongPress: null,
                                   ),
                                 );
                               },
