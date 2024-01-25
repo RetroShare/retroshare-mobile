@@ -23,7 +23,7 @@ class PseudoSignedIdenityTab extends StatefulWidget {
 class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
   bool _pseduorequestCreateIdentity = false;
   TextEditingController pseudosignednameController = TextEditingController();
-  RsGxsImage _image;
+  late RsGxsImage _image;
 
   bool _showError = false;
   void _setImage(File image) {
@@ -170,7 +170,7 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                   child: SizedBox(
                     height: 2 * appBarHeight / 3,
                     child: Builder(
-                      builder: (context) => FlatButton(
+                      builder: (context) => TextButton(
                         onPressed: () {
                           setState(() {
                             _showError =
@@ -183,8 +183,8 @@ class _PseudoSignedIdenityTabState extends State<PseudoSignedIdenityTab> {
                             _createIdentity();
                           }
                         },
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0 + personDelegateHeight * 0.04,),
+                        // padding: const EdgeInsets.symmetric(
+                        //     horizontal: 16.0 + personDelegateHeight * 0.04,),
                         child: SizedBox(
                           width: double.infinity,
                           child: Container(
