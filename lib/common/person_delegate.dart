@@ -9,8 +9,8 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 
 class PersonDelegateData {
   const PersonDelegateData({
-    this.name,
-    this.mId,
+    required this.name,
+    required this.mId,
     this.message = '',
     this.time = '',
     this.profileImage = '',
@@ -20,7 +20,7 @@ class PersonDelegateData {
     this.isTime = false,
     this.isRoom = false,
     this.icon = Icons.person,
-    this.image,
+    required this.image,
   });
 
   final String name;
@@ -45,7 +45,7 @@ class PersonDelegateData {
       isRoom: true,
       isMessage: true,
       icon: chatData.isPublic ?? true ? Icons.public : Icons.lock,
-      isUnread: chatData.unreadCount > 0,
+      isUnread: chatData.unreadCount > 0, image: null,
     );
   }
 
@@ -67,7 +67,7 @@ class PersonDelegateData {
       isMessage: true,
       icon: Chat.isPublicChat(chatData.lobbyFlags) ?? true
           ? Icons.public
-          : Icons.lock,
+          : Icons.lock, image: null,
     );
   }
 
@@ -100,14 +100,14 @@ class PersonDelegateData {
       name: location.accountName,
       message: location.locationName,
       isOnline: location.isOnline,
-      isMessage: true,
+      isMessage: true, mId: '', image: null,
     );
   }
 }
 
 class PersonDelegate extends StatefulWidget {
   const PersonDelegate(
-      {this.data, this.onPressed, this.onLongPress, this.isSelectable = false,});
+      {required this.data, required this.onPressed, required this.onLongPress, this.isSelectable = false,});
   final PersonDelegateData data;
   final Function onPressed;
   final Function onLongPress;
@@ -122,9 +122,9 @@ class _PersonDelegateState extends State<PersonDelegate>
     with SingleTickerProviderStateMixin {
   final double delegateHeight = personDelegateHeight;
 
-  Animation<Decoration> boxShadow;
-  AnimationController _animationController;
-  CurvedAnimation _curvedAnimation;
+  late Animation<Decoration> boxShadow;
+  late AnimationController _animationController;
+  late CurvedAnimation _curvedAnimation;
 
   @override
   void initState() {
@@ -165,7 +165,7 @@ class _PersonDelegateState extends State<PersonDelegate>
     super.dispose();
   }
 
-  Offset _tapPosition;
+  late Offset _tapPosition;
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
   }
