@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retroshare/common/color_loader_3.dart';
@@ -43,7 +44,7 @@ class _GetAddfriendState extends State<GetAddfriend> {
                     OutlineInputBorder(borderRadius: BorderRadius.circular(6)),),
           ),
           const SizedBox(height: 10),
-          FlatButton(
+          TextButton(
             onPressed: () async {
               setState(() {
                 _requestAddCert = true;
@@ -74,8 +75,10 @@ class _GetAddfriendState extends State<GetAddfriend> {
                 showFlutterToast('something went wrong', Colors.red);
               }
             },
-            textColor: Colors.white,
-            padding: EdgeInsets.zero,
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white, // Set text color here
+            ),
+            // padding: EdgeInsets.zero,
             child: SizedBox(
               width: double.infinity,
               child: Container(
@@ -104,13 +107,15 @@ class _GetAddfriendState extends State<GetAddfriend> {
             'OR',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),),
-          FlatButton(
+          TextButton(
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => QRScanner()));
             },
-            textColor: Colors.white,
-            padding: EdgeInsets.zero,
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white, // Set text color here
+            ),
+            // padding: EdgeInsets.zero,
             child: SizedBox(
               width: double.infinity,
               child: Container(

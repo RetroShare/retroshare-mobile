@@ -22,7 +22,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GetAddfriend(),
-                const GetInvite(),
+                GetInvite(key: null,),
                 const SizedBox(
                   height: 20,
                 ),

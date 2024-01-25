@@ -8,7 +8,7 @@ import 'package:retroshare_api_wrapper/retroshare.dart';
 import 'package:share/share.dart';
 
 class GetInvite extends StatefulWidget {
-  const GetInvite({Key key, this.settype}) : super(key: key);
+  const GetInvite({required Key key, this.settype}) : super(key: key);
 
   final settype;
 
@@ -17,14 +17,14 @@ class GetInvite extends StatefulWidget {
 }
 
 class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
-  bool check;
+  late bool check;
   TextEditingController ownCertController = TextEditingController();
-  TabController tabController;
+  late TabController tabController;
 
-  Animation<double> _leftHeaderFadeAnimation;
-  Animation<double> _leftHeaderScaleAnimation;
-  Animation<double> _rightHeaderFadeAnimation;
-  Animation<double> _rightHeaderScaleAnimation;
+  late Animation<double> _leftHeaderFadeAnimation;
+  late Animation<double> _leftHeaderScaleAnimation;
+  late Animation<double> _rightHeaderFadeAnimation;
+  late Animation<double> _rightHeaderScaleAnimation;
 
   @override
   void initState() {
@@ -242,12 +242,14 @@ class _GetInviteState extends State<GetInvite> with TickerProviderStateMixin {
             check ? tabController.animateTo(0) : tabController.animateTo(1);
           },
         ),
-        FlatButton(
+        TextButton(
           onPressed: () async {
             Share.share(ownCertController.text);
           },
-          textColor: Colors.white,
-          padding: EdgeInsets.zero,
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white, // Set text color here
+          ),
+          // padding: EdgeInsets.zero,
           child: Center(
             child: SizedBox(
               width: 120,
