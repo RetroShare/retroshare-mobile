@@ -6,6 +6,8 @@ import 'package:retroshare/common/styles.dart';
 import 'package:retroshare/model/http_exception.dart';
 import 'package:retroshare/provider/Idenity.dart';
 import 'package:retroshare_api_wrapper/retroshare.dart';
+import 'package:flutter/material.dart';
+
 
 Future errorShowDialog(String title, String text, BuildContext context) {
   return CoolAlert.show(
@@ -90,7 +92,7 @@ Stack contentBox(BuildContext context) {
             ),
             Align(
               alignment: Alignment.bottomRight,
-              child: FlatButton(
+              child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -140,13 +142,13 @@ void showdeleteDialog(BuildContext context) {
             'The deletion of identity cannot be undone. Are you sure you want to continue?',
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 try {
                   await Provider.of<Identities>(context, listen: false)
@@ -179,7 +181,7 @@ void showdeleteDialog(BuildContext context) {
             'You must have at least one more identity to be able to delete this one.',
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
