@@ -50,7 +50,7 @@ This results in the FlutterDir.
 8. If you wish to use simulated mobiles you may later select in "more actions" AVD Manager and create emulated devices as you need.
 9. Set Flutter SDK Path & Dart SDK Path in Android Studio
    - File -> Settings -> Languages & Frameworks  -> Flutter -> Set Flutter SDK Path:
-   - ``$(FlutterRoot)\flutter`` and click on OK
+   - ``$(FlutterDir)\flutter`` and click on OK
    - File -> Settings -> Languages & Frameworks  -> Dart    -> Set Dart SDK Path:
    - ``$(FlutterDir)\bin\cache\dart-sdk`` and click on OK
 
