@@ -11,6 +11,10 @@
 
 ### Steps
 #### Flutter installation
+1. Download and install Git for windows
+   - https://gitforwindows.org/
+   - Git path : ``C:\Program Files\Git\cmd\git.exe``
+   - Add in Environment Variables of your account, Git to PATH: ``C:\Program Files\Git\cmd``
 1. Download and install Github Desktop for windows.  
 https://central.github.com/deployments/desktop/desktop/latest/win32
 2. Download Flutter stable:  
