@@ -42,9 +42,9 @@ This results in the FlutterDir.
 3. Press NEXT-buttons until it is no longer shown
 4. Press FINISH and follow until finish
 5. On Welcome-Page go into plugins and
-  - Install dart 
-  - Install flutter 
-  - and let Android Studio restart
+   - Install dart 
+   - Install flutter 
+   - and let Android Studio restart
 6. On welcome page select projects: More Action/SDK Manager and than Tab SDK-Tools.
    - Ensure all "Android SDK"* Entries are installed and especially
    - ensure "Android SDK command line tools" to be installed
@@ -62,7 +62,7 @@ This results in the FlutterDir.
    ``flutter config --android-studio-dir "$(AndroidStudioDir)"``  
    The quotes are mandatory if the path conatains for exc. BLANKs
 2. now you need to accept the SDK licenses:  
-   in md type:  
+   in cmd console type:  
    ``flutter doctor --android-licenses``  
    and accept all.
 
