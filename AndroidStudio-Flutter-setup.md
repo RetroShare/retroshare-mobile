@@ -4,10 +4,8 @@
 (These may be adapted to your needs.)
 
 - Clean environment yet without any dart, flutter or android studio
-- FlutterRoot: ``c:\``
-- FlutterDir: ``$(FlutterRoot)\flutter``
-- AndroidStudioRoot: ``c:\``
-- AndroidStudioDir: ``$(AndroidStudioRoot)\AndroidStudio``
+- FlutterDir: ``C:\Users\LOCALWINUSERNAME\Documents\flutter_windows_x.xx.x-stable\flutter``
+- AndroidStudioDir: ``C:\Program Files\Android\AndroidStudio``
 - RSMobileDir: ``C:\Users\LOCALWINUSERNAME\Documents\GitHub\retroshare-mobile``
 - RSPlatformTools: ``C:\Users\LOCALWINUSERNAME\AppData\Local\Android\Sdk\platform-tools``
 
@@ -17,7 +15,7 @@
 https://central.github.com/deployments/desktop/desktop/latest/win32
 2. Download Flutter stable:  
    https://flutter.dev/docs/get-started/install/windows#get-the-flutter-sdk
-3. Open the zip-package and copy the contained flutter-dir to FlutterRoot.  
+3. Open the zip-package and copy the contained flutter-dir to FlutterDir.  
 This results in the FlutterDir.
 4. Add in environment variables of your account to the PATH-variable of USER context separated by ';' the explicit full path to flutter\bin: $(FlutterDir)\bin
    1. Test:   
