@@ -1,23 +1,25 @@
-# RS mobile: Setup Flutter|Android Studio build environment
+# Retroshare mobile: Setup Flutter | Android Studio build environment
 ## Windows
-### Assumptions 
+### Directories 
 (These may be adapted to your needs.)
 
 - Clean environment yet without any dart, flutter or android studio
-- FlutterRoot: c:\
-- FlutterDir:    $(FlutterRoot)\flutter
-- AndroidStudioRoot: c:\
-- AndroidStudioDir: $(AndroidStudioRoot)\AndroidStudio 
-- RSMobileDir: c:\RS-Mobile
-- RSPlatformTools: C:\Users\LOCALWINUSERNAME\AppData\Local\Android\Sdk\platform-tools
+- FlutterDir: ``C:\Users\LOCALWINUSERNAME\Documents\flutter_windows_x.xx.x-stable\flutter``
+- AndroidStudioDir: ``C:\Program Files\Android\AndroidStudio``
+- RSMobileDir: ``C:\Users\LOCALWINUSERNAME\Documents\GitHub\retroshare-mobile``
+- RSPlatformTools: ``C:\Users\LOCALWINUSERNAME\AppData\Local\Android\Sdk\platform-tools``
 
 ### Steps
 #### Flutter installation
-1. Download and install any flavour of git for windows.  
-   (see: https://flutter.dev/docs/get-started/install/windows#system-requirements)
+1. Download and install Git for windows
+   - https://gitforwindows.org/
+   - Git path : ``C:\Program Files\Git\cmd\git.exe``
+   - Add in Environment Variables of your account, Git to PATH: ``C:\Program Files\Git\cmd``
+1. Download and install Github Desktop for windows.  
+https://central.github.com/deployments/desktop/desktop/latest/win32
 2. Download Flutter stable:  
    https://flutter.dev/docs/get-started/install/windows#get-the-flutter-sdk
-3. Open the zip-package and copy the contained flutter-dir to FlutterRoot.  
+3. Open the zip-package and copy the contained flutter-dir to FlutterDir.  
 This results in the FlutterDir.
 4. Add in environment variables of your account to the PATH-variable of USER context separated by ';' the explicit full path to flutter\bin: $(FlutterDir)\bin
    1. Test:   
@@ -33,29 +35,34 @@ This results in the FlutterDir.
      - it may also query for chrome but this is not needed
 
 #### Android Studio installation
-1. install Android Studio for windows:  
+1. Install Android Studio for windows:  
    https://developer.android.com/studio
    - follow the default setting and ensure the installation is done to AndroidStudioDir
 2. After installation start Android Studio and let it update if it queries for some
-3. press NEXT-buttons until it is no longer shown
-4. press FINISH and follow until finish
-5. On Wellcome-Page go into plugins and
-  - install dart 
-  - and flutter 
-  - and let AS restart
+3. Press NEXT-buttons until it is no longer shown
+4. Press FINISH and follow until finish
+5. On Welcome-Page go into plugins and
+   - Install dart 
+   - Install flutter 
+   - and let Android Studio restart
 6. On welcome page select projects: More Action/SDK Manager and than Tab SDK-Tools.
    - Ensure all "Android SDK"* Entries are installed and especially
    - ensure "Android SDK command line tools" to be installed
 7. Close the SDK Dialog
 8. If you wish to use simulated mobiles you may later select in "more actions" AVD Manager and create emulated devices as you need.
+9. Set Flutter SDK Path & Dart SDK Path in Android Studio
+   - File -> Settings -> Languages & Frameworks  -> Flutter -> Set Flutter SDK Path:
+   - ``$(FlutterDir)\flutter`` and click on OK
+   - File -> Settings -> Languages & Frameworks  -> Dart    -> Set Dart SDK Path:
+   - ``$(FlutterDir)\bin\cache\dart-sdk`` and click on OK
 
 #### Associate Flutter and Android Studio
-1. tell Flutter where to find AS:    
+1. Tell Flutter where to find Android Studio:    
    in cmd console type:  
    ``flutter config --android-studio-dir "$(AndroidStudioDir)"``  
    The quotes are mandatory if the path conatains for exc. BLANKs
 2. now you need to accept the SDK licenses:  
-   in md type:  
+   in cmd console type:  
    ``flutter doctor --android-licenses``  
    and accept all.
 
@@ -64,14 +71,14 @@ This results in the FlutterDir.
   ``flutter doctor ``  
   it should now tell all (but maybe chrome) is OK.
 
-# RS mobile: Prepare project
+# Retroshare mobile: Prepare project
 
 ## Main package
-1. Git: clone RS mobile locally as RSMobileDir  
+1. Github Desktop: clone Retroshare mobile locally as RSMobileDir  
 (https://github.com/RetroShare/retroshare-mobile)
 2. Open a cmd window (type cmd in START)
-3. change directory into RS mobile dir
-4. type:  
+3. Change directory into Retroshare mobile dir
+4. Type:  
 ``flutter pub get<return>``  
 to update the flutter package dependancies as needed in the project.
 5. open the RSMobileDir in Android Studio 
@@ -89,10 +96,10 @@ to update the flutter package dependancies as needed in the project.
 Now your project - this is to do in any new project - is able to define and use emulated Phones.
 
 # Activate USB Debug Mode of the mobile
-1. in settings type usb in search
-2. select usb-debugging
-3. activate it
-4. plug the mobile with usb to the pc
+1. In settings type usb in search
+2. Select usb-debugging
+3. Activate it
+4. Plug the mobile with usb to the pc
 5. if this is the first time a dialog appears to accept the key; accept it
 6. check in cmd console if the device is available
     - cmd:  
